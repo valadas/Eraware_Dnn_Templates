@@ -1,0 +1,12 @@
+version: 2
+mergeable:
+  - when: pull_request.*
+  validate:
+    - do: milestone
+      no_empty:
+        enabled: true
+        message: 'A milestone must be assigned to this pull request'
+    - do: label
+      no_empty:
+        enabled: true
+        message: 'A lebel must be assigned to this pull request'
