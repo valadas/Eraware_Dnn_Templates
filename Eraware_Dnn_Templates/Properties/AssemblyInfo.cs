@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Eraware_Dnn_Templates")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Eraware Dnn module templates")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Eraware")]
 [assembly: AssemblyProduct("Eraware_Dnn_Templates")]
-[assembly: AssemblyCopyright("")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Daniel Valadas")]
+[assembly: AssemblyTrademark("Eraware")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

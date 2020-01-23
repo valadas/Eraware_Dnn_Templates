@@ -3,7 +3,10 @@
     <Metadata>
         <Identity Id="Eraware_Dnn_Templates.e12cae32-028f-413c-85f0-b294a18224bf" Version="1.0" Language="en-US" Publisher="Daniel Valadas" />
         <DisplayName>Eraware_Dnn_Templates</DisplayName>
-        <Description>Empty VSIX Project.</Description>
+        <Description xml:space="preserve">Eraware Dnn templates</Description>
+        <Icon>Eraware.ico</Icon>
+        <PreviewImage>Eraware.ico</PreviewImage>
+        <Tags>dnn</Tags>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />
