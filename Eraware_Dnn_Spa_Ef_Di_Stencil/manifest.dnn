@@ -1,0 +1,54 @@
+﻿<dotnetnuke version="5.0" type="Package">
+  <packages>
+    <package name="$packagename$" type="Module" version="01.00.00">
+      <friendlyName>$modulefriendlyname$</friendlyName>
+      <description>$modulefriendlyname$</description>
+      <iconFile>~/DesktopModules/$safeprojectname$/resources/images/module-icon.png</iconFile>
+      <owner>
+        <name>$ownername$</name>
+        <organization>$companyname$</organization>
+        <url>$ownerwebsite$</url>
+        <email>$owneremail$</email>
+      </owner>
+      <license src="LICENSE"></license>
+      <azureCompatible>True</azureCompatible>
+      <dependencies>
+        <dependency type="coreVersion">09.04.04</dependency>
+      </dependencies>
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <name>$rootnamespace$.dll</name>
+              <path>bin</path>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>$modulefriendlyname$</moduleName>
+            <folderName>$packagename$</folderName>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>$modulefriendlyname$</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey/>>
+                    <controlSrc>DesktopModules/$safeprojectname$/resources/views/view.html</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle/>
+                    <controlType>View</controlType>
+                    <iconFile/>
+                    <helpUrl/>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

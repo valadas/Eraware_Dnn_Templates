@@ -9,7 +9,7 @@
 		<OutputType>Library</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>$rootnamespace$</RootNamespace>
-		<AssemblyName>$safeprojectname$</AssemblyName>
+		<AssemblyName>$rootnamespace$</AssemblyName>
 		<TargetFrameworkVersion>v$targetframeworkversion$</TargetFrameworkVersion>
 		<FileAlignment>512</FileAlignment>
 	</PropertyGroup>
@@ -44,9 +44,12 @@
 		<Reference Include="System.Xml"/>
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Include="Class1.cs" />
-
 		<Compile Include="Properties\AssemblyInfo.cs" />
+    <Resource Include="resources\images\module-icon.png" />
+    <Resource Include="resources\views\view.html" />
+    <Resource Include="LICENSE" />
+    <Resource Include="manifest.dnn" />
+    <Resource Include="ReleaseNotes.html" />
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -16,7 +16,17 @@
   <TemplateContent>
     <Project File="ProjectTemplate.csproj" ReplaceParameters="true">
       <ProjectItem ReplaceParameters="true" TargetFileName="Properties\AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
-      <ProjectItem ReplaceParameters="true" OpenInEditor="true">Class1.cs</ProjectItem>
+      <Folder Name="resources" TargetFolderName="resources">
+        <Folder Name="images" TargetFolderName="images">
+          <ProjectItem TargetFileName="module-icon.png">module-icon.png</ProjectItem>
+        </Folder>
+        <Folder Name="views" TargetFolderName="views">
+          <ProjectItem ReplaceParameters="true" TargetFileName="view.html">view.html</ProjectItem>
+        </Folder>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="LICENSE">LICENSE</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="ReleaseNotes.html">ReleaseNotes.html</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="manifest.dnn">manifest.dnn</ProjectItem>
     </Project>
   </TemplateContent>
   <WizardExtension>
