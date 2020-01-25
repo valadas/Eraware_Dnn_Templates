@@ -28,8 +28,8 @@
         </Folder>        
       </Folder>
       <ProjectItem ReplaceParameters="true">LICENSE</ProjectItem>
-        <ProjectItem ReplaceParameters="true">manifest.dnn</ProjectItem>
-        <ProjectItem ReplaceParameters="true">ReleaseNotes.html</ProjectItem>
+      <ProjectItem ReplaceParameters="true">manifest.dnn</ProjectItem>
+      <ProjectItem ReplaceParameters="true">ReleaseNotes.html</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>

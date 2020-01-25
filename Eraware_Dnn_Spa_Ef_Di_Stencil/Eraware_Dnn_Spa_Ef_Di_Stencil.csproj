@@ -57,12 +57,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="build\Class1.cs" />
+    <Content Include="build\Build.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="module\manifest.dnn" />
+    <None Include="build\.editorconfig" />
+    <None Include=".nuke" />
+    <None Include="build.ps1" />
+    <None Include="build.sh" />
     <None Include="build\ProjectTemplate.csproj" />
     <Content Include="module\ProjectTemplate.csproj" />
+    <None Include="build\_build.csproj.DotSettings" />
   </ItemGroup>
   <ItemGroup>
     <VSTemplate Include="module\Module.vstemplate" />

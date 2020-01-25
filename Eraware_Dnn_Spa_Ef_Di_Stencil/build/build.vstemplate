@@ -14,10 +14,10 @@
     <Hidden>true</Hidden>
   </TemplateData>
   <TemplateContent>
-    <Project File="ProjectTemplate.csproj" ReplaceParameters="true">
-      <Folder Name="" TargetFolderName="_build">
-        <ProjectItem ReplaceParameters="true" TargetFileName="Class1.cs">Class1.cs</ProjectItem>
-      </Folder>
+    <Project File="ProjectTemplate.csproj" TargetFileName="ProjectTemplate.csproj" ReplaceParameters="true">
+        <ProjectItem ReplaceParameters="true" TargetFileName=".editorconfig">.editorconfig</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="_build.csproj.DotSettings">_build.csproj.DotSettings</ProjectItem>          
+        <ProjectItem ReplaceParameters="true" TargetFileName="Build.cs">Build.cs</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>
