@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="ProjectGroup" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>Eraware Dnn SPA EF CI Stencil Module Template</Name>
+    <Description>Creates a Dnn Stencil SPA module using Entity Framework and Dependency Injection.</Description>
+    <Icon>Eraware.ico</Icon>
+    <ProjectType>CSharp</ProjectType>
+    <LanguageTag>csharp</LanguageTag>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <SortOrder>1000</SortOrder>
+    <TemplateID>81245841-4dd2-42d2-9c0b-adb41c58ac29</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>root</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <Hidden>false</Hidden>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectCollection>
+      <ProjectTemplateLink ProjectName="Module" CopyParameters="true">module\Module.vstemplate</ProjectTemplateLink>
+      <ProjectTemplateLink ProjectName="_build" CopyParameters="true">build\build.vstemplate</ProjectTemplateLink>
+    </ProjectCollection>
+  </TemplateContent>
+  <WizardExtension>
+    <Assembly>Eraware_Dnn_Templates, Version=1.0.0.0, Culture=Neutral, PublicKeyToken=7161ac084cb3bf62</Assembly>
+    <FullClassName>Eraware_Dnn_Templates.WizardImplementation</FullClassName>
+  </WizardExtension>
+</VSTemplate>

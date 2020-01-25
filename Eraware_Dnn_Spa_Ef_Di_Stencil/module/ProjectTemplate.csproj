@@ -8,8 +8,8 @@
 		<ProjectGuid>$guid1$</ProjectGuid>
 		<OutputType>Library</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<RootNamespace>$rootnamespace$</RootNamespace>
-		<AssemblyName>$rootnamespace$</AssemblyName>
+		<RootNamespace>$ext_rootnamespace$</RootNamespace>
+		<AssemblyName>$ext_rootnamespace$</AssemblyName>
 		<TargetFrameworkVersion>v$targetframeworkversion$</TargetFrameworkVersion>
 		<FileAlignment>512</FileAlignment>
 	</PropertyGroup>
