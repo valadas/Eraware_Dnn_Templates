@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>Eraware_Dnn_Spa_Ef_Di_Stencil</Name>
+    <Description>Eraware_Dnn_Spa_Ef_Di_Stencil</Description>
+    <Icon>module-icon.ico</Icon>
+    <ProjectType>CSharp</ProjectType>
+    <LanguageTag>csharp</LanguageTag>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <SortOrder>1000</SortOrder>
+    <TemplateID>cd947cbe-339c-41f7-a789-061d1c59222c</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>Eraware_Dnn_Spa_Ef_Di_Stencil</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <Hidden>true</Hidden>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="ProjectTemplate.csproj" TargetFileName="ProjectTemplate.csproj" ReplaceParameters="true">
+      <Folder Name="Properties" TargetFolderName="Properties">
+        <ProjectItem TargetFileName="AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+      </Folder>
+      <Folder Name="resources">
+        <Folder Name="images">
+          <ProjectItem>module-icon.png</ProjectItem>
+        </Folder>
+        <Folder Name="views">
+          <ProjectItem ReplaceParameters="true">view.html</ProjectItem>
+        </Folder>        
+      </Folder>
+      <ProjectItem ReplaceParameters="true">LICENSE</ProjectItem>
+      <ProjectItem ReplaceParameters="true">manifest.dnn</ProjectItem>
+      <ProjectItem ReplaceParameters="true">ReleaseNotes.html</ProjectItem>
+      <ProjectItem ReplaceParameters="true">.nuke</ProjectItem>
+      <ProjectItem>build.ps1</ProjectItem>
+      <ProjectItem>build.sh</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

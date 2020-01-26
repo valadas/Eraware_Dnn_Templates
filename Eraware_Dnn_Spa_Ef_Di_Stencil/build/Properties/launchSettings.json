@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "Package": {
+      "commandName": "Project",
+      "commandLineArgs": "--target Package --configuration Release"
+    },
+    "Deploy": {
+      "commandName": "Project",
+      "commandLineArgs": "--target Deploy --configuration Debug"
+    },
+    "Watch": {
+      "commandName": "Project",
+      "commandLineArgs": "--target Watch --configuration Debug"
+    }
+  }
+}

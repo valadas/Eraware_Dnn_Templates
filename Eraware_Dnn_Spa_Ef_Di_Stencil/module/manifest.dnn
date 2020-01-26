@@ -1,0 +1,71 @@
+﻿<dotnetnuke version="5.0" type="Package">
+  <packages>
+    <package name="$ext_packagename$" type="Module" version="01.00.00">
+      <friendlyName>$ext_modulefriendlyname$</friendlyName>
+      <description>$ext_modulefriendlyname$</description>
+      <iconFile>~/DesktopModules/$ext_safeprojectname$/resources/images/module-icon.png</iconFile>
+      <owner>
+        <name>$ext_ownername$</name>
+        <organization>$ext_companyname$</organization>
+        <url>$ext_ownerwebsite$</url>
+        <email>$ext_owneremail$</email>
+      </owner>
+      <license src="LICENSE"></license>
+      <releaseNotes src="ReleaseNotes.html" />
+      <azureCompatible>True</azureCompatible>
+      <dependencies>
+        <dependency type="coreVersion">09.04.04</dependency>
+      </dependencies>
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <name>$ext_rootnamespace$.dll</name>
+              <path>bin</path>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>$ext_modulefriendlyname$</moduleName>
+            <foldername>$ext_packagename$</foldername>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>$ext_modulefriendlyname$</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey/>>
+                    <controlSrc>DesktopModules/$ext_safeprojectname$/resources/views/view.html</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle/>
+                    <controlType>View</controlType>
+                    <iconFile/>
+                    <helpUrl/>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/$ext_safeprojectname$/resources</basePath>
+            <resourceFile>
+              <name>resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>bin</basePath>
+            <resourceFile>
+              <name>symbols.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

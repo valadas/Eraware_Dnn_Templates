@@ -1,9 +1,12 @@
 ﻿using EnvDTE;
+using EnvDTE100;
+using EnvDTE80;
 using Microsoft.VisualStudio.TemplateWizard;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Eraware_Dnn_Templates
@@ -14,6 +17,7 @@ namespace Eraware_Dnn_Templates
     internal class WizardImplementation : IWizard
     {
         private bool isValid = false;
+        private DTE2 dte;
 
         public void BeforeOpeningFile(ProjectItem projectItem)
         {
@@ -29,12 +33,51 @@ namespace Eraware_Dnn_Templates
 
         public void RunFinished()
         {
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+            var projects = dte.Solution.Projects;
+            foreach (Project project in projects)
+            {
+                if (project.FullName.Contains("Module\\Module"))
+                {
+                    foreach (ProjectItem item in project.ProjectItems)
+                    {
+                        string[] ignoredFiles = { ".nuke", "build.ps1", "build.sh" };
+                        if (ignoredFiles.Any(i => i == item.Name)){
+                            item.Remove();
+                        }
+                    }
+
+                    string moduleProjectFilePath = project.FullName;
+                    dte.Solution.Remove(project);
+                    var moduleProjectFile = new FileInfo(moduleProjectFilePath);
+                    var originalDirectory = moduleProjectFile.Directory;
+
+                    this.CopyAll(originalDirectory, originalDirectory.Parent);
+
+                    dte.Solution.AddFromFile(Path.Combine(originalDirectory.Parent.FullName, moduleProjectFile.Name));
+                    originalDirectory.Delete(true);
+                }
+            }
+        }
+
+        private void CopyAll(DirectoryInfo source, DirectoryInfo target)
+        {
+            foreach (var file in source.GetFiles())
+            {
+                file.CopyTo(Path.Combine(target.FullName, file.Name), true);
+            }
+
+            foreach (var dir in source.GetDirectories())
+            {
+                var subDir = target.CreateSubdirectory(dir.Name);
+                CopyAll(dir, subDir);
+            }
         }
 
         public void RunStarted(object automationObject, Dictionary<string, string> replacementsDictionary, WizardRunKind runKind, object[] customParams)
         {
             Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
-            DTE dte = automationObject as DTE;
+            this.dte = automationObject as DTE2;
             string destinationDirectory = replacementsDictionary["$destinationdirectory$"];
 
             try
@@ -76,6 +119,7 @@ namespace Eraware_Dnn_Templates
 
         public bool ShouldAddProjectItem(string filePath)
         {
+            Debug.WriteLine("FILE :::::::::: " + filePath);
             return true;
         }
     }
