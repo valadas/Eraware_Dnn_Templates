@@ -6,7 +6,9 @@
              xmlns:local="clr-namespace:Eraware_Dnn_Templates"
             xmlns:data="clr-namespace:Eraware_Dnn_Templates.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="561.192" d:DesignWidth="800" Title="Project Setup Wizard" Margin="0" SizeToContent="Height" WindowStyle="None">
+             d:DesignHeight="561.192" d:DesignWidth="800" Title="Project Setup Wizard" Margin="0" SizeToContent="Height" 
+            WindowStyle="None" Width="600" Height="600" WindowStartupLocation="CenterScreen"
+            Background="#202020" Foreground="white">
     <Window.Resources>
         <ControlTemplate x:Key="errorTemplate">
             <Border BorderBrush="OrangeRed" BorderThickness="2">
@@ -19,18 +21,23 @@
         </ControlTemplate>
         <Style TargetType="Label">
             <Setter Property="Margin" Value="10" />
+            <Setter Property="Foreground" Value="White" />
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="Validation.ErrorTemplate" Value="{StaticResource errorTemplate}"/>
             <Setter Property="Margin" Value="10" />
+            <Setter Property="Background" Value="#333333" />
+            <Setter Property="Foreground" Value="White" />
             <Style.Triggers>
                 <Trigger Property="IsReadOnly" Value="true">
-                    <Setter Property="Background" Value="LightGray" />
+                    <Setter Property="Background" Value="#202020" />
+                    <Setter Property="Foreground" Value="#666666" />
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style TargetType="CheckBox">
-            <Setter Property="Margin" Value="10" />
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#333333" />
+            <Setter Property="Foreground" Value="#eeeeee" />
         </Style>
     </Window.Resources>
     <Window.DataContext>

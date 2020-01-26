@@ -38,6 +38,11 @@
     <None Include="Build.cs" />
     <None Include="Helpers.cs" />
     <None Include="Properties\launchSettings.json" />
+    <None Include="Documentation\documentation.html" />
+    <None Include="Documentation\images\CreateProject.gif" />
+    <None Include="Documentation\images\Install.gif" />
+    <None Include="Documentation\images\Package.gif" />
+    <None Include="Documentation\images\ProjectSettings.gif" />
   </ItemGroup>
 
 </Project>

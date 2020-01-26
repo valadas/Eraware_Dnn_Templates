@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Xml;
 using BuildHelpers;
 using Nuke.Common;
 using Nuke.Common.Execution;
@@ -50,6 +52,10 @@ class Build : NukeBuild
             if (DirectoryExists(git))
             {
                 GitRepository = GitRepository.FromLocalDirectory(RootDirectory);
+                GitVersion = GitVersionTasks.GitVersion(s => s
+                    .SetFramework("netcoreapp3.0")
+                    .DisableLogOutput()
+                    .SetUpdateAssemblyInfo(true)).Result;
             }
             else
             {
@@ -78,8 +84,34 @@ class Build : NukeBuild
                 .EnableNoRestore());
         });
 
+    Target SetManifestVersions => _ => _
+        .DependsOn(SetupGit)
+        .Executes(() =>
+        {
+            if (GitVersion != null)
+            {
+                var manifests = GlobFiles(RootDirectory, "**/*.dnn");
+                foreach (var manifest in manifests)
+                {
+                    var doc = new XmlDocument();
+                    doc.Load(manifest);
+                    var packages = doc.SelectNodes("dotnetnuke/packages/package");
+                    foreach (XmlNode package in packages)
+                    {
+                        var version = package.Attributes["version"];
+                        if (version != null)
+                        {
+                            version.Value = $"{GitVersion.Major.ToString("00")}.{GitVersion.Minor.ToString("00")}.{GitVersion.Patch.ToString("00")}";
+                        }
+                    }
+                    doc.Save(manifest);
+                }
+            }
+        });
+
     Target Package => _ => _
         .DependsOn(Clean)
+        .DependsOn(SetManifestVersions)
         .DependsOn(CompileLibraries)
         .Executes(() =>
         {
@@ -101,8 +133,20 @@ class Build : NukeBuild
             CopyDirectoryRecursively(RootDirectory / "bin" / "Release", stagingDirectory / "bin", excludeFile: (f) => !f.Name.EndsWith("dll"));
 
             // Install package
-            ZipFile.CreateFromDirectory(stagingDirectory, ArtifactsDirectory / "install.zip");
+            string fileName = new DirectoryInfo(RootDirectory).Name;
+            if (GitVersion != null)
+            {
+                fileName += $"_{GitVersion.FullSemVer}";
+            }
+            fileName += "_install.zip";
+            ZipFile.CreateFromDirectory(stagingDirectory, ArtifactsDirectory / fileName);
             DeleteDirectory(stagingDirectory);
+
+            // Open folder
+            if (EnvironmentInfo.IsWin)
+            {
+                Process.Start("explorer.exe", ArtifactsDirectory);
+            }
         });
 
     Target Deploy => _ => _
