@@ -1,6 +1,6 @@
 ﻿<dotnetnuke version="5.0" type="Package">
   <packages>
-    <package name="$ext_packagename$" type="Module" version="01.00.00">
+    <package name="$ext_packagename$" type="Module" version="00.01.00">
       <friendlyName>$ext_modulefriendlyname$</friendlyName>
       <description>$ext_modulefriendlyname$</description>
       <iconFile>~/DesktopModules/$ext_safeprojectname$/resources/images/module-icon.png</iconFile>
@@ -10,7 +10,8 @@
         <url>$ext_ownerwebsite$</url>
         <email>$ext_owneremail$</email>
       </owner>
-      <license src="LICENSE"></license>
+      <license src="LICENSE">
+      </license>
       <releaseNotes src="ReleaseNotes.html" />
       <azureCompatible>True</azureCompatible>
       <dependencies>
@@ -35,7 +36,7 @@
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
-                    <controlKey/>>
+                    <controlKey/>
                     <controlSrc>DesktopModules/$ext_safeprojectname$/resources/views/view.html</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle/>
