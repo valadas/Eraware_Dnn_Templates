@@ -16,8 +16,8 @@
   </TemplateData>
   <TemplateContent>
     <ProjectCollection>
-      <ProjectTemplateLink ProjectName="Module" CopyParameters="true">module\Module.vstemplate</ProjectTemplateLink>
       <ProjectTemplateLink ProjectName="_build" CopyParameters="true">build\build.vstemplate</ProjectTemplateLink>
+      <ProjectTemplateLink ProjectName="Module" CopyParameters="true">module\Module.vstemplate</ProjectTemplateLink>
     </ProjectCollection>
   </TemplateContent>
   <WizardExtension>

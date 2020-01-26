@@ -50,6 +50,9 @@
     <Resource Include="LICENSE" />
     <Resource Include="manifest.dnn" />
     <Resource Include="ReleaseNotes.html" />
+    <Resource Include=".nuke" />
+    <Resource Include="build.ps1" />
+    <Resource Include="build.sh" />
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

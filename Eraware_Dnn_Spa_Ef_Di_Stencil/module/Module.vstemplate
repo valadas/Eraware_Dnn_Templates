@@ -30,6 +30,9 @@
       <ProjectItem ReplaceParameters="true">LICENSE</ProjectItem>
       <ProjectItem ReplaceParameters="true">manifest.dnn</ProjectItem>
       <ProjectItem ReplaceParameters="true">ReleaseNotes.html</ProjectItem>
+      <ProjectItem ReplaceParameters="true">.nuke</ProjectItem>
+      <ProjectItem>build.ps1</ProjectItem>
+      <ProjectItem>build.sh</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>

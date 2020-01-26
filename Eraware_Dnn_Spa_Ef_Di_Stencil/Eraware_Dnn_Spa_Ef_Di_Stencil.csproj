@@ -57,17 +57,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="build\Build.cs" />
+    <Content Include="build\Build.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="module\manifest.dnn" />
-    <None Include="build\.editorconfig" />
-    <None Include=".nuke" />
-    <None Include="build.ps1" />
-    <None Include="build.sh" />
+    <Content Include="build\.editorconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="module\.nuke">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="module\build.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="module\build.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="build\ProjectTemplate.csproj" />
     <Content Include="module\ProjectTemplate.csproj" />
-    <None Include="build\_build.csproj.DotSettings" />
+    <Content Include="build\_build.csproj.DotSettings">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <VSTemplate Include="module\Module.vstemplate" />
