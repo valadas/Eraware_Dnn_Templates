@@ -18,17 +18,34 @@
     <ol>
         <li>
             <p>
-                Create a new project, the project name will be the module folder name,
+                <strong>Create a new project</strong>: the project name will be the module folder name,
                 so make sure it is a safe name for a folder. In the location field, select the DesktopModules folder of a local working Dnn Website.
-            </p>
+            </p><br />
             <img src="images/CreateProject.gif" alt="Create Project" />
         </li>
         <li>
             <p>
-                A wizard will show to customize your project, enter the required details for your module,
+                <strong>Setup your project</strong>: A wizard will show to customize your project, enter the required details for your module,
                 the fields under the line are auto-generated but you could override them if you click on them.
-            </p>
+            </p><br />
             <img src="images/ProjectSettings.gif" />
+        </li>
+        <li>
+            <p>
+                <strong>Package the module</strong>: Tasks are placed in the launch profiles menu in Visual Studio, click the debug button with the <em>Package</em> profile selected.
+                This will fire up a console application to run the module build and then open up the artifacts directory where you will find your module package.
+                <br /><br />
+                Note: The build script is simply a console application in the <em>build</em> project, it uses <a href="https://nuke.build/" target="_blank">Nuke</a> to help with utilities.
+                You can later customize that process simply by editing the <em>Build.cs</em> file.
+            </p><br />
+            <img src="images/Package.gif" alt="Package" />
+        </li>
+        <li>
+            <p>
+                <strong>Install your module</strong>: Now that the package is open in explorer, open up your dnn website and install the module as usual.
+                <br />
+                <img src="images/Install.gif" alt="Install" />
+            </p>
         </li>
     </ol>
 </body>

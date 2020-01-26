@@ -21,6 +21,8 @@
       <Folder Name="Documentation">
         <Folder Name="images">
           <ProjectItem>CreateProject.gif</ProjectItem>
+          <ProjectItem>Install.gif</ProjectItem>
+          <ProjectItem>Package.gif</ProjectItem>
           <ProjectItem>ProjectSettings.gif</ProjectItem>
         </Folder>
         <ProjectItem OpenInWebBrowser="true">documentation.html</ProjectItem>

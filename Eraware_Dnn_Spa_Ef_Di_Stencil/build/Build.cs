@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -140,6 +141,12 @@ class Build : NukeBuild
             fileName += "_install.zip";
             ZipFile.CreateFromDirectory(stagingDirectory, ArtifactsDirectory / fileName);
             DeleteDirectory(stagingDirectory);
+
+            // Open folder
+            if (EnvironmentInfo.IsWin)
+            {
+                Process.Start("explorer.exe", ArtifactsDirectory);
+            }
         });
 
     Target Deploy => _ => _
