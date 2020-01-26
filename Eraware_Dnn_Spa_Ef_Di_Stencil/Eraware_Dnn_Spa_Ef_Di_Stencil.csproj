@@ -66,6 +66,7 @@
     <Content Include="build\.editorconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="build\Properties\launchSettings.json" />
     <None Include="module\.nuke">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -100,6 +101,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="build\Helpers.cs" />
     <Compile Include="module\Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

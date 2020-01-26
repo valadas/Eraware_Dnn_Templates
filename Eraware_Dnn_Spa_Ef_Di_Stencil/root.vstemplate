@@ -10,7 +10,7 @@
     <SortOrder>1000</SortOrder>
     <TemplateID>81245841-4dd2-42d2-9c0b-adb41c58ac29</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>
-    <DefaultName>root</DefaultName>
+    <DefaultName>MyModule</DefaultName>
     <ProvideDefaultName>true</ProvideDefaultName>
     <Hidden>false</Hidden>
   </TemplateData>

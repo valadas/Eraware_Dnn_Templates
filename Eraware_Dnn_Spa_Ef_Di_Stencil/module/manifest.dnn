@@ -11,6 +11,7 @@
         <email>$ext_owneremail$</email>
       </owner>
       <license src="LICENSE"></license>
+      <releaseNotes src="ReleaseNotes.html" />
       <azureCompatible>True</azureCompatible>
       <dependencies>
         <dependency type="coreVersion">09.04.04</dependency>
@@ -27,7 +28,7 @@
         <component type="Module">
           <desktopModule>
             <moduleName>$ext_modulefriendlyname$</moduleName>
-            <folderName>$ext_packagename$</folderName>
+            <foldername>$ext_packagename$</foldername>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>$ext_modulefriendlyname$</friendlyName>
@@ -47,6 +48,22 @@
               </moduleDefinition>
             </moduleDefinitions>
           </desktopModule>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/$ext_safeprojectname$/resources</basePath>
+            <resourceFile>
+              <name>resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>bin</basePath>
+            <resourceFile>
+              <name>symbols.zip</name>
+            </resourceFile>
+          </resourceFiles>
         </component>
       </components>
     </package>

@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <NukeSpecificationFiles Include="**\*.json" Exclude="bin\**;obj\**" />
+    <NukeSpecificationFiles Include="**\*.json" Exclude="bin\**;obj\**;Properties\launchSettings.json" />
     <NukeExternalFiles Include="**\*.*.ext" Exclude="bin\**;obj\**" />
     <None Remove="*.csproj.DotSettings;*.ref.*.txt" />
 
@@ -36,6 +36,8 @@
     <None Include="..\.travis.yml" LinkBase="ci" Condition="Exists('..\.travis.yml')" />
 
     <None Include="Build.cs" />
+    <None Include="Helpers.cs" />
+    <None Include="Properties\launchSettings.json" />
   </ItemGroup>
 
 </Project>
