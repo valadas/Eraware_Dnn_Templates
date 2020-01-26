@@ -62,6 +62,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="build\Documentation\documentation.css" />
+    <Content Include="build\Documentation\documentation.html" />
+    <Content Include="build\Documentation\images\CreateProject.gif" />
+    <Content Include="build\Documentation\images\ProjectSettings.gif" />
     <Content Include="module\manifest.dnn" />
     <Content Include="build\.editorconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

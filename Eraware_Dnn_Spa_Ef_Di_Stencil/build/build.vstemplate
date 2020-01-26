@@ -18,6 +18,13 @@
       <Folder Name="Properties">
         <ProjectItem ReplaceParameters="true">launchSettings.json</ProjectItem>
       </Folder>
+      <Folder Name="Documentation">
+        <Folder Name="images">
+          <ProjectItem>CreateProject.gif</ProjectItem>
+          <ProjectItem>ProjectSettings.gif</ProjectItem>
+        </Folder>
+        <ProjectItem OpenInWebBrowser="true">documentation.html</ProjectItem>
+      </Folder>
       <ProjectItem ReplaceParameters="true">.editorconfig</ProjectItem>
       <ProjectItem ReplaceParameters="true">_build.csproj.DotSettings</ProjectItem>          
       <ProjectItem ReplaceParameters="true">Build.cs</ProjectItem>

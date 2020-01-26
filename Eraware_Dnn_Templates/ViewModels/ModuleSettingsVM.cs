@@ -259,7 +259,7 @@ namespace Eraware_Dnn_Templates.ViewModels
 
         private void ValidateProperty<T>(T value, string name)
         {
-            Validator.ValidateProperty(value, new ValidationContext(this, null, null)
+            @Validator.ValidateProperty(value, new ValidationContext(this, null, null)
             {
                 MemberName = name
             });
