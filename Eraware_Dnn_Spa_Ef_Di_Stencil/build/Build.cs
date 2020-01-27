@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Xml;
 using BuildHelpers;
+using Newtonsoft.Json.Linq;
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
@@ -16,6 +17,7 @@ using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
+using static Nuke.Common.IO.SerializationTasks;
 using static Nuke.Common.IO.TextTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.Npm.NpmTasks;
@@ -70,7 +72,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             DotNetRestore(_ => _
-                .SetProjectFile(Solution));
+                .SetProjectFile(Solution.GetProject("Module")));
         });
 
     Target CompileLibraries => _ => _
@@ -109,6 +111,19 @@ class Build : NukeBuild
                     }
                     doc.Save(manifest);
                 }
+            }
+
+            if (GitRepository != null && GitVersion != null)
+            {
+                var packageJson = RootDirectory / "module.web" / "package.json";
+                var packageJsonContent = JsonDeserializeFromFile<JObject>(packageJson);
+                packageJsonContent["version"] = GitVersion.FullSemVer;
+                if (packageJsonContent["repository"] == null)
+                {
+                    packageJsonContent.Property("version").AddAfterSelf(new JProperty("repository", GitRepository.HttpsUrl));
+                }
+
+                JsonSerializeToFile(packageJsonContent, packageJson);
             }
         });
 

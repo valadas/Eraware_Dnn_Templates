@@ -1,6 +1,7 @@
 {
   "name": "$ext_scopeprefixkebab$",
   "version": "0.1.0",
+  "private": true,
   "description": "Stencil Component Starter",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

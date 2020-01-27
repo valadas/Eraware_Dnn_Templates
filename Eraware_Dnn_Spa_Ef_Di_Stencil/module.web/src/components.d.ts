@@ -10,16 +10,16 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
-  interface MyComponent { }
+  interface MyComponent {}
 }
 
 declare global {
 
 
-  interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement { }
+  interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {}
   var HTMLMyComponentElement: {
     prototype: HTMLMyComponentElement;
-    new(): HTMLMyComponentElement;
+    new (): HTMLMyComponentElement;
   };
   interface HTMLElementTagNameMap {
     'my-component': HTMLMyComponentElement;
@@ -27,7 +27,7 @@ declare global {
 }
 
 declare namespace LocalJSX {
-  interface MyComponent { }
+  interface MyComponent {}
 
   interface IntrinsicElements {
     'my-component': MyComponent;
