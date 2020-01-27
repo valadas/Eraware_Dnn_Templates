@@ -18,6 +18,7 @@
     <ProjectCollection>
       <ProjectTemplateLink ProjectName="_build" CopyParameters="true">build\build.vstemplate</ProjectTemplateLink>
       <ProjectTemplateLink ProjectName="Module" CopyParameters="true">module\Module.vstemplate</ProjectTemplateLink>
+      <ProjectTemplateLink ProjectName="module.web" CopyParameters="true">module.web\module.web.vstemplate</ProjectTemplateLink>
     </ProjectCollection>
   </TemplateContent>
   <WizardExtension>

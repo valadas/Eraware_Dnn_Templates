@@ -13,10 +13,12 @@ using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
+using BuildHelpers;
 using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using static Nuke.Common.Tools.Npm.NpmTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
@@ -38,6 +40,8 @@ class Build : NukeBuild
     private GitVersion GitVersion;
 
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+    AbsolutePath WebProjectDirectory => RootDirectory / "Module.Web";
+
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
@@ -76,7 +80,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             DotNetBuild(_ => _
-                .SetProjectFile(Solution)
+                .SetProjectFile(Solution.GetProject("Module"))
                 .SetConfiguration(Configuration)
                 .SetAssemblyVersion(GitVersion?.AssemblySemVer)
                 .SetFileVersion(GitVersion?.AssemblySemFileVer)
@@ -107,6 +111,13 @@ class Build : NukeBuild
                     doc.Save(manifest);
                 }
             }
+        });
+
+    Target InstallNpmPackages => _ => _
+        .Executes(() =>
+        {
+            NpmInstall(s =>
+                s.SetWorkingDirectory(WebProjectDirectory));
         });
 
     Target Package => _ => _
@@ -143,23 +154,38 @@ class Build : NukeBuild
             DeleteDirectory(stagingDirectory);
 
             // Open folder
-            if (EnvironmentInfo.IsWin)
+            if (IsWin)
             {
                 Process.Start("explorer.exe", ArtifactsDirectory);
             }
         });
 
-    Target Deploy => _ => _
-    .DependsOn(CompileLibraries)
-    .Executes(() =>
-    {
+    Target DeployBinaries => _ => _
+        .OnlyWhenDynamic(() => RootDirectory.Parent.ToString().EndsWith("DesktopModules"))
+        .DependsOn(CompileLibraries)
+        .Executes(() => {
+            var files = GlobFiles(RootDirectory, "bin/Debug/*");
+            foreach (var file in files)
+            {
+                Helpers.CopyFileToDirectoryIfChanged(file, RootDirectory.Parent.Parent / "bin");
+            }
+        });
 
-    });
+    Target Deploy => _ => _
+        .DependsOn(DeployBinaries)
+        .Executes(() =>
+        {
+
+        });
 
     Target Watch => _ => _
-    .DependsOn(CompileLibraries)
+    .DependsOn(DeployBinaries)
+    .DependsOn(InstallNpmPackages)
     .Executes(() =>
     {
-
+        NpmRun(s => s
+            .SetWorkingDirectory(WebProjectDirectory)
+            .SetArgumentConfigurator(a => a.Add("start"))
+            );
     });
 }

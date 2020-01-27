@@ -37,6 +37,15 @@ namespace Eraware_Dnn_Templates
             var projects = dte.Solution.Projects;
             foreach (Project project in projects)
             {
+                if (project.FullName.Contains("module.web"))
+                {
+                    var configurations = (Array)project.ConfigurationManager.ConfigurationRowNames;
+                    foreach(var configuration in configurations)
+                    {
+                        project.ConfigurationManager.DeleteConfigurationRow(configuration.ToString());
+                    }
+                }
+
                 if (project.FullName.Contains("Module\\Module"))
                 {
                     foreach (ProjectItem item in project.ProjectItems)

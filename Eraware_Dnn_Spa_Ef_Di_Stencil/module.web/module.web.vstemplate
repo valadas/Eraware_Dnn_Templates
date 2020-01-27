@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>module web</Name>
+    <Description>module web</Description>
+    <Icon>module-icon.ico</Icon>
+    <ProjectType>CSharp</ProjectType>
+    <LanguageTag>csharp</LanguageTag>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <SortOrder>1000</SortOrder>
+    <TemplateID>CDDF75C9-EFAB-4818-BBBC-210BE3EBD95D</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>module.web</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <Hidden>true</Hidden>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="ProjectTemplate.njsproj" TargetFileName="ProjectTemplate.njsproj" ReplaceParameters="true">
+      <Folder Name="src">
+        <Folder Name="components">
+          <Folder Name="my-component">
+            <ProjectItem>my-component.css</ProjectItem>
+            <ProjectItem>my-component.tsx</ProjectItem>
+            <ProjectItem>readme.md</ProjectItem>
+          </Folder>
+        </Folder>
+        <ProjectItem>components.d.ts</ProjectItem>
+        <ProjectItem>index.html</ProjectItem>
+        <ProjectItem>index.ts</ProjectItem>
+      </Folder>
+      <ProjectItem>.editorconfig</ProjectItem>
+      <ProjectItem>.gitignore</ProjectItem>
+      <ProjectItem>LICENSE</ProjectItem>
+      <ProjectItem>package.json</ProjectItem>
+      <ProjectItem>readme.md</ProjectItem>
+      <ProjectItem>stencil.config.ts</ProjectItem>
+      <ProjectItem>tsconfig.json</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

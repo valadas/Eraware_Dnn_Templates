@@ -25,7 +25,7 @@
           <ProjectItem>Package.gif</ProjectItem>
           <ProjectItem>ProjectSettings.gif</ProjectItem>
         </Folder>
-        <ProjectItem OpenInWebBrowser="true">documentation.html</ProjectItem>
+        <ProjectItem OpenInWebBrowser="true" OpenOrder="10">documentation.html</ProjectItem>
       </Folder>
       <ProjectItem ReplaceParameters="true">.editorconfig</ProjectItem>
       <ProjectItem ReplaceParameters="true">_build.csproj.DotSettings</ProjectItem>          
