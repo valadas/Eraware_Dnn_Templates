@@ -27,6 +27,7 @@
           <ProjectItem ReplaceParameters="true">view.html</ProjectItem>
         </Folder>        
       </Folder>
+      <ProjectItem>.gitignore</ProjectItem>
       <ProjectItem ReplaceParameters="true">LICENSE</ProjectItem>
       <ProjectItem ReplaceParameters="true">manifest.dnn</ProjectItem>
       <ProjectItem ReplaceParameters="true">ReleaseNotes.html</ProjectItem>

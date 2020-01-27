@@ -16,7 +16,9 @@ using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
+using static Nuke.Common.IO.TextTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using static Nuke.Common.Tools.Npm.NpmTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
@@ -38,8 +40,9 @@ class Build : NukeBuild
     private GitVersion GitVersion;
 
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
-    Target Clean => _ => _
-        .Before(Restore)
+    AbsolutePath WebProjectDirectory => RootDirectory / "Module.Web";
+
+    Target CleanArtifactsDirectory => _ => _
         .Executes(() =>
         {
             EnsureCleanDirectory(ArtifactsDirectory);
@@ -76,7 +79,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             DotNetBuild(_ => _
-                .SetProjectFile(Solution)
+                .SetProjectFile(Solution.GetProject("Module"))
                 .SetConfiguration(Configuration)
                 .SetAssemblyVersion(GitVersion?.AssemblySemVer)
                 .SetFileVersion(GitVersion?.AssemblySemFileVer)
@@ -109,10 +112,80 @@ class Build : NukeBuild
             }
         });
 
+    Target InstallNpmPackages => _ => _
+        .Executes(() =>
+        {
+            NpmInstall(s =>
+                s.SetWorkingDirectory(WebProjectDirectory));
+        });
+
+    Target DeployBinaries => _ => _
+        .OnlyWhenDynamic(() => RootDirectory.Parent.ToString().EndsWith("DesktopModules"))
+        .DependsOn(CompileLibraries)
+        .Executes(() =>
+        {
+            var files = GlobFiles(RootDirectory, "bin/Debug/*");
+            foreach (var file in files)
+            {
+                Helpers.CopyFileToDirectoryIfChanged(file, RootDirectory.Parent.Parent / "bin");
+            }
+        });
+
+    Target BuildFrontEnd => _ => _
+        .DependsOn(InstallNpmPackages)
+        .Executes(() =>
+        {
+            NpmRun(s => s
+                .SetWorkingDirectory(WebProjectDirectory)
+                .SetArgumentConfigurator(a => a.Add("build"))
+            );
+        });
+
+    Target DeployFrontEnd => _ => _
+        .DependsOn(BuildFrontEnd)
+        .Executes(() =>
+        {
+            var scriptsDestination = RootDirectory / "resources" / "scripts" / "$ext_scopeprefixkebab$";
+            EnsureCleanDirectory(scriptsDestination);
+            CopyDirectoryRecursively(RootDirectory / "module.web" / "dist" / "$ext_scopeprefixkebab$", scriptsDestination, Nuke.Common.IO.DirectoryExistsPolicy.Merge);
+        });
+
+    Target SetRelativeScripts => _ => _
+        .DependsOn(DeployFrontEnd)
+        .Executes(() =>
+        {
+            var views = GlobFiles(RootDirectory, "resources/views/**/*.html");
+            foreach (var view in views)
+            {
+                var content = ReadAllText(view);
+                content = content.Replace("http://localhost:3333/build/", "DesktopModules/MyModule/resources/scripts/$ext_scopeprefixkebab$/");
+                WriteAllText(view, content, System.Text.Encoding.UTF8);
+            }
+        });
+
+    Target SetLiveServer => _ => _
+        .DependsOn(DeployFrontEnd)
+        .Executes(() =>
+        {
+            var views = GlobFiles(RootDirectory, "resources/views/**/*.html");
+            foreach (var view in views)
+            {
+                var content = ReadAllText(view);
+                content = content.Replace("DesktopModules/MyModule/resources/scripts/$ext_scopeprefixkebab$/", "http://localhost:3333/build/");
+                WriteAllText(view, content, System.Text.Encoding.UTF8);
+            }
+        });
+
+
+
+    /// <summary>
+    /// Package the module
+    /// </summary>
     Target Package => _ => _
-        .DependsOn(Clean)
+        .DependsOn(CleanArtifactsDirectory)
         .DependsOn(SetManifestVersions)
         .DependsOn(CompileLibraries)
+        .DependsOn(SetRelativeScripts)
         .Executes(() =>
         {
             var stagingDirectory = ArtifactsDirectory / "staging";
@@ -143,23 +216,35 @@ class Build : NukeBuild
             DeleteDirectory(stagingDirectory);
 
             // Open folder
-            if (EnvironmentInfo.IsWin)
+            if (IsWin)
             {
                 Process.Start("explorer.exe", ArtifactsDirectory);
             }
         });
 
+    /// <summary>
+    /// Deploy the module files
+    /// </summary>
     Target Deploy => _ => _
-    .DependsOn(CompileLibraries)
-    .Executes(() =>
-    {
+        .DependsOn(DeployBinaries)
+        .DependsOn(SetRelativeScripts)
+        .Executes(() =>
+        {
 
-    });
+        });
 
+    /// <summary>
+    /// Watch frontend for changes
+    /// </summary>
     Target Watch => _ => _
-    .DependsOn(CompileLibraries)
+    .DependsOn(DeployBinaries)
+    .DependsOn(InstallNpmPackages)
+    .DependsOn(SetLiveServer)
     .Executes(() =>
     {
-
+        NpmRun(s => s
+            .SetWorkingDirectory(WebProjectDirectory)
+            .SetArgumentConfigurator(a => a.Add("start"))
+            );
     });
 }

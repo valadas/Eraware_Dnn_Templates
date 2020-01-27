@@ -12,26 +12,12 @@ namespace BuildHelpers
     {
         public static void CopyFileToDirectoryIfChanged(string source, string target)
         {
-            bool copyFile = false;
             var sourceFile = new FileInfo(source);
             var destinationFile = new FileInfo(Path.Combine(target, sourceFile.Name));
 
-            if (!destinationFile.Exists)
-            {
-                copyFile = true;
-            }
-
-            if (sourceFile.Length != destinationFile.Length)
-            {
-                copyFile = true;
-            }
-
-            if (File.ReadAllBytes(sourceFile.FullName) == File.ReadAllBytes(destinationFile.FullName))
-            {
-                copyFile = true;
-            }
-
-            if (copyFile)
+            if (!destinationFile.Exists
+                || sourceFile.Length != destinationFile.Length
+                || File.ReadAllBytes(sourceFile.FullName) == File.ReadAllBytes(destinationFile?.FullName))
             {
                 CopyFileToDirectory(source, target, Nuke.Common.IO.FileExistsPolicy.OverwriteIfNewer);
             }

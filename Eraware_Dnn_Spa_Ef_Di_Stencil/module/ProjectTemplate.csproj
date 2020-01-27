@@ -45,6 +45,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="Properties\AssemblyInfo.cs" />
+    <Resource Include=".gitignore" />
     <Resource Include="resources\images\module-icon.png" />
     <Resource Include="resources\views\view.html" />
     <Resource Include="LICENSE" />
