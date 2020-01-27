@@ -72,6 +72,7 @@
     <Content Include="module.web\module-icon.ico" />
     <Content Include="module.web\src\components\my-component\my-component.css" />
     <Content Include="module.web\src\index.html" />
+    <None Include="module\.gitignore" />
     <Content Include="module\manifest.dnn" />
     <Content Include="build\.editorconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

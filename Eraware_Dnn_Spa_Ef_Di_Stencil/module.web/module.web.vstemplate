@@ -25,15 +25,15 @@
           </Folder>
         </Folder>
         <ProjectItem>components.d.ts</ProjectItem>
-        <ProjectItem>index.html</ProjectItem>
+        <ProjectItem ReplaceParameters="true">index.html</ProjectItem>
         <ProjectItem>index.ts</ProjectItem>
       </Folder>
       <ProjectItem>.editorconfig</ProjectItem>
       <ProjectItem>.gitignore</ProjectItem>
       <ProjectItem>LICENSE</ProjectItem>
-      <ProjectItem>package.json</ProjectItem>
+      <ProjectItem ReplaceParameters="true">package.json</ProjectItem>
       <ProjectItem>readme.md</ProjectItem>
-      <ProjectItem>stencil.config.ts</ProjectItem>
+      <ProjectItem ReplaceParameters="true">stencil.config.ts</ProjectItem>
       <ProjectItem>tsconfig.json</ProjectItem>
     </Project>
   </TemplateContent>

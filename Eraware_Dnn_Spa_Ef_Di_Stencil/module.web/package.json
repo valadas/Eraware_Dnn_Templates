@@ -1,6 +1,6 @@
 {
-  "name": "era-mymodule",
-  "version": "0.0.1",
+  "name": "$ext_scopeprefixkebab$",
+  "version": "0.1.0",
   "description": "Stencil Component Starter",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -9,14 +9,14 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/era-mymodule/era-mymodule.js",
+  "unpkg": "dist/$ext_scopeprefixkebab$/$ext_scopeprefixkebab$.js",
   "files": [
     "dist/",
     "loader/"
   ],
   "scripts": {
     "build": "stencil build --docs",
-    "start": "stencil build --dev --watch --serve",
+    "start": "stencil build --dev --watch --serve --no-open",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate"
