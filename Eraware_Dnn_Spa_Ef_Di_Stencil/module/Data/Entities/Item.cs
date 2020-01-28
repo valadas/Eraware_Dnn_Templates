@@ -8,7 +8,7 @@
     /// Represents an item entity.
     /// </summary>
     [Table(Globals.ModulePrefix + "Items")]
-    public class Item
+    public class Item : IEntity
     {
         /// <summary>
         /// Gets or sets the item id.
