@@ -43,6 +43,11 @@
           <ProjectItem ReplaceParameters="true">view.html</ProjectItem>
         </Folder>        
       </Folder>
+      <Folder Name="Services">
+        <ProjectItem ReplaceParameters="true">ItemController.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ModuleApiController.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ServiceRouteMapper.cs</ProjectItem>
+      </Folder>
       <ProjectItem>.gitignore</ProjectItem>
       <ProjectItem>.editorconfig</ProjectItem>
       <ProjectItem ReplaceParameters="true">.nuke</ProjectItem>

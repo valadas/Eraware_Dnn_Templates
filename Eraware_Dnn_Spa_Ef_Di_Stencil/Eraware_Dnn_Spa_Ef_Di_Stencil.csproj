@@ -136,6 +136,9 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="module\Services\ServiceRouteMapper.cs" />
+    <None Include="module\Services\ModuleApiController.cs" />
+    <None Include="module\Services\ItemController.cs" />
     <None Include="module\Startup.cs" />
     <Content Include="build\Helpers.cs" />
     <None Include="module\Common\Globals.cs" />
