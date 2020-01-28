@@ -142,6 +142,11 @@
     <None Include="module\Data\Entities\Item.cs" />
     <None Include="module\Data\ModuleDbContext.cs" />
     <None Include="module\GlobalSuppressions.cs" />
+    <None Include="module\Data\Entities\IEntity.cs" />
+    <None Include="module\Data\Repositories\GenericRepository.cs" />
+    <None Include="module\Data\Repositories\IGenericRepository.cs" />
+    <None Include="module\Data\Repositories\IItemRepository.cs" />
+    <None Include="module\Data\Repositories\ItemRepository.cs" />
     <Compile Include="module\Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

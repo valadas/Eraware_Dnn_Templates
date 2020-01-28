@@ -2,6 +2,7 @@
 {
     using DotNetNuke.DependencyInjection;
     using $ext_rootnamespace$.Data;
+    using $ext_rootnamespace$.Data.Repositories;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -15,6 +16,8 @@
         /// <param name="services">The services collection.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<ModuleDbContext, ModuleDbContext>();
+            services.AddTransient<IItemRepository, ItemRepository>();
         }
     }
 }
