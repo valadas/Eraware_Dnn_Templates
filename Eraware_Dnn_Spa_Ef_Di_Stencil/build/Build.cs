@@ -19,6 +19,7 @@ using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.IO.SerializationTasks;
 using static Nuke.Common.IO.TextTasks;
+using static Nuke.Common.IO.XmlTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.Npm.NpmTasks;
 
@@ -191,7 +192,22 @@ class Build : NukeBuild
             }
         });
 
+    Target GenerateAppConfig => _ => _
+    .OnlyWhenDynamic(() => RootDirectory.Parent.ToString().EndsWith("DesktopModules"))
+    .Executes(() =>
+    {
+        var webConfigDoc = new XmlDocument();
+        webConfigDoc.Load(RootDirectory.Parent.Parent / "web.config");
+        var connectionString = webConfigDoc.SelectSingleNode("/configuration/connectionStrings/add[@name='SiteSqlServer']");
 
+
+        var appConfig = new XmlDocument();
+        var configurationNode = appConfig.AppendChild(appConfig.CreateElement("configuration"));
+        var connectionStringsNode = configurationNode.AppendChild(appConfig.CreateElement("connectionStrings"));
+        var importedNode = connectionStringsNode.OwnerDocument.ImportNode(connectionString, true);
+        connectionStringsNode.AppendChild(importedNode);
+        appConfig.Save(RootDirectory / "_build" / "App.config");
+    });
 
     /// <summary>
     /// Package the module
@@ -201,6 +217,7 @@ class Build : NukeBuild
         .DependsOn(SetManifestVersions)
         .DependsOn(CompileLibraries)
         .DependsOn(SetRelativeScripts)
+        .DependsOn(GenerateAppConfig)
         .Executes(() =>
         {
             var stagingDirectory = ArtifactsDirectory / "staging";
@@ -243,6 +260,7 @@ class Build : NukeBuild
     Target Deploy => _ => _
         .DependsOn(DeployBinaries)
         .DependsOn(SetRelativeScripts)
+        .DependsOn(GenerateAppConfig)
         .Executes(() =>
         {
 
@@ -255,6 +273,7 @@ class Build : NukeBuild
     .DependsOn(DeployBinaries)
     .DependsOn(InstallNpmPackages)
     .DependsOn(SetLiveServer)
+    .DependsOn(GenerateAppConfig)
     .Executes(() =>
     {
         NpmRun(s => s
