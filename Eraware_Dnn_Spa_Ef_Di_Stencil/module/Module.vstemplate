@@ -16,6 +16,15 @@
   </TemplateData>
   <TemplateContent>
     <Project File="ProjectTemplate.csproj" TargetFileName="ProjectTemplate.csproj" ReplaceParameters="true">
+      <Folder Name="Common" TargetFolderName="Common">
+        <ProjectItem ReplaceParameters="true">Globals.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Data" TargetFolderName="Data">
+        <Folder Name="Entities" TargetFolderName="Entities">
+          <ProjectItem ReplaceParameters="true">Item.cs</ProjectItem>
+        </Folder>
+        <ProjectItem ReplaceParameters="true">ModuleDbContext.cs</ProjectItem>
+      </Folder>
       <Folder Name="Properties" TargetFolderName="Properties">
         <ProjectItem TargetFileName="AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
       </Folder>
@@ -28,12 +37,19 @@
         </Folder>        
       </Folder>
       <ProjectItem>.gitignore</ProjectItem>
-      <ProjectItem ReplaceParameters="true">LICENSE</ProjectItem>
-      <ProjectItem ReplaceParameters="true">manifest.dnn</ProjectItem>
-      <ProjectItem ReplaceParameters="true">ReleaseNotes.html</ProjectItem>
+      <ProjectItem>.editorconfig</ProjectItem>
       <ProjectItem ReplaceParameters="true">.nuke</ProjectItem>
+      <ProjectItem ReplaceParameters="true">App.Config</ProjectItem>
       <ProjectItem>build.ps1</ProjectItem>
       <ProjectItem>build.sh</ProjectItem>
+      <ProjectItem ReplaceParameters="true">GlobalSuppressions.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true">LICENSE</ProjectItem>
+      <ProjectItem ReplaceParameters="true">manifest.dnn</ProjectItem>
+      <ProjectItem>Module.ruleset</ProjectItem>
+      <ProjectItem>packages.config</ProjectItem>
+      <ProjectItem ReplaceParameters="true">ReleaseNotes.html</ProjectItem>
+      <ProjectItem ReplaceParameters="true">Startup.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true">stylecop.json</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>
