@@ -51,6 +51,16 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotNetNuke.Instrumentation, Version=9.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetNuke.Instrumentation.9.4.4\lib\net45\DotNetNuke.Instrumentation.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.log4net, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetNuke.Instrumentation.9.4.4\lib\net45\DotNetNuke.log4net.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="DotNetNuke.Web, Version=9.4.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\DotNetNuke.Web.9.4.4\lib\net45\DotNetNuke.Web.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -98,6 +108,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -120,6 +131,9 @@
     <Compile Include="Data\Repositories\ItemRepository.cs" />
     <Compile Include="GlobalSuppressions.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ItemController.cs" />
+    <Compile Include="Services\ModuleApiController.cs" />
+    <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="Startup.cs" />
     <Resource Include=".gitignore" />
     <Resource Include="resources\images\module-icon.png" />
