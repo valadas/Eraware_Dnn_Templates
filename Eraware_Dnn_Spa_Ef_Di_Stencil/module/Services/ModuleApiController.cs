@@ -1,6 +1,7 @@
 ﻿namespace $ext_rootnamespace$.Services
 {
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Web.Api;
 
     /// <summary>
@@ -21,5 +22,16 @@
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:Property summary documentation should match accessors", Justification = "We are not really setting to the log, but logging.")]
         protected ILog Logger { get; }
-    }
+
+        /// <summary>
+        /// Gets a value indicating whether the user can edit this module.
+        /// </summary>
+        protected bool CanEdit
+        {
+            get
+            {
+                return ModulePermissionController.HasModuleAccess(DotNetNuke.Security.SecurityAccessLevel.Edit, "EDIT", this.ActiveModule);
+            }
+        }
+}
 }

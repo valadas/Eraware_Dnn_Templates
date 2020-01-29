@@ -27,6 +27,6 @@
         /// Gets or sets the item description.
         /// </summary>
         [StringLength(250)]
-        public string Desctiption { get; set; }
+        public string Description { get; set; }
     }
 }

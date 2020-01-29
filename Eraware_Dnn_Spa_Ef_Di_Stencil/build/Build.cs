@@ -45,6 +45,9 @@ class Build : NukeBuild
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath WebProjectDirectory => RootDirectory / "Module.Web";
 
+    private string devViewsPath = "http://localhost:3333/build/";
+    private string prodViewsPath = "DesktopModules/MyModule/resources/scripts/era-mymodule/";
+
     Target CleanArtifactsDirectory => _ => _
         .Executes(() =>
         {
@@ -62,6 +65,8 @@ class Build : NukeBuild
                     .SetFramework("netcoreapp3.0")
                     .DisableLogOutput()
                     .SetUpdateAssemblyInfo(true)).Result;
+                Logger.Info(Helpers.Dump(GitRepository));
+                Logger.Info(Helpers.Dump(GitVersion));
             }
             else
             {
@@ -176,6 +181,7 @@ class Build : NukeBuild
                 var content = ReadAllText(view);
                 content = content.Replace("http://localhost:3333/build/", "DesktopModules/MyModule/resources/scripts/$ext_scopeprefixkebab$/");
                 WriteAllText(view, content, System.Text.Encoding.UTF8);
+                Logger.Info("Set scripts path to {0} in {1}", prodViewsPath, view);
             }
         });
 
@@ -187,8 +193,9 @@ class Build : NukeBuild
             foreach (var view in views)
             {
                 var content = ReadAllText(view);
-                content = content.Replace("DesktopModules/MyModule/resources/scripts/$ext_scopeprefixkebab$/", "http://localhost:3333/build/");
+                content = content.Replace(prodViewsPath, devViewsPath);
                 WriteAllText(view, content, System.Text.Encoding.UTF8);
+                Logger.Info("Set scripts path to {0} in {1}", devViewsPath, view);
             }
         });
 
@@ -196,17 +203,21 @@ class Build : NukeBuild
     .OnlyWhenDynamic(() => RootDirectory.Parent.ToString().EndsWith("DesktopModules"))
     .Executes(() =>
     {
+        var webConfigPath = RootDirectory.Parent.Parent / "web.config";
         var webConfigDoc = new XmlDocument();
-        webConfigDoc.Load(RootDirectory.Parent.Parent / "web.config");
+        webConfigDoc.Load(webConfigPath);
         var connectionString = webConfigDoc.SelectSingleNode("/configuration/connectionStrings/add[@name='SiteSqlServer']");
 
-
+        var appConfigPath = RootDirectory / "_build" / "App.config";
         var appConfig = new XmlDocument();
         var configurationNode = appConfig.AppendChild(appConfig.CreateElement("configuration"));
         var connectionStringsNode = configurationNode.AppendChild(appConfig.CreateElement("connectionStrings"));
         var importedNode = connectionStringsNode.OwnerDocument.ImportNode(connectionString, true);
         connectionStringsNode.AppendChild(importedNode);
-        appConfig.Save(RootDirectory / "_build" / "App.config");
+        appConfig.Save(appConfigPath);
+
+        Logger.Info("Generated {0} from {1}", appConfigPath, webConfigPath);
+        Logger.Info("This file is local as it could contain credentials, it should not be committed to the repository.");
     });
 
     /// <summary>
@@ -252,6 +263,8 @@ class Build : NukeBuild
             {
                 Process.Start("explorer.exe", ArtifactsDirectory);
             }
+
+            Logger.Success("Packaging succeeded!");
         });
 
     /// <summary>

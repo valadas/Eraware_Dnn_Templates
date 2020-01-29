@@ -10,7 +10,12 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
-  interface MyComponent {}
+  interface MyComponent {
+    /**
+    * The Dnn module id
+    */
+    'moduleId': number;
+  }
 }
 
 declare global {
@@ -27,7 +32,12 @@ declare global {
 }
 
 declare namespace LocalJSX {
-  interface MyComponent {}
+  interface MyComponent {
+    /**
+    * The Dnn module id
+    */
+    'moduleId'?: number;
+  }
 
   interface IntrinsicElements {
     'my-component': MyComponent;

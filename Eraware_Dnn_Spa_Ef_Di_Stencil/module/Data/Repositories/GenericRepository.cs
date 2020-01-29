@@ -54,6 +54,11 @@
         /// <inheritdoc/>
         public IQueryable<TEntity> GetPage(int page, int pageSize, IQueryable<TEntity> entities, out int resultCount, out int pageCount)
         {
+            if (page < 1)
+            {
+                page = 1;
+            }
+
             resultCount = entities.Count();
             pageCount = (resultCount + pageSize - 1) / pageSize;
             int skip = pageSize * (page - 1);
