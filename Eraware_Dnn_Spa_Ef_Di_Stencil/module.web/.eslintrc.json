@@ -1,0 +1,14 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": [ "@typescript-eslint" ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": [
+    "plugin:@stencil/recommended"
+  ],
+  "rules": {
+    "no-console": "warn",
+    "react/jsx-no-bind": "off"
+  }
+} 

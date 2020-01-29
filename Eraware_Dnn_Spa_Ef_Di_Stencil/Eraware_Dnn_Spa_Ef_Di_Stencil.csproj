@@ -78,6 +78,7 @@
     <Content Include="build\Documentation\images\Package.gif" />
     <Content Include="build\Documentation\images\ProjectSettings.gif" />
     <Content Include="module.web\.gitignore" />
+    <None Include="module.web\.eslintrc.json" />
     <None Include="module\.editorconfig" />
     <None Include="module\Module.ruleset" />
     <None Include="module\packages.config" />
@@ -85,7 +86,7 @@
     <None Include="packages.config" />
     <VSTemplate Include="module.web\module.web.vstemplate" />
     <Content Include="module.web\module-icon.ico" />
-    <Content Include="module.web\src\components\my-component\my-component.css" />
+    <None Include="module.web\src\components\my-component\my-component.scss" />
     <Content Include="module.web\src\index.html" />
     <None Include="App.config" />
     <None Include="module\.gitignore" />
@@ -156,6 +157,7 @@
     <TypeScriptCompile Include="module.web\src\components.d.ts" />
     <TypeScriptCompile Include="module.web\src\components\my-component\my-component.tsx" />
     <TypeScriptCompile Include="module.web\src\index.ts" />
+    <TypeScriptCompile Include="module.web\src\services\ItemService.ts" />
     <TypeScriptCompile Include="module.web\stencil.config.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

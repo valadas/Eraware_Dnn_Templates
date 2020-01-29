@@ -65,12 +65,16 @@
         {
             try
             {
-                var items = this.itemRepository.GetAll()
-                    .Where(i => i.Name.Contains(query) || i.Desctiption.Contains(query));
+                var items = this.itemRepository.GetAll();
+                if (!string.IsNullOrWhiteSpace(query))
+                {
+                    items = items.Where(i => i.Name.Contains(query) || i.Description.Contains(query));
+                }
+
                 items = descending ? items.OrderByDescending(i => i.Name) : items.OrderBy(i => i.Name);
                 items = this.itemRepository.GetPage(page, pageSize, items, out int resultCount, out int pageCount);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { items, page, resultCount, pageCount });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { items, page, resultCount, pageCount, this.CanEdit });
             }
             catch (Exception ex)
             {
@@ -84,16 +88,21 @@
         /// <summary>
         /// Deletes an existing item.
         /// </summary>
-        /// <param name="id">The item id.</param>
+        /// <param name="item">The item to delete.</param>
         /// <returns>Nothing.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
-        public HttpResponseMessage DeleteItem(int id)
+        public HttpResponseMessage DeleteItem(Item item)
         {
             try
             {
-                this.itemRepository.Delete(id);
+                if (item == null)
+                {
+                    throw new ArgumentNullException(nameof(item));
+                }
+
+                this.itemRepository.Delete(item.Id);
                 return this.Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
-﻿using Nuke.Common;
+﻿using Newtonsoft.Json;
+using Nuke.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,14 +15,70 @@ namespace BuildHelpers
         {
             var sourceFile = new FileInfo(source);
             var destinationFile = new FileInfo(Path.Combine(target, sourceFile.Name));
+            var sameSize = sourceFile.Length == destinationFile.Length;
+            var sameContent = true;
 
-            if (!destinationFile.Exists
-                || sourceFile.Length != destinationFile.Length
-                || File.ReadAllBytes(sourceFile.FullName) == File.ReadAllBytes(destinationFile?.FullName))
+            Logger.Trace("{0} is {1} Bytes", sourceFile.FullName, sourceFile.Length);
+            if (destinationFile.Exists)
             {
-                CopyFileToDirectory(source, target, Nuke.Common.IO.FileExistsPolicy.OverwriteIfNewer);
+                Logger.Trace("{0} exists and is {1} Bytes", destinationFile.FullName, destinationFile.Length);
             }
 
+            if (destinationFile.Exists && sameSize)
+            {
+                sameContent = FilesAreEqual(sourceFile, destinationFile);
+                Logger.Trace(sameContent ? "Both files have the same content" : "The files have different contents");
+            }
+
+            if (!destinationFile.Exists || !sameSize || !sameContent)
+            {
+                CopyFileToDirectory(source, target, Nuke.Common.IO.FileExistsPolicy.OverwriteIfNewer);
+                Logger.Success("Copied {0} to {1}", sourceFile.FullName, destinationFile.FullName);
+                Logger.Trace("\n");
+            }
+            else
+            {
+                Logger.Info("Skipped {0} since it is unchanged.", sourceFile.FullName);
+                Logger.Trace("\n");
+            }
+        }
+
+        // Fast but accurate way to check if two files are difference (safer than write time for when rebuilding without changes).
+        private static bool FilesAreEqual(FileInfo first, FileInfo second)
+        {
+            const int BYTES_TO_READ = sizeof(Int64);
+            if (first.Length != second.Length)
+            {
+                return false;
+            }
+
+            if (string.Equals(first.FullName, second.FullName, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            int iterations = (int)Math.Ceiling((double)first.Length / BYTES_TO_READ);
+
+            using (FileStream fs1 = first.OpenRead())
+            {
+                using (FileStream fs2 = second.OpenRead())
+                {
+                    byte[] one = new byte[BYTES_TO_READ];
+                    byte[] two = new byte[BYTES_TO_READ];
+
+                    for (int i = 0; i < iterations; i++)
+                    {
+                        fs1.Read(one, 0, BYTES_TO_READ);
+                        fs2.Read(two, 0, BYTES_TO_READ);
+
+                        if (BitConverter.ToInt64(one, 0) != BitConverter.ToInt64(two, 0))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         public static void AddFilesToZip(string zipPath, string[] files)
@@ -39,6 +96,11 @@ namespace BuildHelpers
                     zipArchive.CreateEntryFromFile(fileInfo.FullName, fileInfo.Name);
                 }
             }
+        }
+
+        public static string Dump(object obj)
+        {
+            return obj.ToString() + System.Environment.NewLine + JsonConvert.SerializeObject(obj, Formatting.Indented);
         }
     }
 }

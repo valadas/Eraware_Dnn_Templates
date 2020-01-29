@@ -33,11 +33,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="src\components.d.ts" />
-    <Content Include="src\components\my-component\my-component.css" />
+    <Content Include="src\components\my-component\my-component.scss" />
     <Content Include="src\components\my-component\my-component.tsx" />
     <Content Include="src\components\my-component\readme.md" />
     <Content Include="src\index.html" />
     <Content Include="src\index.ts" />
+    <Content Include="src\services\ItemService.ts" />
+    <Content Include=".eslintrc.json" />
     <Content Include=".editorconfig" />
     <Content Include=".gitignore" />
     <Content Include="LICENSE" />

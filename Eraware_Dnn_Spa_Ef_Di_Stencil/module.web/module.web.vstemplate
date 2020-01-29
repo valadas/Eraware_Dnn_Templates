@@ -19,16 +19,20 @@
       <Folder Name="src">
         <Folder Name="components">
           <Folder Name="my-component">
-            <ProjectItem>my-component.css</ProjectItem>
+            <ProjectItem>my-component.scss</ProjectItem>
             <ProjectItem>my-component.tsx</ProjectItem>
             <ProjectItem>readme.md</ProjectItem>
           </Folder>
+        </Folder>
+        <Folder Name="services">
+          <ProjectItem ReplaceParameters="true">ItemService.ts</ProjectItem>
         </Folder>
         <ProjectItem>components.d.ts</ProjectItem>
         <ProjectItem ReplaceParameters="true">index.html</ProjectItem>
         <ProjectItem>index.ts</ProjectItem>
       </Folder>
       <ProjectItem>.editorconfig</ProjectItem>
+      <ProjectItem>.eslintrc.json</ProjectItem>
       <ProjectItem>.gitignore</ProjectItem>
       <ProjectItem>LICENSE</ProjectItem>
       <ProjectItem ReplaceParameters="true">package.json</ProjectItem>
