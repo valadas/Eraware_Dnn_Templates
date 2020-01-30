@@ -1,0 +1,29 @@
+﻿name: continuous
+
+on: [push]
+
+jobs:
+  windows-latest:
+    name: windows-latest
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Setup Nuget.exe
+        uses: warrenbuckley/Setup-Nuget@v1
+
+      - name: Restore Nuget Packages
+        run: nuget restore
+
+      - name: Run 'powershell .\build.ps1 '
+        run: powershell .\build.ps1 --target Package
+        env:
+            GithubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          # Artifact name
+          name: artifacts
+          # Directory containing files to upload
+          path: artifacts
