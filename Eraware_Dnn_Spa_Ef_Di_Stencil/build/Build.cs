@@ -7,6 +7,7 @@ using System.Xml;
 using BuildHelpers;
 using Newtonsoft.Json.Linq;
 using Nuke.Common;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.ProjectModel;
@@ -38,6 +39,8 @@ class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
+    [Parameter("Github Token")] readonly string GithubToken;
+
     [Solution] readonly Solution Solution;
     private GitRepository GitRepository;
     private GitVersion GitVersion;
@@ -57,15 +60,22 @@ class Build : NukeBuild
     Target SetupGit => _ => _
         .Executes(() =>
         {
+            Logger.Trace("RootDirectory: {0}", RootDirectory);
             AbsolutePath git = RootDirectory / ".git";
-            if (DirectoryExists(git))
+            bool isGitRepository = Directory.Exists(git);
+            if (isGitRepository)
             {
+                Logger.Trace("{0} {1}", git, isGitRepository ? "Exists" : "Does not exist");
+
                 GitRepository = GitRepository.FromLocalDirectory(RootDirectory);
+                Logger.Info(Helpers.Dump(GitRepository));
+
                 GitVersion = GitVersionTasks.GitVersion(s => s
+                    .SetVerbosity(Verbosity == Verbosity.Verbose ? GitVersionVerbosity.debug : GitVersionVerbosity.info)
+                    .SetPassword(GithubToken)
                     .SetFramework("netcoreapp3.0")
                     .DisableLogOutput()
                     .SetUpdateAssemblyInfo(true)).Result;
-                Logger.Info(Helpers.Dump(GitRepository));
                 Logger.Info(Helpers.Dump(GitVersion));
             }
             else
