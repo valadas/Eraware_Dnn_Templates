@@ -82,6 +82,8 @@
     <Content Include="module.web\src\index.html" />
     <None Include="App.config" />
     <None Include="module\.gitignore" />
+    <None Include="module\.github\dependabot.yml" />
+    <None Include="module\.github\mergeable.yml" />
     <Content Include="module\manifest.dnn" />
     <Content Include="build\.editorconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

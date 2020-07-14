@@ -16,6 +16,10 @@
   </TemplateData>
   <TemplateContent>
     <Project File="ProjectTemplate.csproj" TargetFileName="ProjectTemplate.csproj" ReplaceParameters="true">
+      <Folder Name=".github" TargetFolderName=".github">
+        <ProjectItem TargetFileName="dependabot.yml">dependabot.yml</ProjectItem>
+        <ProjectItem TargetFileName="mergeable.yml">mergeable.yml</ProjectItem>
+      </Folder>
       <Folder Name="Common" TargetFolderName="Common">
         <ProjectItem ReplaceParameters="true">Globals.cs</ProjectItem>
       </Folder>
