@@ -1,29 +1,32 @@
-﻿name: continuous
+﻿name: Build
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - 'release/**'
+  pull_request:
+    branches:
+      - master
+      - develop
+      - 'release/**'
 
 jobs:
-  windows-latest:
-    name: windows-latest
+  build:
+    name: build
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v1
-
-      - name: Setup Nuget.exe
-        uses: warrenbuckley/Setup-Nuget@v1
-
-      - name: Restore Nuget Packages
-        run: nuget restore
-
-      - name: Run 'powershell .\build.ps1 '
-        run: powershell .\build.ps1 --target Package
-        env:
-            GithubToken: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v1.0.0
+      - uses: actions/checkout@v2
         with:
-          # Artifact name
-          name: artifacts
-          # Directory containing files to upload
-          path: artifacts
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - run: git fetch
+      - name: Run './build.ps1'
+        run: ./build.ps1 --github-token $GITHUB_TOKEN --target Package
+        env:	
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          path: artifacts/*
