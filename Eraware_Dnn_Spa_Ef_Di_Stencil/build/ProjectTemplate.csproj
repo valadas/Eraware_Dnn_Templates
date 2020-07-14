@@ -29,13 +29,15 @@
     <None Include="..\GitVersion.yml" LinkBase="config" Condition="Exists('..\GitVersion.yml')" />
 
     <None Include="..\.teamcity\settings.kts" LinkBase="ci" Condition="Exists('..\.teamcity\settings.kts')" />
-    <None Include="..\.github\workflows\*.yml" LinkBase="ci" />
+    <None Include="..\.github\workflows\build.yml" LinkBase="ci" Condition="Exists('..\.github\workflows\build.yml')" />
     <None Include="..\azure-pipelines.yml" LinkBase="ci" Condition="Exists('..\azure-pipelines.yml')" />
     <None Include="..\Jenkinsfile" LinkBase="ci" Condition="Exists('..\Jenkinsfile')" />
     <None Include="..\appveyor.yml" LinkBase="ci" Condition="Exists('..\appveyor.yml')" />
     <None Include="..\.travis.yml" LinkBase="ci" Condition="Exists('..\.travis.yml')" />
 
     <None Include="App.config" LinkBase="config" Condition="Exists('App.config')" />
+    <None Include="..\.github\dependabot.yml" LinkBase="config" Condition="Exists('..\.github\dependabot.yml')" />
+    <None Include="..\.github\mergeable.yml" LinkBase="config" Condition="Exists('..\.github\mergeable.yml')" />
     
     <None Include="Build.cs" />
     <None Include="Helpers.cs" />
