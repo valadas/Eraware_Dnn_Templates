@@ -19,6 +19,7 @@ using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Utilities.Collections;
 using Octokit;
 using static Nuke.Common.EnvironmentInfo;
+using static Nuke.Common.IO.CompressionTasks;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.IO.TextTasks;
@@ -417,7 +418,7 @@ class Build : NukeBuild
             EnsureCleanDirectory(stagingDirectory);
 
             // Resources
-            ZipFile.CreateFromDirectory(RootDirectory / "resources", stagingDirectory / "resources.zip");
+            Compress(RootDirectory / "resources", stagingDirectory / "resources.zip", f => (f.Name != "resources.zip.manifest"));
 
             // Symbols
             var symbolFiles = GlobFiles(RootDirectory, "bin/Release/**/*.pdb");
