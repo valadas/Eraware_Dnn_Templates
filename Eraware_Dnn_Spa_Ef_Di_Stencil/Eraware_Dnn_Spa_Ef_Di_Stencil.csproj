@@ -75,7 +75,6 @@
     <None Include="module\.editorconfig" />
     <None Include="module\.github\workflows\build.yml" />
     <None Include="module\Module.ruleset" />
-    <None Include="module\packages.config" />
     <None Include="module\stylecop.json" />
     <VSTemplate Include="module.web\module.web.vstemplate" />
     <Content Include="module.web\module-icon.ico" />
