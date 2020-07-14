@@ -73,13 +73,13 @@
     <Content Include="module.web\.gitignore" />
     <None Include="module.web\.eslintrc.json" />
     <None Include="module\.editorconfig" />
-    <None Include="module\github\dependabot.yml">
+    <None Include="module\.github\dependabot.yml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="module\github\mergeable.yml">
+    <None Include="module\.github\mergeable.yml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="module\github\workflows\build.yml">
+    <None Include="module\.github\workflows\build.yml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="module\Module.ruleset" />
