@@ -50,7 +50,7 @@ namespace Eraware_Dnn_Templates
                 {
                     foreach (ProjectItem item in project.ProjectItems)
                     {
-                        string[] ignoredFiles = { ".nuke", "build.ps1", "build.sh" };
+                        string[] ignoredFiles = { ".nuke", "build.ps1", "build.sh", ".github" };
                         if (ignoredFiles.Any(i => i == item.Name)){
                             item.Remove();
                         }
