@@ -73,7 +73,15 @@
     <Content Include="module.web\.gitignore" />
     <None Include="module.web\.eslintrc.json" />
     <None Include="module\.editorconfig" />
-    <None Include="module\.github\workflows\build.yml" />
+    <None Include="module\github\dependabot.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="module\github\mergeable.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="module\github\workflows\build.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="module\Module.ruleset" />
     <None Include="module\stylecop.json" />
     <VSTemplate Include="module.web\module.web.vstemplate" />
@@ -82,8 +90,6 @@
     <Content Include="module.web\src\index.html" />
     <None Include="App.config" />
     <None Include="module\.gitignore" />
-    <None Include="module\.github\dependabot.yml" />
-    <None Include="module\.github\mergeable.yml" />
     <Content Include="module\manifest.dnn" />
     <Content Include="build\.editorconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

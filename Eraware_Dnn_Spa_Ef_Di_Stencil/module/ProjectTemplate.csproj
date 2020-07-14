@@ -71,6 +71,9 @@
     <Resource Include=".nuke" />
     <Resource Include="build.ps1" />
     <Resource Include="build.sh" />
+    <Resource Include="github\dependabot.yml" />
+    <Resource Include="github\mergeable.yml" />
+    <Resource Include="github\workflows\build.yml" />
 	</ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
