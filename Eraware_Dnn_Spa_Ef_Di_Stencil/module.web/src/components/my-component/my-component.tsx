@@ -162,7 +162,7 @@ export class MyComponent {
       <dnn-searchbox placeholder="Search" onQueryChanged={e => this.updateSearchQuery(e.detail)} />
       <div class="results-summary">
         <p>
-          {this.items.length > 0 ? `Showing ${this.items.length} of ${this.availableItems} Items` : "No Results"}
+          {this.items?.length > 0 ? `Showing ${this.items.length} of ${this.availableItems} Items` : "No Results"}
         </p>
         {this.loading && <p>Loading...</p>}
       </div>
@@ -173,7 +173,7 @@ export class MyComponent {
             <strong>{item.Name}</strong>
           </div>
           <dnn-collapsible expanded={this.expandedItem == item.Id}>
-            {item.Description?.length > 0 ? <p>{item.Description}</p> : <p>No description</p>}
+            {item.Description?.length > 0 ? <div>{item.Description}</div> : <div>No description</div>}
             <dnn-button type="tertiary" confirm={true} onConfirmed={() => this.deleteItem(item)}>Delete</dnn-button>
           </dnn-collapsible>
         </div>

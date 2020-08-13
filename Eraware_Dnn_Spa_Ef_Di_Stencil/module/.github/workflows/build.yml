@@ -22,9 +22,9 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Prepare repository
-        run: git checkout '${GITHUB_REF:11}'
+        run: git checkout "${GITHUB_REF:11}"
       - name: Run './build.ps1'
-        run: ./build.ps1 --github-token $GITHUB_TOKEN --target Package
+        run: ./build.ps1 --github-token $GITHUB_TOKEN --target CI
         env:	
           GITHUB_TOKEN: ${{ github.token }}
       - name: Upload Build Artifact

@@ -60,13 +60,25 @@ class Build : NukeBuild
     GitHubClient gitHubClient;
     Release release;
 
-    Target LogInfo => _ => _
-        .Before(Release)
+    Target SetBranch => _ => _
         .Executes(() =>
         {
-            Logger.Info($"We are on branch {GitRepository.Branch} and IsOnMasterBranch is {GitRepository.IsOnMasterBranch()} and the version will be {GitVersion.SemVer}");
-            branch = GitRepository.Branch.Split('/').Last();
+            branch = GitRepository.Branch.StartsWith("refs/") ? GitRepository.Branch.Substring(11) : GitRepository.Branch;
             Logger.Info($"Set branch name to {branch}");
+        });
+
+    Target LogInfo => _ => _
+        .Before(Release)
+        .DependsOn(TagRelease)
+        .DependsOn(SetBranch)
+        .Executes(() =>
+        {
+            Logger.Info($"Original branch name is {GitRepository.Branch}");
+            Logger.Info($"We are on branch {branch} and IsOnMasterBranch is {GitRepository.IsOnMasterBranch()} and the version will be {GitVersion.SemVer}");
+            using (var group = Logger.Block("GitVersion"))
+            {
+                Logger.Info(SerializationTasks.JsonSerialize(GitVersion));
+            }
         });
 
     Target Clean => _ => _
@@ -87,6 +99,8 @@ class Build : NukeBuild
     Target Compile => _ => _
         .DependsOn(Clean)
         .DependsOn(Restore)
+        .DependsOn(SetManifestVersions)
+        .DependsOn(TagRelease)
         .Executes(() =>
         {
             MSBuildTasks.MSBuild(s => s
@@ -195,6 +209,8 @@ class Build : NukeBuild
 
     Target BuildFrontEnd => _ => _
         .DependsOn(InstallNpmPackages)
+        .DependsOn(SetManifestVersions)
+        .DependsOn(TagRelease)
         .Executes(() =>
         {
             NpmRun(s => s
@@ -254,29 +270,37 @@ class Build : NukeBuild
         });
 
 
-    Target setupGitHubClient => _ => _
-        .OnlyWhenDynamic(() => branch == "master")
+    Target SetupGitHubClient => _ => _
         .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GithubToken))
+        .DependsOn(SetBranch)
         .Executes(() =>
         {
-            owner = GitRepository.Identifier.Split('/')[0];
-            name = GitRepository.Identifier.Split('/')[1];
-            gitHubClient = new GitHubClient(new ProductHeaderValue("Nuke"));
-            var tokenAuth = new Credentials(GithubToken);
-            gitHubClient.Credentials = tokenAuth;
+            Logger.Info($"We are on branch {branch}");
+            if (branch == "master" || branch.StartsWith("release"))
+            {
+                owner = GitRepository.Identifier.Split('/')[0];
+                name = GitRepository.Identifier.Split('/')[1];
+                gitHubClient = new GitHubClient(new ProductHeaderValue("Nuke"));
+                var tokenAuth = new Credentials(GithubToken);
+                gitHubClient.Credentials = tokenAuth;
+            }
         });
 
     Target GenerateReleaseNotes => _ => _
-        .OnlyWhenDynamic(() => branch == "master")
+        .OnlyWhenDynamic(() => branch == "master" || branch.StartsWith("release"))
         .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GithubToken))
-        .DependsOn(setupGitHubClient)
-        .Executes(() => {
+        .DependsOn(SetupGitHubClient)
+        .DependsOn(TagRelease)
+        .DependsOn(SetBranch)
+        .Executes(() =>
+        {
 
             // Get the milestone
             var milestone = gitHubClient.Issue.Milestone.GetAllForRepository(owner, name).Result.Where(m => m.Title == GitVersion.MajorMinorPatch).FirstOrDefault();
             if (milestone == null)
             {
-                Logger.Error("Milestone not found for this version");
+                Logger.Warn("Milestone not found for this version");
+                releaseNotes = "No release notes for this version.";
                 return;
             }
 
@@ -312,31 +336,35 @@ class Build : NukeBuild
         });
 
     Target TagRelease => _ => _
-        .OnlyWhenDynamic(() => branch == "master")
+        .OnlyWhenDynamic(() => branch == "master" || branch.StartsWith("release"))
         .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GithubToken))
-        .DependsOn(setupGitHubClient)
-        .After(GenerateReleaseNotes)
+        .DependsOn(SetupGitHubClient)
+        .DependsOn(SetBranch)
         .Executes(() =>
         {
+            var version = branch == "master" ? GitVersion.MajorMinorPatch : GitVersion.SemVer;
             GitLogger = (type, output) => Logger.Info(output);
-            Git($"tag v{GitVersion.MajorMinorPatch}");
+            Git($"tag v{version}");
             Git($"push --tags");
         });
 
     Target Release => _ => _
-        .OnlyWhenDynamic(() => branch == "master")
+        .OnlyWhenDynamic(() => branch == "master" || branch.StartsWith("release"))
         .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GithubToken))
-        .DependsOn(setupGitHubClient)
+        .DependsOn(SetBranch)
+        .DependsOn(SetupGitHubClient)
+        .DependsOn(GenerateReleaseNotes)
         .DependsOn(TagRelease)
+        .DependsOn(Package)
         .Executes(() =>
         {
-            var newRelease = new NewRelease($"v{GitVersion.MajorMinorPatch}")
+            var newRelease = new NewRelease(branch == "master" ? $"v{GitVersion.MajorMinorPatch}" : $"v{GitVersion.SemVer}")
             {
                 Body = releaseNotes,
                 Draft = true,
-                Name = $"v{GitVersion.MajorMinorPatch}",
-                TargetCommitish = $"{GitVersion.Sha}",
-                Prerelease = false
+                Name = branch == "master" ? $"v{GitVersion.MajorMinorPatch}" : $"v{GitVersion.SemVer}",
+                TargetCommitish = GitVersion.Sha,
+                Prerelease = branch.StartsWith("release")
             };
             release = gitHubClient.Repository.Release.Create(owner, name, newRelease).Result;
             Logger.Info($"{release.Name} released !");
