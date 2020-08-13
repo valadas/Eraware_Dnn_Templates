@@ -440,6 +440,8 @@ class Build : NukeBuild
         .DependsOn(Compile)
         .DependsOn(SetRelativeScripts)
         .DependsOn(GenerateAppConfig)
+        .DependsOn(SetBranch)
+        .DependsOn(TagRelease)
         .Executes(() =>
         {
             var stagingDirectory = ArtifactsDirectory / "staging";
