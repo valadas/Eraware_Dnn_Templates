@@ -40,7 +40,7 @@
         <ProjectItem ReplaceParameters="true">ModuleDbContext.cs</ProjectItem>
       </Folder>
       <Folder Name="Properties" TargetFolderName="Properties">
-        <ProjectItem TargetFileName="AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+        <ProjectItem TargetFileName="AssemblyInfo.cs" ReplaceParameters="true">AssemblyInfo.cs</ProjectItem>
       </Folder>
       <Folder Name="resources">
         <Folder Name="images">
