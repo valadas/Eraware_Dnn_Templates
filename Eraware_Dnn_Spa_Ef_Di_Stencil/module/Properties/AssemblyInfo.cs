@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("$ext_companyname$")]
 [assembly: AssemblyProduct("$ext_modulefriendlyname$")]
-[assembly: AssemblyCopyright("Copyright © $ownername$ $year$")]
+[assembly: AssemblyCopyright("Copyright © $ext_ownername$ $year$")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
