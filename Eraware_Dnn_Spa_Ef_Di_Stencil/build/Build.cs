@@ -45,7 +45,7 @@ class Build : NukeBuild
 
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
-    [GitVersion(Framework = "netcoreapp3.1", UpdateAssemblyInfo = true, NoFetch = false)] readonly GitVersion GitVersion;
+    [GitVersion(Framework = "netcoreapp3.1", UpdateAssemblyInfo = false, NoFetch = false)] readonly GitVersion GitVersion;
 
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath WebProjectDirectory => RootDirectory / "Module.Web";
@@ -101,13 +101,14 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .DependsOn(SetManifestVersions)
         .DependsOn(TagRelease)
+        .DependsOn(SetBranch)
         .Executes(() =>
         {
             MSBuildTasks.MSBuild(s => s
                 .SetProjectFile(Solution.GetProject("Module"))
                 .SetConfiguration(Configuration)
-                .SetAssemblyVersion(GitVersion.AssemblySemVer)
-                .SetFileVersion(GitVersion.InformationalVersion));
+                .SetAssemblyVersion(branch == "master" ? GitVersion.MajorMinorPatch : GitVersion.AssemblySemVer)
+                .SetFileVersion(branch == "master" ? GitVersion.MajorMinorPatch : GitVersion.InformationalVersion));
         });
 
     Target SetManifestVersions => _ => _
@@ -211,6 +212,7 @@ class Build : NukeBuild
         .DependsOn(InstallNpmPackages)
         .DependsOn(SetManifestVersions)
         .DependsOn(TagRelease)
+        .DependsOn(SetPackagesVersions)
         .Executes(() =>
         {
             NpmRun(s => s
@@ -220,55 +222,13 @@ class Build : NukeBuild
         });
 
     Target SetPackagesVersions => _ => _
+        .DependsOn(TagRelease)
+        .DependsOn(SetBranch)
         .Executes(() =>
         {
-            Npm($"--no-git-tag-version --allow-same-version {GitVersion.FullSemVer}", WebProjectDirectory);
+            var version = branch == "master" ? GitVersion.MajorMinorPatch : GitVersion.SemVer;
+            Npm($"version --no-git-tag-version --allow-same-version {version}", WebProjectDirectory);
         });
-
-    Target PackageRelease => _ => _
-        .DependsOn(Compile)
-        .After(Clean)
-        .After(SetManifestVersions)
-        .After(SetPackagesVersions)
-        .After(SetRelativeScripts)
-        .Executes(() =>
-        {
-            var stagingDirectory = ArtifactsDirectory / "staging";
-            EnsureCleanDirectory(stagingDirectory);
-
-            // Delete resources.zip.manifest so it does not get re-bundles on re-installs
-            var zipManifests = GlobFiles(RootDirectory / "resources", "**/*.zip.manifest");
-            zipManifests.ForEach(file => DeleteFile(file));
-
-            // Resources
-            ZipFile.CreateFromDirectory(RootDirectory / "resources", stagingDirectory / "resources.zip");
-
-            // Symbols
-            var symbolsFiles = GlobFiles(RootDirectory / "bin/Release/**/*.pdb");
-            Helpers.AddFilesToZip(stagingDirectory / "symbols.zip", symbolsFiles.ToArray());
-
-            // Install files
-            var installFiles = GlobFiles(RootDirectory, "LICENSE", "manifest.dnn", "ReleaseNotes.html");
-            installFiles.ForEach(file => CopyFileToDirectory(file, stagingDirectory));
-
-            // Libraries
-            var libraries = GlobFiles(RootDirectory / "bin/Release/**/*.dll");
-            libraries.ForEach(lib => CopyFileToDirectory(lib, stagingDirectory / "bin"));
-
-            // Install package
-            string fileName = new DirectoryInfo(RootDirectory).Name;
-            fileName += $"_{GitVersion.SemVer}_install.zip";
-            ZipFile.CreateFromDirectory(stagingDirectory, ArtifactsDirectory / fileName);
-            DeleteDirectory(stagingDirectory);
-            Logger.Info("Packaged release: {0}", fileName);
-
-            // Open explorer if on local windows machine
-            if (IsWin)
-            {
-                Process.Start("explorer.exe", ArtifactsDirectory);
-            }
-        });
-
 
     Target SetupGitHubClient => _ => _
         .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GithubToken))
@@ -462,10 +422,10 @@ class Build : NukeBuild
             CopyDirectoryRecursively(RootDirectory / "bin" / "Release", stagingDirectory / "bin", excludeFile: (f) => !f.Name.EndsWith("dll", StringComparison.OrdinalIgnoreCase));
 
             // Install package
-            string fileName = new DirectoryInfo(RootDirectory).Name;
+            string fileName = new DirectoryInfo(RootDirectory).Name + "_";
             if (GitVersion != null)
             {
-                fileName += $"_{GitVersion.FullSemVer}";
+                fileName += branch == "master" ? GitVersion.MajorMinorPatch : GitVersion.SemVer;
             }
             fileName += "_install.zip";
             ZipFile.CreateFromDirectory(stagingDirectory, ArtifactsDirectory / fileName);
