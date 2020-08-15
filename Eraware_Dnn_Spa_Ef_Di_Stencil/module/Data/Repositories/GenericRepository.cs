@@ -1,5 +1,6 @@
 ﻿namespace $ext_rootnamespace$.Data.Repositories
 {
+    using System.Data.Entity;
     using System.Linq;
     using System.Threading.Tasks;
     using $ext_rootnamespace$.Data.Entities;
@@ -32,7 +33,7 @@
         /// <inheritdoc/>
         public void Delete(int id)
         {
-            var entity = this.GetById(id);
+            var entity = this.dbContext.Set<TEntity>().First(e => e.Id == id);
             this.dbContext.Set<TEntity>().Remove(entity);
             this.dbContext.SaveChanges();
         }
@@ -62,16 +63,21 @@
             resultCount = entities.Count();
             pageCount = (resultCount + pageSize - 1) / pageSize;
             int skip = pageSize * (page - 1);
-            return entities.Skip(skip).Take(pageSize);
+            return entities.OrderBy(i => 0).Skip(skip).Take(pageSize);
         }
 
         /// <inheritdoc/>
         public void Update(TEntity entity)
         {
-            var dbSet = this.dbContext.Set<TEntity>();
-            dbSet.Attach(entity);
-            var entry = this.dbContext.Entry(entity);
-            entry.State = System.Data.Entity.EntityState.Modified;
+            var localEntity = this.dbContext.Set<TEntity>()
+                .Local
+                .FirstOrDefault(l => l.Id == entity.Id);
+            if (localEntity != null)
+            {
+                this.dbContext.Entry(localEntity).State = EntityState.Detached;
+            }
+
+            this.dbContext.Entry(entity).State = EntityState.Modified;
             this.dbContext.SaveChanges();
         }
     }
