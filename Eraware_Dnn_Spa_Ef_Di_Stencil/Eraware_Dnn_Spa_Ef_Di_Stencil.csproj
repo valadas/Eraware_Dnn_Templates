@@ -63,6 +63,7 @@
     <Content Include="build\Build.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="UnitTests\UnitTests.vstemplate" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="build\Documentation\documentation.html" />
@@ -84,6 +85,7 @@
     </None>
     <None Include="module\Module.ruleset" />
     <None Include="module\stylecop.json" />
+    <None Include="UnitTests\ProjectTemplate.csproj" />
     <VSTemplate Include="module.web\module.web.vstemplate" />
     <Content Include="module.web\module-icon.ico" />
     <None Include="module.web\src\components\my-component\my-component.scss" />
@@ -137,6 +139,12 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="UnitTests\Common\GlobalsTests.cs" />
+    <None Include="UnitTests\Data\Entities\ItemTests.cs" />
+    <None Include="UnitTests\Data\ModuleDbContextTests.cs" />
+    <None Include="UnitTests\Data\Repositories\GenericRepositoryTests.cs" />
+    <None Include="UnitTests\Data\Repositories\ItemRepositoryTests.cs" />
+    <None Include="UnitTests\FakeDataContext.cs" />
     <None Include="module\Services\ServiceRouteMapper.cs" />
     <None Include="module\Services\ModuleApiController.cs" />
     <None Include="module\Services\ItemController.cs" />

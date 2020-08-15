@@ -46,6 +46,15 @@ namespace Eraware_Dnn_Templates
                     }
                 }
 
+                if (project.FullName.Contains("UnitTests"))
+                {
+                    var configurations = (Array)project.ConfigurationManager.ConfigurationRowNames;
+                    foreach(var configuration in configurations)
+                    {
+                        project.ConfigurationManager.DeleteConfigurationRow(configuration.ToString());
+                    }
+                }
+
                 if (project.FullName.Contains("Module\\Module"))
                 {
                     foreach (ProjectItem item in project.ProjectItems)
