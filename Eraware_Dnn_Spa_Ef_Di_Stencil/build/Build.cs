@@ -18,6 +18,8 @@ using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Tools.ReportGenerator;
+using Nuke.Common.Tools.VSTest;
+using Nuke.Common.Tools.Xunit;
 using Nuke.Common.Utilities.Collections;
 using Octokit;
 using static Nuke.Common.EnvironmentInfo;
@@ -27,6 +29,7 @@ using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.IO.TextTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.Git.GitTasks;
+using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 using static Nuke.Common.Tools.Npm.NpmTasks;
 using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
 
@@ -99,27 +102,35 @@ class Build : NukeBuild
         {
             DotNetRestore(s => s
                 .SetProjectFile(Solution.GetProject("Module")));
+
+            DotNetRestore(s => s
+                .SetProjectFile(Solution.GetProject("UnitTests")));
         });
 
     Target Test => _ => _
         .DependsOn(Compile)
         .Executes(() =>
         {
+            MSBuild(_ => _
+                .SetConfiguration(Configuration)
+                .SetProjectFile(Solution.GetProject("UnitTests"))
+                .SetTargets("Build")
+                .ResetVerbosity());
+
             DotNetTest(_ => _
                 .SetConfiguration(Configuration)
-                .SetNoBuild(InvokedTargets.Contains(Compile))
                 .ResetVerbosity()
                 .SetResultsDirectory(TestResultsDirectory)
-                .SetProjectFile(RootDirectory / "UnitTests" / "UnitTests.csproj")
                 .EnableCollectCoverage()
                 .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
-                .SetLogger($"trx;LogfileName=UnitTests.trx")
+                .SetLogger($"trx;LogFileName=UnitTests.trx")
                 .SetCoverletOutput(TestResultsDirectory / "UnitTests.xml")
-            );
+                .SetProjectFile(RootDirectory / "UnitTests" / "UnitTests.csproj")
+                .SetNoBuild(true));
 
             ReportGenerator(_ => _
                 .SetReports(TestResultsDirectory / "*.xml")
-                .SetReportTypes(ReportTypes.HtmlInline)
+                .SetReportTypes(ReportTypes.Badges, ReportTypes.HtmlInline)
                 .SetTargetDirectory(TestResultsDirectory)
                 .SetFramework("netcoreapp2.1")
             );

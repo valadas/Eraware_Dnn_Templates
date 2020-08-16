@@ -15,6 +15,9 @@
   </TemplateData>
   <TemplateContent>
     <Project File="ProjectTemplate.csproj" TargetFileName="UnitTests.csproj">
+      <Folder Name="Build">
+        <ProjectItem ReplaceParameters="false">Tests.targets</ProjectItem>
+      </Folder>
       <Folder Name="Common">
         <ProjectItem ReplaceParameters="true">GlobalsTests.cs</ProjectItem>
       </Folder>
@@ -29,6 +32,8 @@
         <ProjectItem ReplaceParameters="true">ModuleDbContextTests.cs</ProjectItem>
       </Folder>
       <ProjectItem ReplaceParameters="true">FakeDatacontext.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="false">App.config</ProjectItem>
+      <ProjectItem ReplaceParameters="false">Startup.cs</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>
