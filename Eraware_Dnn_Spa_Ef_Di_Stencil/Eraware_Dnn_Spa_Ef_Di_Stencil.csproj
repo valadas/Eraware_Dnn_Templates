@@ -85,12 +85,13 @@
     </None>
     <None Include="module\Module.ruleset" />
     <None Include="module\stylecop.json" />
+    <None Include="UnitTests\Build\Tests.targets" />
     <None Include="UnitTests\ProjectTemplate.csproj" />
     <VSTemplate Include="module.web\module.web.vstemplate" />
     <Content Include="module.web\module-icon.ico" />
     <None Include="module.web\src\components\my-component\my-component.scss" />
     <Content Include="module.web\src\index.html" />
-    <None Include="App.config" />
+    <None Include="UnitTests\App.config" />
     <None Include="module\.gitignore" />
     <Content Include="module\manifest.dnn" />
     <Content Include="build\.editorconfig">
@@ -139,6 +140,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="UnitTests\Startup.cs" />
     <None Include="UnitTests\Common\GlobalsTests.cs" />
     <None Include="UnitTests\Data\Entities\ItemTests.cs" />
     <None Include="UnitTests\Data\ModuleDbContextTests.cs" />

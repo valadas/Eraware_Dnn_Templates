@@ -1,7 +1,6 @@
-﻿using $ext_rootnamespace$.Data;
+﻿using Effort.Provider;
+using $ext_rootnamespace$.Data;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace UnitTests
 {
@@ -10,23 +9,40 @@ namespace UnitTests
     /// </summary>
     public class FakeDataContext : IDisposable
     {
+        public EffortConnection connection;
         public ModuleDbContext dataContext;
+
+        private bool _disposed = false;
 
         public FakeDataContext()
         {
-            var connection = Effort.DbConnectionFactory.CreateTransient();
-            this.dataContext = new ModuleDbContext(connection);
+            this.connection = Effort.DbConnectionFactory.CreateTransient();
+            this.dataContext = new ModuleDbContext(this.connection);
         }
 
         public void Dispose()
         {
             this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disponsing)
+        protected virtual void Dispose(bool disposing)
         {
-            this.dataContext.Dispose();
-            GC.SuppressFinalize(this);
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.dataContext.Dispose();
+                this.connection.Dispose();
+            }
+
+            this.dataContext = null;
+            this.connection = null;
+
+            _disposed = true;
         }
     }
 }
