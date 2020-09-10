@@ -51,7 +51,7 @@ class Build : NukeBuild
 
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
-    [GitVersion(Framework = "netcoreapp3.1", UpdateAssemblyInfo = false, NoFetch = false)] readonly GitVersion GitVersion;
+    [GitVersion(Framework = "netcoreapp3.1", UpdateAssemblyInfo = false, NoFetch = true)] readonly GitVersion GitVersion;
 
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath WebProjectDirectory => RootDirectory / "Module.Web";
