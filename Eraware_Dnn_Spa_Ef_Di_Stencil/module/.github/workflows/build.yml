@@ -17,12 +17,11 @@ jobs:
     name: build
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Prepare repository
-        run: git checkout "${GITHUB_REF:11}"
+      - name: Checkout source
+        uses: actions/checkout@v2
+
+      - name: Fetch unshallow
+        run: git fetch --prune --tags --unshallow
       - name: Run './build.ps1'
         run: ./build.ps1 --github-token $GITHUB_TOKEN --target CI
         env:	
