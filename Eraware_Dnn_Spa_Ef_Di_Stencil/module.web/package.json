@@ -28,7 +28,7 @@
     "@stencil/eslint-plugin": "^0.3.1",
     "@stencil/sass": "^1.1.1",
     "@typescript-eslint/eslint-plugin": "^3.9.0",
-    "@typescript-eslint/parser": "^3.9.0",
+    "@typescript-eslint/parser": "^4.2.0",
     "eslint": "^7.6.0",
     "eslint-plugin-react": "^7.20.5"
   },
