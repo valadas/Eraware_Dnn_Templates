@@ -58,7 +58,7 @@ class Build : NukeBuild
     AbsolutePath TestResultsDirectory => RootDirectory / "TestResults";
 
     private string devViewsPath = "http://localhost:3333/build/";
-    private string prodViewsPath = "DesktopModules/MyModule/resources/scripts/era-mymodule/";
+    private string prodViewsPath = "DesktopModules/MyModule/resources/scripts/$ext_scopeprefixkebab$/";
 
     string releaseNotes = "";
     string owner = "";
@@ -219,9 +219,9 @@ class Build : NukeBuild
         .DependsOn(BuildFrontEnd)
         .Executes(() =>
         {
-            var scriptsDestination = RootDirectory / "resources" / "scripts" / "era-mymodule";
+            var scriptsDestination = RootDirectory / "resources" / "scripts" / "$ext_scopeprefixkebab$";
             EnsureCleanDirectory(scriptsDestination);
-            CopyDirectoryRecursively(RootDirectory / "module.web" / "dist" / "era-mymodule", scriptsDestination, DirectoryExistsPolicy.Merge);
+            CopyDirectoryRecursively(RootDirectory / "module.web" / "dist" / "$ext_scopeprefixkebab$", scriptsDestination, DirectoryExistsPolicy.Merge);
         });
 
     Target InstallNpmPackages => _ => _
