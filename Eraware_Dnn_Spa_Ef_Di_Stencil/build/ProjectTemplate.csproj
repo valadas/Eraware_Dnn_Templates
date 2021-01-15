@@ -14,7 +14,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Nuke.Common" Version="0.24.11" />
+    <PackageReference Include="Nuke.Common" Version="5.0.2" />
     <PackageReference Include="ReportGenerator" Version="4.8.4" />
     <PackageReference Include="xunit.runner.console" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
@@ -32,7 +32,9 @@
     <!-- Common build related files -->
     <None Include="..\build.ps1" />
     <None Include="..\build.sh" />
-
+    <None Include=".editorconfig" />
+    <None Include="_build.csproj.DotSettings" />
+    
     <None Include="..\.nuke" LinkBase="config" />
     <None Include="..\global.json" LinkBase="config" Condition="Exists('..\global.json')" />
     <None Include="..\nuget.config" LinkBase="config" Condition="Exists('..\nuget.config')" />
@@ -50,6 +52,7 @@
     <None Include="..\.github\mergeable.yml" LinkBase="config" Condition="Exists('..\.github\mergeable.yml')" />
     
     <None Include="Build.cs" />
+    <None Include="Configuration.cs" />
     <None Include="Helpers.cs" />
     <None Include="Properties\launchSettings.json" />
     <None Include="Documentation\documentation.html" />

@@ -30,6 +30,7 @@
       <ProjectItem ReplaceParameters="true">.editorconfig</ProjectItem>
       <ProjectItem ReplaceParameters="true">_build.csproj.DotSettings</ProjectItem>          
       <ProjectItem ReplaceParameters="true">Build.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true">Configuration.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true">Helpers.cs</ProjectItem>
     </Project>
   </TemplateContent>
