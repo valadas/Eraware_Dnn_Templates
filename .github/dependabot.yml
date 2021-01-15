@@ -9,3 +9,15 @@ updates:
     directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/module.web/" # Location of package manifests
     schedule:
       interval: "daily"
+  - package-ecosystem: "nuget"
+    directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/build"
+    schedule:
+      interval: "dayly"
+  - package-ecosystem: "nuget"
+    directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/module"
+    schedule:
+      interval: "dayly"
+  - package-ecosystem: "nuget"
+    directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/UnitTests"
+    schedule:
+      interval: "dayly"
