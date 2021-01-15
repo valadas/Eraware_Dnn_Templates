@@ -51,7 +51,7 @@ export class MyComponent {
   }
 
   // eslint-disable-next-line @stencil/own-methods-must-be-private
-  componentDidUnload() {
+  disconnectedCallback() {
     document.removeEventListener('scroll', () => this.scrollHandler());
     window.removeEventListener('resize', () => this.resizeHandler());
   }
