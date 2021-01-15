@@ -54,6 +54,7 @@ class Build : NukeBuild
     [GitVersion(Framework = "netcoreapp3.1", UpdateAssemblyInfo = false, NoFetch = true)] readonly GitVersion GitVersion;
 
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+    AbsolutePath InstallDirectory => RootDirectory.Parent.Parent / "Install" / "Module";
     AbsolutePath WebProjectDirectory => RootDirectory / "Module.Web";
     AbsolutePath TestResultsDirectory => RootDirectory / "TestResults";
 
@@ -476,7 +477,10 @@ class Build : NukeBuild
             // Open folder
             if (IsWin)
             {
-                Process.Start("explorer.exe", ArtifactsDirectory);
+                CopyDirectoryRecursively(ArtifactsDirectory, InstallDirectory, DirectoryExistsPolicy.Merge);
+
+                // Uncomment next line if you would like a package task to auto-open the package in explorer.
+                // Process.Start("explorer.exe", ArtifactsDirectory);
             }
 
             Logger.Success("Packaging succeeded!");
