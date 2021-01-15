@@ -17,6 +17,7 @@ using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.MSBuild;
+using Nuke.Common.Tools.Npm;
 using Nuke.Common.Tools.ReportGenerator;
 using Nuke.Common.Tools.VSTest;
 using Nuke.Common.Tools.Xunit;
@@ -246,7 +247,7 @@ class Build : NukeBuild
                 }
             };
             NpmInstall(s =>
-                s.SetWorkingDirectory(WebProjectDirectory));
+                s.SetProcessWorkingDirectory(WebProjectDirectory));
         });
 
     Target BuildFrontEnd => _ => _
@@ -257,8 +258,8 @@ class Build : NukeBuild
         .Executes(() =>
         {
             NpmRun(s => s
-                .SetWorkingDirectory(WebProjectDirectory)
-                .SetArgumentConfigurator(a => a.Add("build"))
+                .SetProcessWorkingDirectory(WebProjectDirectory)
+                .AddArguments("build")
             );
         });
 
@@ -406,8 +407,8 @@ class Build : NukeBuild
     .Executes(() =>
     {
         NpmRun(s => s
-            .SetWorkingDirectory(WebProjectDirectory)
-            .SetArgumentConfigurator(a => a.Add("start"))
+            .SetProcessWorkingDirectory(WebProjectDirectory)
+            .AddArguments("start")
             );
     });
 
@@ -477,7 +478,7 @@ class Build : NukeBuild
             // Open folder
             if (IsWin)
             {
-                CopyDirectoryRecursively(ArtifactsDirectory, InstallDirectory, DirectoryExistsPolicy.Merge);
+                CopyFileToDirectory(ArtifactsDirectory / fileName, InstallDirectory, FileExistsPolicy.Overwrite);
 
                 // Uncomment next line if you would like a package task to auto-open the package in explorer.
                 // Process.Start("explorer.exe", ArtifactsDirectory);

@@ -161,6 +161,9 @@
     <None Include="module\Data\Repositories\IGenericRepository.cs" />
     <None Include="module\Data\Repositories\IItemRepository.cs" />
     <None Include="module\Data\Repositories\ItemRepository.cs" />
+    <Content Include="build\Configuration.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Compile Include="module\Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
