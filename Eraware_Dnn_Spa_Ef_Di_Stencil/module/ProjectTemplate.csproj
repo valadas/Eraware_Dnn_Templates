@@ -85,19 +85,19 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DotNetNuke.Core">
-      <Version>9.6.2</Version>
+      <Version>9.8.0</Version>
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="DotNetNuke.Instrumentation">
-      <Version>9.6.2</Version>
+      <Version>9.8.0</Version>
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="DotNetNuke.Web">
-      <Version>9.6.2</Version>
+      <Version>9.8.0</Version>
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="DotNetNuke.WebApi">
-      <Version>9.6.2</Version>
+      <Version>9.8.0</Version>
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="EntityFramework">
