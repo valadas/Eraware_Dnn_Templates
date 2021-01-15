@@ -8,16 +8,16 @@ updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/module.web/" # Location of package manifests
     schedule:
-      interval: "daily"
+      interval: "weekly"
   - package-ecosystem: "nuget"
     directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/build"
     schedule:
-      interval: "dayly"
+      interval: "weekly"
   - package-ecosystem: "nuget"
     directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/module"
     schedule:
-      interval: "dayly"
+      interval: "weekly"
   - package-ecosystem: "nuget"
     directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/UnitTests"
     schedule:
-      interval: "dayly"
+      interval: "weekly"
