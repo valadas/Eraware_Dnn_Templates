@@ -17,6 +17,12 @@ updates:
     directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/module"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "Microsoft.AspNet.WebApi.Client"
+      - dependency-name: "Microsoft.AspNet.WebApi.Core"
+      - dependency-name: "Microsoft.Extensions.DependencyInjection"
+      - dependency-name: "Microsoft.Extensions.DependencyInjection.Abstractions"
+      - dependency-name: "Newtonsoft.Json"
   - package-ecosystem: "nuget"
     directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/UnitTests"
     schedule:
