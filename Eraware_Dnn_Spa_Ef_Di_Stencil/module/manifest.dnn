@@ -24,6 +24,16 @@
               <name>$ext_rootnamespace$.dll</name>
               <path>bin</path>
             </assembly>
+            <assembly>
+              <name>EntityFramework.dll</name>
+              <path>bin</path>
+              <version>6.4.4</version>
+            </assembly>
+            <assembly>
+              <name>EntityFramework.SqlServer.dll</name>
+              <path>bin</path>
+              <version>6.4.4</version>
+            </assembly>
           </assemblies>
         </component>
         <component type="Module">
