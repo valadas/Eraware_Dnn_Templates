@@ -1,12 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using BuildHelpers;
+﻿using BuildHelpers;
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
@@ -23,6 +15,14 @@ using Nuke.Common.Tools.VSTest;
 using Nuke.Common.Tools.Xunit;
 using Nuke.Common.Utilities.Collections;
 using Octokit;
+using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Text;
+using System.Xml;
 using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.CompressionTasks;
 using static Nuke.Common.IO.FileSystemTasks;
@@ -72,7 +72,10 @@ class Build : NukeBuild
     Target SetBranch => _ => _
         .Executes(() =>
         {
-            branch = GitRepository.Branch.StartsWith("refs/") ? GitRepository.Branch.Substring(11) : GitRepository.Branch;
+            if (GitRepository != null)
+            {
+                branch = GitRepository.Branch.StartsWith("refs/") ? GitRepository.Branch.Substring(11) : GitRepository.Branch;
+            }
             Logger.Info($"Set branch name to {branch}");
         });
 
@@ -149,8 +152,12 @@ class Build : NukeBuild
             MSBuildTasks.MSBuild(s => s
                 .SetProjectFile(Solution.GetProject("Module"))
                 .SetConfiguration(Configuration)
-                .SetAssemblyVersion(branch == "master" ? GitVersion.MajorMinorPatch : GitVersion.AssemblySemVer)
-                .SetFileVersion(branch == "master" ? GitVersion.MajorMinorPatch : GitVersion.InformationalVersion));
+                .SetAssemblyVersion(branch == "master"
+                    ? GitVersion.MajorMinorPatch
+                    : GitVersion != null ? GitVersion.AssemblySemVer : "0.1.0")
+                .SetFileVersion(branch == "master"
+                    ? GitVersion.MajorMinorPatch
+                    : GitVersion != null ? GitVersion.InformationalVersion : "0.1.0"));
         });
 
     Target SetManifestVersions => _ => _
@@ -168,7 +175,10 @@ class Build : NukeBuild
                     if (version != null)
                     {
                         Logger.Normal($"Found package {package.Attributes["name"].Value} with version {version.Value}");
-                        version.Value = $"{GitVersion.Major.ToString("00", CultureInfo.InvariantCulture)}.{GitVersion.Minor.ToString("00", CultureInfo.InvariantCulture)}.{GitVersion.Patch.ToString("00", CultureInfo.InvariantCulture)}";
+                        version.Value =
+                            GitVersion != null
+                            ? $"{GitVersion.Major.ToString("00", CultureInfo.InvariantCulture)}.{GitVersion.Minor.ToString("00", CultureInfo.InvariantCulture)}.{GitVersion.Patch.ToString("00", CultureInfo.InvariantCulture)}"
+                            : "00.01.00";
                         Logger.Normal($"Updated package {package.Attributes["name"].Value} to version {version.Value}");
                     }
                 }
@@ -229,7 +239,8 @@ class Build : NukeBuild
     Target InstallNpmPackages => _ => _
         .Executes(() =>
         {
-            NpmLogger = (type, output) => {
+            NpmLogger = (type, output) =>
+            {
                 if (type == OutputType.Std)
                 {
                     Logger.Info(output);
@@ -268,8 +279,11 @@ class Build : NukeBuild
         .DependsOn(SetBranch)
         .Executes(() =>
         {
-            var version = branch == "master" ? GitVersion.MajorMinorPatch : GitVersion.SemVer;
-            Npm($"version --no-git-tag-version --allow-same-version {version}", WebProjectDirectory);
+            if (GitVersion != null)
+            {
+                var version = branch == "master" ? GitVersion.MajorMinorPatch : GitVersion.SemVer;
+                Npm($"version --no-git-tag-version --allow-same-version {version}", WebProjectDirectory);
+            }
         });
 
     Target SetupGitHubClient => _ => _
@@ -467,10 +481,9 @@ class Build : NukeBuild
 
             // Install package
             string fileName = new DirectoryInfo(RootDirectory).Name + "_";
-            if (GitVersion != null)
-            {
-                fileName += branch == "master" ? GitVersion.MajorMinorPatch : GitVersion.SemVer;
-            }
+            fileName += branch == "master"
+                ? GitVersion != null ? GitVersion.MajorMinorPatch : "0.1.0"
+                : GitVersion != null ? GitVersion.SemVer : "0.1.0";
             fileName += "_install.zip";
             ZipFile.CreateFromDirectory(stagingDirectory, ArtifactsDirectory / fileName);
             DeleteDirectory(stagingDirectory);
