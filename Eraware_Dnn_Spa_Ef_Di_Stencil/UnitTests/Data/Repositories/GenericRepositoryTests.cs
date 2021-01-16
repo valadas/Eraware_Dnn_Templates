@@ -14,7 +14,7 @@ namespace UnitTests.Data.Repositories
         [Fact]
         public void GenericRepositoryConstructs()
         {
-            var repository = new GenericRepository<Item>(dataContext);
+            var repository = new Repository<Item>(dataContext);
             
             Assert.NotNull(dataContext);
             Assert.NotNull(repository);
@@ -23,7 +23,7 @@ namespace UnitTests.Data.Repositories
         [Fact]
         public void GenericRepositoryCreatesAndGetsById()
         {
-            var repository = new GenericRepository<Item>(dataContext);
+            var repository = new Repository<Item>(dataContext);
             var expectedItem = new Item() { Id = 1, Name = "Name", Description = "Description" };
             repository.Create(expectedItem);
 
@@ -35,28 +35,13 @@ namespace UnitTests.Data.Repositories
         [Fact]
         public void GenericRepositoryDeletes()
         {
-            var repository = new GenericRepository<Item>(dataContext);
+            var repository = new Repository<Item>(dataContext);
             var item = new Item() { Id = 1, Name = "Name", Description = "Description" };
             repository.Create(item);
 
             repository.Delete(item.Id);
 
             Assert.Empty(repository.GetAll());
-        }
-
-        [Fact]
-        public void GenericRepositoryDeleteInexistingItemThrows()
-        {
-            var repository = new GenericRepository<Item>(dataContext);
-            var item = new Item() { Id = 1, Name = "Name", Description = "Description" };
-            repository.Create(item);
-
-            var ex = Assert.Throws<InvalidOperationException>(() =>
-            {
-                repository.Delete(2);
-            });
-            
-            Assert.Equal("Sequence contains no elements", ex.Message);
         }
 
         [Theory]
@@ -66,7 +51,7 @@ namespace UnitTests.Data.Repositories
         [InlineData(3)]
         public void GenericRepositoryGetsAll(int iterations)
         {
-            var repository = new GenericRepository<Item>(dataContext);
+            var repository = new Repository<Item>(dataContext);
             for (int i = 1; i <= iterations; i++)
             {
                 var item = new Item() { Id = i, Name = $"Name {i}", Description = $"Description {i}" };
@@ -84,14 +69,14 @@ namespace UnitTests.Data.Repositories
         [InlineData(5, 0, 10, 1)]
         public void GenericRepositoryPages(int items, int page, int pageSize, int pages)
         {
-            var repository = new GenericRepository<Item>(dataContext);
+            var repository = new Repository<Item>(dataContext);
             for (int i = 1; i <= items; i++)
             {
                 var item = new Item() { Id = i, Name = $"Name {i}", Description = $"Description {i}" };
                 repository.Create(item);
             }
 
-            var results = repository.GetPage(page, pageSize, repository.GetAll(), out int resultCount, out int pageCount).ToList();
+            var results = repository.GetPage(page, pageSize, repository.Get(), out int resultCount, out int pageCount).ToList();
 
             Assert.True(results.Count() <= pageSize);
             Assert.Equal(items, resultCount);
@@ -108,7 +93,7 @@ namespace UnitTests.Data.Repositories
         [Fact]
         public void GenericRepositoryUpdates()
         {
-            var repository = new GenericRepository<Item>(dataContext);
+            var repository = new Repository<Item>(dataContext);
             repository.Create(new Item() { Id = 1, Name = "Original Name", Description = "Original Description" });
             var entity = repository.GetById(1);
             entity.Name = "New Name";

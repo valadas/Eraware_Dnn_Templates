@@ -27,7 +27,6 @@
         </Folder>
         <Folder Name="Repositories">
           <ProjectItem ReplaceParameters="true">GenericRepositoryTests.cs</ProjectItem>
-          <ProjectItem ReplaceParameters="true">ItemRepositoryTests.cs</ProjectItem>
         </Folder>
         <ProjectItem ReplaceParameters="true">ModuleDbContextTests.cs</ProjectItem>
       </Folder>

@@ -19,13 +19,13 @@ namespace $ext_rootnamespace$.Services
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "TODO: Implement localization.")]
     public class ItemController : ModuleApiController
     {
-        private readonly IItemRepository itemRepository;
+        private readonly IRepository<Item> itemRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemController"/> class.
         /// </summary>
         /// <param name="itemRepository">The items reposioty.</param>
-        public ItemController(IItemRepository itemRepository)
+        public ItemController(IRepository<Item> itemRepository)
         {
             this.itemRepository = itemRepository;
         }
@@ -42,7 +42,7 @@ namespace $ext_rootnamespace$.Services
         {
             try
             {
-                this.itemRepository.Create(item);
+                this.itemRepository.Create(item, this.UserInfo.UserID);
                 return this.Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception ex)
@@ -68,7 +68,7 @@ namespace $ext_rootnamespace$.Services
         {
             try
             {
-                var items = this.itemRepository.GetAll();
+                var items = this.itemRepository.Get();
                 if (!string.IsNullOrWhiteSpace(query))
                 {
                     items = items.Where(i => i.Name.Contains(query) || i.Description.Contains(query));

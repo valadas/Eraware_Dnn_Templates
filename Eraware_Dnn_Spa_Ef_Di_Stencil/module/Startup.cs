@@ -19,8 +19,8 @@ namespace $ext_rootnamespace$
         /// <param name="services">The services collection.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<ModuleDbContext, ModuleDbContext>();
-            services.AddTransient<IItemRepository, ItemRepository>();
+            services.AddScoped<ModuleDbContext, ModuleDbContext>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
     }
 }

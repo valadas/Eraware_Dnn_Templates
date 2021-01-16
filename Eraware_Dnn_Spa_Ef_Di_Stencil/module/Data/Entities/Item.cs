@@ -11,14 +11,8 @@ namespace $ext_rootnamespace$.Data.Entities
     /// Represents an item entity.
     /// </summary>
     [Table(Globals.ModulePrefix + "Items")]
-    public class Item : IEntity
+    public class Item : BaseEntity
     {
-        /// <summary>
-        /// Gets or sets the item id.
-        /// </summary>
-        [Key]
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the item name.
         /// </summary>
