@@ -83,7 +83,6 @@
     <None Include="module\.github\workflows\build.yml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="module\Module.ruleset" />
     <None Include="module\stylecop.json" />
     <None Include="UnitTests\Build\Tests.targets" />
     <None Include="UnitTests\ProjectTemplate.csproj" />
@@ -155,7 +154,6 @@
     <None Include="module\Common\Globals.cs" />
     <None Include="module\Data\Entities\Item.cs" />
     <None Include="module\Data\ModuleDbContext.cs" />
-    <None Include="module\GlobalSuppressions.cs" />
     <None Include="module\Data\Entities\IEntity.cs" />
     <None Include="module\Data\Repositories\GenericRepository.cs" />
     <None Include="module\Data\Repositories\IGenericRepository.cs" />

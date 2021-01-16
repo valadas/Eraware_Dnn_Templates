@@ -1,4 +1,7 @@
-﻿namespace $ext_rootnamespace$.Data
+﻿// MIT License
+// Copyright $ext_companyname$
+
+namespace $ext_rootnamespace$.Data
 {
     using System.Data.Common;
     using System.Data.Entity;
