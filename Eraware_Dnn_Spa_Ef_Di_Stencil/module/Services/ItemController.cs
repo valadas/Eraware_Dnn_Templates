@@ -1,4 +1,7 @@
-﻿namespace $ext_rootnamespace$.Services
+﻿// MIT License
+// Copyright $ext_companyname$
+
+namespace $ext_rootnamespace$.Services
 {
     using System;
     using System.Linq;

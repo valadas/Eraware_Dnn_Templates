@@ -1,4 +1,6 @@
-﻿namespace $ext_rootnamespace$.Data.Entities
+﻿// MIT License
+// Copyright $ext_companyname$
+namespace $ext_rootnamespace$.Data.Entities
 {
     /// <summary>
     /// Ensures entities have an ID.

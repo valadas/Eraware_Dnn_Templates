@@ -1,4 +1,7 @@
-﻿namespace $ext_rootnamespace$.Data.Repositories
+﻿// MIT License
+// Copyright $ext_companyname$
+
+namespace $ext_rootnamespace$.Data.Repositories
 {
     using System.Linq;
     using System.Threading.Tasks;

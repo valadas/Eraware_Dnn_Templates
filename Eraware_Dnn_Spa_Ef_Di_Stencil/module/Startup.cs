@@ -1,4 +1,7 @@
-﻿namespace $ext_rootnamespace$
+﻿// MIT License
+// Copyright $ext_companyname$
+
+namespace $ext_rootnamespace$
 {
     using DotNetNuke.DependencyInjection;
     using $ext_rootnamespace$.Data;

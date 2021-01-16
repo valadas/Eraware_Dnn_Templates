@@ -1,4 +1,7 @@
-﻿namespace $ext_rootnamespace$.Data.Entities
+﻿// MIT License
+// Copyright $ext_companyname$
+
+namespace $ext_rootnamespace$.Data.Entities
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;

@@ -1,4 +1,6 @@
-﻿namespace $ext_rootnamespace$.Common
+﻿// MIT License
+// Copyright $ext_companyname$
+namespace $ext_rootnamespace$.Common
 {
     /// <summary>
     /// Global values, constants and methods.

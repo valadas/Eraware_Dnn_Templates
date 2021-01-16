@@ -8,7 +8,13 @@
   "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
   "settings": {
     "documentationRules": {
-      "companyName": "$ext_companyname$"
+      "companyName": "Eraware",
+      "copyrightText": "MIT License\nCopyright $ext_companyname$",
+      "xmlHeader": false
+    },
+    "orderingRules": {
+      "usingDirectivesPlacement": "insideNamespace",
+      "systemUsingDirectivesFirst": false
     }
   }
 }
