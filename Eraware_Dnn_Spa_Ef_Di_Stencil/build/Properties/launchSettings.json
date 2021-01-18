@@ -11,6 +11,10 @@
     "Watch": {
       "commandName": "Project",
       "commandLineArgs": "--target Watch --configuration Debug"
+    },
+    "Test": {
+      "commandName": "Project",
+      "commandLineArgs": "--target Test --configuration Debug"
     }
   }
 }

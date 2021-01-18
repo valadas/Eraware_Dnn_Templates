@@ -5,12 +5,16 @@ namespace $ext_rootnamespace$
 {
     using DotNetNuke.DependencyInjection;
     using $ext_rootnamespace$.Data;
+    using $ext_rootnamespace$.Data.Entities;
     using $ext_rootnamespace$.Data.Repositories;
+    using $ext_rootnamespace$.Services;
     using Microsoft.Extensions.DependencyInjection;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Implements the IDnnStartup interface to run at application start.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class Startup : IDnnStartup
     {
         /// <summary>
@@ -21,6 +25,7 @@ namespace $ext_rootnamespace$
         {
             services.AddScoped<ModuleDbContext, ModuleDbContext>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IItemService>(provider => new ItemService(provider.GetService<IRepository<Item>>()));
         }
     }
 }

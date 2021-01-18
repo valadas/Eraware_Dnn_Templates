@@ -49,10 +49,14 @@
           <ProjectItem ReplaceParameters="true">view.html</ProjectItem>
         </Folder>        
       </Folder>
-      <Folder Name="Services">
+      <Folder Name="Controllers">
         <ProjectItem ReplaceParameters="true">ItemController.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ModuleApiController.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ServiceRouteMapper.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Services">
+        <ProjectItem ReplaceParameters="true">IItemService.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ItemService.cs</ProjectItem>
       </Folder>
       <ProjectItem>.gitignore</ProjectItem>
       <ProjectItem>.editorconfig</ProjectItem>

@@ -139,15 +139,18 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="UnitTests\Services\ItemServiceTests.cs" />
+    <None Include="module\Services\ItemService.cs" />
+    <None Include="module\Services\IItemService.cs" />
     <None Include="UnitTests\Startup.cs" />
     <None Include="UnitTests\Common\GlobalsTests.cs" />
     <None Include="UnitTests\Data\Entities\ItemTests.cs" />
     <None Include="UnitTests\Data\ModuleDbContextTests.cs" />
     <None Include="UnitTests\Data\Repositories\GenericRepositoryTests.cs" />
     <None Include="UnitTests\FakeDataContext.cs" />
-    <None Include="module\Services\ServiceRouteMapper.cs" />
-    <None Include="module\Services\ModuleApiController.cs" />
-    <None Include="module\Services\ItemController.cs" />
+    <None Include="module\Controllers\ServiceRouteMapper.cs" />
+    <None Include="module\Controllers\ModuleApiController.cs" />
+    <None Include="module\Controllers\ItemController.cs" />
     <None Include="module\Startup.cs" />
     <Content Include="build\Helpers.cs" />
     <None Include="module\Common\Globals.cs" />
