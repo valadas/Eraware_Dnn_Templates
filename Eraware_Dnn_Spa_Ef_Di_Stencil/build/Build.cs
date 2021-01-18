@@ -117,13 +117,13 @@ class Build : NukeBuild
         .Executes(() =>
         {
             MSBuild(_ => _
-                .SetConfiguration(Configuration)
+                .SetConfiguration(Configuration.Debug)
                 .SetProjectFile(Solution.GetProject("UnitTests"))
                 .SetTargets("Build")
                 .ResetVerbosity());
 
             DotNetTest(_ => _
-                .SetConfiguration(Configuration)
+                .SetConfiguration(Configuration.Debug)
                 .ResetVerbosity()
                 .SetResultsDirectory(TestResultsDirectory)
                 .EnableCollectCoverage()
@@ -139,6 +139,11 @@ class Build : NukeBuild
                 .SetTargetDirectory(TestResultsDirectory)
                 .SetFramework("netcoreapp2.1")
             );
+
+            if (IsWin && InvokedTargets.Contains(Test))
+            {
+                Process.Start(@"cmd.exe ", @"/c " + (RootDirectory / "TestResults" / "index.html"));
+            }
         });
 
     Target Compile => _ => _

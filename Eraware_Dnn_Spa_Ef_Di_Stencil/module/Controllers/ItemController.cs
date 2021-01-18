@@ -1,33 +1,31 @@
 ﻿// MIT License
 // Copyright $ext_companyname$
 
-namespace $ext_rootnamespace$.Services
+namespace $ext_rootnamespace$.Controllers
 {
-    using System;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Web.Http;
     using DotNetNuke.Security;
     using DotNetNuke.Web.Api;
     using $ext_rootnamespace$.Data.Entities;
-    using $ext_rootnamespace$.Data.Repositories;
+    using $ext_rootnamespace$.Services;
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Web.Http;
 
     /// <summary>
     /// Provides Web API access for items.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "TODO: Implement localization.")]
+    [ExcludeFromCodeCoverage]
     public class ItemController : ModuleApiController
     {
-        private readonly IRepository<Item> itemRepository;
+        private readonly IItemService itemService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemController"/> class.
         /// </summary>
-        /// <param name="itemRepository">The items reposioty.</param>
-        public ItemController(IRepository<Item> itemRepository)
+        /// <param name="itemService">The items reposioty.</param>
+        public ItemController(IItemService itemService)
         {
-            this.itemRepository = itemRepository;
+            this.itemService = itemService;
         }
 
         /// <summary>
@@ -38,18 +36,18 @@ namespace $ext_rootnamespace$.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
-        public HttpResponseMessage CreateItem(Item item)
+        public IHttpActionResult CreateItem(Item item)
         {
             try
             {
-                this.itemRepository.Create(item, this.UserInfo.UserID);
-                return this.Request.CreateResponse(HttpStatusCode.OK);
+                this.itemService.CreateItem(item, this.UserInfo.UserID);
+                return this.Ok();
             }
             catch (Exception ex)
             {
                 string message = "An unexpected error occured while trying to create the item";
                 this.Logger.Error(message, ex);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+                return this.InternalServerError(new Exception(message));
                 throw;
             }
         }
@@ -64,26 +62,18 @@ namespace $ext_rootnamespace$.Services
         /// <returns>List of pages + paging information.</returns>
         [HttpGet]
         [AllowAnonymous]
-        public HttpResponseMessage GetItemsPage(string query, int page = 1, int pageSize = 10, bool descending = false)
+        public IHttpActionResult GetItemsPage(string query, int page = 1, int pageSize = 10, bool descending = false)
         {
             try
             {
-                var items = this.itemRepository.Get();
-                if (!string.IsNullOrWhiteSpace(query))
-                {
-                    items = items.Where(i => i.Name.Contains(query) || i.Description.Contains(query));
-                }
-
-                items = descending ? items.OrderByDescending(i => i.Name) : items.OrderBy(i => i.Name);
-                items = this.itemRepository.GetPage(page, pageSize, items, out int resultCount, out int pageCount);
-
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { items, page, resultCount, pageCount, this.CanEdit });
+                var result = this.itemService.GetItemsPage(query, page, pageSize, descending);
+                return this.Ok(new { result.items, page, result.resultCount, result.pageCount, this.CanEdit });
             }
             catch (Exception ex)
             {
                 string message = "An unexpected error occured while trying to fetch items.";
                 this.Logger.Error(message, ex);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+                return this.InternalServerError(new Exception(message));
                 throw;
             }
         }
@@ -96,23 +86,23 @@ namespace $ext_rootnamespace$.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
-        public HttpResponseMessage DeleteItem(Item item)
+        public IHttpActionResult DeleteItem(Item item)
         {
             try
             {
                 if (item == null)
                 {
-                    throw new ArgumentNullException(nameof(item));
+                    return this.NotFound();
                 }
 
-                this.itemRepository.Delete(item.Id);
-                return this.Request.CreateResponse(HttpStatusCode.OK);
+                this.itemService.DeleteItem(item);
+                return this.Ok();
             }
             catch (Exception ex)
             {
                 string message = "An unexpected error occured while trying to delete an item.";
                 this.Logger.Error(message, ex);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+                return this.InternalServerError(new Exception(message));
                 throw;
             }
         }

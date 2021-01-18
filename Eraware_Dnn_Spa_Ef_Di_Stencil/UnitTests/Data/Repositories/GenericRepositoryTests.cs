@@ -2,9 +2,7 @@
 using $ext_rootnamespace$.Data.Repositories;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace UnitTests.Data.Repositories
@@ -103,6 +101,89 @@ namespace UnitTests.Data.Repositories
 
             Assert.Equal("New Name", entity.Name);
             Assert.Equal("New Description", entity.Description);
+        }
+
+        [Fact]
+        public void GenericRepositoryCreate_ThrowsWithNullEntity()
+        {
+            var repository = new Repository<Item>(dataContext);
+
+            Action create = () => repository.Create(null);
+
+            var ex = Assert.Throws<ArgumentNullException>(create);
+            Assert.Equal("entity", ex.ParamName);
+        }
+
+        [Fact]
+        public void GenericRepositoryUpdate_ThrowsWithNullEntity()
+        {
+            var repository = new Repository<Item>(dataContext);
+
+            Action update = () => repository.Update(null);
+
+            var ex = Assert.Throws<ArgumentNullException>(update);
+            Assert.Equal("entity", ex.ParamName);
+        }
+
+        [Fact]
+        public void Repository_Create_DefaultAudit()
+        {
+            var repository = new Repository<Item>(dataContext);
+            var item = new Item() { Name = "Name", Description = "Description" };
+
+            repository.Create(item);
+
+            Assert.Equal(-1, item.CreatedByUserId);
+            Assert.Equal(-1, item.UpdatedByUserId);
+            Assert.True(item.CreatedAt == item.UpdatedAt);
+            var createdTimeSpan = DateTime.UtcNow - item.CreatedAt;
+            var updatedTimeSpan = DateTime.UtcNow - item.UpdatedAt;
+            Assert.True(createdTimeSpan < TimeSpan.FromMinutes(1));
+            Assert.True(updatedTimeSpan < TimeSpan.FromMinutes(1));
+        }
+
+        [Fact]
+        public void Repository_Create_UsesUserId()
+        {
+            var repository = new Repository<Item>(dataContext);
+            var item = new Item() { Name = "Name", Description = "Description" };
+
+            repository.Create(item, 123);
+
+            Assert.Equal(123, item.CreatedByUserId);
+            Assert.Equal(123, item.UpdatedByUserId);
+        }
+
+        [Fact]
+        public void Repository_Update_DefaultAudit()
+        {
+            var repository = new Repository<Item>(dataContext);
+            var item = new Item() { Name = "Name", Description = "Description" };
+            repository.Create(item);
+            item.Name = "New Name";
+            item.Description = "New Description";
+
+            repository.Update(item);
+
+            Assert.True(item.CreatedAt < item.UpdatedAt);
+            Assert.Equal(-1, item.CreatedByUserId);
+            Assert.Equal(-1, item.UpdatedByUserId);
+        }
+
+        [Fact]
+        public void Repository_Update_UsesuserId()
+        {
+            var repository = new Repository<Item>(dataContext);
+            var item = new Item() { Name = "Name", Description = "Description" };
+            repository.Create(item);
+            item.Name = "New Name";
+            item.Description = "New Description";
+
+            repository.Update(item, 123);
+
+            Assert.True(item.CreatedAt < item.UpdatedAt);
+            Assert.Equal(-1, item.CreatedByUserId);
+            Assert.Equal(123, item.UpdatedByUserId);
         }
     }
 }

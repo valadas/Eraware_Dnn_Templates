@@ -1,15 +1,17 @@
 ﻿// MIT License
 // Copyright $ext_companyname$
 
-namespace $ext_rootnamespace$.Services
+namespace $ext_rootnamespace$.Controllers
 {
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Web.Api;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Provides common features to all module controller.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class ModuleApiController : DnnApiController
     {
         /// <summary>
