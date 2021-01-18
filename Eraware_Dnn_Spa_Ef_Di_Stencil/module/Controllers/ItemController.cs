@@ -25,7 +25,7 @@ namespace $ext_rootnamespace$.Controllers
         /// <param name="itemService">The items reposioty.</param>
         public ItemController(IItemService itemService)
         {
-        this.itemService = itemService;
+            this.itemService = itemService;
         }
 
         /// <summary>
