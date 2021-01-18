@@ -60,6 +60,7 @@
             </moduleDefinitions>
           </desktopModule>
         </component>
+        <component type="Cleanup" version="00.01.00" glob="DesktopModules/Contacts/resources/**/*" />
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>DesktopModules/$ext_safeprojectname$/resources</basePath>
