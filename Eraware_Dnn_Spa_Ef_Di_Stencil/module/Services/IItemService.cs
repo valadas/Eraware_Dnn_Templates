@@ -4,7 +4,7 @@
 using $ext_rootnamespace$.Data.Entities;
 using System.Collections.Generic;
 
-namespace Eraware.Modules.Contacts.Services
+namespace $ext_rootnamespace$.Modules.Contacts.Services
 {
     /// <summary>
     /// Provides services to manage items.

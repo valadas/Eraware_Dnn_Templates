@@ -185,6 +185,19 @@ class Build : NukeBuild
                             ? $"{GitVersion.Major.ToString("00", CultureInfo.InvariantCulture)}.{GitVersion.Minor.ToString("00", CultureInfo.InvariantCulture)}.{GitVersion.Patch.ToString("00", CultureInfo.InvariantCulture)}"
                             : "00.01.00";
                         Logger.Normal($"Updated package {package.Attributes["name"].Value} to version {version.Value}");
+
+                        var components = package.SelectNodes("components/component");
+                        foreach (XmlNode component in components)
+                        {
+                            if (component.Attributes["type"].Value == "Cleanup")
+                            {
+                                var cleanupVersion = component.Attributes["version"];
+                                cleanupVersion.Value =
+                                    GitVersion != null
+                                    ? $"{GitVersion.Major.ToString("00", CultureInfo.InvariantCulture)}.{GitVersion.Minor.ToString("00", CultureInfo.InvariantCulture)}.{GitVersion.Patch.ToString("00", CultureInfo.InvariantCulture)}"
+                                    : "00.01.00";
+                            }
+                        }
                     }
                 }
                 doc.Save(manifest);
