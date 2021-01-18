@@ -50,13 +50,12 @@
 	</ItemGroup>
 	<ItemGroup>
     <Compile Include="Common\Globals.cs" />
+    <Compile Include="Data\Entities\BaseEntity.cs" />
     <Compile Include="Data\Entities\IEntity.cs" />
     <Compile Include="Data\Entities\Item.cs" />
     <Compile Include="Data\ModuleDbContext.cs" />
-    <Compile Include="Data\Repositories\GenericRepository.cs" />
-    <Compile Include="Data\Repositories\IGenericRepository.cs" />
-    <Compile Include="Data\Repositories\IItemRepository.cs" />
-    <Compile Include="Data\Repositories\ItemRepository.cs" />
+    <Compile Include="Data\Repositories\IRepository.cs" />
+    <Compile Include="Data\Repositories\Repository.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ItemController.cs" />
     <Compile Include="Services\ModuleApiController.cs" />

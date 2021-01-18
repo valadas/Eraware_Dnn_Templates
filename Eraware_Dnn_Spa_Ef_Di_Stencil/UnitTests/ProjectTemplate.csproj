@@ -50,7 +50,6 @@
     <Compile Include="Data\Entities\ItemTests.cs" />
     <Compile Include="Data\ModuleDbContextTests.cs" />
     <Compile Include="Data\Repositories\GenericRepositoryTests.cs" />
-    <Compile Include="Data\Repositories\ItemRepositoryTests.cs" />
     <Compile Include="FakeDataContext.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

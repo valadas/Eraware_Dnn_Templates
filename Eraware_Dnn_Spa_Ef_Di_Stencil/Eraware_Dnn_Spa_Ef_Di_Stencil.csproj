@@ -144,7 +144,6 @@
     <None Include="UnitTests\Data\Entities\ItemTests.cs" />
     <None Include="UnitTests\Data\ModuleDbContextTests.cs" />
     <None Include="UnitTests\Data\Repositories\GenericRepositoryTests.cs" />
-    <None Include="UnitTests\Data\Repositories\ItemRepositoryTests.cs" />
     <None Include="UnitTests\FakeDataContext.cs" />
     <None Include="module\Services\ServiceRouteMapper.cs" />
     <None Include="module\Services\ModuleApiController.cs" />
@@ -155,13 +154,12 @@
     <None Include="module\Data\Entities\Item.cs" />
     <None Include="module\Data\ModuleDbContext.cs" />
     <None Include="module\Data\Entities\IEntity.cs" />
-    <None Include="module\Data\Repositories\GenericRepository.cs" />
-    <None Include="module\Data\Repositories\IGenericRepository.cs" />
-    <None Include="module\Data\Repositories\IItemRepository.cs" />
-    <None Include="module\Data\Repositories\ItemRepository.cs" />
+    <None Include="module\Data\Repositories\IRepository.cs" />
     <Content Include="build\Configuration.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="module\Data\Entities\BaseEntity.cs" />
+    <None Include="module\Data\Repositories\Repository.cs" />
     <Compile Include="module\Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

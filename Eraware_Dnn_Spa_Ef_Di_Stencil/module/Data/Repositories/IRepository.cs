@@ -3,41 +3,49 @@
 
 namespace $ext_rootnamespace$.Data.Repositories
 {
+    using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using $ext_rootnamespace$.Data.Entities;
 
     /// <summary>
     /// Provides generic data access features for entities.
     /// </summary>
-    /// <typeparam name="TEntity">The entity type.</typeparam>
-    public interface IGenericRepository<TEntity>
-        where TEntity : class, IEntity
+    /// <typeparam name="T">The entity type.</typeparam>
+    public interface IRepository<T>
+        where T : BaseEntity
     {
         /// <summary>
         /// Gets all entities.
         /// </summary>
-        /// <returns>IQueryable of all the entities.</returns>
-        IQueryable<TEntity> GetAll();
+        /// <returns>All the entities.</returns>
+        IEnumerable<T> GetAll();
+
+        /// <summary>
+        /// Gets entitties as an IQueryable to allow furter filtering/sorting, etc.
+        /// </summary>
+        /// <returns>An IQueryable of the items.</returns>
+        IQueryable<T> Get();
 
         /// <summary>
         /// Gets a single entity by id.
         /// </summary>
         /// <param name="id">The id of the entity.</param>
         /// <returns>A single entity.</returns>
-        TEntity GetById(int id);
+        T GetById(int id);
 
         /// <summary>
         /// Creates an entity and saves it to the database.
         /// </summary>
         /// <param name="entity">The entity to save.</param>
-        void Create(TEntity entity);
+        /// <param name="userId">The creating Dnn user ID. If not provided, will default to -1.</param>
+        void Create(T entity, int userId = -1);
 
         /// <summary>
         /// Updates an entity and saves the changes to the database.
         /// </summary>
         /// <param name="entity">The entity to update.</param>
-        void Update(TEntity entity);
+        /// <param name="userId">The updating Dnn user ID. If not provided, will default to -1.</param>
+        void Update(T entity, int userId = -1);
 
         /// <summary>
         /// Deletes an entity in the database.
@@ -54,6 +62,6 @@ namespace $ext_rootnamespace$.Data.Repositories
         /// <param name="resultCount">Returns the total number of items.</param>
         /// <param name="pageCount">Returns the total number of pages.</param>
         /// <returns>An IQueryable of the entities for that page.</returns>
-        IQueryable<TEntity> GetPage(int page, int pageSize, IQueryable<TEntity> entities, out int resultCount, out int pageCount);
+        IQueryable<T> GetPage(int page, int pageSize, IQueryable<T> entities, out int resultCount, out int pageCount);
     }
 }
