@@ -10,6 +10,7 @@ using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Tools.Npm;
+using Nuke.Common.Tools.NSwag;
 using Nuke.Common.Tools.ReportGenerator;
 using Nuke.Common.Tools.VSTest;
 using Nuke.Common.Tools.Xunit;
@@ -58,6 +59,7 @@ class Build : NukeBuild
     AbsolutePath InstallDirectory => RootDirectory.Parent.Parent / "Install" / "Module";
     AbsolutePath WebProjectDirectory => RootDirectory / "Module.Web";
     AbsolutePath TestResultsDirectory => RootDirectory / "TestResults";
+    AbsolutePath SwaggerDirectory => RootDirectory / "Swagger";
 
     private string devViewsPath = "http://localhost:3333/build/";
     private string prodViewsPath = "DesktopModules/MyModule/resources/scripts/$ext_scopeprefixkebab$/";
@@ -100,6 +102,7 @@ class Build : NukeBuild
         {
             EnsureCleanDirectory(ArtifactsDirectory);
             EnsureCleanDirectory(TestResultsDirectory);
+            EnsureCleanDirectory(SwaggerDirectory);
         });
 
     Target Restore => _ => _
@@ -425,7 +428,6 @@ class Build : NukeBuild
         .DependsOn(Test)
         .Executes(() =>
         {
-
         });
 
     /// <summary>
@@ -516,6 +518,22 @@ class Build : NukeBuild
             }
 
             Logger.Success("Packaging succeeded!");
+        });
+
+    AttributeTargets Swagger => _ => _
+        .DependsOn(DeployBinaries)
+        .Executes(() =>
+        {
+            var swaggerFile = SwaggerDirectory / "Swagger.json";
+
+            NSwagTasks.NSwagWebApiToOpenApi(c => c
+                .AddAssembly(RootDirectory.Parent.Parent / "bin" / "$ext_rootnamespace$.dll")
+                .SetProcessArgumentConfigurator(a => a.Add("/DefaultUrlTemplate:/API/$ext_packagename$/{{controller}}/{{action}}"))
+                .SetOutput(swaggerFile));
+
+            NSwagTasks.NSwagOpenApiToTypeScriptClient(c => c
+                .SetInput(swaggerFile)
+                .SetOutput(SwaggerDirectory / "GeneratedServices.ts"));
         });
 
     Target CI => _ => _

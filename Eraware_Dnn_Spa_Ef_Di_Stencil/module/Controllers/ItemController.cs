@@ -5,9 +5,12 @@ namespace $ext_rootnamespace$.Controllers
 {
     using DotNetNuke.Security;
     using DotNetNuke.Web.Api;
+    using NSwag.Annotations;
     using $ext_rootnamespace$.Data.Entities;
     using $ext_rootnamespace$.Services;
     using System;
+    using System.Collections.Generic;
+    using System.Net;
     using System.Diagnostics.CodeAnalysis;
     using System.Web.Http;
 
@@ -36,12 +39,13 @@ namespace $ext_rootnamespace$.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(Item), Description = "OK")]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
         public IHttpActionResult CreateItem(Item item)
         {
             try
             {
-                this.itemService.CreateItem(item, this.UserInfo.UserID);
-                return this.Ok();
+                return this.Ok(this.itemService.CreateItem(item, this.UserInfo.UserID));
             }
             catch (Exception ex)
             {
@@ -62,6 +66,11 @@ namespace $ext_rootnamespace$.Controllers
         /// <returns>List of pages + paging information.</returns>
         [HttpGet]
         [AllowAnonymous]
+        [SwaggerResponse(
+            HttpStatusCode.OK,
+            typeof((IList<Item> items, int page, int resultCount, int pageSize, bool CanEdit)),
+            Description = "OK")]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
         public IHttpActionResult GetItemsPage(string query, int page = 1, int pageSize = 10, bool descending = false)
         {
             try
@@ -86,6 +95,8 @@ namespace $ext_rootnamespace$.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(void), Description = "OK")]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
         public IHttpActionResult DeleteItem(Item item)
         {
             try

@@ -63,6 +63,7 @@
     <Content Include="build\Build.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="module\Redoc\index.html" />
     <Content Include="UnitTests\UnitTests.vstemplate" />
   </ItemGroup>
   <ItemGroup>

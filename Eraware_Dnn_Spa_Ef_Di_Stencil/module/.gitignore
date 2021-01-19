@@ -341,3 +341,4 @@ healthchecksdb
 /resources/resources.zip.manifest
 /resources/scripts/
 /_build/App.config
+/Swagger
