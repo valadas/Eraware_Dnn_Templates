@@ -32,9 +32,6 @@
           <ProjectItem ReplaceParameters="true">Item.cs</ProjectItem>
           <ProjectItem ReplaceParameters="true">IEntity.cs</ProjectItem>
         </Folder>
-        <Folder Name="Redoc" TargetFolderName="Redoc">
-          <ProjectItem ReplaceParameters="true">index.html</ProjectItem>
-        </Folder>
         <Folder Name="Repositories" TargetFolderName="Repositories">
           <ProjectItem ReplaceParameters="true">IRepository.cs</ProjectItem>
           <ProjectItem ReplaceParameters="true">Repository.cs</ProjectItem>
@@ -43,6 +40,9 @@
       </Folder>
       <Folder Name="Properties" TargetFolderName="Properties">
         <ProjectItem TargetFileName="AssemblyInfo.cs" ReplaceParameters="true">AssemblyInfo.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Redoc" TargetFolderName="Redoc">
+        <ProjectItem ReplaceParameters="true">index.html</ProjectItem>
       </Folder>
       <Folder Name="resources">
         <Folder Name="images">
