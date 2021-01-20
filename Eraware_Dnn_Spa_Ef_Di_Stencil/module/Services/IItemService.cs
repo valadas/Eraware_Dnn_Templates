@@ -16,7 +16,8 @@ namespace $ext_rootnamespace$.Modules.Contacts.Services
         /// </summary>
         /// <param name="item">The item to create.</param>
         /// <param name="userId">The acting user id.</param>
-        void CreateItem(Item item, int userId);
+        /// <returns><see cref="Item"/>.</returns>
+        Item CreateItem(Item item, int userId);
 
         /// <summary>
         /// Deletes an item.

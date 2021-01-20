@@ -1,5 +1,5 @@
 ﻿// MIT License
-// Copyright Eraware
+// Copyright $ext_companyname$
 
 using $ext_rootnamespace$.Data.Entities;
 using System;

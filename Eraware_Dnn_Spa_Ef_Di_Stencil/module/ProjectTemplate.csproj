@@ -64,6 +64,7 @@
     <Compile Include="Services\ItemService.cs" />
     <Compile Include="Startup.cs" />
     <Resource Include=".gitignore" />
+    <Resource Include="Redoc\index.html" />
     <Resource Include="resources\images\module-icon.png" />
     <Resource Include="resources\views\view.html" />
     <Resource Include="LICENSE" />
@@ -113,6 +114,9 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>10.0.3</Version>
       <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="NSwag.Annotations">
+      <Version>13.10.1</Version>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
       <Version>1.1.118</Version>

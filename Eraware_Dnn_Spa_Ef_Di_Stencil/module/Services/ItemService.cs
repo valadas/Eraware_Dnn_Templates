@@ -26,7 +26,7 @@ namespace $ext_rootnamespace$.Modules.Contacts.Services
         }
 
         /// <inheritdoc/>
-        public void CreateItem(Item item, int userId)
+        public Item CreateItem(Item item, int userId)
         {
             if (item == null)
             {
@@ -34,6 +34,8 @@ namespace $ext_rootnamespace$.Modules.Contacts.Services
             }
 
             this.itemRepository.Create(item, userId);
+
+            return item;
         }
 
         /// <inheritdoc/>
