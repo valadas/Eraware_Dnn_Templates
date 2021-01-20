@@ -56,6 +56,7 @@
     <Compile Include="Data\ModuleDbContext.cs" />
     <Compile Include="Data\Repositories\IRepository.cs" />
     <Compile Include="Data\Repositories\Repository.cs" />
+    <Compile Include="DTO\CreateItemDTO.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\ModuleApiController.cs" />
@@ -63,6 +64,8 @@
     <Compile Include="Services\IItemService.cs" />
     <Compile Include="Services\ItemService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\ItemsPageViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModel.cs" />
     <Resource Include=".gitignore" />
     <Resource Include="Redoc\index.html" />
     <Resource Include="resources\images\module-icon.png" />
@@ -118,6 +121,8 @@
     </PackageReference>
     <PackageReference Include="NSwag.Annotations">
       <Version>13.10.1</Version>
+      <ExcludeAssets>runtime</ExcludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
       <Version>1.1.118</Version>

@@ -7,9 +7,9 @@ namespace $ext_rootnamespace$.Controllers
     using DotNetNuke.Web.Api;
     using NSwag.Annotations;
     using $ext_rootnamespace$.Data.Entities;
+    using $ext_rootnamespace$.DTO;
     using $ext_rootnamespace$.Services;
     using System;
-    using System.Collections.Generic;
     using System.Net;
     using System.Web.Http;
 
@@ -37,13 +37,19 @@ namespace $ext_rootnamespace$.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
-        [SwaggerResponse(HttpStatusCode.OK, typeof(Item), Description = "OK")]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(ItemViewModel), Description = "OK")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, typeof(string), Description = "Bad Request")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
-        public IHttpActionResult CreateItem(Item item)
+        public IHttpActionResult CreateItem(CreateItemDTO item)
         {
             try
             {
                 return this.Ok(this.itemService.CreateItem(item, this.UserInfo.UserID));
+            }
+            catch (ArgumentNullException ex)
+            {
+                this.Logger.Error(ex.Message, message);
+                return this.BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -66,15 +72,14 @@ namespace $ext_rootnamespace$.Controllers
         [AllowAnonymous]
         [SwaggerResponse(
             HttpStatusCode.OK,
-            typeof((IList<Item> items, int page, int resultCount, int pageSize, bool CanEdit)),
+            typeof(ItemsPageViewModel),
             Description = "OK")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
         public IHttpActionResult GetItemsPage(string query, int page = 1, int pageSize = 10, bool descending = false)
         {
             try
             {
-                var result = this.itemService.GetItemsPage(query, page, pageSize, descending);
-                return this.Ok(new { result.items, page, result.resultCount, result.pageCount, this.CanEdit });
+                return this.Ok(this.itemService.GetItemsPage(query, page, pageSize, descending));
             }
             catch (Exception ex)
             {
@@ -88,28 +93,46 @@ namespace $ext_rootnamespace$.Controllers
         /// <summary>
         /// Deletes an existing item.
         /// </summary>
-        /// <param name="item">The item to delete.</param>
+        /// <param name="itemId">The id of the item to delete.</param>
         /// <returns>Nothing.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
         [SwaggerResponse(HttpStatusCode.OK, typeof(void), Description = "OK")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
-        public IHttpActionResult DeleteItem(Item item)
+        public IHttpActionResult DeleteItem(int itemId)
         {
             try
             {
-                if (item == null)
-                {
-                    return this.NotFound();
-                }
-
-                this.itemService.DeleteItem(item);
+                this.itemService.DeleteItem(itemId);
                 return this.Ok();
             }
             catch (Exception ex)
             {
                 string message = "An unexpected error occured while trying to delete an item.";
+                this.Logger.Error(message, ex);
+                return this.InternalServerError(new Exception(message));
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Checks if a user can edit the current items.
+        /// </summary>
+        /// <returns>A boolean indicating whether the user can edit the current items.</returns>
+        [HttpGet]
+        [AllowAnonymous]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(bool), Description = "OK")]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
+        public IHttpActionResult UserCanEdit()
+        {
+            try
+            {
+                return this.Ok(this.CanEdit);
+            }
+            catch (Exception ex)
+            {
+                var message = "There was an error checking if the current user can edit this module.";
                 this.Logger.Error(message, ex);
                 return this.InternalServerError(new Exception(message));
                 throw;

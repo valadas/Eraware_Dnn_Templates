@@ -225,7 +225,7 @@ class Build : NukeBuild
         .DependsOn(Compile)
         .Executes(() =>
         {
-            var files = GlobFiles(RootDirectory, "bin/Debug/*.dll", "bin/debug/*.pdb");
+            var files = GlobFiles(RootDirectory, "bin/Debug/*.dll", "bin/Debug/*.pdb", "bin/Debug/*.xml);
             foreach (var file in files)
             {
                 Helpers.CopyFileToDirectoryIfChanged(file, RootDirectory.Parent.Parent / "bin");
@@ -538,6 +538,8 @@ class Build : NukeBuild
 
             NSwagTasks.NSwagWebApiToOpenApi(c => c
                 .AddAssembly(RootDirectory.Parent.Parent / "bin" / "$ext_rootnamespace$.dll")
+                .SetInfoTitle("$companyname$ $modulefriendlyname$")
+                .SetInfoVersion(GitVersion != null ? GitVersion.AssemblySemVer : "0.1.0")
                 .SetProcessArgumentConfigurator(a => a.Add("/DefaultUrlTemplate:/API/$ext_packagename$/{{controller}}/{{action}}"))
                 .SetOutput(swaggerFile));
 
