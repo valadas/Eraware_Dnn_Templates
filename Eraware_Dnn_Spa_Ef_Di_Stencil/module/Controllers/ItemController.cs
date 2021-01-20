@@ -11,13 +11,11 @@ namespace $ext_rootnamespace$.Controllers
     using System;
     using System.Collections.Generic;
     using System.Net;
-    using System.Diagnostics.CodeAnalysis;
     using System.Web.Http;
 
     /// <summary>
     /// Provides Web API access for items.
     /// </summary>
-    [ExcludeFromCodeCoverage]
     public class ItemController : ModuleApiController
     {
         private readonly IItemService itemService;

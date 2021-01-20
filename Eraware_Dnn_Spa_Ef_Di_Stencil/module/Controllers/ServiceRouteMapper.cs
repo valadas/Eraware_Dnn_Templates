@@ -4,12 +4,10 @@
 namespace $ext_rootnamespace$.Controllers
 {
     using DotNetNuke.Web.Api;
-    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Implements the Dnn IServiceRouteMapper to register this module routes.
     /// </summary>
-    [ExcludeFromCodeCoverage]
     public class ServiceRouteMapper : IServiceRouteMapper
     {
         /// <inheritdoc/>

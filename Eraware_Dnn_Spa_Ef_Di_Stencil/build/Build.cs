@@ -60,6 +60,8 @@ class Build : NukeBuild
     AbsolutePath WebProjectDirectory => RootDirectory / "Module.Web";
     AbsolutePath TestResultsDirectory => RootDirectory / "TestResults";
     AbsolutePath SwaggerDirectory => RootDirectory / "Swagger";
+    AbsolutePath GithubDirectory => RootDirectory / ".github";
+    Absolutepath BadgesDirectory => GithubDirectory / "badges";
 
     private string devViewsPath = "http://localhost:3333/build/";
     private string prodViewsPath = "DesktopModules/MyModule/resources/scripts/$ext_scopeprefixkebab$/";
@@ -134,7 +136,8 @@ class Build : NukeBuild
                 .SetLogger($"trx;LogFileName=UnitTests.trx")
                 .SetCoverletOutput(TestResultsDirectory / "UnitTests.xml")
                 .SetProjectFile(RootDirectory / "UnitTests" / "UnitTests.csproj")
-                .SetNoBuild(true));
+                .SetNoBuild(true)
+                .SetExcludeByFile("**/Controllers/**/*"));
 
             ReportGenerator(_ => _
                 .SetReports(TestResultsDirectory / "*.xml")
@@ -142,6 +145,9 @@ class Build : NukeBuild
                 .SetTargetDirectory(TestResultsDirectory)
                 .SetFramework("netcoreapp2.1")
             );
+
+            var testBadges = GlobFiles(TestResultsDirectory, "badge_branchcoverage.svg", "badge_linecoverage.svg");
+            testBadges.ForEach(f => CopyFileToDirectory(f, BadgesDirectory, FileExistsPolicy.Overwrite));
 
             if (IsWin && InvokedTargets.Contains(Test))
             {
