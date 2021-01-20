@@ -38,6 +38,9 @@
         </Folder>
         <ProjectItem ReplaceParameters="true">ModuleDbContext.cs</ProjectItem>
       </Folder>
+      <Folder Name="DTO" TargetFolderName="DTO">
+        <ProjectItem ReplaceParameters="true">CreateItemDTO.cs</ProjectItem>
+      </Folder>
       <Folder Name="Properties" TargetFolderName="Properties">
         <ProjectItem TargetFileName="AssemblyInfo.cs" ReplaceParameters="true">AssemblyInfo.cs</ProjectItem>
       </Folder>
@@ -51,6 +54,10 @@
         <Folder Name="views">
           <ProjectItem ReplaceParameters="true">view.html</ProjectItem>
         </Folder>        
+      </Folder>
+      <Folder Name="ViewModels">
+        <ProjectItem ReplaceParameters="true">ItemsPageViewModel.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ItemViewModel.cs</ProjectItem>
       </Folder>
       <Folder Name="Controllers">
         <ProjectItem ReplaceParameters="true">ItemController.cs</ProjectItem>

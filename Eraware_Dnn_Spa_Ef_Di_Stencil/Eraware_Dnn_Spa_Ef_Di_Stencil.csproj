@@ -141,6 +141,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="module\ViewModels\ItemsPageViewModel.cs" />
+    <None Include="module\ViewModels\ItemViewModel.cs" />
     <None Include="UnitTests\Services\ItemServiceTests.cs" />
     <None Include="module\Services\ItemService.cs" />
     <None Include="module\Services\IItemService.cs" />
@@ -165,6 +167,7 @@
     </Content>
     <None Include="module\Data\Entities\BaseEntity.cs" />
     <None Include="module\Data\Repositories\Repository.cs" />
+    <None Include="module\DTO\CreateItemDTO.cs" />
     <Compile Include="module\Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

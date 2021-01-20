@@ -3,6 +3,8 @@
 
 using $ext_rootnamespace$.Data.Entities;
 using $ext_rootnamespace$.Data.Repositories;
+using $ext_rootnamespace$.DTO;
+using $ext_rootnamespace$.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,20 +28,29 @@ namespace $ext_rootnamespace$.Modules.Contacts.Services
         }
 
         /// <inheritdoc/>
-        public Item CreateItem(Item item, int userId)
+        /// <exception cref="ArgumentNullException"> is thrown if the item or one of its required properties are missing.</exception>
+        public ItemViewModel CreateItem(CreateItemDTO item, int userId)
         {
             if (item == null)
             {
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            if (string.IsNullOrWhiteSpace(item.Name))
+            {
+                throw new ArgumentNullException("The item name is required.", nameof(item.Name))
             }
 
             this.itemRepository.Create(item, userId);
 
-            return item;
+            var newItem = new Item() { Name = item.Name, Description = item.Description };
+            this.itemRepository.Create(newItem, userId);
+
+            return new ItemViewModel(newItem);
         }
 
         /// <inheritdoc/>
-        public (IList<Item> items, int page, int resultCount, int pageCount) GetItemsPage(string query, int page = 1, int pageSize = 10, bool descending = false)
+        public ItemsPageViewModel GetItemsPage(string query, int page = 1, int pageSize = 10, bool descending = false)
         {
             var items = this.itemRepository.Get();
             if (!string.IsNullOrWhiteSpace(query))
@@ -50,18 +61,19 @@ namespace $ext_rootnamespace$.Modules.Contacts.Services
             items = descending ? items.OrderByDescending(i => i.Name) : items.OrderBy(i => i.Name);
             items = this.itemRepository.GetPage(page, pageSize, items, out int resultCount, out int pageCount);
 
-            return (items.ToList(), page, resultCount, pageCount);
+            return new ItemsPageViewModel()
+            {
+                Items = items.Select(items => new ItemViewModel(i)).ToList(),
+                Page = page,
+                ResultCount = resultCount,
+                PageCount = pageCount,
+            };
         }
 
         /// <inheritdoc/>
-        public void DeleteItem(Item item)
+        public void DeleteItem(int itemId)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException("item");
-            }
-
-            this.itemRepository.Delete(item.Id);
+            this.itemRepository.Delete(itemId);
         }
     }
 }
