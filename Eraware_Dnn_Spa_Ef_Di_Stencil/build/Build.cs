@@ -67,8 +67,8 @@ class Build : NukeBuild
     private string prodViewsPath = "DesktopModules/MyModule/resources/scripts/$ext_scopeprefixkebab$/";
 
     string releaseNotes = "";
-    string owner = "";
-    string name = "";
+    string repositoryOwner = "";
+    string repositoryName = "";
     string branch = "";
     GitHubClient gitHubClient;
     Release release;
@@ -79,6 +79,12 @@ class Build : NukeBuild
             if (GitRepository != null)
             {
                 branch = GitRepository.Branch.StartsWith("refs/") ? GitRepository.Branch.Substring(11) : GitRepository.Branch;
+                repositoryOwner = GitRepository.Identifier.Split('/')[0];
+                repositoryName = GitRepository.Identifier.Split('/')[1];
+                var readme = ReadAllText(RootDirectory / "README.md", Encoding.UTF8);
+                readme = readme.Replace("{owner}", repositoryOwner);
+                readme = readme.Replace("{repository}", repositoryName);
+                WriteAllText(RootDirectory / "README.md", readme, Encoding.UTF8);
             }
             Logger.Info($"Set branch name to {branch}");
         });
@@ -321,8 +327,6 @@ class Build : NukeBuild
             Logger.Info($"We are on branch {branch}");
             if (branch == "master" || branch.StartsWith("release"))
             {
-                owner = GitRepository.Identifier.Split('/')[0];
-                name = GitRepository.Identifier.Split('/')[1];
                 gitHubClient = new GitHubClient(new ProductHeaderValue("Nuke"));
                 var tokenAuth = new Credentials(GithubToken);
                 gitHubClient.Credentials = tokenAuth;
@@ -339,7 +343,7 @@ class Build : NukeBuild
         {
 
             // Get the milestone
-            var milestone = gitHubClient.Issue.Milestone.GetAllForRepository(owner, name).Result.Where(m => m.Title == GitVersion.MajorMinorPatch).FirstOrDefault();
+            var milestone = gitHubClient.Issue.Milestone.GetAllForRepository(repositoryOwner, repositoryName).Result.Where(m => m.Title == GitVersion.MajorMinorPatch).FirstOrDefault();
             if (milestone == null)
             {
                 Logger.Warn("Milestone not found for this version");
@@ -352,14 +356,14 @@ class Build : NukeBuild
             {
                 State = ItemStateFilter.All
             };
-            var pullRequests = gitHubClient.Repository.PullRequest.GetAllForRepository(owner, name, prRequest).Result.Where(p =>
+            var pullRequests = gitHubClient.Repository.PullRequest.GetAllForRepository(repositoryOwner, repositoryName, prRequest).Result.Where(p =>
                 p.Milestone?.Title == milestone.Title &&
                 p.Merged == true &&
                 p.Milestone?.Title == GitVersion.MajorMinorPatch);
 
             // Build release notes
             var releaseNotesBuilder = new StringBuilder();
-            releaseNotesBuilder.AppendLine($"# {name} {milestone.Title}")
+            releaseNotesBuilder.AppendLine($"# {repositoryName} {milestone.Title}")
                 .AppendLine("")
                 .AppendLine($"A total of {pullRequests.Count()} pull requests where merged in this release.").AppendLine();
 
@@ -409,7 +413,7 @@ class Build : NukeBuild
                 TargetCommitish = GitVersion.Sha,
                 Prerelease = branch.StartsWith("release")
             };
-            release = gitHubClient.Repository.Release.Create(owner, name, newRelease).Result;
+            release = gitHubClient.Repository.Release.Create(repositoryOwner, repositoryName, newRelease).Result;
             Logger.Info($"{release.Name} released !");
 
             var artifactFile = GlobFiles(RootDirectory, "artifacts/**/*.zip").FirstOrDefault();

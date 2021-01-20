@@ -84,6 +84,7 @@
     <None Include="module\.github\workflows\build.yml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="module\README.md" />
     <None Include="module\stylecop.json" />
     <None Include="UnitTests\Build\Tests.targets" />
     <None Include="UnitTests\ProjectTemplate.csproj" />
