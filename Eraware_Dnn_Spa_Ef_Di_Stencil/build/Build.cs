@@ -61,10 +61,11 @@ class Build : NukeBuild
     AbsolutePath TestResultsDirectory => RootDirectory / "TestResults";
     AbsolutePath SwaggerDirectory => RootDirectory / "Swagger";
     AbsolutePath GithubDirectory => RootDirectory / ".github";
-    Absolutepath BadgesDirectory => GithubDirectory / "badges";
+    AbsolutePath BadgesDirectory => GithubDirectory / "badges";
+    AbsolutePath ClientServicesDirectory => WebProjectDirectory / "src" / "services";
 
     private string devViewsPath = "http://localhost:3333/build/";
-    private string prodViewsPath = "DesktopModules/MyModule/resources/scripts/$ext_scopeprefixkebab$/";
+    private string prodViewsPath = "DesktopModules/$modulename$/resources/scripts/$ext_scopeprefixkebab$/";
 
     string releaseNotes = "";
     string repositoryOwner = "";
@@ -225,10 +226,16 @@ class Build : NukeBuild
         .DependsOn(Compile)
         .Executes(() =>
         {
+            var manifest = GlobFiles(RootDirectory, "*.dnn").FirstOrDefault();
+            var assemblyFiles = Helpers.GetAssembliesFromManifest(manifest);
             var files = GlobFiles(RootDirectory, "bin/Debug/*.dll", "bin/Debug/*.pdb", "bin/Debug/*.xml);
             foreach (var file in files)
             {
-                Helpers.CopyFileToDirectoryIfChanged(file, RootDirectory.Parent.Parent / "bin");
+                var fileInfo = new FileInfo(file);
+                if (assemblyFiles.Contains(fileInfo.Name))
+                {
+                    Helpers.CopyFileToDirectoryIfChanged(file, RootDirectory.Parent.Parent / "bin");
+                }
             }
         });
 
@@ -299,6 +306,7 @@ class Build : NukeBuild
         .DependsOn(SetManifestVersions)
         .DependsOn(TagRelease)
         .DependsOn(SetPackagesVersions)
+        .DependsOn(Swagger)
         .Executes(() =>
         {
             NpmRun(s => s
@@ -507,7 +515,13 @@ class Build : NukeBuild
             installFiles.ForEach(i => CopyFileToDirectory(i, stagingDirectory));
 
             // Libraries
-            CopyDirectoryRecursively(RootDirectory / "bin" / "Release", stagingDirectory / "bin", excludeFile: (f) => !f.Name.EndsWith("dll", StringComparison.OrdinalIgnoreCase));
+            var manifest = GlobFiles(RootDirectory, "*.dnn").FirstOrDefault;
+            var assemblies = GlobFiles(RootDirectory / "bin" / Configuration, "*.dll");
+            var manifestAssemblies = Helpers.GetAssembliesFromManifest(manifest);
+            assemblies.ForEach(assembly =>
+            {
+                CopyFileToDirectory(assembly, stagingDirectory / "bin", FileExistsPolicy.Overwrite);
+            });
 
             // Install package
             string fileName = new DirectoryInfo(RootDirectory).Name + "_";
@@ -531,13 +545,13 @@ class Build : NukeBuild
         });
 
     AttributeTargets Swagger => _ => _
-        .DependsOn(DeployBinaries)
+        .DependsOn(Compile)
         .Executes(() =>
         {
             var swaggerFile = SwaggerDirectory / "Swagger.json";
 
             NSwagTasks.NSwagWebApiToOpenApi(c => c
-                .AddAssembly(RootDirectory.Parent.Parent / "bin" / "$ext_rootnamespace$.dll")
+                .AddAssembly(RootDirectory / "bin" / Configuration / "$rootnamespace$.dll")
                 .SetInfoTitle("$companyname$ $modulefriendlyname$")
                 .SetInfoVersion(GitVersion != null ? GitVersion.AssemblySemVer : "0.1.0")
                 .SetProcessArgumentConfigurator(a => a.Add("/DefaultUrlTemplate:/API/$ext_packagename$/{{controller}}/{{action}}"))
@@ -545,7 +559,19 @@ class Build : NukeBuild
 
             NSwagTasks.NSwagOpenApiToTypeScriptClient(c => c
                 .SetInput(swaggerFile)
-                .SetOutput(SwaggerDirectory / "GeneratedServices.ts"));
+                .SetOutput(ClientServicesDirectory / "services.ts")
+                .SetProcessArgumentConfigurator(c => c
+                    .Add("/Template:Fetch")
+                    .Add("/GenerateClientClasses:True")
+                    .Add("/GenerateOptionalParameters")
+                    .Add("/ClientBaseClass:ClientBase")
+                    .Add("/ConfigurationClass:ConfigureRequest")
+                    .Add("/UseTransformOptionsMethod:True")
+                    .Add("/MarkOptionalProperties:True")
+                    .Add($"/ExtensionCode:{ClientServicesDirectory / "client-base.ts"}")
+                    .Add("/UseGetBaseUrlMethod:True")
+                    .Add("/ProtectedMethods=ClientBase.getBaseUrl,ClientBase.transformOptions")
+                    .Add("/UseAbortSignal:True")));
         });
 
     Target CI => _ => _

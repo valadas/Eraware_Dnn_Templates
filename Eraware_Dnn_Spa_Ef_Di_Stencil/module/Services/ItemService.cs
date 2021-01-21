@@ -61,13 +61,16 @@ namespace $ext_rootnamespace$.Modules.Contacts.Services
             items = descending ? items.OrderByDescending(i => i.Name) : items.OrderBy(i => i.Name);
             items = this.itemRepository.GetPage(page, pageSize, items, out int resultCount, out int pageCount);
 
-            return new ItemsPageViewModel()
+            var itemsPageViewModel = new ItemsPageViewModel()
             {
-                Items = items.Select(items => new ItemViewModel(i)).ToList(),
+                Items = new List<ItemViewModel>(),
                 Page = page,
                 ResultCount = resultCount,
                 PageCount = pageCount,
             };
+            items.ToList().ForEach(i => itemsPageViewModel.Items.Add(new ItemViewModel(i)));
+
+            return itemsPageViewModel;
         }
 
         /// <inheritdoc/>

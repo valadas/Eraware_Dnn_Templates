@@ -25,7 +25,8 @@
           </Folder>
         </Folder>
         <Folder Name="services">
-          <ProjectItem ReplaceParameters="true">ItemService.ts</ProjectItem>
+          <ProjectItem ReplaceParameters="true">client-base.ts</ProjectItem>
+          <ProjectItem ReplaceParameters="true">services.ts</ProjectItem>
         </Folder>
         <ProjectItem>components.d.ts</ProjectItem>
         <ProjectItem ReplaceParameters="true">index.html</ProjectItem>
