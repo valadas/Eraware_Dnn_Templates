@@ -1,6 +1,6 @@
 import { Component, h, Prop, State, Host, Element } from '@stencil/core';
 import '@eraware/dnn-elements';
-import { ItemsService, IItem, IGetItemsResponse } from '../../services/ItemService';
+import { CreateItemDTO, ICreateItemDTO, IItemsPageViewModel, IItemViewModel, ItemClient, ItemsPageViewModel, ItemViewModel } from '../../services/services';
 import { Debounce } from '@eraware/dnn-elements';
 
 @Component({
@@ -9,7 +9,7 @@ import { Debounce } from '@eraware/dnn-elements';
   shadow: true
 })
 export class MyComponent {
-  private service: ItemsService;
+  private service: ItemClient;
   private pageSize = 10; // How many items to fetch per call.
   private lastScrollPosition = 0;
   private preloadOffset = 1000; // How many pixels to autoload items under the fold.
@@ -19,12 +19,12 @@ export class MyComponent {
    * Initializes the component
    */
   constructor() {
-    this.service = new ItemsService(this.moduleId);
+    this.service = new ItemClient({ moduleId: this.moduleId });
   }
 
   @Element() el: HTMLMyComponentElement;
 
-  @State() items: IItem[] = [];
+  @State() items: IItemViewModel[] = [];
   @State() lastFetchedPage = 0;
   @State() totalPages = 0;
   @State() availableItems = 0;
@@ -33,8 +33,7 @@ export class MyComponent {
   @State() elementWidth: number = 1200;
   @State() canEdit = false;
   @State() loading = true;
-  @State() newItem: IItem = {
-    Id: -1,
+  @State() newItem: ICreateItemDTO = {
     Name: "",
     Description: ""
   };
@@ -48,6 +47,7 @@ export class MyComponent {
     this.resizeHandler();
     window.addEventListener('resize', () => this.resizeHandler());
     this.updateSearchQuery();
+    this.service.userCanEdit().then(canEdit => this.canEdit = canEdit);
   }
 
   // eslint-disable-next-line @stencil/own-methods-must-be-private
@@ -88,19 +88,20 @@ export class MyComponent {
     this.expandedItem = null;
     this.lastFetchedPage = 0;
     this.loading = true;
-    this.service.GetItems(query, this.lastFetchedPage + 1, this.pageSize)
-      .then(data => {
-        if (this.items.length >= data.resultCount || query === "") { // We are getting less items than displayed or the search was reset
+    this.service.getItemsPage(query, this.lastFetchedPage + 1, this.pageSize, false)
+      .then(response => {
+        if (this.items.length >= response.resultCount || query === "") {
+          // We are getting less items than displayed or the search was reset
           // Reset the view to start a new preload behaviour
           this.lastScrollPosition = 0;
           this.infiniteScrollHandler();
         }
-        this.handleNewData(data);
+        this.handleNewData(response);
         this.searchQuery = query;
         this.infiniteScrollHandler();
         this.loading = false;
       })
-      .catch(error => alert(error));
+      .catch(reason => alert(reason));
   }
 
   private getNextPage() {
@@ -108,21 +109,20 @@ export class MyComponent {
       // We have less items than before, so we are in the process of resetting and won't fetch more pages yet.
       return;
     }
-    this.service.GetItems(this.searchQuery, this.lastFetchedPage + 1, this.pageSize)
-      .then(data => {
-        this.addResults(data);
+    this.service.getItemsPage(this.searchQuery, this.lastFetchedPage + 1, this.pageSize, false)
+      .then(response => {
+        this.addResults(response);
       })
   }
 
   /** Adds results to the existing ones */
-  private addResults(data: IGetItemsResponse) {
+  private addResults(data: IItemsPageViewModel) {
     if (data.page > this.lastFetchedPage) {
       // We have new data (not and old request we already have)
       this.items = [...this.items, ...data.items];
       this.lastFetchedPage = data.page;
       this.totalPages = data.pageCount;
       this.availableItems = data.resultCount;
-      this.canEdit = data.CanEdit;
       // Gives some time to the UI to render before the scroll handler fires to prevent too fast execution of infinite scroll.
       setTimeout(() => {
         this.infiniteScrollHandler();
@@ -131,29 +131,27 @@ export class MyComponent {
   }
 
   /** Clears current results in favor of new ones */
-  private handleNewData(data: IGetItemsResponse) {
+  private handleNewData(data: ItemsPageViewModel) {
     this.items = data.items;
     this.totalPages = data.pageCount;
     this.lastFetchedPage = data.page;
     this.availableItems = data.resultCount;
-    this.canEdit = data.CanEdit;
     this.lastScrollPosition = 0;
   }
 
   private submitNewItem() {
-    this.service.CreateItem(this.newItem)
+    this.service.createItem(this.newItem as CreateItemDTO)
       .then(() => {
         this.newItem = {
-          Id: -1,
-          Name: "",
-          Description: ""
+          name: "",
+          description: ""
         }
         this.updateSearchQuery(); // Forces update the UI.
       });
   }
 
-  private deleteItem(item: IItem) {
-    this.service.DeleteItem(item)
+  private deleteItem(item: ItemViewModel) {
+    this.service.deleteItem(item.id)
       .then(() => this.updateSearchQuery());
   }
 
@@ -169,11 +167,11 @@ export class MyComponent {
       {this.items.map((item) =>
         <div class="collapsible-row">
           <div class="collapsible-title">
-            <dnn-chevron expanded={this.expandedItem == item.Id} onChanged={(e) => e.detail ? this.expandedItem = item.Id : this.expandedItem = null} />
-            <strong>{item.Name}</strong>
+            <dnn-chevron expanded={this.expandedItem == item.id} onChanged={(e) => e.detail ? this.expandedItem = item.id : this.expandedItem = null} />
+            <strong>{item.name}</strong>
           </div>
           <dnn-collapsible expanded={this.expandedItem == item.Id}>
-            {item.Description?.length > 0 ? <div>{item.Description}</div> : <div>No description</div>}
+            {item.description?.length > 0 ? <div>{item.description}</div> : <div>No description</div>}
             <dnn-button type="tertiary" confirm={true} onConfirmed={() => this.deleteItem(item)}>Delete</dnn-button>
           </dnn-collapsible>
         </div>
@@ -183,17 +181,17 @@ export class MyComponent {
         <div class="add-item">
           <form class="add-grid" style={{ display: 'grid', gridTemplateColumns: this.elementWidth > 800 ? '1fr 3fr' : '1fr' }}>
             <label>Name:</label>
-            <input type="text" value={this.newItem.Name} required
-              onInput={e => this.newItem = { ...this.newItem, Name: (e.target as HTMLInputElement).value }}
+            <input type="text" value={this.newItem.name} required
+              onInput={e => this.newItem = { ...this.newItem, name: (e.target as HTMLInputElement).value }}
             ></input>
 
             <label>Description:</label>
-            <textarea value={this.newItem.Description}
-              onInput={e => this.newItem = { ...this.newItem, Description: (e.target as HTMLTextAreaElement).value }}
+            <textarea value={this.newItem.description}
+              onInput={e => this.newItem = { ...this.newItem, description: (e.target as HTMLTextAreaElement).value }}
             ></textarea>
           </form>
           <dnn-button type="primary"
-            disabled={this.newItem.Name.length < 1}
+            disabled={this.newItem.name.length < 1}
             onClick={() => this.submitNewItem()}
           >Add Item</dnn-button><br />
         </div>

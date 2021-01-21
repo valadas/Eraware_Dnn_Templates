@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using System.Xml;
 using static Nuke.Common.IO.FileSystemTasks;
 
 namespace BuildHelpers
@@ -101,7 +102,21 @@ namespace BuildHelpers
 
         public static string Dump(object obj)
         {
-            return obj.ToString() + System.Environment.NewLine + JsonConvert.SerializeObject(obj, Formatting.Indented);
+            return obj.ToString() + System.Environment.NewLine + JsonConvert.SerializeObject(obj, NewtonSoft.Json.Formatting.Indented);
         }
-    }
+
+        public static IEnumerable<string> GetAssembliesFromManifest(string manifestFilePath)
+        {
+            var doc = new XmlDocument();
+            doc.Load(manifestFilePath);
+            var nodes = doc.SelectNodes("dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly/name");
+            List<string> assemblies = new List<string>();
+            foreach (XmlNode node in nodes)
+            {
+                assemblies.Add(node.InnerText);
+            }
+
+            return assemblies;
+        }
+        }
 }
