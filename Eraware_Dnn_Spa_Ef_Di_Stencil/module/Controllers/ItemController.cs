@@ -6,9 +6,9 @@ namespace $ext_rootnamespace$.Controllers
     using DotNetNuke.Security;
     using DotNetNuke.Web.Api;
     using NSwag.Annotations;
-    using $ext_rootnamespace$.Data.Entities;
     using $ext_rootnamespace$.DTO;
     using $ext_rootnamespace$.Services;
+    using $ext_rootnamespace$.ViewModels;
     using System;
     using System.Net;
     using System.Web.Http;
@@ -48,7 +48,7 @@ namespace $ext_rootnamespace$.Controllers
             }
             catch (ArgumentNullException ex)
             {
-                this.Logger.Error(ex.Message, message);
+                this.Logger.Error(ex.Message, ex);
                 return this.BadRequest(ex.Message);
             }
             catch (Exception ex)
