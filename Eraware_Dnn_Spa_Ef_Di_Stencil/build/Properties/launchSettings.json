@@ -19,6 +19,10 @@
     "Swagger": {
       "commandName": "Project",
       "commandLineArgs": "--target Swagger --configuration Debug"
+    },
+    "DocFx": {
+      "commandName": "Project",
+      "commandLineArgs": "--target DocFx --configuration Debug"
     }
   }
 }

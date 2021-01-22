@@ -84,6 +84,12 @@
     <None Include=".editorconfig" />
     <None Include="App.config" />
     <AdditionalFiles Include="stylecop.json" />
+    <None Include="docfx_project\api\index.md" />
+    <None Include="docfx_project\articles\intro.md" />
+    <None Include="docfx_project\articles\toc.yml" />
+    <None Include="docfx_project\docfx.json" />
+    <None Include="docfx_project\index.md" />
+    <None Include="docfx_project\toc.yml" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +127,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="docfx_project\.gitignore" />
+    <Content Include="docfx_project\api\.gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="docfx_project\images\" />
   </ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

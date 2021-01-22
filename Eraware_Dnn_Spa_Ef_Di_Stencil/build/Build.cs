@@ -6,6 +6,7 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.Coverlet;
+using Nuke.common.Tools.DocFX;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.MSBuild;
@@ -63,6 +64,8 @@ class Build : NukeBuild
     AbsolutePath GithubDirectory => RootDirectory / ".github";
     AbsolutePath BadgesDirectory => GithubDirectory / "badges";
     AbsolutePath ClientServicesDirectory => WebProjectDirectory / "src" / "services";
+    AbsolutePath DocFxProjectDirectory => RootDirectory / "docfx_project";
+    AbsolutePath docsDirectory => RootDirectory / "docs";
 
     private string devViewsPath = "http://localhost:3333/build/";
     private string prodViewsPath = "DesktopModules/$modulename$/resources/scripts/$ext_scopeprefixkebab$/";
@@ -572,6 +575,18 @@ class Build : NukeBuild
                     .Add("/UseGetBaseUrlMethod:True")
                     .Add("/ProtectedMethods=ClientBase.getBaseUrl,ClientBase.transformOptions")
                     .Add("/UseAbortSignal:True")));
+        });
+
+    Target DocFx => _ => _
+        .DependsOn(Compile)
+        .Executes(() =>
+        {
+            DocFXTasks.DocFXMetadata(s => s
+                .SetProcessWorkingDirectory(DocFxProjectDirectory));
+
+            DocFXTasks.DocFXBuild(s => s
+                .SetOutputFolder(RootDirectory)
+                .SetProcessWorkingDirectory(DocFxProjectDirectory));
         });
 
     Target CI => _ => _
