@@ -102,7 +102,7 @@ namespace BuildHelpers
 
         public static string Dump(object obj)
         {
-            return obj.ToString() + System.Environment.NewLine + JsonConvert.SerializeObject(obj, NewtonSoft.Json.Formatting.Indented);
+            return obj.ToString() + System.Environment.NewLine + JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
         }
 
         public static IEnumerable<string> GetAssembliesFromManifest(string manifestFilePath)
