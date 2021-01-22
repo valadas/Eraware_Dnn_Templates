@@ -1,6 +1,5 @@
 ﻿// MIT License
 // Copyright $ext_companyname$
-
 namespace $ext_rootnamespace$.DTO
 {
     /// <summary>
