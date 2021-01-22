@@ -4,7 +4,7 @@
 using $ext_rootnamespace$.Data.Entities;
 using $ext_rootnamespace$.DTO;
 
-namespace Acme.Modules.Contacts.ViewModels
+namespace $ext_rootnamespace$.ViewModels
 {
     /// <summary>
     /// Represents the basic information about an item.
