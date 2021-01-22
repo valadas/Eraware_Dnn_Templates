@@ -34,8 +34,8 @@ export class MyComponent {
   @State() canEdit = false;
   @State() loading = true;
   @State() newItem: ICreateItemDTO = {
-    Name: "",
-    Description: ""
+    name: "",
+    description: ""
   };
 
   /** The Dnn module id */
@@ -170,9 +170,9 @@ export class MyComponent {
             <dnn-chevron expanded={this.expandedItem == item.id} onChanged={(e) => e.detail ? this.expandedItem = item.id : this.expandedItem = null} />
             <strong>{item.name}</strong>
           </div>
-          <dnn-collapsible expanded={this.expandedItem == item.Id}>
+          <dnn-collapsible expanded={this.expandedItem == item.id}>
             {item.description?.length > 0 ? <div>{item.description}</div> : <div>No description</div>}
-            <dnn-button type="tertiary" confirm={true} onConfirmed={() => this.deleteItem(item)}>Delete</dnn-button>
+            <dnn-button type="tertiary" confirm={true} onConfirmed={() => this.deleteItem(item as ItemViewModel)}>Delete</dnn-button>
           </dnn-collapsible>
         </div>
       )
