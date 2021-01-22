@@ -38,7 +38,7 @@
     <Content Include="src\components\my-component\readme.md" />
     <Content Include="src\index.html" />
     <Content Include="src\index.ts" />
-    <Content Include="src\services\clinet-base.ts" />
+    <Content Include="src\services\client-base.ts" />
     <Content Include="src\services\services.ts" />
     <Content Include=".eslintrc.json" />
     <Content Include=".editorconfig" />
