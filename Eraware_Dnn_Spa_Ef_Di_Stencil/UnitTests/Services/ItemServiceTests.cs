@@ -77,17 +77,9 @@ namespace UnitTests.Services
             this.itemRepository.Verify(i => i.Get(), Times.Once);
             this.itemRepository.Verify(i => i.GetPage(2, 12, result, out resultCount, out pageCount), Times.Once);
             Assert.IsType<ItemsPageViewModel>(finalReturn);
-            Assert.Equal(2, finalReturn.page); Assert.Equal(2, finalReturn.Page);
-            Assert.Equal(30, finalReturn.resultCount); Assert.Equal(30, finalReturn.ResultCount);
-            Assert.Equal(5, finalReturn.pageCount); Assert.Equal(5, finalReturn.PageCount);
-        }
-
-        [Fact]
-        public void DeleteItem_ThrowsIfNoItem()
-        {
-            Action deleteItem = () => this.itemService.DeleteItem(null);
-
-            Assert.Throws<ArgumentNullException>(deleteItem);
+            Assert.Equal(2, finalReturn.Page); Assert.Equal(2, finalReturn.Page);
+            Assert.Equal(30, finalReturn.ResultCount); Assert.Equal(30, finalReturn.ResultCount);
+            Assert.Equal(5, finalReturn.PageCount); Assert.Equal(5, finalReturn.PageCount);
         }
 
         [Fact]
