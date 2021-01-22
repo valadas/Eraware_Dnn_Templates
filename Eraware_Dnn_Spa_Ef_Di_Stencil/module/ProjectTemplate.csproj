@@ -89,6 +89,8 @@
     <None Include="docfx_project\articles\toc.yml" />
     <None Include="docfx_project\docfx.json" />
     <None Include="docfx_project\index.md" />
+    <None Include="docfx_project\templates\darkfx\partials\affix.tmpl.partial" />
+    <None Include="docfx_project\templates\darkfx\partials\head.tmpl.partial" />
     <None Include="docfx_project\toc.yml" />
     <None Include="README.md" />
   </ItemGroup>
@@ -131,6 +133,8 @@
   <ItemGroup>
     <Content Include="docfx_project\.gitignore" />
     <Content Include="docfx_project\api\.gitignore" />
+    <Content Include="docfx_project\templates\darkfx\styles\main.css" />
+    <Content Include="docfx_project\templates\darkfx\styles\toggle-theme.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="docfx_project\images\" />

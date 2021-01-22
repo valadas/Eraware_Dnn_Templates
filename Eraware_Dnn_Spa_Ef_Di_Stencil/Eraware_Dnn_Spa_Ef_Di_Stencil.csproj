@@ -74,8 +74,12 @@
     <Content Include="module\docfx_project\api\.gitignore" />
     <None Include="module\docfx_project\api\index.md" />
     <None Include="module\docfx_project\articles\toc.yml" />
+    <None Include="module\docfx_project\templates\darkfx\partials\head.tmpl.partial" />
     <None Include="module\docfx_project\toc.yml" />
     <None Include="module\docfx_project\index.md" />
+    <None Include="module\docfx_project\templates\darkfx\partials\affix.tmpl.partial" />
+    <Content Include="module\docfx_project\templates\darkfx\styles\toggle-theme.js" />
+    <Content Include="module\docfx_project\templates\darkfx\styles\main.css" />
     <Content Include="module\Redoc\index.html" />
     <Content Include="UnitTests\UnitTests.vstemplate" />
   </ItemGroup>
