@@ -47,8 +47,19 @@
           <ProjectItem ReplaceParameters="true">intro.md</ProjectItem>
           <ProjectItem ReplaceParameters="true">toc.yml</ProjectItem>
         </Folder>
-        <Folder Name="images" TargetFolderName="images">
-          
+        <Folder Name="images" TargetFolderName="images"> 
+        </Folder>
+        <Folder Name="templates" TargetFolderName="templates">
+          <Folder Name="darkfx" TargetFolderName="darkfx">
+            <Folder Name="partials" TargetFolderName="partials">
+              <ProjectItem>affix.tmpl.partial</ProjectItem>
+              <ProjectItem>head.tmpl.partial</ProjectItem>
+            </Folder>
+            <Folder Name="styles" TargetFolderName="styles">
+              <ProjectItem>main.css</ProjectItem>
+              <ProjectItem>toggle-theme.js</ProjectItem>
+            </Folder>
+          </Folder>
         </Folder>
         <ProjectItem ReplaceParameters="true">docfx.json</ProjectItem>
         <ProjectItem ReplaceParameters="true">index.md</ProjectItem>
