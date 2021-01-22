@@ -231,7 +231,7 @@ class Build : NukeBuild
         {
             var manifest = GlobFiles(RootDirectory, "*.dnn").FirstOrDefault();
             var assemblyFiles = Helpers.GetAssembliesFromManifest(manifest);
-            var files = GlobFiles(RootDirectory, "bin/Debug/*.dll", "bin/Debug/*.pdb", "bin/Debug/*.xml);
+            var files = GlobFiles(RootDirectory, "bin/Debug/*.dll", "bin/Debug/*.pdb", "bin/Debug/*.xml");
             foreach (var file in files)
             {
                 var fileInfo = new FileInfo(file);
