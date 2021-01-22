@@ -6,7 +6,7 @@ using $ext_rootnamespace$.DTO;
 using $ext_rootnamespace$.ViewModels;
 using System.Collections.Generic;
 
-namespace $ext_rootnamespace$.Modules.Contacts.Services
+namespace $ext_rootnamespace$.Services
 {
     /// <summary>
     /// Provides services to manage items.
@@ -35,6 +35,6 @@ namespace $ext_rootnamespace$.Modules.Contacts.Services
         /// <param name="pageSize">How many items are including per page.</param>
         /// <param name="descending">If true, sorts the results in descending order, if false in ascending order.</param>
         /// <returns><see cref="ItemsPageViewModel"/>.</returns>
-        ItermsPageViewModel GetItemsPage(string query, int page = 1, int pageSize = 10, bool descending = false);
+        ItemsPageViewModel GetItemsPage(string query, int page = 1, int pageSize = 10, bool descending = false);
     }
 }
