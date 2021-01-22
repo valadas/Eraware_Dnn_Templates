@@ -8,3 +8,5 @@ This template was generated from https://github.com/valadas/Eraware_Dnn_Template
 Built by Daniel Valadas @valadas
 
 If you like this template consider sponsoring at (https://github.com/sponsors/valadas)
+
+[Documentation](https://{owner}.github.io/{repository})

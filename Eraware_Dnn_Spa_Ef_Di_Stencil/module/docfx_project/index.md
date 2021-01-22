@@ -1,0 +1,1 @@
+﻿# $companyname$ $modulefriendlyname$ Documentation.
