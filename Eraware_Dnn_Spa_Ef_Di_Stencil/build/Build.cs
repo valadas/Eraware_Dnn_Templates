@@ -518,7 +518,7 @@ class Build : NukeBuild
             installFiles.ForEach(i => CopyFileToDirectory(i, stagingDirectory));
 
             // Libraries
-            var manifest = GlobFiles(RootDirectory, "*.dnn").FirstOrDefault;
+            var manifest = GlobFiles(RootDirectory, "*.dnn").FirstOrDefault();
             var assemblies = GlobFiles(RootDirectory / "bin" / Configuration, "*.dll");
             var manifestAssemblies = Helpers.GetAssembliesFromManifest(manifest);
             assemblies.ForEach(assembly =>
@@ -547,14 +547,14 @@ class Build : NukeBuild
             Logger.Success("Packaging succeeded!");
         });
 
-    AttributeTargets Swagger => _ => _
+    Target Swagger => _ => _
         .DependsOn(Compile)
         .Executes(() =>
         {
             var swaggerFile = SwaggerDirectory / "Swagger.json";
 
             NSwagTasks.NSwagWebApiToOpenApi(c => c
-                .AddAssembly(RootDirectory / "bin" / Configuration / "$rootnamespace$.dll")
+                .AddAssembly(RootDirectory / "bin" / Configuration / "$ext_rootnamespace$.dll")
                 .SetInfoTitle("$companyname$ $modulefriendlyname$")
                 .SetInfoVersion(GitVersion != null ? GitVersion.AssemblySemVer : "0.1.0")
                 .SetProcessArgumentConfigurator(a => a.Add("/DefaultUrlTemplate:/API/$ext_packagename$/{{controller}}/{{action}}"))

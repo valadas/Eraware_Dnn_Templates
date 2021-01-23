@@ -4,12 +4,13 @@
 using $ext_rootnamespace$.Data.Entities;
 using $ext_rootnamespace$.Data.Repositories;
 using $ext_rootnamespace$.DTO;
+using $ext_rootnamespace$.Services;
 using $ext_rootnamespace$.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace $ext_rootnamespace$.Modules.Contacts.Services
+namespace $ext_rootnamespace$.Services
 {
     /// <summary>
     /// Provides services to manage items.
@@ -38,7 +39,7 @@ namespace $ext_rootnamespace$.Modules.Contacts.Services
 
             if (string.IsNullOrWhiteSpace(item.Name))
             {
-                throw new ArgumentNullException("The item name is required.", nameof(item.Name))
+                throw new ArgumentNullException("The item name is required.", nameof(item.Name));
             }
 
             this.itemRepository.Create(item, userId);

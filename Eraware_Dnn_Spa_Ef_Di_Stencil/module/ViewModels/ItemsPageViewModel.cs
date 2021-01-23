@@ -4,7 +4,7 @@
 using $ext_rootnamespace$.Data.Entities;
 using System.Collections.Generic;
 
-namespace Acme.Modules.Contacts.ViewModels
+namespace $ext_rootnamespace$.ViewModels
 {
     /// <summary>
     /// Represents a page of items, <see cref="Item"/>.
