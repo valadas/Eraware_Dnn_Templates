@@ -501,7 +501,7 @@ class Build : NukeBuild
         .DependsOn(GenerateAppConfig)
         .DependsOn(SetBranch)
         .DependsOn(TagRelease)
-        .DependsOn(DocFx)
+        .DependsOn(Docs)
         .Executes(() =>
         {
             var stagingDirectory = ArtifactsDirectory / "staging";
@@ -588,6 +588,13 @@ class Build : NukeBuild
             DocFXTasks.DocFXBuild(s => s
                 .SetOutputFolder(RootDirectory)
                 .SetProcessWorkingDirectory(DocFxProjectDirectory));
+        });
+
+    Target Docs => _ => _
+        .DependsOn(Swagger)
+        .DependsOn(DoxFx)
+        .Executes(() =>
+        {
         });
 
     Target CI => _ => _
