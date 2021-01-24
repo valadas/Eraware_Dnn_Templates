@@ -1,6 +1,7 @@
 ﻿using EnvDTE;
 using EnvDTE100;
 using EnvDTE80;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.TemplateWizard;
 using System;
 using System.Collections.Generic;
@@ -33,10 +34,22 @@ namespace Eraware_Dnn_Templates
 
         public void RunFinished()
         {
-            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var projects = dte.Solution.Projects;
             foreach (Project project in projects)
             {
+                if (project.FullName.Contains("build"))
+                {
+                    foreach (ProjectItem item in project.ProjectItems)
+                    {
+                        if (item.Name.Contains("docs"))
+                        {
+                            item.Remove();
+                        }
+                    }
+                }
+
                 if (project.FullName.Contains("module.web"))
                 {
                     var configurations = (Array)project.ConfigurationManager.ConfigurationRowNames;

@@ -4,7 +4,7 @@
     --color-breadcrumb: #999;
     --color-underline: #ddd;
     --color-toc-hover: #fff;
-    --color-background: #2d2d30;
+    --color-background: #252527;
     --color-background-subnav: #333337;
     --color-background-dark: #1e1e1e;
     --color-background-table-alt: #212123;
@@ -192,7 +192,7 @@ article h4 {
         font-weight: bold;
         border-top: 2px solid;
         background-color: var(--color-background-dark);
-        border-radius: none;
+        border-radius: 0;
     }
 
     .alert > ul {
@@ -466,4 +466,35 @@ input:checked + .slider:before {
         white-space: nowrap;
         text-overflow: ellipsis;
     }
+}
+
+/** mermaid overrides **/
+code.lang-mermaid line.actor-line {
+    stroke: white !important;
+    stroke-width: 1px;
+}
+
+code.lang-mermaid .messageText {
+    fill: white !important;
+    stroke: white !important;
+}
+
+code.lang-mermaid .messageLine0 {
+    stroke: white !important;
+    fill: white !important;
+}
+
+code.lang-mermaid g {
+    fill: white !important;
+    stroke: white !important;
+}
+
+marker.arrowhead path {
+    fill: white !important;
+    stroke: white !important;
+}
+
+code.lang-mermaid {
+    fill: white !important;
+    stroke: white !important;
 }

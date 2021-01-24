@@ -501,6 +501,7 @@ class Build : NukeBuild
         .DependsOn(GenerateAppConfig)
         .DependsOn(SetBranch)
         .DependsOn(TagRelease)
+        .DependsOn(DocFx)
         .Executes(() =>
         {
             var stagingDirectory = ArtifactsDirectory / "staging";

@@ -55,12 +55,16 @@
     <None Include="Build.cs" />
     <None Include="Configuration.cs" />
     <None Include="Helpers.cs" />
+    <None Include="docs\articles\git.html" />
+    <None Include="docs\articles\intro.html" />
+    <None Include="docs\images\create-beta-release.gif" />
+    <None Include="docs\images\create-develop-branch.gif" />
+    <None Include="docs\images\create-pull-request.gif" />
+    <None Include="docs\images\create-release.gif" />
+    <None Include="docs\images\initial-commit.gif" />
+    <None Include="docs\images\install-module.gif" />
+    <None Include="docs\images\Package.gif" />
     <None Include="Properties\launchSettings.json" />
-    <None Include="Documentation\documentation.html" />
-    <None Include="Documentation\images\CreateProject.gif" />
-    <None Include="Documentation\images\Install.gif" />
-    <None Include="Documentation\images\Package.gif" />
-    <None Include="Documentation\images\ProjectSettings.gif" />
   </ItemGroup>
 
 </Project>
