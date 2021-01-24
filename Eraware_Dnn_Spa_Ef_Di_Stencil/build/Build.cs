@@ -556,7 +556,7 @@ class Build : NukeBuild
 
             NSwagTasks.NSwagWebApiToOpenApi(c => c
                 .AddAssembly(RootDirectory / "bin" / Configuration / "$ext_rootnamespace$.dll")
-                .SetInfoTitle("$companyname$ $modulefriendlyname$")
+                .SetInfoTitle("$ext_companyname$ $ext_modulefriendlyname$")
                 .SetInfoVersion(GitVersion != null ? GitVersion.AssemblySemVer : "0.1.0")
                 .SetProcessArgumentConfigurator(a => a.Add("/DefaultUrlTemplate:/API/$ext_packagename$/{{controller}}/{{action}}"))
                 .SetOutput(swaggerFile));

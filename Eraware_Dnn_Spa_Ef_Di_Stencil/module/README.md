@@ -2,7 +2,7 @@
 ![Line Test Coverage](.github/badges/badge_linecoverage.svg)
 ![Branch Test Coverage](.github/badges/badge_branchcoverage.svg)
 
-# $companyname$ $modulefriendlyname$
+# $ext_companyname$ $ext_modulefriendlyname$
 
 This template was generated from https://github.com/valadas/Eraware_Dnn_Templates
 Built by Daniel Valadas @valadas
