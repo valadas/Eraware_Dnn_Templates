@@ -42,8 +42,6 @@ namespace $ext_rootnamespace$.Services
                 throw new ArgumentNullException("The item name is required.", nameof(item.Name));
             }
 
-            this.itemRepository.Create(item, userId);
-
             var newItem = new Item() { Name = item.Name, Description = item.Description };
             this.itemRepository.Create(newItem, userId);
 

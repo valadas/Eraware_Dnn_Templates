@@ -85,12 +85,16 @@
     <None Include="App.config" />
     <AdditionalFiles Include="stylecop.json" />
     <None Include="docfx_project\api\index.md" />
+    <None Include="docfx_project\articles\git.md" />
     <None Include="docfx_project\articles\intro.md" />
+    <None Include="docfx_project\articles\project-architecture.md" />
     <None Include="docfx_project\articles\toc.yml" />
     <None Include="docfx_project\docfx.json" />
     <None Include="docfx_project\index.md" />
     <None Include="docfx_project\templates\darkfx\partials\affix.tmpl.partial" />
     <None Include="docfx_project\templates\darkfx\partials\head.tmpl.partial" />
+    <None Include="docfx_project\templates\mermaid\partials\scripts.tmpl.partial" />
+    <None Include="docfx_project\templates\mermaid\styles\mermaid.min.js.map" />
     <None Include="docfx_project\toc.yml" />
     <None Include="README.md" />
   </ItemGroup>
@@ -133,11 +137,17 @@
   <ItemGroup>
     <Content Include="docfx_project\.gitignore" />
     <Content Include="docfx_project\api\.gitignore" />
+    <Content Include="docfx_project\images\create-beta-release.gif" />
+    <Content Include="docfx_project\images\create-develop-branch.gif" />
+    <Content Include="docfx_project\images\create-pull-request.gif" />
+    <Content Include="docfx_project\images\create-release.gif" />
+    <Content Include="docfx_project\images\initial-commit.gif" />
+    <Content Include="docfx_project\images\install-module.gif" />
+    <Content Include="docfx_project\images\Package.gif" />
     <Content Include="docfx_project\templates\darkfx\styles\main.css" />
     <Content Include="docfx_project\templates\darkfx\styles\toggle-theme.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="docfx_project\images\" />
+    <Content Include="docfx_project\templates\mermaid\styles\main.js" />
+    <Content Include="docfx_project\templates\mermaid\styles\mermaid.min.js" />
   </ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

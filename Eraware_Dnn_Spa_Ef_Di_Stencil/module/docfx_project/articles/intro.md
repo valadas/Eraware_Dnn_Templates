@@ -1,5 +1,33 @@
-﻿# INTRODUCTION
-This template was generated from https://github.com/valadas/Eraware_Dnn_Templates
-Built by Daniel Valadas
+﻿# Getting Started
 
-If you like this template consider sponsoring at (https://github.com/sponsors/valadas)
+Welcome to you new module template!
+
+## First build
+
+-   **Package your module**
+
+    Build tasks are placed in the launch profiles menu in Visual Studio,
+    click the debug button with the **Package** profile selected.
+    This will fire up a console application to run the module build and will
+    create a Dnn extension package in the website under the `install\modules` folder.
+
+    Don't worry about opening up that folder, see next step.
+
+    > [!NOTE]
+    > The build script is simply a console application in the <em>build</em> project, it uses <a href="https://nuke.build/" target="_blank">Nuke</a> to help with utilities.
+                You can later customize that process simply by editing the <em>Build.cs</em> file.
+    ![Package your module](../images/Package.gif)
+
+-   **Install your module**
+
+    Now we need to install the module in Dnn to see it in action. Simply log in as a SuperUser (host) and navigate to Extensions / Available Extensions to install your new module.
+
+    Then create a test page and put the module on it.
+
+    > [!NOTE]
+    > The module javascript fires up on page load, so after dropping your module you need to refresh the page to see it work.
+    ![Install module](../images/install-module.gif)
+
+Congratulations, you have a working module!
+
+Now let's make it a [git](./git.md) repository.

@@ -15,17 +15,23 @@
   </TemplateData>
   <TemplateContent>
     <Project File="ProjectTemplate.csproj" TargetFileName="_build.csproj">
+      <Folder Name="docs" TargetFolderName="docs">
+        <Folder Name="articles" TargetFolderName="articles">
+          <ProjectItem OpenInWebBrowser="true">intro.html</ProjectItem>
+          <ProjectItem>git.html</ProjectItem>
+        </Folder>
+        <Folder Name="images" TargetFolderName="images">
+          <ProjectItem>create-beta-release.gif</ProjectItem>
+          <ProjectItem>create-develop-branch.gif</ProjectItem>
+          <ProjectItem>create-pull-request.gif</ProjectItem>
+          <ProjectItem>create-release.gif</ProjectItem>
+          <ProjectItem>initial-commit.gif</ProjectItem>
+          <ProjectItem>install-module.gif</ProjectItem>
+          <ProjectItem>Package.gif</ProjectItem>
+        </Folder>
+      </Folder>
       <Folder Name="Properties">
         <ProjectItem ReplaceParameters="true">launchSettings.json</ProjectItem>
-      </Folder>
-      <Folder Name="Documentation">
-        <Folder Name="images">
-          <ProjectItem>CreateProject.gif</ProjectItem>
-          <ProjectItem>Install.gif</ProjectItem>
-          <ProjectItem>Package.gif</ProjectItem>
-          <ProjectItem>ProjectSettings.gif</ProjectItem>
-        </Folder>
-        <ProjectItem OpenInWebBrowser="true" OpenOrder="10">documentation.html</ProjectItem>
       </Folder>
       <ProjectItem ReplaceParameters="true">.editorconfig</ProjectItem>
       <ProjectItem ReplaceParameters="true">_build.csproj.DotSettings</ProjectItem>          

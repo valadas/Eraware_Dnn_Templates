@@ -44,10 +44,19 @@
           <ProjectItem>index.md</ProjectItem>
         </Folder>
         <Folder Name="articles" TargetFolderName="articles">
+          <ProjectItem>git.md</ProjectItem>
           <ProjectItem ReplaceParameters="true">intro.md</ProjectItem>
+          <ProjectItem>project-architecture.md</ProjectItem>
           <ProjectItem ReplaceParameters="true">toc.yml</ProjectItem>
         </Folder>
-        <Folder Name="images" TargetFolderName="images"> 
+        <Folder Name="images" TargetFolderName="images">
+          <ProjectItem>create-beta-release.gif</ProjectItem>
+          <ProjectItem>create-develop-branch.gif</ProjectItem>
+          <ProjectItem>create-pull-request.gif</ProjectItem>
+          <ProjectItem>create-release.gif</ProjectItem>
+          <ProjectItem>initial-commit.gif</ProjectItem>
+          <ProjectItem>install-module.gif</ProjectItem>
+          <ProjectItem>Package.gif</ProjectItem>
         </Folder>
         <Folder Name="templates" TargetFolderName="templates">
           <Folder Name="darkfx" TargetFolderName="darkfx">
@@ -58,6 +67,16 @@
             <Folder Name="styles" TargetFolderName="styles">
               <ProjectItem>main.css</ProjectItem>
               <ProjectItem>toggle-theme.js</ProjectItem>
+            </Folder>
+          </Folder>
+          <Folder Name="mermaid" TargetFolderName="mermaid">
+            <Folder Name="partials" TargetFolderName="partials">
+              <ProjectItem>scripts.tmpl.partial</ProjectItem>
+            </Folder>
+            <Folder Name="styles" TargetFolderName="styles">
+              <ProjectItem>mermaid.min.js.map</ProjectItem>
+              <ProjectItem>main.js</ProjectItem>
+              <ProjectItem>mermaid.min.js</ProjectItem>
             </Folder>
           </Folder>
         </Folder>

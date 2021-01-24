@@ -4,7 +4,7 @@
       "src": [
         {
           "files": [
-            "$rootnamespace$.dll"
+            "$ext_rootnamespace$.dll"
           ],
           "src": "../bin/Debug"
         }
@@ -52,9 +52,10 @@
     "fileMetadataFiles": [],
     "template": [
       "default",
-      "templates/darkfx"
+      "templates/darkfx",
+      "templates/mermaid"
     ],
-    "postProcessors": [],
+    "postProcessors": [ "ExtractSearchIndex" ],
     "markdownEngineName": "markdig",
     "noLangKeyword": false
   }

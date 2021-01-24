@@ -70,25 +70,42 @@
     <Content Include="build\Build.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="build\docs\articles\git.html" />
+    <Content Include="build\docs\articles\intro.html" />
+    <Content Include="build\docs\images\create-beta-release.gif" />
+    <Content Include="build\docs\images\create-develop-branch.gif" />
+    <Content Include="build\docs\images\create-pull-request.gif" />
+    <Content Include="build\docs\images\create-release.gif" />
+    <Content Include="build\docs\images\initial-commit.gif" />
+    <Content Include="build\docs\images\install-module.gif" />
+    <Content Include="build\docs\images\Package.gif" />
     <Content Include="module\docfx_project\.gitignore" />
     <Content Include="module\docfx_project\api\.gitignore" />
     <None Include="module\docfx_project\api\index.md" />
+    <None Include="module\docfx_project\articles\project-architecture.md" />
     <None Include="module\docfx_project\articles\toc.yml" />
     <None Include="module\docfx_project\templates\darkfx\partials\head.tmpl.partial" />
+    <None Include="module\docfx_project\templates\mermaid\partials\scripts.tmpl.partial" />
+    <None Include="module\docfx_project\templates\mermaid\styles\mermaid.min.js.map" />
     <None Include="module\docfx_project\toc.yml" />
     <None Include="module\docfx_project\index.md" />
     <None Include="module\docfx_project\templates\darkfx\partials\affix.tmpl.partial" />
+    <None Include="module\docfx_project\articles\git.md" />
+    <Content Include="module\docfx_project\images\create-beta-release.gif" />
+    <Content Include="module\docfx_project\images\create-develop-branch.gif" />
+    <Content Include="module\docfx_project\images\create-pull-request.gif" />
+    <Content Include="module\docfx_project\images\create-release.gif" />
+    <Content Include="module\docfx_project\images\initial-commit.gif" />
+    <Content Include="module\docfx_project\images\install-module.gif" />
+    <Content Include="module\docfx_project\images\Package.gif" />
     <Content Include="module\docfx_project\templates\darkfx\styles\toggle-theme.js" />
     <Content Include="module\docfx_project\templates\darkfx\styles\main.css" />
+    <Content Include="module\docfx_project\templates\mermaid\styles\main.js" />
+    <Content Include="module\docfx_project\templates\mermaid\styles\mermaid.min.js" />
     <Content Include="module\Redoc\index.html" />
     <Content Include="UnitTests\UnitTests.vstemplate" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="build\Documentation\documentation.html" />
-    <Content Include="build\Documentation\images\CreateProject.gif" />
-    <Content Include="build\Documentation\images\Install.gif" />
-    <Content Include="build\Documentation\images\Package.gif" />
-    <Content Include="build\Documentation\images\ProjectSettings.gif" />
     <Content Include="module.web\.gitignore" />
     <None Include="module.web\.eslintrc.json" />
     <None Include="module\.editorconfig" />
