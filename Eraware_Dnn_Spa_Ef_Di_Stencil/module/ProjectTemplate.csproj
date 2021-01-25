@@ -67,7 +67,6 @@
     <Compile Include="ViewModels\ItemsPageViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
     <Resource Include=".gitignore" />
-    <Resource Include="Redoc\index.html" />
     <Resource Include="resources\images\module-icon.png" />
     <Resource Include="resources\views\view.html" />
     <Resource Include="LICENSE" />
@@ -91,10 +90,12 @@
     <None Include="docfx_project\articles\toc.yml" />
     <None Include="docfx_project\docfx.json" />
     <None Include="docfx_project\index.md" />
-    <None Include="docfx_project\templates\darkfx\partials\affix.tmpl.partial" />
-    <None Include="docfx_project\templates\darkfx\partials\head.tmpl.partial" />
-    <None Include="docfx_project\templates\mermaid\partials\scripts.tmpl.partial" />
-    <None Include="docfx_project\templates\mermaid\styles\mermaid.min.js.map" />
+    <None Include="docfx_project\rest\rest-api.md" />
+    <None Include="docfx_project\rest\toc.yml" />
+    <None Include="docfx_project\templates\mytemplate\layout\_master.tmpl" />
+    <None Include="docfx_project\templates\mytemplate\partials\affix.tmpl.partial" />
+    <None Include="docfx_project\templates\mytemplate\partials\rest.tmpl.partial" />
+    <None Include="docfx_project\templates\mytemplate\partials\scripts.tmpl.partial" />
     <None Include="docfx_project\toc.yml" />
     <None Include="README.md" />
   </ItemGroup>
@@ -144,10 +145,11 @@
     <Content Include="docfx_project\images\initial-commit.gif" />
     <Content Include="docfx_project\images\install-module.gif" />
     <Content Include="docfx_project\images\Package.gif" />
-    <Content Include="docfx_project\templates\darkfx\styles\main.css" />
-    <Content Include="docfx_project\templates\darkfx\styles\toggle-theme.js" />
-    <Content Include="docfx_project\templates\mermaid\styles\main.js" />
-    <Content Include="docfx_project\templates\mermaid\styles\mermaid.min.js" />
+    <Content Include="docfx_project\mytemplate\styles\main.css" />
+    <Content Include="docfx_project\mytemplate\styles\main.js" />
+    <Content Include="docfx_project\mytemplate\styles\mermaid.min.js" />
+    <Content Include="docfx_project\mytemplate\styles\mermaid.min.js.map" />
+    <Content Include="docfx_project\mytemplate\styles\toggle-theme.js" />
   </ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

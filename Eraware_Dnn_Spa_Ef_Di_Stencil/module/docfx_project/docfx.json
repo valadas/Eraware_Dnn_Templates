@@ -27,12 +27,19 @@
           "toc.yml",
           "*.md"
         ]
+      },
+      {
+        "files": [
+          "rest/*.md",
+          "rest/toc.yml"
+        ]
       }
     ],
     "resource": [
       {
         "files": [
-          "images/**"
+          "images/**",
+          "rest/*.json"
         ]
       }
     ],
@@ -51,9 +58,7 @@
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [
-      "default",
-      "templates/darkfx",
-      "templates/mermaid"
+      "mytemplate"
     ],
     "postProcessors": [ "ExtractSearchIndex" ],
     "markdownEngineName": "markdig",

@@ -1,4 +1,4 @@
-﻿const sw = document.getElementById("switch-style"), b = document.body;
+const sw = document.getElementById("switch-style"), b = document.body;
 if (sw && b) {
     sw.checked = true;
     if (window.localStorage && localStorage.getItem("theme") === "light-theme") {
@@ -14,4 +14,4 @@ if (sw && b) {
             this.checked ? localStorage.setItem("theme", "dark-theme") : localStorage.setItem("theme", "light-theme")
         }
     })
-} 
+}

@@ -84,12 +84,16 @@
     <None Include="module\docfx_project\api\index.md" />
     <None Include="module\docfx_project\articles\project-architecture.md" />
     <None Include="module\docfx_project\articles\toc.yml" />
-    <None Include="module\docfx_project\templates\darkfx\partials\head.tmpl.partial" />
-    <None Include="module\docfx_project\templates\mermaid\partials\scripts.tmpl.partial" />
-    <None Include="module\docfx_project\templates\mermaid\styles\mermaid.min.js.map" />
+    <None Include="module\docfx_project\rest\rest-api.md" />
+    <None Include="module\docfx_project\rest\toc.yml" />
+    <None Include="module\docfx_project\templates\mytemplate\partials\scripts.tmpl.partial" />
+    <None Include="module\docfx_project\templates\mytemplate\partials\rest.tmpl.partial" />
+    <None Include="module\docfx_project\templates\mytemplate\partials\affix.tmpl.partial" />
+    <Content Include="module\docfx_project\templates\mytemplate\styles\main.js" />
+    <Content Include="module\docfx_project\templates\mytemplate\styles\main.css" />
+    <None Include="module\docfx_project\templates\mytemplate\styles\mermaid.min.js.map" />
     <None Include="module\docfx_project\toc.yml" />
     <None Include="module\docfx_project\index.md" />
-    <None Include="module\docfx_project\templates\darkfx\partials\affix.tmpl.partial" />
     <None Include="module\docfx_project\articles\git.md" />
     <Content Include="module\docfx_project\images\create-beta-release.gif" />
     <Content Include="module\docfx_project\images\create-develop-branch.gif" />
@@ -98,11 +102,9 @@
     <Content Include="module\docfx_project\images\initial-commit.gif" />
     <Content Include="module\docfx_project\images\install-module.gif" />
     <Content Include="module\docfx_project\images\Package.gif" />
-    <Content Include="module\docfx_project\templates\darkfx\styles\toggle-theme.js" />
-    <Content Include="module\docfx_project\templates\darkfx\styles\main.css" />
-    <Content Include="module\docfx_project\templates\mermaid\styles\main.js" />
-    <Content Include="module\docfx_project\templates\mermaid\styles\mermaid.min.js" />
-    <Content Include="module\Redoc\index.html" />
+    <None Include="module\docfx_project\templates\mytemplate\layout\_master.tmpl" />
+    <Content Include="module\docfx_project\templates\mytemplate\styles\mermaid.min.js" />
+    <Content Include="module\docfx_project\templates\mytemplate\styles\toggle-theme.js" />
     <Content Include="UnitTests\UnitTests.vstemplate" />
   </ItemGroup>
   <ItemGroup>

@@ -470,31 +470,31 @@ input:checked + .slider:before {
 
 /** mermaid overrides **/
 code.lang-mermaid line.actor-line {
-    stroke: white !important;
+    stroke: var(--color-foreground);
     stroke-width: 1px;
 }
 
 code.lang-mermaid .messageText {
-    fill: white !important;
-    stroke: white !important;
+    fill: var(--color-foreground);
+    stroke: var(--color-foreground);
 }
 
 code.lang-mermaid .messageLine0 {
-    stroke: white !important;
-    fill: white !important;
+    stroke: var(--color-foreground);
+    fill: var(--color-foreground);
 }
 
 code.lang-mermaid g {
-    fill: white !important;
-    stroke: white !important;
+    fill: var(--color-foreground);
+    stroke: var(--color-foreground);
 }
 
 marker.arrowhead path {
-    fill: white !important;
-    stroke: white !important;
+    fill: var(--color-foreground);
+    stroke: var(--color-foreground);
 }
 
 code.lang-mermaid {
-    fill: white !important;
-    stroke: white !important;
+    fill: var(--color-foreground);
+    stroke: var(--color-foreground);
 }

@@ -65,7 +65,7 @@ class Build : NukeBuild
     AbsolutePath BadgesDirectory => GithubDirectory / "badges";
     AbsolutePath ClientServicesDirectory => WebProjectDirectory / "src" / "services";
     AbsolutePath DocFxProjectDirectory => RootDirectory / "docfx_project";
-    AbsolutePath docsDirectory => RootDirectory / "docs";
+    AbsolutePath DocsDirectory => RootDirectory / "docs";
 
     private string devViewsPath = "http://localhost:3333/build/";
     private string prodViewsPath = "DesktopModules/$modulename$/resources/scripts/$ext_scopeprefixkebab$/";
@@ -552,7 +552,7 @@ class Build : NukeBuild
         .DependsOn(Compile)
         .Executes(() =>
         {
-            var swaggerFile = SwaggerDirectory / "Swagger.json";
+            var swaggerFile = SwaggerDirectory / "rest.json";
 
             NSwagTasks.NSwagWebApiToOpenApi(c => c
                 .AddAssembly(RootDirectory / "bin" / Configuration / "$ext_rootnamespace$.dll")
@@ -576,12 +576,18 @@ class Build : NukeBuild
                     .Add("/UseGetBaseUrlMethod:True")
                     .Add("/ProtectedMethods=ClientBase.getBaseUrl,ClientBase.transformOptions")
                     .Add("/UseAbortSignal:True")));
+
+            var swaggerSpec = GlobFiles(SwaggerDirectory / "*.json").FirstOrDefault();
+            CopyFileToDirectory(swaggerSpec, DocFxProjectDirectory / "rest", FileExistsPolicy.Overwrite);
         });
 
     Target DocFx => _ => _
         .DependsOn(Compile)
+        .After(Swagger)
         .Executes(() =>
         {
+            EnsureCleanCirectory(DocsDirectory)
+
             DocFXTasks.DocFXMetadata(s => s
                 .SetProcessWorkingDirectory(DocFxProjectDirectory));
 
