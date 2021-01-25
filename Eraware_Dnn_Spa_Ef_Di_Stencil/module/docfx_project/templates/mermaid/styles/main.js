@@ -1,1 +1,0 @@
-mermaid.init({htmlLabels: true, securityLevel: "antiscript"}, $("code.lang-mermaid"));

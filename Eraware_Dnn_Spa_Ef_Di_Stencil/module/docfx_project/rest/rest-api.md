@@ -1,0 +1,1 @@
+﻿<redoc spec-url='rest.json'></redoc>

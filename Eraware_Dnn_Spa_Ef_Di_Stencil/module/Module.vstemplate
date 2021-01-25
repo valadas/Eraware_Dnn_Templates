@@ -58,25 +58,26 @@
           <ProjectItem>install-module.gif</ProjectItem>
           <ProjectItem>Package.gif</ProjectItem>
         </Folder>
+        <Folder Name="rest" TargetFolderName="rest">
+          <ProjectItem>rest-api.md</ProjectItem>
+          <ProjectItem>toc.yml</ProjectItem>
+        </Folder>
         <Folder Name="templates" TargetFolderName="templates">
-          <Folder Name="darkfx" TargetFolderName="darkfx">
+          <Folder Name="mytemplate" TargetFolderName="mytemplate">
+            <Folder Name="layout" TargetFolderName="layout">
+              <ProjectItem>_master.tmpl</ProjectItem>
+            </Folder>
             <Folder Name="partials" TargetFolderName="partials">
               <ProjectItem>affix.tmpl.partial</ProjectItem>
-              <ProjectItem>head.tmpl.partial</ProjectItem>
-            </Folder>
-            <Folder Name="styles" TargetFolderName="styles">
-              <ProjectItem>main.css</ProjectItem>
-              <ProjectItem>toggle-theme.js</ProjectItem>
-            </Folder>
-          </Folder>
-          <Folder Name="mermaid" TargetFolderName="mermaid">
-            <Folder Name="partials" TargetFolderName="partials">
+              <ProjectItem>rest.tmpl.partial</ProjectItem>
               <ProjectItem>scripts.tmpl.partial</ProjectItem>
             </Folder>
             <Folder Name="styles" TargetFolderName="styles">
-              <ProjectItem>mermaid.min.js.map</ProjectItem>
+              <ProjectItem>main.css</ProjectItem>
               <ProjectItem>main.js</ProjectItem>
               <ProjectItem>mermaid.min.js</ProjectItem>
+              <ProjectItem>mermaid.min.js.map</ProjectItem>
+              <ProjectItem>toggle-theme.js</ProjectItem>
             </Folder>
           </Folder>
         </Folder>
@@ -90,9 +91,6 @@
       </Folder>
       <Folder Name="Properties" TargetFolderName="Properties">
         <ProjectItem TargetFileName="AssemblyInfo.cs" ReplaceParameters="true">AssemblyInfo.cs</ProjectItem>
-      </Folder>
-      <Folder Name="Redoc" TargetFolderName="Redoc">
-        <ProjectItem ReplaceParameters="true">index.html</ProjectItem>
       </Folder>
       <Folder Name="resources">
         <Folder Name="images">

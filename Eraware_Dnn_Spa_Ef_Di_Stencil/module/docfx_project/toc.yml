@@ -3,3 +3,6 @@
 - name: Api Documentation
   href: api/
   homepage: api/index.md
+- name: REST API
+  href: rest/
+  homepage: rest/rest-api.md 
