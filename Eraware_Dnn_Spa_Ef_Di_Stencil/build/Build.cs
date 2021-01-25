@@ -60,7 +60,6 @@ class Build : NukeBuild
     AbsolutePath InstallDirectory => RootDirectory.Parent.Parent / "Install" / "Module";
     AbsolutePath WebProjectDirectory => RootDirectory / "Module.Web";
     AbsolutePath TestResultsDirectory => RootDirectory / "TestResults";
-    AbsolutePath SwaggerDirectory => RootDirectory / "Swagger";
     AbsolutePath GithubDirectory => RootDirectory / ".github";
     AbsolutePath BadgesDirectory => GithubDirectory / "badges";
     AbsolutePath ClientServicesDirectory => WebProjectDirectory / "src" / "services";
@@ -114,7 +113,6 @@ class Build : NukeBuild
         {
             EnsureCleanDirectory(ArtifactsDirectory);
             EnsureCleanDirectory(TestResultsDirectory);
-            EnsureCleanDirectory(SwaggerDirectory);
         });
 
     Target Restore => _ => _
@@ -549,10 +547,11 @@ class Build : NukeBuild
         });
 
     Target Swagger => _ => _
+        .Before(DocFx)
         .DependsOn(Compile)
         .Executes(() =>
         {
-            var swaggerFile = SwaggerDirectory / "rest.json";
+            var swaggerFile = DocsDirectory / "rest" / "rest.json";
 
             NSwagTasks.NSwagWebApiToOpenApi(c => c
                 .AddAssembly(RootDirectory / "bin" / Configuration / "$ext_rootnamespace$.dll")
@@ -576,9 +575,14 @@ class Build : NukeBuild
                     .Add("/UseGetBaseUrlMethod:True")
                     .Add("/ProtectedMethods=ClientBase.getBaseUrl,ClientBase.transformOptions")
                     .Add("/UseAbortSignal:True")));
+        });
 
-            var swaggerSpec = GlobFiles(SwaggerDirectory / "*.json").FirstOrDefault();
-            CopyFileToDirectory(swaggerSpec, DocFxProjectDirectory / "rest", FileExistsPolicy.Overwrite);
+    Target CleanDocsFolder => _ => _
+        .Before(Swagger)
+        .Before(DocFx)
+        .Executes(() =>
+        {
+            EnsureCleanDirectory(DocsDirectory);
         });
 
     Target DocFx => _ => _
@@ -586,14 +590,21 @@ class Build : NukeBuild
         .After(Swagger)
         .Executes(() =>
         {
-            EnsureCleanCirectory(DocsDirectory)
-
             DocFXTasks.DocFXMetadata(s => s
                 .SetProcessWorkingDirectory(DocFxProjectDirectory));
 
             DocFXTasks.DocFXBuild(s => s
                 .SetOutputFolder(RootDirectory)
                 .SetProcessWorkingDirectory(DocFxProjectDirectory));
+        });
+
+    Target Docs => _ => _
+        .DependsOn(CleanDocsFolder)
+        .DependsOn(Swagger)
+        .DependsOn(DocFx)
+        .Executes(() =>
+        {
+
         });
 
     Target CI => _ => _
