@@ -16,13 +16,9 @@
       "commandName": "Project",
       "commandLineArgs": "--target Test --configuration Debug"
     },
-    "Swagger": {
+    "Docs": {
       "commandName": "Project",
-      "commandLineArgs": "--target Swagger --configuration Debug"
-    },
-    "DocFx": {
-      "commandName": "Project",
-      "commandLineArgs": "--target DocFx --configuration Debug"
+      "commandLineArgs": "--target Docs --configuration Debug"
     }
   }
 }

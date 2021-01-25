@@ -58,6 +58,7 @@
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [
+      "default",
       "mytemplate"
     ],
     "postProcessors": [ "ExtractSearchIndex" ],
