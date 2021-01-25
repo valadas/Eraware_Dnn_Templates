@@ -8,7 +8,7 @@
 
         var redocScript = document.createElement("script");
         redocScript.type = "text/javascript";
-        redoc.src = "https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js";
+        redocScript.src = "https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js";
         document.head.appendChild(redocScript);
     }
 
