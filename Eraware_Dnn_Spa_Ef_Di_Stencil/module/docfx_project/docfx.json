@@ -56,6 +56,14 @@
     ],
     "dest": "docs",
     "globalMetadataFiles": [],
+    "globalMetadata": {
+      "newFileRepository": {
+        "branch": "develop"
+      },
+      "_gitContribute": {
+        "branch": "develop"
+      }
+    },
     "fileMetadataFiles": [],
     "template": [
       "default",
