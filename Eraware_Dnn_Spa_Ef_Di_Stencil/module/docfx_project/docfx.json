@@ -9,7 +9,8 @@
           "src": "../bin/Debug"
         }
       ],
-      "dest": "api"
+      "dest": "api",
+      "force": true
     }
   ],
   "build": {
@@ -55,13 +56,8 @@
       }
     ],
     "dest": "docs",
-    "globalMetadataFiles": [],
     "globalMetadata": {
-      "newFileRepository": {
-        "branch": "develop"
-      },
-      "_gitContribute": {
-        "branch": "develop"
+      "_gitContribute": {        "branch": "develop"
       }
     },
     "fileMetadataFiles": [],
