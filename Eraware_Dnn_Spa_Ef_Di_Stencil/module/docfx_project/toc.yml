@@ -6,3 +6,6 @@
 - name: REST API
   href: rest/
   homepage: rest/rest-api.md 
+- name: Web Components
+  href: components/
+  homepage: components/index.md 

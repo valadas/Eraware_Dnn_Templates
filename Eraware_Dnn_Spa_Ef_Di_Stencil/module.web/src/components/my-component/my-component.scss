@@ -1,5 +1,9 @@
+/**
+* @prop --results-summary-text-align: Defines the alignement of the result summary, "left"|"center"|"right", etc.
+*/
+
 .results-summary {
-  text-align: right;
+  text-align: var(--results-summary-text-align, "right");
 }
 
 .collapsible-row {
