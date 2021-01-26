@@ -68,7 +68,7 @@
               <ProjectItem>_master.tmpl</ProjectItem>
             </Folder>
             <Folder Name="partials" TargetFolderName="partials">
-              <ProjectItem>affix.tmpl.partial</ProjectItem>
+              <ProjectItem>footer.tmpl.partial</ProjectItem>
               <ProjectItem>scripts.tmpl.partial</ProjectItem>
             </Folder>
             <Folder Name="styles" TargetFolderName="styles">

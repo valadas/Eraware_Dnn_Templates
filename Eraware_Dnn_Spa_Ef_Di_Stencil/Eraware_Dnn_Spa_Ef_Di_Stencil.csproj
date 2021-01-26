@@ -90,7 +90,7 @@
     <None Include="module\docfx_project\rest\rest-api.md" />
     <None Include="module\docfx_project\rest\toc.yml" />
     <None Include="module\docfx_project\templates\mytemplate\partials\scripts.tmpl.partial" />
-    <None Include="module\docfx_project\templates\mytemplate\partials\affix.tmpl.partial" />
+    <None Include="module\docfx_project\templates\mytemplate\partials\footer.tmpl.partial" />
     <Content Include="module\docfx_project\templates\mytemplate\styles\main.js" />
     <Content Include="module\docfx_project\templates\mytemplate\styles\main.css" />
     <None Include="module\docfx_project\templates\mytemplate\styles\mermaid.min.js.map" />
