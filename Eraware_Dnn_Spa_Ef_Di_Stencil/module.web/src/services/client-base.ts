@@ -9,12 +9,12 @@ export class ClientBase {
     this.sf = new DnnServicesFramework(this.moduleId);
   }
 
-  protected getBaseUrl(_defaultUrl: string, baseUrl?: string) {
+  protected getBaseUrl(_defaultUrl: string, baseUrl?: string): string {
     return baseUrl || "";
   }
 
   protected transformOptions(options: RequestInit): Promise<RequestInit> {
-    var dnnHeaders = this.sf.getModuleHeaders();
+    const dnnHeaders = this.sf.getModuleHeaders();
 
     dnnHeaders.forEach((value, key) => {
       options.headers[key] = value;

@@ -3,6 +3,7 @@
 
 using $ext_rootnamespace$.Data.Entities;
 using $ext_rootnamespace$.DTO;
+using System.ComponentModel.DataAnnotations;
 
 namespace $ext_rootnamespace$.ViewModels
 {
@@ -14,12 +15,12 @@ namespace $ext_rootnamespace$.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemViewModel"/> class.
         /// </summary>
-        /// <param name="newItem">An <see cref="Item"/> entity.</param>
-        public ItemViewModel(Item newItem)
+        /// <param name="item">An <see cref="Item"/> entity.</param>
+        public ItemViewModel(Item item)
         {
-            this.Id = newItem.Id;
-            this.Name = newItem.Name;
-            this.Description = newItem.Description;
+            this.Id = item.Id;
+            this.Name = item.Name;
+            this.Description = item.Description;
         }
 
         /// <summary>
@@ -30,6 +31,7 @@ namespace $ext_rootnamespace$.ViewModels
         /// <summary>
         /// Gets or sets the name of the item.
         /// </summary>
+        [Required]
         public string Name { get; set; }
 
         /// <summary>

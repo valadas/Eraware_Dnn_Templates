@@ -18,6 +18,7 @@ using Nuke.Common.Tools.Xunit;
 using Nuke.Common.Utilities.Collections;
 using Octokit;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -602,11 +603,61 @@ class Build : NukeBuild
         .DependsOn(CleanDocsFolder)
         .DependsOn(Swagger)
         .DependsOn(ComponentsDocs)
+        .DependsOn(TsDoc)
         .DependsOn(DocFx)
         .Executes(() =>
         {
             DocFXTasks.DocFXServe(s => s
                 .SetFolder(DocsDirectory));
+        });
+
+    Target TsDoc => _ => _
+        .Executes(() =>
+        {
+            var tempDirectory = WebProjectDirectory / "temp";
+            var tempMdDirectory = WebProjectDirectory / "tempmd";
+            var clientDocDirectory = DocFxProjectDirectory / "client";
+
+            EnsureCleanDirectory(tempDirectory);
+            EnsureCleanDirectory(tempMdDirectory);
+            EnsureCleanDirectory(clientDocDirectory);
+
+            NpmRun(s => s
+                .SetProcessWorkingDirectory(WebProjectDirectory)
+                .SetArguments("tsdoc"));
+
+            CopyDirectoryRecursively(
+                tempMdDirectory,
+                clientDocDirectory,
+                DirectoryExistsPolicy.Merge,
+                FileExistsPolicy.Overwrite);
+
+            // Create a table of content
+            var toc = new StringBuilder();
+
+            var files = GlobFiles(clientDocDirectory, "**/*.md");
+            files = files
+                .OrderBy(f => f.Split('.').Count())
+                .ThenBy(f => f)
+                .ToArray();
+
+            files.ForEach(file =>
+            {
+                var fileInfo = new FileInfo(file);
+                if (fileInfo.Name == "index.md" || fileInfo.Name.Split('.').Count() > 3)
+                {
+                    return;
+                }
+
+                var fileLines = ReadAllLines(file);
+                var cleanName = fileLines[4];
+                cleanName = string.Join(' ', cleanName.Split(' ').Skip(1).ToArray());
+                toc.AppendLine($"{new String('#', fileInfo.Name.Split('.').Count() - 1)} [{cleanName}](./{fileInfo.Name})");
+            });
+            WriteAllText(clientDocDirectory / "toc.md", toc.ToString());
+
+            DeleteDirectory(tempDirectory);
+            DeleteDirectory(tempMdDirectory);
         });
 
     Target ComponentsDocs => _ => _

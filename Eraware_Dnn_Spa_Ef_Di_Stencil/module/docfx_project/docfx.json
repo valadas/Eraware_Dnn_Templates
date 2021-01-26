@@ -37,6 +37,9 @@
       },
       {
         "files": "components/*.md"
+      },
+      {
+        "files": "client/*.md"
       }
     ],
     "resource": [

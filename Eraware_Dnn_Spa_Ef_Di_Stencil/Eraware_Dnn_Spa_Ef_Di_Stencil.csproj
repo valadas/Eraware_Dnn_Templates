@@ -81,6 +81,7 @@
     <Content Include="build\docs\images\Package.gif" />
     <Content Include="module\docfx_project\.gitignore" />
     <Content Include="module\docfx_project\api\.gitignore" />
+    <None Include="module.web\api-extractor.json" />
     <None Include="module.web\src\components\my-component\usage\javascript.md" />
     <None Include="module.web\src\components\my-component\usage\dnn.md" />
     <None Include="module\docfx_project\api\index.md" />
