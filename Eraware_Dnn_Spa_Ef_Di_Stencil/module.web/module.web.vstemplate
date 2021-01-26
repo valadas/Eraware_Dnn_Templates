@@ -39,6 +39,7 @@
       <ProjectItem>.editorconfig</ProjectItem>
       <ProjectItem>.eslintrc.json</ProjectItem>
       <ProjectItem>.gitignore</ProjectItem>
+      <ProjectItem>api-extractor.json</ProjectItem>
       <ProjectItem>LICENSE</ProjectItem>
       <ProjectItem ReplaceParameters="true">package.json</ProjectItem>
       <ProjectItem>readme.md</ProjectItem>

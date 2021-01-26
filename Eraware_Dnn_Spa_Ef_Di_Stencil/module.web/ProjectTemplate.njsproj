@@ -45,6 +45,7 @@
     <Content Include=".eslintrc.json" />
     <Content Include=".editorconfig" />
     <Content Include=".gitignore" />
+    <Content Include="api-extractor.json" />
     <Content Include="LICENSE" />
     <Content Include="package.json" />
     <Content Include="readme.md" />

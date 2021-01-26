@@ -30,7 +30,7 @@ export class MyComponent {
   @State() availableItems = 0;
   @State() searchQuery = "";
   @State() expandedItem: number | null = null;
-  @State() elementWidth: number = 1200;
+  @State() elementWidth: = 1200;
   @State() canEdit = false;
   @State() loading = true;
   @State() newItem: ICreateItemDTO = {
@@ -41,7 +41,7 @@ export class MyComponent {
   /** The Dnn module id, required in order to access web services. */
   @Prop() moduleId!: number;
 
-  componentDidLoad() {
+  componentDidLoad(): void {
     this.scrollHandler();
     document.addEventListener('scroll', () => this.scrollHandler());
     this.resizeHandler();
@@ -51,7 +51,7 @@ export class MyComponent {
   }
 
   // eslint-disable-next-line @stencil/own-methods-must-be-private
-  disconnectedCallback() {
+  disconnectedCallback(): void {
     document.removeEventListener('scroll', () => this.scrollHandler());
     window.removeEventListener('resize', () => this.resizeHandler());
   }
@@ -84,7 +84,7 @@ export class MyComponent {
     this.elementWidth = this.el.getBoundingClientRect().width;
   }
 
-  private updateSearchQuery(query: string = "") {
+  private updateSearchQuery(query = "") {
     this.expandedItem = null;
     this.lastFetchedPage = 0;
     this.loading = true;

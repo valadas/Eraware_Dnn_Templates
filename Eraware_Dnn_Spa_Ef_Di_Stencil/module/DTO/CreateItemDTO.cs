@@ -1,5 +1,8 @@
 ﻿// MIT License
 // Copyright $ext_companyname$
+
+using System.ComponentModel.DataAnnotations;
+
 namespace $ext_rootnamespace$.DTO
 {
     /// <summary>
@@ -10,6 +13,7 @@ namespace $ext_rootnamespace$.DTO
         /// <summary>
         /// Gets or sets the name for the item.
         /// </summary>
+        [Required]
         public string Name { get; set; }
 
         /// <summary>

@@ -16,14 +16,17 @@
     "loader/"
   ],
   "scripts": {
-    "build": "eslint --fix --ext .ts --ext .tsx --ext .js ./src && stencil build --docs",
+    "build": "eslint --fix --ext .ts --ext .tsx --ext .js --ignore-pattern **/*.d.ts ./src && stencil build --docs",
     "start": "stencil build --dev --watch --serve --no-open",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
-    "generate": "stencil generate"
+    "generate": "stencil generate",
+    "tsdoc": "tsc -d --emitDeclarationOnly ./src/services/services.ts && api-extractor run --local && api-documenter markdown -i temp -o tempmd"
   },
   "devDependencies": {
     "@eraware/dnn-elements": "^0.9.1",
+    "@microsoft/api-documenter": "^7.12.6",
+    "@microsoft/api-extractor": "^7.13.0",
     "@stencil/core": "^2.3.0",
     "@stencil/eslint-plugin": "^0.3.1",
     "@stencil/sass": "^1.1.1",
@@ -31,6 +34,7 @@
     "@typescript-eslint/parser": "^4.13.0",
     "eslint": "^7.6.0",
     "eslint-plugin-react": "^7.20.5",
+    "eslint-plugin-tsdoc": "^0.2.11",
     "typescript": "^4.1.3"
   },
   "license": "MIT"
