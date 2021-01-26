@@ -607,8 +607,10 @@ class Build : NukeBuild
         .DependsOn(DocFx)
         .Executes(() =>
         {
-            DocFXTasks.DocFXServe(s => s
-                .SetFolder(DocsDirectory));
+            if (InvokedTargets.Contains(Docs))
+                DocFXTasks.DocFXServe(s => s
+                    .SetFolder(DocsDirectory));
+            }
         });
 
     Target TsDoc => _ => _
