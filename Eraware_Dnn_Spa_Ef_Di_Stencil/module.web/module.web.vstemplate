@@ -19,6 +19,10 @@
       <Folder Name="src">
         <Folder Name="components">
           <Folder Name="my-component">
+            <Folder Name="usage">
+              <ProjectItem>dnn.md</ProjectItem>
+              <ProjectItem>javascript.md</ProjectItem>
+            </Folder>
             <ProjectItem>my-component.scss</ProjectItem>
             <ProjectItem>my-component.tsx</ProjectItem>
             <ProjectItem>readme.md</ProjectItem>

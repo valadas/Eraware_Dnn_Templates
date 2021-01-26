@@ -342,3 +342,5 @@ healthchecksdb
 /resources/scripts/
 /_build/App.config
 /Swagger
+/docfx_project/docs
+/docfx_project/components

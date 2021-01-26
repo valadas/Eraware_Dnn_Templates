@@ -601,10 +601,38 @@ class Build : NukeBuild
     Target Docs => _ => _
         .DependsOn(CleanDocsFolder)
         .DependsOn(Swagger)
+        .DependsOn(ComponentsDocs)
         .DependsOn(DocFx)
         .Executes(() =>
         {
+            DocFXTasks.DocFXServe(s => s
+                .SetFolder(DocsDirectory));
+        });
 
+    Target ComponentsDocs => _ => _
+        .DependsOn(BuildFrontEnd)
+        .Executes(() =>
+        {
+            var componentsDocsDirectory = DocFxProjectDirectory / "components";
+            EnsureCleanDirectory(componentsDocsDirectory);
+            var docFiles = GlobFiles(WebProjectDirectory / "src" / "components", "**/*.md");
+            var toc = new StringBuilder();
+            docFiles.ForEach(f => {
+                var fileInfo = new FileInfo(f);
+                if (fileInfo.Directory.Name == "usage")
+                {
+                    return;
+                }
+                var newFileName = fileInfo.Directory.Name + ".md";
+                CopyFile(f, componentsDocsDirectory / newFileName, FileExistsPolicy.Overwrite, true);
+                toc.AppendLine($"# [{fileInfo.Directory.Name}]({newFileName})");
+            });
+            toc.AppendLine();
+            WriteAllText(componentsDocsDirectory / "toc.md", toc.ToString());
+
+            var index = GlobFiles(WebProjectDirectory, "readme.md").FirstOrDefault();
+            CopyFileToDirectory(index, componentsDocsDirectory, FileExistsPolicy.Overwrite, true);
+            RenameFile(componentsDocsDirectory / "readme.md", "index.md", FileExistsPolicy.Overwrite);
         });
 
     Target CI => _ => _

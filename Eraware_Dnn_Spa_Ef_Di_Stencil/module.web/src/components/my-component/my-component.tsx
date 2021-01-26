@@ -38,8 +38,8 @@ export class MyComponent {
     description: ""
   };
 
-  /** The Dnn module id */
-  @Prop() moduleId: number;
+  /** The Dnn module id, required in order to access web services. */
+  @Prop() moduleId!: number;
 
   componentDidLoad() {
     this.scrollHandler();

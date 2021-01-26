@@ -36,6 +36,8 @@
     <Content Include="src\components\my-component\my-component.scss" />
     <Content Include="src\components\my-component\my-component.tsx" />
     <Content Include="src\components\my-component\readme.md" />
+    <Content Include="src\components\my-component\usage\dnn.md" />
+    <Content Include="src\components\my-component\usage\javascript.md" />
     <Content Include="src\index.html" />
     <Content Include="src\index.ts" />
     <Content Include="src\services\client-base.ts" />

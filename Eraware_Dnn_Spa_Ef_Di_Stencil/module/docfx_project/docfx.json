@@ -34,6 +34,9 @@
           "rest/*.md",
           "rest/toc.yml"
         ]
+      },
+      {
+        "files": "components/*.md"
       }
     ],
     "resource": [
@@ -57,7 +60,8 @@
     ],
     "dest": "docs",
     "globalMetadata": {
-      "_gitContribute": {        "branch": "develop"
+      "_gitContribute": {
+        "branch": "develop"
       }
     },
     "fileMetadataFiles": [],
