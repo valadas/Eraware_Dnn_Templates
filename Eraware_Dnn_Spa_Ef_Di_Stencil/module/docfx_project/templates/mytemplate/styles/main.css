@@ -562,3 +562,56 @@ input:checked + .slider:before {
 #_content code.lang-mermaid .arrowheadPath {
     fill: var(--color-foreground);
 }
+
+/** ReDoc **/
+#redoc .menu-content {
+    background-color: var(--color-background);
+}
+
+#redoc .search-icon path {
+    fill: var(--color-foreground);
+}
+
+#redoc label {
+    color: var(--color-foreground);
+}
+
+#redoc svg polygon {
+    fill: var(--color-foreground);
+}
+
+#redoc a, #redoc a:visited, #redoc a:hover {
+    color: #23527c !important;
+}
+
+#redoc label.active {
+    background-color: var(--color-background-dark);
+}
+
+#redoc > div {
+    color: var(--color-foreground);
+}
+
+#redoc h2 {
+    color: var(--color-foreground);
+}
+
+#redoc h2 a::before {
+    opacity: 1;
+}
+
+#redoc h5 {
+    color: var(--color-foreground);
+}
+
+#redoc h5 span {
+    color: var(--color-foreground);
+}
+
+#redoc h3 {
+    color: var(--color-foreground);
+}
+
+#redoc .api-content > div:first-child {
+    margin-top: 91px;
+}
