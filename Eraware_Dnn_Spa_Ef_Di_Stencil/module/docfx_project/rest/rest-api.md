@@ -1,1 +1,1 @@
-﻿<redoc spec-url='rest.json'></redoc>
+﻿<div id="redoc"></div>
