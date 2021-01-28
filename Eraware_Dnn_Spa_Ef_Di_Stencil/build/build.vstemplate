@@ -38,6 +38,7 @@
       <ProjectItem ReplaceParameters="true">Build.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true">Configuration.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true">Helpers.cs</ProjectItem>
+      <ProjectItem>package.json</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>

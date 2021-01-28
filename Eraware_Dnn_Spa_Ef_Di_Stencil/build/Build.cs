@@ -607,10 +607,12 @@ class Build : NukeBuild
         .DependsOn(DocFx)
         .Executes(() =>
         {
-            if (InvokedTargets.Contains(Docs))
-                DocFXTasks.DocFXServe(s => s
-                    .SetFolder(DocsDirectory));
-            }
+            NpmTasks.NpmInstall(s => s
+                .SetProcessWorkingDirectory(DocFxProjectDirectory));
+
+            NpmTasks.NpmRun(s => s
+                    .SetProcessWorkingDirectory(DocFxProjectDirectory)
+                    .SetArguments("watch_docfx"));
         });
 
     Target TsDoc => _ => _
