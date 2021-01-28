@@ -65,6 +65,7 @@
     <None Include="docs\images\initial-commit.gif" />
     <None Include="docs\images\install-module.gif" />
     <None Include="docs\images\Package.gif" />
+    <None Include="docs\images\setup-git-docs.gif" />
     <None Include="Properties\launchSettings.json" />
   </ItemGroup>
 

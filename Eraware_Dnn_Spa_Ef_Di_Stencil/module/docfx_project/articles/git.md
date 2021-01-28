@@ -56,4 +56,18 @@ Release notes for each of those versions are automatically generated from Pull R
 4. Now let's assume this beta got properly tested and we want to produce the final the final 1.0.0 release, we simply need to merge the `release/1.0.0` branch into our `master` branch, we will do so using a pull request and we'll do a `merge commit`.
 ![Create Release](../images/create-release.gif)
 
-Next up, let's explore the [project architecture](project-architecture.md)
+## Documentation
+
+This template has both support for writing your own documentation and also automating documentation from code comments automatically to keep documentation in always in sync with the code.
+
+Github allows having a free documentation website as part of every repository. You may not have realized it yet but it's already done as part of our initial commit.
+
+We simply have to return to github repository settings and set the source for that site. The code can be a folder on any branch or a special branch. Here we will select the docs folder on the branch of our choice.
+
+> [!TIP]
+> Selecting the `master` branch will mean that your published documentation will always be in sync with the latest published official release (non-beta). If you want your documentation to be in sync with the latest changes, you can select the `develop` branch or if you have long standing betas and you want the documentation to reflect it, you can select a `release/x.x.x` branch.
+> [!WARNING]
+> Do not select a theme in the settings, this is for Jekyll sites which we are not using. Also, it may take Github a few minutes to publish your site.
+![Setup Github Docs](../images/setup-git-docs.gif)
+
+What you are seeing in Visual Studio now is only some snippets to get you started until the full documentation is published, now that this is done, you can view the full documentation at [https://{owner}.github.io/{repository}](https://{owner}.github.io/{repository}/articles/git.html#documentation)
