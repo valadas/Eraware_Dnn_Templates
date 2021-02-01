@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace $ext_rootnamespace$.Data.Repositories
@@ -79,22 +80,13 @@ namespace $ext_rootnamespace$.Data.Repositories
         public void Delete(int id)
         {
             T entity = this.entities.SingleOrDefault(e => e.Id == id);
-            this.entities.Remove(entity);
-            this.context.SaveChanges();
-        }
-
-        /// <inheritdoc/>
-        public IQueryable<T> GetPage(int page, int pageSize, IQueryable<T> entities, out int resultCount, out int pageCount)
-        {
-            if (page < 1)
+            if (entity is null)
             {
-                page = 1;
+                return;
             }
 
-            resultCount = entities.Count();
-            pageCount = (resultCount + pageSize - 1) / pageSize;
-            int skip = pageSize * (page - 1);
-            return entities.OrderBy(i => 0).Skip(skip).Take(pageSize);
+            this.entities.Remove(entity);
+            this.context.SaveChanges();
         }
     }
 }

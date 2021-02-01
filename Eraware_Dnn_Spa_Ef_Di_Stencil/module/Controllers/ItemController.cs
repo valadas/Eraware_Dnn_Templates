@@ -44,7 +44,8 @@ namespace $ext_rootnamespace$.Controllers
         {
             try
             {
-                return this.Ok(this.itemService.CreateItem(item, this.UserInfo.UserID));
+                var result = this.itemService.CreateItem(item, this.UserInfo.UserID);
+                return this.Ok(result);
             }
             catch (ArgumentNullException ex)
             {
@@ -126,17 +127,7 @@ namespace $ext_rootnamespace$.Controllers
         [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
         public IHttpActionResult UserCanEdit()
         {
-            try
-            {
-                return this.Ok(this.CanEdit);
-            }
-            catch (Exception ex)
-            {
-                var message = "There was an error checking if the current user can edit this module.";
-                this.Logger.Error(message, ex);
-                return this.InternalServerError(new Exception(message));
-                throw;
-            }
+            return this.Ok(this.CanEdit);
         }
     }
 }

@@ -61,8 +61,12 @@ class Build : NukeBuild
     AbsolutePath InstallDirectory => RootDirectory.Parent.Parent / "Install" / "Module";
     AbsolutePath WebProjectDirectory => RootDirectory / "Module.Web";
     AbsolutePath TestResultsDirectory => RootDirectory / "TestResults";
+    AbsolutePath UnitTestsResultsDirectory => TestResultsDirectory / "UnitTests";
+    AbsolutePath IntegrationTestsResultsDirectory => TestResultsDirectory / "IntegrationTests";
     AbsolutePath GithubDirectory => RootDirectory / ".github";
     AbsolutePath BadgesDirectory => GithubDirectory / "badges";
+    AbsolutePath UnitTestBadgesDirectory => BadgesDirectory / "UnitTests";
+    AbsolutePath IntegrationTestsBadgesDirectory => BadgesDirectory / "IntegrationTests";
     AbsolutePath ClientServicesDirectory => WebProjectDirectory / "src" / "services";
     AbsolutePath DocFxProjectDirectory => RootDirectory / "docfx_project";
     AbsolutePath DocsDirectory => RootDirectory / "docs";
@@ -114,6 +118,8 @@ class Build : NukeBuild
         {
             EnsureCleanDirectory(ArtifactsDirectory);
             EnsureCleanDirectory(TestResultsDirectory);
+            EnsureCleanDirectory(UnitTestsResultsDirectory);
+            EnsureCleanDirectory(IntegrationTestsResultsDirectory);
         });
 
     Target Restore => _ => _
@@ -126,7 +132,7 @@ class Build : NukeBuild
                 .SetProjectFile(Solution.GetProject("UnitTests")));
         });
 
-    Target Test => _ => _
+    Target UnitTests => _ => _
         .DependsOn(Compile)
         .Executes(() =>
         {
@@ -139,29 +145,77 @@ class Build : NukeBuild
             DotNetTest(_ => _
                 .SetConfiguration(Configuration.Debug)
                 .ResetVerbosity()
-                .SetResultsDirectory(TestResultsDirectory)
+                .SetResultsDirectory(UnitTestsResultsDirectory)
                 .EnableCollectCoverage()
                 .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
                 .SetLogger($"trx;LogFileName=UnitTests.trx")
-                .SetCoverletOutput(TestResultsDirectory / "UnitTests.xml")
+                .SetCoverletOutput(UnitTestsResultsDirectory / "coverage.xml")
                 .SetProjectFile(RootDirectory / "UnitTests" / "UnitTests.csproj")
-                .SetNoBuild(true)
-                .SetExcludeByFile("**/Controllers/**/*"));
+                .SetNoBuild(true));
 
             ReportGenerator(_ => _
-                .SetReports(TestResultsDirectory / "*.xml")
-                .SetReportTypes(ReportTypes.Badges, ReportTypes.HtmlInline)
-                .SetTargetDirectory(TestResultsDirectory)
-                .SetFramework("netcoreapp2.1")
-            );
+                .SetReports(UnitTestsResultsDirectory / "*.xml")
+                .SetReportTypes(ReportTypes.Badges, ReportTypes.HtmlInline, ReportTypes.HtmlChart)
+                .SetTargetDirectory(UnitTestsResultsDirectory)
+                .SetHistoryDirectory(RootDirectory / "UnitTests" / "history")
+                .SetProcessArgumentConfigurator(a => a
+                    .Add("-title:UnitTests"))
+                .SetFramework("netcoreapp2.1"));
 
-            var testBadges = GlobFiles(TestResultsDirectory, "badge_branchcoverage.svg", "badge_linecoverage.svg");
-            testBadges.ForEach(f => CopyFileToDirectory(f, BadgesDirectory, FileExistsPolicy.Overwrite));
+            var testBadges = GlobFiles(UnitTestsResultsDirectory, "badge_branchcoverage.svg", "badge_linecoverage.svg");
+            testBadges.ForEach(f => CopyFileToDirectory(f, UnitTestBadgesDirectory, FileExistsPolicy.Overwrite, true));
 
-            if (IsWin && InvokedTargets.Contains(Test))
+            if (IsWin && InvokedTargets.Contains(UnitTests))
             {
-                Process.Start(@"cmd.exe ", @"/c " + (RootDirectory / "TestResults" / "index.html"));
+                Process.Start(@"cmd.exe ", @"/c " + (UnitTestsResultsDirectory / "index.html"));
             }
+        });
+
+    Target IntegrationTests => _ => _
+        .DependsOn(Compile)
+        .Executes(() =>
+        {
+            MSBuild(_ => _
+                .SetConfiguration(Configuration.Debug)
+                .SetProjectFile(Solution.GetProject("IntegrationTests"))
+                .SetTargets("Build")
+                .ResetVerbosity());
+
+            DotNetTest(_ => _
+                .SetConfiguration(Configuration.Debug)
+                .ResetVerbosity()
+                .SetResultsDirectory(IntegrationTestsResultsDirectory)
+                .EnableCollectCoverage()
+                .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
+                .SetLogger($"trx;LogFileName=IntegrationTests.trx")
+                .SetCoverletOutput(IntegrationTestsResultsDirectory / "coverage.xml")
+                .SetProjectFile(RootDirectory / "IntegrationTests" / "IntegrationTests.csproj")
+                .SetNoBuild(true));
+
+            ReportGenerator(_ => _
+                .SetReports(IntegrationTestsResultsDirectory / "*.xml")
+                .SetReportTypes(ReportTypes.Badges, ReportTypes.HtmlInline, ReportTypes.HtmlChart)
+                .SetHistoryDirectory(RootDirectory / "IntegrationTests" / "history")
+                .SetTargetDirectory(IntegrationTestsResultsDirectory)
+                .AddClassFilters("-*Data.ModuleDbContext")
+                .SetProcessArgumentConfigurator(a => a
+                    .Add("-title:IntegrationTests"))
+                .SetFramework("netcoreapp2.1"));
+
+            var testBadges = GlobFiles(IntegrationTestsResultsDirectory, "badge_branchcoverage.svg", "badge_linecoverage.svg");
+            testBadges.ForEach(f => CopyFileToDirectory(f, IntegrationTestsBadgesDirectory, FileExistsPolicy.Overwrite, true));
+
+            if (IsWin && InvokedTargets.Contains(IntegrationTests))
+            {
+                Process.Start(@"cmd.exe ", @"/c " + (IntegrationTestsResultsDirectory / "index.html"));
+            }
+        });
+
+    Target Test => _ => _
+        .DependsOn(UnitTests)
+        .DependsOn(IntegrationTests)
+        .Executes(() =>
+        {
         });
 
     Target Compile => _ => _
@@ -445,7 +499,6 @@ class Build : NukeBuild
     Target Deploy => _ => _
         .DependsOn(DeployBinaries)
         .DependsOn(SetRelativeScripts)
-        .DependsOn(Test)
         .Executes(() =>
         {
         });
@@ -458,6 +511,7 @@ class Build : NukeBuild
     .DependsOn(InstallNpmPackages)
     .DependsOn(SetLiveServer)
     .DependsOn(GenerateAppConfig)
+    .DependsOn(Swagger)
     .Executes(() =>
     {
         NpmRun(s => s
@@ -495,12 +549,12 @@ class Build : NukeBuild
         .DependsOn(Clean)
         .DependsOn(SetManifestVersions)
         .DependsOn(Compile)
-        .DependsOn(Test)
         .DependsOn(SetRelativeScripts)
         .DependsOn(GenerateAppConfig)
+        .DependsOn(Test)
         .DependsOn(SetBranch)
         .DependsOn(TagRelease)
-        .DependsOn(DocFx)
+        .DependsOn(Docs)
         .Executes(() =>
         {
             var stagingDirectory = ArtifactsDirectory / "staging";
@@ -588,7 +642,9 @@ class Build : NukeBuild
 
     Target DocFx => _ => _
         .DependsOn(Compile)
-        .After(Swagger)
+        .DependsOn(TsDoc)
+        .DependsOn(ComponentsDocs)
+        .DependsOn(Swagger)
         .Executes(() =>
         {
             DocFXTasks.DocFXMetadata(s => s
@@ -607,12 +663,15 @@ class Build : NukeBuild
         .DependsOn(DocFx)
         .Executes(() =>
         {
-            NpmTasks.NpmInstall(s => s
-                .SetProcessWorkingDirectory(DocFxProjectDirectory));
+            if (InvokedTargets.Contains(Docs))
+            {
+                NpmTasks.NpmInstall(s => s
+                    .SetProcessWorkingDirectory(DocFxProjectDirectory));
 
-            NpmTasks.NpmRun(s => s
-                    .SetProcessWorkingDirectory(DocFxProjectDirectory)
-                    .SetArguments("watch_docfx"));
+                NpmTasks.NpmRun(s => s
+                        .SetProcessWorkingDirectory(DocFxProjectDirectory)
+                        .SetArguments("watch_docfx"));
+            }
         });
 
     Target TsDoc => _ => _

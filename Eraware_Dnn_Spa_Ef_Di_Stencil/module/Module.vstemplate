@@ -124,6 +124,7 @@
       <ProjectItem ReplaceParameters="true">ReleaseNotes.html</ProjectItem>
       <ProjectItem ReplaceParameters="true">Startup.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true">stylecop.json</ProjectItem>
+      <ProjectItem ReplaceParameters="true">ExtensionMethods.cs</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>

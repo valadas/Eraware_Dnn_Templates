@@ -42,6 +42,18 @@ namespace UnitTests.Data.Repositories
             Assert.Empty(repository.GetAll());
         }
 
+        [Fact]
+        public void GenericRepositoryGet()
+        {
+            this.dataContext.Items.Add(new Item() { Id = 1, Name = "Name", Description = "Description" });
+            this.dataContext.SaveChanges();
+            var repository = new Repository<Item>(this.dataContext);
+
+            var items = repository.Get();
+
+            Assert.Equal(1, items.Count());
+        }
+
         [Theory]
         [InlineData(0)]
         [InlineData(1)]
@@ -59,33 +71,6 @@ namespace UnitTests.Data.Repositories
             var count = repository.GetAll().Count();
 
             Assert.Equal(iterations, count);
-        }
-        
-        [Theory]
-        [InlineData(100, 1, 10, 10)]
-        [InlineData(101, 2, 20, 6)]
-        [InlineData(5, 0, 10, 1)]
-        public void GenericRepositoryPages(int items, int page, int pageSize, int pages)
-        {
-            var repository = new Repository<Item>(dataContext);
-            for (int i = 1; i <= items; i++)
-            {
-                var item = new Item() { Id = i, Name = $"Name {i}", Description = $"Description {i}" };
-                repository.Create(item);
-            }
-
-            var results = repository.GetPage(page, pageSize, repository.Get(), out int resultCount, out int pageCount).ToList();
-
-            Assert.True(results.Count() <= pageSize);
-            Assert.Equal(items, resultCount);
-            Assert.Equal(pages, pageCount);
-            var lastId = 0;
-            foreach (var result in results)
-            {
-                // Checks the order was not changed.
-                Assert.True(result.Id > lastId);
-                lastId = result.Id;
-            }
         }
 
         [Fact]
@@ -184,6 +169,17 @@ namespace UnitTests.Data.Repositories
             Assert.True(item.CreatedAt < item.UpdatedAt);
             Assert.Equal(-1, item.CreatedByUserId);
             Assert.Equal(123, item.UpdatedByUserId);
+        }
+
+        /// <summary>
+        /// Ensures that deleting an item id that does not exists simply does nothing.
+        /// </summary>
+        [Fact]
+        public void Repository_DeleteMissing_DoesNotThrow()
+        {
+            var repository = new Repository<Item>(this.dataContext);
+
+            repository.Delete(1);
         }
     }
 }

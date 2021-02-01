@@ -66,6 +66,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ItemsPageViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Resource Include=".gitignore" />
     <Resource Include="resources\images\module-icon.png" />
     <Resource Include="resources\views\view.html" />
@@ -144,11 +145,11 @@
     <Content Include="docfx_project\images\initial-commit.gif" />
     <Content Include="docfx_project\images\install-module.gif" />
     <Content Include="docfx_project\images\Package.gif" />
-    <Content Include="docfx_project\mytemplate\styles\main.css" />
-    <Content Include="docfx_project\mytemplate\styles\main.js" />
-    <Content Include="docfx_project\mytemplate\styles\mermaid.min.js" />
-    <Content Include="docfx_project\mytemplate\styles\mermaid.min.js.map" />
-    <Content Include="docfx_project\mytemplate\styles\toggle-theme.js" />
+    <Content Include="docfx_project\templates\mytemplate\styles\main.css" />
+    <Content Include="docfx_project\templates\mytemplate\styles\main.js" />
+    <Content Include="docfx_project\templates\mytemplate\styles\mermaid.min.js" />
+    <Content Include="docfx_project\templates\mytemplate\styles\mermaid.min.js.map" />
+    <Content Include="docfx_project\templates\mytemplate\styles\toggle-theme.js" />
   </ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

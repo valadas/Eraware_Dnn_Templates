@@ -79,21 +79,25 @@
     <Content Include="build\docs\images\initial-commit.gif" />
     <Content Include="build\docs\images\install-module.gif" />
     <Content Include="build\docs\images\Package.gif" />
+    <Content Include="IntegrationTests\IntegrationTests.vstemplate" />
+    <Content Include="IntegrationTests\ProjectTemplate.csproj" />
     <Content Include="module\docfx_project\.gitignore" />
     <Content Include="module\docfx_project\api\.gitignore" />
     <None Include="build\package.json" />
+    <None Include="IntegrationTests\App.Config" />
     <None Include="module.web\api-extractor.json" />
     <None Include="module.web\src\components\my-component\usage\javascript.md" />
     <None Include="module.web\src\components\my-component\usage\dnn.md" />
     <None Include="module\docfx_project\api\index.md" />
     <None Include="module\docfx_project\articles\project-architecture.md" />
     <None Include="module\docfx_project\articles\toc.yml" />
+    <None Include="module\docfx_project\package.json" />
     <None Include="module\docfx_project\rest\rest-api.md" />
     <None Include="module\docfx_project\rest\toc.yml" />
     <None Include="module\docfx_project\templates\mytemplate\partials\scripts.tmpl.partial" />
     <None Include="module\docfx_project\templates\mytemplate\partials\footer.tmpl.partial" />
-    <Content Include="module\docfx_project\templates\mytemplate\styles\main.js" />
-    <Content Include="module\docfx_project\templates\mytemplate\styles\main.css" />
+    <None Include="module\docfx_project\templates\mytemplate\styles\main.js" />
+    <None Include="module\docfx_project\templates\mytemplate\styles\main.css" />
     <None Include="module\docfx_project\templates\mytemplate\styles\mermaid.min.js.map" />
     <None Include="module\docfx_project\toc.yml" />
     <None Include="module\docfx_project\index.md" />
@@ -106,8 +110,8 @@
     <Content Include="module\docfx_project\images\install-module.gif" />
     <Content Include="module\docfx_project\images\Package.gif" />
     <None Include="module\docfx_project\templates\mytemplate\layout\_master.tmpl" />
-    <Content Include="module\docfx_project\templates\mytemplate\styles\mermaid.min.js" />
-    <Content Include="module\docfx_project\templates\mytemplate\styles\toggle-theme.js" />
+    <None Include="module\docfx_project\templates\mytemplate\styles\mermaid.min.js" />
+    <None Include="module\docfx_project\templates\mytemplate\styles\toggle-theme.js" />
     <Content Include="UnitTests\UnitTests.vstemplate" />
   </ItemGroup>
   <ItemGroup>
@@ -127,7 +131,6 @@
     <None Include="module\docfx_project\docfx.json" />
     <None Include="module\README.md" />
     <None Include="module\stylecop.json" />
-    <None Include="UnitTests\Build\Tests.targets" />
     <None Include="UnitTests\ProjectTemplate.csproj" />
     <VSTemplate Include="module.web\module.web.vstemplate" />
     <Content Include="module.web\module-icon.ico" />
@@ -182,6 +185,10 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="UnitTests\ExtensionMethodsTests.cs" />
+    <None Include="UnitTests\Controllers\ServiceRouteMapperTests.cs" />
+    <None Include="UnitTests\Controllers\ModuleApiControllerTests.cs" />
+    <None Include="UnitTests\Controllers\ItemControllerTests.cs" />
     <None Include="module\ViewModels\ItemsPageViewModel.cs" />
     <None Include="module\ViewModels\ItemViewModel.cs" />
     <None Include="UnitTests\Services\ItemServiceTests.cs" />
@@ -209,6 +216,10 @@
     <None Include="module\Data\Entities\BaseEntity.cs" />
     <None Include="module\Data\Repositories\Repository.cs" />
     <None Include="module\DTO\CreateItemDTO.cs" />
+    <None Include="module\ExtensionMethods.cs" />
+    <None Include="IntegrationTests\Controllers\ItemControllerTests.cs" />
+    <None Include="IntegrationTests\Controllers\ServiceRouteMapperTests.cs" />
+    <None Include="IntegrationTests\FakeDataContext.cs" />
     <Compile Include="module\Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

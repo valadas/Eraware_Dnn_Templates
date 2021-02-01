@@ -4,7 +4,9 @@
 namespace $ext_rootnamespace$.Data.Repositories
 {
     using System.Collections.Generic;
+    using System;
     using System.Linq;
+    using System.Linq.Expressions;
     using $ext_rootnamespace$.Data.Entities;
 
     /// <summary>
@@ -52,16 +54,5 @@ namespace $ext_rootnamespace$.Data.Repositories
         /// </summary>
         /// <param name="id">The id of the entity.</param>
         void Delete(int id);
-
-        /// <summary>
-        /// Gets a page of entities with some data.
-        /// </summary>
-        /// <param name="page">The page number to fetch.</param>
-        /// <param name="pageSize">The number of entities per page.</param>
-        /// <param name="entities">The entities to page (for best performance, do your filters and sorting first).</param>
-        /// <param name="resultCount">Returns the total number of items.</param>
-        /// <param name="pageCount">Returns the total number of pages.</param>
-        /// <returns>An IQueryable of the entities for that page.</returns>
-        IQueryable<T> GetPage(int page, int pageSize, IQueryable<T> entities, out int resultCount, out int pageCount);
     }
 }

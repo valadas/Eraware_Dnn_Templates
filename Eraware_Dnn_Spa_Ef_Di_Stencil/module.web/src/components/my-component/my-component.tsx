@@ -30,7 +30,7 @@ export class MyComponent {
   @State() availableItems = 0;
   @State() searchQuery = "";
   @State() expandedItem: number | null = null;
-  @State() elementWidth: = 1200;
+  @State() elementWidth: number = 1200;
   @State() canEdit = false;
   @State() loading = true;
   @State() newItem: ICreateItemDTO = {

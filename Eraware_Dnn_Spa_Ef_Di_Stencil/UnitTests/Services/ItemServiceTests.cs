@@ -7,6 +7,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Xunit;
 
 namespace UnitTests.Services
@@ -65,21 +66,24 @@ namespace UnitTests.Services
         [InlineData(false)]
         public void GetItemsPage_GetsPages(bool descending)
         {
-            int resultCount = 30;
-            int pageCount = 5;
-            var result = new List<Item>().AsQueryable<Item>();
-            this.itemRepository.Setup(r =>
-            r.GetPage(2, 12, It.IsAny<IQueryable<Item>>(), out resultCount, out pageCount))
-                .Returns(result);
+            this.itemRepository.Setup(r => r.Get())
+                .Returns(() =>
+                {
+                    List<Item> items = new List<Item>();
+                    for (int i = 0; i < 30; i++)
+                    {
+                        items.Add(new Item() { Id = i, Name = $"test {i}", Description = $"Description {i}" });
+                    }
+
+                    return items.AsQueryable();
+                });
 
             var finalReturn = this.itemService.GetItemsPage("test", 2, 12, descending);
 
-            this.itemRepository.Verify(i => i.Get(), Times.Once);
-            this.itemRepository.Verify(i => i.GetPage(2, 12, result, out resultCount, out pageCount), Times.Once);
             Assert.IsType<ItemsPageViewModel>(finalReturn);
             Assert.Equal(2, finalReturn.Page); Assert.Equal(2, finalReturn.Page);
             Assert.Equal(30, finalReturn.ResultCount); Assert.Equal(30, finalReturn.ResultCount);
-            Assert.Equal(5, finalReturn.PageCount); Assert.Equal(5, finalReturn.PageCount);
+            Assert.Equal(3, finalReturn.PageCount);
         }
 
         [Fact]

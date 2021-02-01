@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <NukeSpecificationFiles Include="**\*.json" Exclude="bin\**;obj\**;Properties\launchSettings.json" />
+    <NukeSpecificationFiles Include="**\Specifications\*.json" Exclude="bin\**;obj\**;Properties\launchSettings.json" />
     <NukeExternalFiles Include="**\*.*.ext" Exclude="bin\**;obj\**" />
     <None Remove="*.csproj.DotSettings;*.ref.*.txt" />
 
