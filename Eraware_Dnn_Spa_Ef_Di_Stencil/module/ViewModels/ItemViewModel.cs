@@ -15,6 +15,13 @@ namespace $ext_rootnamespace$.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemViewModel"/> class.
         /// </summary>
+        public ItemViewModel()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemViewModel"/> class.
+        /// </summary>
         /// <param name="item">An <see cref="Item"/> entity.</param>
         public ItemViewModel(Item item)
         {

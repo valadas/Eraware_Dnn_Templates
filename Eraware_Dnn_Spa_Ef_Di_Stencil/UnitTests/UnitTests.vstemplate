@@ -15,11 +15,13 @@
   </TemplateData>
   <TemplateContent>
     <Project File="ProjectTemplate.csproj" TargetFileName="UnitTests.csproj">
-      <Folder Name="Build">
-        <ProjectItem ReplaceParameters="false">Tests.targets</ProjectItem>
-      </Folder>
       <Folder Name="Common">
         <ProjectItem ReplaceParameters="true">GlobalsTests.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Controllers" TargetFolderName="Controllers">
+        <ProjectItem ReplaceParameters="true">ItemControllerTests.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ModuleApiControllerTests.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ServiceRouteMapperTests.cs</ProjectItem>
       </Folder>
       <Folder Name="Data">
         <Folder Name="Entities">

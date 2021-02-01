@@ -57,13 +57,21 @@ namespace $ext_rootnamespace$.Services
                 items = items.Where(i => i.Name.Contains(query) || i.Description.Contains(query));
             }
 
-            items = descending ? items.OrderByDescending(i => i.Name) : items.OrderBy(i => i.Name);
-            items = this.itemRepository.GetPage(page, pageSize, items, out int resultCount, out int pageCount);
+            if (descending)
+            {
+                items = items.OrderByDescending(i => i.Name);
+            }
+            else
+            {
+                items = items.OrderBy(i => i.Name);
+            }
 
-            var itemsPageViewModel = new ItemsPageViewModel()
+            items = items.GetPage(page, pageSize, out int resultCount, out int pageCount);
+
+        var itemsPageViewModel = new ItemsPageViewModel()
             {
                 Items = new List<ItemViewModel>(),
-                Page = page,
+                Page = page < 1 ? 1 : page,
                 ResultCount = resultCount,
                 PageCount = pageCount,
             };

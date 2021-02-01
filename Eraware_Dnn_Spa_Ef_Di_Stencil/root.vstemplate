@@ -20,6 +20,7 @@
       <ProjectTemplateLink ProjectName="Module" CopyParameters="true">module\Module.vstemplate</ProjectTemplateLink>
       <ProjectTemplateLink ProjectName="module.web" CopyParameters="true">module.web\module.web.vstemplate</ProjectTemplateLink>
       <ProjectTemplateLink ProjectName="UnitTests" CopyParameters="true">UnitTests\UnitTests.vstemplate</ProjectTemplateLink>
+      <ProjectTemplateLink ProjectName="IntegrationTests" CopyParameters="true">IntegrationTests\IntegrationTests.vstemplate</ProjectTemplateLink>
     </ProjectCollection>
   </TemplateContent>
   <WizardExtension>

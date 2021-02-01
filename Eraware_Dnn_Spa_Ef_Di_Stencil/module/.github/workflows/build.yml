@@ -24,7 +24,7 @@ jobs:
         run: git fetch --prune --tags --unshallow
       - name: Run './build.ps1'
         run: ./build.ps1 --github-token $GITHUB_TOKEN --target CI
-        env:	
+        env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v2
