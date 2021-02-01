@@ -62,9 +62,14 @@ namespace UnitTests.Services
         }
 
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void GetItemsPage_GetsPages(bool descending)
+        [InlineData(0, 0, true, 30)]
+        [InlineData(1, 10, false, 3)]
+        [InlineData(1, 20, false, 2)]
+        public void GetItemsPage_GetsPages(
+            int page,
+            int pageSize,
+            bool descending,
+            int expectedPages)
         {
             this.itemRepository.Setup(r => r.Get())
                 .Returns(() =>
@@ -78,12 +83,12 @@ namespace UnitTests.Services
                     return items.AsQueryable();
                 });
 
-            var finalReturn = this.itemService.GetItemsPage("test", 2, 12, descending);
+            var finalReturn = this.itemService.GetItemsPage("test", page, pageSize, descending);
 
             Assert.IsType<ItemsPageViewModel>(finalReturn);
-            Assert.Equal(2, finalReturn.Page); Assert.Equal(2, finalReturn.Page);
-            Assert.Equal(30, finalReturn.ResultCount); Assert.Equal(30, finalReturn.ResultCount);
-            Assert.Equal(3, finalReturn.PageCount);
+            Assert.Equal(page > 1 ? page : 1, finalReturn.Page);
+            Assert.Equal(30, finalReturn.ResultCount);
+            Assert.Equal(expectedPages, finalReturn.PageCount);
         }
 
         [Fact]

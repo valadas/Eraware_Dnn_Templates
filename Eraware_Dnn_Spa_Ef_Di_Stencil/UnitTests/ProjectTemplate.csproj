@@ -54,6 +54,7 @@
     <Compile Include="Data\Entities\ItemTests.cs" />
     <Compile Include="Data\ModuleDbContextTests.cs" />
     <Compile Include="Data\Repositories\GenericRepositoryTests.cs" />
+    <Compile Include="ExtensionMethodsTests.cs" />
     <Compile Include="Services\ItemServiceTests.cs" />
     <Compile Include="FakeDataContext.cs" />
     <Compile Include="Startup.cs" />

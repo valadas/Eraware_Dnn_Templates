@@ -35,6 +35,7 @@
       <Folder Name="Services">
         <ProjectItem ReplaceParameters="true">ItemServiceTests.cs</ProjectItem>
       </Folder>
+      <ProjectItem ReplaceParameters="true">ExtensionMethodsTests.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true">FakeDatacontext.cs</ProjectItem>
       <ProjectItem ReplaceParameters="false">App.config</ProjectItem>
       <ProjectItem ReplaceParameters="false">Startup.cs</ProjectItem>
