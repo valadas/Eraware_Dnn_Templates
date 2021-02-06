@@ -89,10 +89,14 @@ class Build : NukeBuild
                 branch = GitRepository.Branch.StartsWith("refs/") ? GitRepository.Branch.Substring(11) : GitRepository.Branch;
                 repositoryOwner = GitRepository.Identifier.Split('/')[0];
                 repositoryName = GitRepository.Identifier.Split('/')[1];
-                var readme = ReadAllText(RootDirectory / "README.md", Encoding.UTF8);
-                readme = readme.Replace("{owner}", repositoryOwner);
-                readme = readme.Replace("{repository}", repositoryName);
-                WriteAllText(RootDirectory / "README.md", readme, Encoding.UTF8);
+                var repositoryFiles = GlobFiles(RootDirectory, "README.md", "build/**/git.html", "**/articles/git.md");
+                repositoryFiles.ForEach(f =>
+                {
+                    var file = ReadAllText(RootDirectory / "README.md", Encoding.UTF8);
+                    file = file.Replace("{owner}", repositoryOwner);
+                    file = file.Replace("{repository}", repositoryName);
+                    WriteAllText(f, file, Encoding.UTF8);
+                });
             }
             Logger.Info($"Set branch name to {branch}");
         });

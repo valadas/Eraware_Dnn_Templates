@@ -87,7 +87,20 @@
                 <img src="../images/create-release.gif" alt="Create Release">
             </li>
         </ol>
-        <p>Next up, let's explore the <a href="project-architecture.html">project architecture</a></p>
+        <h2 id="documentation">Documentation</h2>
+        <p>This template has both support for writing your own documentation and also automating documentation from code comments automatically to keep documentation in always in sync with the code.</p>
+        <p>Github allows having a free documentation website as part of every repository. You may not have realized it yet but it's already done as part of our initial commit.</p>
+        <p>We simply have to return to github repository settings and set the source for that site. The code can be a folder on any branch or a special branch. Here we will select the docs folder on the branch of our choice.</p>
+        <div class="TIP">
+            <h5>Tip</h5>
+            <p>Selecting the <code>master</code> branch will mean that your published documentation will always be in sync with the latest published official release (non-beta). If you want your documentation to be in sync with the latest changes, you can select the <code>develop</code> branch or if you have long standing betas and you want the documentation to reflect it, you can select a <code>release/x.x.x</code> branch.</p>
+        </div>
+        <div class="WARNING">
+            <h5>Warning</h5>
+            <p>Do not select a theme in the settings, this is for Jekyll sites which we are not using. Also, it may take Github a few minutes to publish your site.</p>
+        </div>
+        <p><img src="../images/setup-git-docs.gif" alt="Setup Github Docs"></p>
+        <p>What you are seeing in Visual Studio now is only some snippets to get you started until the full documentation is published, now that this is done, you can view the full documentation at <a href="https://{owner}.github.io/{repository}/articles/git.html#documentation">https://{owner}.github.io/{repository}</a></p>
     </article>
 
 </body>
