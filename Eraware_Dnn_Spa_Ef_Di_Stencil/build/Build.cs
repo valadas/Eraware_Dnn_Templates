@@ -133,7 +133,10 @@ class Build : NukeBuild
                 .SetProjectFile(Solution.GetProject("Module")));
 
             DotNetRestore(s => s
-                .SetProjectFile(Solution.GetProject("UnitTests")));
+                .SetProjectFile(Solution.GetProject("UnitTests")))
+
+            DotNetRestore(s => s
+                .SetProjectFile(Solution.GetProject("IntegrationTests")));
         });
 
     Target UnitTests => _ => _
@@ -673,8 +676,8 @@ class Build : NukeBuild
                     .SetProcessWorkingDirectory(DocFxProjectDirectory));
 
                 NpmTasks.NpmRun(s => s
-                        .SetProcessWorkingDirectory(DocFxProjectDirectory)
-                        .SetArguments("watch_docfx"));
+                    .SetProcessWorkingDirectory(DocFxProjectDirectory)
+                    .SetArguments("watch_docfx"));
             }
         });
 
