@@ -6,7 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/module.web/" # Location of package manifests
+    directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/module.web" # Location of package manifests
     schedule:
       interval: "weekly"
   - package-ecosystem: "nuget"
