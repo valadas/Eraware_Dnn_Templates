@@ -2,7 +2,7 @@
 
 To gain the full benefits of this module template it is recommended to set it up as a git repository and to push it to [Github](https://github.com).
 
-> [!NOTED]
+> [!NOTE]
 > Git and Github are 2 different things. Git is a version control system that works locally and supports having remotes. Github is one of these possible remotes.
 ## Create a git repository
 

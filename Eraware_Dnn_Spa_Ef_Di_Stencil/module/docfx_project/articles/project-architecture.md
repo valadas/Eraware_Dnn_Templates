@@ -4,7 +4,7 @@
 
 This type of Dnn module is commonly knows as a SPA (Single Page Application) module. This common naming does not really reflect correctly the module type. In fact it uses the Dnn `HtmlModule` pipeline. This means the server is not responsible at all for rendering the frontend, it simply serves static html/css/js files to the frontend.
 
-> ![NOTE]
+> [!NOTE]
 > One small exception to this statement is that Dnn will replace some known tokens in your html view to inject Dnn specific things like the ModuleId for instance.
 
 In order to interact with the server (backend), the frontend will use a REST API to call a backend controller. It can GET some information or POST to perform some action. For security and performance reasons, we may want to have more or less information passed either when we GET or when we POST data.
