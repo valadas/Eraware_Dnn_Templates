@@ -84,7 +84,7 @@
     <None Include=".editorconfig" />
     <None Include="App.config" />
     <AdditionalFiles Include="stylecop.json" />
-    <None Include="docfx_project\api\index.md" />
+    <None Include="docfx_project\adjust-toc-namespaces.js" />
     <None Include="docfx_project\articles\git.md" />
     <None Include="docfx_project\articles\intro.md" />
     <None Include="docfx_project\articles\project-architecture.md" />
@@ -137,7 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="docfx_project\.gitignore" />
-    <Content Include="docfx_project\api\.gitignore" />
     <Content Include="docfx_project\images\create-beta-release.gif" />
     <Content Include="docfx_project\images\create-develop-branch.gif" />
     <Content Include="docfx_project\images\create-pull-request.gif" />

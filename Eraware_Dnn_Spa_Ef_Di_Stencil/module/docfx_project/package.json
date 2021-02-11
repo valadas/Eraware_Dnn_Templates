@@ -17,11 +17,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\"",
     "watch_docfx": "npm-watch build_serve",
-    "build_serve": "docfx --serve"
+    "adjust_toc": "node adjust-toc-namespaces.js",
+    "build_serve": "docfx build --serve"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "js-yaml": "^4.0.0",
     "npm-watch": "^0.7.0"
   }
 }
