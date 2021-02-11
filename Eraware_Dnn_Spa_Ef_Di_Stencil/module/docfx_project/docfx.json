@@ -4,9 +4,9 @@
       "src": [
         {
           "files": [
-            "$ext_rootnamespace$.dll"
+            "Module.csproj"
           ],
-          "src": "../bin/Debug"
+          "src": ".."
         }
       ],
       "dest": "api",

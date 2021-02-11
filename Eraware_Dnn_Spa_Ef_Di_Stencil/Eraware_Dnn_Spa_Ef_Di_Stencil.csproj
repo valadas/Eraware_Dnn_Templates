@@ -82,13 +82,12 @@
     <Content Include="IntegrationTests\IntegrationTests.vstemplate" />
     <Content Include="IntegrationTests\ProjectTemplate.csproj" />
     <Content Include="module\docfx_project\.gitignore" />
-    <Content Include="module\docfx_project\api\.gitignore" />
+    <Content Include="module\docfx_project\adjust-toc-namespaces.js" />
     <None Include="build\package.json" />
     <None Include="IntegrationTests\App.Config" />
     <None Include="module.web\api-extractor.json" />
     <None Include="module.web\src\components\my-component\usage\javascript.md" />
     <None Include="module.web\src\components\my-component\usage\dnn.md" />
-    <None Include="module\docfx_project\api\index.md" />
     <None Include="module\docfx_project\articles\project-architecture.md" />
     <None Include="module\docfx_project\articles\toc.yml" />
     <None Include="module\docfx_project\package.json" />

@@ -39,10 +39,6 @@
         <ProjectItem ReplaceParameters="true">ModuleDbContext.cs</ProjectItem>
       </Folder>
       <Folder Name="docfx_project" TargetFolderName="docfx_project">
-        <Folder Name="api" TargetFolderName="api">
-          <ProjectItem>.gitignore</ProjectItem>
-          <ProjectItem>index.md</ProjectItem>
-        </Folder>
         <Folder Name="articles" TargetFolderName="articles">
           <ProjectItem>git.md</ProjectItem>
           <ProjectItem ReplaceParameters="true">intro.md</ProjectItem>
@@ -80,10 +76,11 @@
             </Folder>
           </Folder>
         </Folder>
+        <ProjectItem ReplaceParameters="true">.gitignore</ProjectItem>
+        <ProjectItem>adjust-toc-namespaces.js</ProjectItem>
         <ProjectItem ReplaceParameters="true">docfx.json</ProjectItem>
         <ProjectItem ReplaceParameters="true">index.md</ProjectItem>
         <ProjectItem ReplaceParameters="true">toc.yml</ProjectItem>
-        <ProjectItem ReplaceParameters="true">.gitignore</ProjectItem>
       </Folder>
       <Folder Name="DTO" TargetFolderName="DTO">
         <ProjectItem ReplaceParameters="true">CreateItemDTO.cs</ProjectItem>

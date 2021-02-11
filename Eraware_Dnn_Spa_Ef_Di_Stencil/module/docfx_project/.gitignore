@@ -8,4 +8,5 @@
 /**/obj/
 _site
 /client
-/docs 
+/docs
+/api
