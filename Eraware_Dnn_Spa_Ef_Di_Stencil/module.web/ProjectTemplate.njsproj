@@ -38,6 +38,10 @@
     <Content Include="src\components\my-component\readme.md" />
     <Content Include="src\components\my-component\usage\dnn.md" />
     <Content Include="src\components\my-component\usage\javascript.md" />
+    <Content Include="src\components\my-create\my-create.scss" />
+    <Content Include="src\components\my-create\my-create.tsx" />
+    <Content Include="src\components\my-edit\my-edit.scss" />
+    <Content Include="src\components\my-edit\my-edit.tsx" />
     <Content Include="src\index.html" />
     <Content Include="src\index.ts" />
     <Content Include="src\services\client-base.ts" />

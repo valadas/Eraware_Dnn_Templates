@@ -87,6 +87,8 @@
     <None Include="module.web\api-extractor.json" />
     <None Include="module.web\src\components\my-component\usage\javascript.md" />
     <None Include="module.web\src\components\my-component\usage\dnn.md" />
+    <None Include="module.web\src\components\my-create\my-create.scss" />
+    <None Include="module.web\src\components\my-edit\my-edit.scss" />
     <None Include="module\docfx_project\articles\project-architecture.md" />
     <None Include="module\docfx_project\articles\toc.yml" />
     <None Include="module\docfx_project\package.json" />
@@ -223,6 +225,8 @@
   <ItemGroup>
     <TypeScriptCompile Include="module.web\src\components.d.ts" />
     <TypeScriptCompile Include="module.web\src\components\my-component\my-component.tsx" />
+    <TypeScriptCompile Include="module.web\src\components\my-create\my-create.tsx" />
+    <TypeScriptCompile Include="module.web\src\components\my-edit\my-edit.tsx" />
     <TypeScriptCompile Include="module.web\src\index.ts" />
     <TypeScriptCompile Include="module.web\src\services\client-base.ts" />
     <TypeScriptCompile Include="module.web\src\services\services.ts" />

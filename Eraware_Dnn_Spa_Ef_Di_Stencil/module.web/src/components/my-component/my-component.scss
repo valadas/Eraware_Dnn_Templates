@@ -12,28 +12,6 @@
   border: 1px solid lightgray;
 }
 
-.add-grid {
-  border: 2px solid lightgray;
-  padding: 10px;
-  margin-bottom: 10px;
-  input, label, textarea
-
-{
-  margin: 5px;
-}
-
-input:invlid {
-  box-shadow: 0 0 2px 2px red
-}
-
-}
-
-dnn-button {
-  display: block;
-  margin: 0 auto;
-  width: fit-content;
-}
-
 #load-more-button {
   visibility: hidden;
 }

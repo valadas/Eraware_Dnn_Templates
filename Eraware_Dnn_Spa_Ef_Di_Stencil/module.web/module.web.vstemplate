@@ -27,6 +27,14 @@
             <ProjectItem>my-component.tsx</ProjectItem>
             <ProjectItem>readme.md</ProjectItem>
           </Folder>
+          <Folder Name="my-create">
+            <ProjectItem>my-create.scss</ProjectItem>
+            <ProjectItem>my-create.tsx</ProjectItem>
+          </Folder>
+          <Folder Name="my-edit">
+            <ProjectItem>my-edit.scss</ProjectItem>
+            <ProjectItem>my-edit.tsx</ProjectItem>
+          </Folder>
         </Folder>
         <Folder Name="services">
           <ProjectItem ReplaceParameters="true">client-base.ts</ProjectItem>
