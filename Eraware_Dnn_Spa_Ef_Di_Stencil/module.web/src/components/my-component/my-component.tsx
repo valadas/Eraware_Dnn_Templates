@@ -1,6 +1,6 @@
-import { Component, h, Prop, State, Host, Element } from "@stencil/core";
+import { Component, h, Prop, State, Host, Element, Listen } from "@stencil/core";
 import "@eraware/dnn-elements";
-import { CreateItemDTO, ICreateItemDTO, IItemsPageViewModel, ItemClient, ItemsPageViewModel, ItemViewModel } from "../../services/services";
+import { ICreateItemDTO, IItemsPageViewModel, ItemClient, ItemsPageViewModel, ItemViewModel } from "../../services/services";
 import { Debounce } from "@eraware/dnn-elements";
 import state from "../../store/store";
 
@@ -49,6 +49,11 @@ export class MyComponent {
   disconnectedCallback(): void {
     document.removeEventListener('scroll', () => this.scrollHandler());
     window.removeEventListener('resize', () => this.resizeHandler());
+  }
+
+  @Listen("itemCreated")
+  handleItemCreated() {
+    this.updateSearchQuery("");
   }
 
   @Debounce()
@@ -134,17 +139,6 @@ export class MyComponent {
     this.lastScrollPosition = 0;
   }
 
-  private submitNewItem() {
-    this.service.createItem(this.newItem as CreateItemDTO)
-      .then(() => {
-        this.newItem = {
-          name: "",
-          description: ""
-        }
-        this.updateSearchQuery(); // Forces update the UI.
-      });
-  }
-
   private deleteItem(item: ItemViewModel) {
     this.service.deleteItem(item.id)
       .then(() => this.updateSearchQuery());
@@ -173,25 +167,8 @@ export class MyComponent {
       )
       }
       {state.userCanEdit &&
-        <div class="add-item">
-          <form class="add-grid" style={{ display: 'grid', gridTemplateColumns: this.elementWidth > 800 ? '1fr 3fr' : '1fr' }}>
-            <label>Name:</label>
-            <input type="text" value={this.newItem.name} required
-              onInput={e => this.newItem = { ...this.newItem, name: (e.target as HTMLInputElement).value }}
-            ></input>
-
-            <label>Description:</label>
-            <textarea value={this.newItem.description}
-              onInput={e => this.newItem = { ...this.newItem, description: (e.target as HTMLTextAreaElement).value }}
-            ></textarea>
-          </form>
-          <dnn-button type="primary"
-            disabled={this.newItem.name.length < 1}
-            onClick={() => this.submitNewItem()}
-          >Add Item</dnn-button><br />
-        </div>
+        <my-create />
       }
-
       <button id="load-more-button" ref={e => this.loadMoreButton = e}>Load More</button>
     </Host>;
   }

@@ -72,7 +72,7 @@ class Build : NukeBuild
     AbsolutePath DocsDirectory => RootDirectory / "docs";
 
     private string devViewsPath = "http://localhost:3333/build/";
-    private string prodViewsPath = "DesktopModules/$modulename$/resources/scripts/$ext_scopeprefixkebab$/";
+    private string prodViewsPath = "DesktopModules/$ext_modulename$/resources/scripts/$ext_scopeprefixkebab$/";
 
     string releaseNotes = "";
     string repositoryOwner = "";
@@ -92,7 +92,7 @@ class Build : NukeBuild
                 var repositoryFiles = GlobFiles(RootDirectory, "README.md", "build/**/git.html", "**/articles/git.md");
                 repositoryFiles.ForEach(f =>
                 {
-                    var file = ReadAllText(RootDirectory / "README.md", Encoding.UTF8);
+                    var file = ReadAllText(f, Encoding.UTF8);
                     file = file.Replace("{owner}", repositoryOwner);
                     file = file.Replace("{repository}", repositoryName);
                     WriteAllText(f, file, Encoding.UTF8);
@@ -514,11 +514,7 @@ class Build : NukeBuild
     /// Watch frontend for changes
     /// </summary>
     Target Watch => _ => _
-    .DependsOn(DeployBinaries)
-    .DependsOn(InstallNpmPackages)
     .DependsOn(SetLiveServer)
-    .DependsOn(GenerateAppConfig)
-    .DependsOn(Swagger)
     .Executes(() =>
     {
         NpmRun(s => s
