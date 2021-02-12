@@ -133,7 +133,7 @@ class Build : NukeBuild
                 .SetProjectFile(Solution.GetProject("Module")));
 
             DotNetRestore(s => s
-                .SetProjectFile(Solution.GetProject("UnitTests")))
+                .SetProjectFile(Solution.GetProject("UnitTests")));
 
             DotNetRestore(s => s
                 .SetProjectFile(Solution.GetProject("IntegrationTests")));
@@ -584,7 +584,13 @@ class Build : NukeBuild
             var manifestAssemblies = Helpers.GetAssembliesFromManifest(manifest);
             assemblies.ForEach(assembly =>
             {
-                CopyFileToDirectory(assembly, stagingDirectory / "bin", FileExistsPolicy.Overwrite);
+                var assemblyFile = new FileInfo(assembly);
+                var assemblyIncludedInManifest = manifestAssemblies.Any(a => a == assemblyFile.Name);
+
+                if (assemblyIncludedInManifest)
+                {
+                    CopyFileToDirectory(assembly, stagingDirectory / "bin", FileExistsPolicy.Overwrite);
+                }
             });
 
             // Install package

@@ -97,6 +97,7 @@
     <None Include="docfx_project\templates\mytemplate\partials\footer.tmpl.partial" />
     <None Include="docfx_project\templates\mytemplate\partials\scripts.tmpl.partial" />
     <None Include="docfx_project\toc.yml" />
+    <None Include="docfx_project\package.json" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>

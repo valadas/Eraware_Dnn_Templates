@@ -32,6 +32,9 @@
           <ProjectItem ReplaceParameters="true">client-base.ts</ProjectItem>
           <ProjectItem ReplaceParameters="true">services.ts</ProjectItem>
         </Folder>
+        <Folder Name="store">
+          <ProjectItem>store.ts</ProjectItem>
+        </Folder>
         <ProjectItem>components.d.ts</ProjectItem>
         <ProjectItem ReplaceParameters="true">index.html</ProjectItem>
         <ProjectItem>index.ts</ProjectItem>
