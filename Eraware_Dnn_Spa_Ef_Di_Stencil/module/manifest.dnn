@@ -34,6 +34,11 @@
               <path>bin</path>
               <version>6.4.4</version>
             </assembly>
+            <assembly>
+              <name>NSwag.Annotations.dll</name>
+              <path>bin</path>
+              <version>13.10.2</version>
+            </assembly>
           </assemblies>
         </component>
         <component type="Module">

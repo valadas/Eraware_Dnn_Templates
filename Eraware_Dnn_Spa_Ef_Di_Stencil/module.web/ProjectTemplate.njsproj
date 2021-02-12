@@ -42,6 +42,7 @@
     <Content Include="src\index.ts" />
     <Content Include="src\services\client-base.ts" />
     <Content Include="src\services\services.ts" />
+    <Content Include="src\store\store.ts" />
     <Content Include=".eslintrc.json" />
     <Content Include=".editorconfig" />
     <Content Include=".gitignore" />

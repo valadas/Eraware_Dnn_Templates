@@ -81,6 +81,7 @@
         <ProjectItem ReplaceParameters="true">docfx.json</ProjectItem>
         <ProjectItem ReplaceParameters="true">index.md</ProjectItem>
         <ProjectItem ReplaceParameters="true">toc.yml</ProjectItem>
+        <ProjectItem>package.json</ProjectItem>
       </Folder>
       <Folder Name="DTO" TargetFolderName="DTO">
         <ProjectItem ReplaceParameters="true">CreateItemDTO.cs</ProjectItem>

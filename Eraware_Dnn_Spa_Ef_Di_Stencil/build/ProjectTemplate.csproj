@@ -55,7 +55,6 @@
     <None Include="Build.cs" />
     <None Include="Configuration.cs" />
     <None Include="Helpers.cs" />
-    <None Include="package.json" />
     <None Include="docs\articles\git.html" />
     <None Include="docs\articles\intro.html" />
     <None Include="docs\images\create-beta-release.gif" />
