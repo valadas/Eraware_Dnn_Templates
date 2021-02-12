@@ -48,7 +48,7 @@ namespace $ext_rootnamespace$
                 items = items.OrderBy(i => true);
             }
 
-            return items.Skip(skip).Take(10);
+            return items.Skip(skip).Take(pageSize);
         }
 
         /// <summary>

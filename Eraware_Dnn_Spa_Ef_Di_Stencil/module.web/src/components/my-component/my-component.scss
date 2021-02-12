@@ -1,17 +1,17 @@
-/**
-* @prop --results-summary-text-align: Defines the alignement of the result summary, "left"|"center"|"right", etc.
-*/
+:host {
+  display: block;
 
-.results-summary {
-  text-align: var(--results-summary-text-align, "right");
-}
+  .header {
+    display: flex;
+    justify-content: space-between;
 
-.collapsible-row {
-  padding: 5px;
-  margin-bottom: 10px;
-  border: 1px solid lightgray;
-}
+    dnn-searchbox {
+      width: 100%;
+    }
 
-#load-more-button {
-  visibility: hidden;
+    my-create {
+      white-space: nowrap;
+      margin-left: 1em;
+    }
+  }
 }

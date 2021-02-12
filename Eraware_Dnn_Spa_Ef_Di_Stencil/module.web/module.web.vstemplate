@@ -35,13 +35,17 @@
             <ProjectItem>my-edit.scss</ProjectItem>
             <ProjectItem>my-edit.tsx</ProjectItem>
           </Folder>
+          <Folder Name="my-items-list">
+            <ProjectItem>my-items-list.scss</ProjectItem>
+            <ProjectItem>my-items-list.tsx</ProjectItem>
+          </Folder>
         </Folder>
         <Folder Name="services">
           <ProjectItem ReplaceParameters="true">client-base.ts</ProjectItem>
           <ProjectItem ReplaceParameters="true">services.ts</ProjectItem>
         </Folder>
         <Folder Name="store">
-          <ProjectItem>store.ts</ProjectItem>
+          <ProjectItem>state.ts</ProjectItem>
         </Folder>
         <ProjectItem>components.d.ts</ProjectItem>
         <ProjectItem ReplaceParameters="true">index.html</ProjectItem>

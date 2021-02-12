@@ -3,7 +3,7 @@ import {
   Event, EventEmitter
 } from '@stencil/core';
 import { CreateItemDTO, IItemViewModel, ItemClient } from '../../services/services';
-import state from "../../store/store";
+import state from "../../store/state";
 
 @Component({
   tag: 'my-edit',
