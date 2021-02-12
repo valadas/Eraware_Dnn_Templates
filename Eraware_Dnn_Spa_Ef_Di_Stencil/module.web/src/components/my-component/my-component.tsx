@@ -1,8 +1,7 @@
-import { Component, h, Prop, State, Host, Element, Listen } from "@stencil/core";
+import { Component, h, Prop, Host, Element, Listen } from "@stencil/core";
 import "@eraware/dnn-elements";
-import { ICreateItemDTO, IItemsPageViewModel, ItemClient, ItemsPageViewModel, ItemViewModel } from "../../services/services";
-import { Debounce } from "@eraware/dnn-elements";
-import state from "../../store/store";
+import { ItemClient } from "../../services/services";
+import state from "../../store/state";
 
 @Component({
   tag: 'my-component',
@@ -11,14 +10,7 @@ import state from "../../store/store";
 })
 export class MyComponent {
   private service: ItemClient;
-  private pageSize = 10; // How many items to fetch per call.
-  private lastScrollPosition = 0;
-  private preloadOffset = 1000; // How many pixels to autoload items under the fold.
-  private loadMoreButton: HTMLButtonElement;
 
-  /**
-   * Initializes the component
-   */
   constructor() {
     this.service = new ItemClient({ moduleId: this.moduleId });
     state.moduleId = this.moduleId;
@@ -26,150 +18,27 @@ export class MyComponent {
 
   @Element() el: HTMLMyComponentElement;
 
-  @State() elementWidth: number = 1200;
-  @State() loading = true;
-  @State() newItem: ICreateItemDTO = {
-    name: "",
-    description: ""
-  };
-
   /** The Dnn module id, required in order to access web services. */
   @Prop() moduleId!: number;
 
   componentDidLoad(): void {
-    this.scrollHandler();
-    document.addEventListener('scroll', () => this.scrollHandler());
-    this.resizeHandler();
-    window.addEventListener('resize', () => this.resizeHandler());
-    this.updateSearchQuery();
     this.service.userCanEdit().then(canEdit => state.userCanEdit = canEdit);
-  }
-
-  // eslint-disable-next-line @stencil/own-methods-must-be-private
-  disconnectedCallback(): void {
-    document.removeEventListener('scroll', () => this.scrollHandler());
-    window.removeEventListener('resize', () => this.resizeHandler());
   }
 
   @Listen("itemCreated")
   handleItemCreated() {
-    this.updateSearchQuery("");
-  }
-
-  @Debounce()
-  private scrollHandler() {
-    if (this.lastScrollPosition < window.scrollY) {
-      this.lastScrollPosition = window.scrollY;
-    }
-    this.infiniteScrollHandler();
-  }
-
-  private infiniteScrollHandler() {
-    if (this.loadMoreButton != null) {
-      const rect = this.loadMoreButton.getBoundingClientRect();
-      const isInViewport = (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight + this.preloadOffset || document.documentElement.clientHeight + this.preloadOffset) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-      );
-      if (isInViewport && state.items.length > 0 && state.items.length !== state.availableItems) {
-        this.getNextPage();
-      }
-    }
-  }
-
-  @Debounce(100)
-  private resizeHandler() {
-    this.elementWidth = this.el.getBoundingClientRect().width;
-  }
-
-  private updateSearchQuery(query = "") {
-    state.expandedItemId = -1;
-    state.lastFetchedPage = 0;
-    this.loading = true;
-    this.service.getItemsPage(query, state.lastFetchedPage + 1, this.pageSize, false)
-      .then(response => {
-        if (state.items.length >= response.resultCount || query === "") {
-          // We are getting less items than displayed or the search was reset
-          // Reset the view to start a new preload behaviour
-          this.lastScrollPosition = 0;
-          this.infiniteScrollHandler();
-        }
-        this.handleNewData(response);
-        state.searchQuery = query;
-        this.infiniteScrollHandler();
-        this.loading = false;
-      })
-      .catch(reason => alert(reason));
-  }
-
-  private getNextPage() {
-    if (state.items.length >= state.availableItems) {
-      // We have less items than before, so we are in the process of resetting and won't fetch more pages yet.
-      return;
-    }
-    this.service.getItemsPage(state.searchQuery, state.lastFetchedPage + 1, this.pageSize, false)
-      .then(response => {
-        this.addResults(response);
-      })
-  }
-
-  /** Adds results to the existing ones */
-  private addResults(data: IItemsPageViewModel) {
-    if (data.page > state.lastFetchedPage) {
-      // We have new data (not and old request we already have)
-      state.items = [...state.items, ...data.items];
-      state.lastFetchedPage = data.page;
-      state.totalPages = data.pageCount;
-      state.availableItems = data.resultCount;
-      // Gives some time to the UI to render before the scroll handler fires to prevent too fast execution of infinite scroll.
-      setTimeout(() => {
-        this.infiniteScrollHandler();
-      }, 300);
-    }
-  }
-
-  /** Clears current results in favor of new ones */
-  private handleNewData(data: ItemsPageViewModel) {
-    state.items = data.items;
-    state.totalPages = data.pageCount;
-    state.lastFetchedPage = data.page;
-    state.availableItems = data.resultCount;
-    this.lastScrollPosition = 0;
-  }
-
-  private deleteItem(item: ItemViewModel) {
-    this.service.deleteItem(item.id)
-      .then(() => this.updateSearchQuery());
+    state.searchQuery = "";
   }
 
   render() {
     return <Host>
-      <dnn-searchbox placeholder="Search" onQueryChanged={e => this.updateSearchQuery(e.detail)} />
-      <div class="results-summary">
-        <p>
-          {state.items?.length > 0 ? `Showing ${state.items.length} of ${state.availableItems} Items` : "No Results"}
-        </p>
-        {this.loading && <p>Loading...</p>}
+      <div class="header">
+        <dnn-searchbox placeholder="Search" onQueryChanged={e => state.searchQuery = e.detail} />
+        {state.userCanEdit &&
+          <my-create />
+        }
       </div>
-      {state.items.map((item) =>
-        <div class="collapsible-row">
-          <div class="collapsible-title">
-            <dnn-chevron expanded={state.expandedItemId == item.id} onChanged={(e) => e.detail ? state.expandedItemId = item.id : state.expandedItemId = -1} />
-            <strong>{item.name}</strong>
-          </div>
-          <dnn-collapsible expanded={state.expandedItemId == item.id}>
-            {item.description?.length > 0 ? <div>{item.description}</div> : <div>No description</div>}
-            <dnn-button type="tertiary" confirm={true} onConfirmed={() => this.deleteItem(item as ItemViewModel)}>Delete</dnn-button>
-          </dnn-collapsible>
-        </div>
-      )
-      }
-      {state.userCanEdit &&
-        <my-create />
-      }
-      <button id="load-more-button" ref={e => this.loadMoreButton = e}>Load More</button>
+      <my-items-list />
     </Host>;
   }
 }

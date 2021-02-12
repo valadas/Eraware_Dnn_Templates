@@ -134,6 +134,20 @@ namespace IntegrationTests.Controllers
         }
 
         [Fact]
+        public void GetItemsPage_50Items_GetsProperly()
+        {
+            this.CreateItems(101);
+
+            var results = this.itemController.GetItemsPage("", 1, 50);
+
+            var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(results);
+            Assert.Equal(50, response.Content.Items.Count);
+            Assert.Equal(1, response.Content.Page);
+            Assert.Equal(3, response.Content.PageCount);
+            Assert.Equal(101, response.Content.ResultCount);
+        }
+
+        [Fact]
         public void GetItemsPage_SortsAscending()
         {
             this.CreateItems(3);

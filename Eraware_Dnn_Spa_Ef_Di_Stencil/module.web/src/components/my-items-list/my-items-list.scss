@@ -1,0 +1,29 @@
+:host {
+  display: block;
+
+  .loading {
+    width: 4em;
+    height: 4em;
+    border: 0.5em solid var(--dnn-color-primary, blue);
+    border-top-color: var(--dnn-color-primary-light, lightblue);
+    border-radius: 50%;
+    margin: 1em auto;
+    animation: spin 1s ease-in-out infinite;
+  }
+
+  .item {
+    border: 1px solid #333;
+    margin-top: 1em;
+    padding: 0.5em;
+  }
+
+  .footer {
+    text-align: center;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

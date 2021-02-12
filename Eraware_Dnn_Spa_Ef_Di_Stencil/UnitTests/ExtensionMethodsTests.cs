@@ -28,6 +28,7 @@ namespace UnitTests
         [InlineData(10, 1, 10, 1, 10, 1, false)]
         [InlineData(20, 2, 10, 2, 10, 11, false)]
         [InlineData(21, 1, 10, 3, 10, 21, true)]
+        [InlineData(101, 1, 50, 3, 50, 1, false)]
         public void IQueryable_GetPage_PagesProperly(
             int count,
             int page,
