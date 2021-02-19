@@ -42,6 +42,8 @@
     <Content Include="src\components\my-create\my-create.tsx" />
     <Content Include="src\components\my-edit\my-edit.scss" />
     <Content Include="src\components\my-edit\my-edit.tsx" />
+    <Content Include="src\components\my-item-details\my-item-details.scss" />
+    <Content Include="src\components\my-item-details\my-item-details.tsx" />
     <Content Include="src\components\my-items-list\my-items-list.scss" />
     <Content Include="src\components\my-items-list\my-items-list.tsx" />
     <Content Include="src\index.html" />

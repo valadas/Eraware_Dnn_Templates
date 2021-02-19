@@ -15,7 +15,12 @@ export class MyCreate {
       <Host>
         <dnn-button
           type="primary"
-          onClick={() => this.modal.show().then(() => this.editForm.setFocus())}
+          onClick={() =>
+            this.modal.show()
+              .then(() =>
+                this.editForm.resetForm()
+                  .then(() =>
+                    this.editForm.setFocus()))}
         >
           Add Item
         </dnn-button>

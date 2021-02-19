@@ -36,5 +36,12 @@ namespace $ext_rootnamespace$.Services
         /// <param name="descending">If true, sorts the results in descending order, if false in ascending order.</param>
         /// <returns><see cref="ItemsPageViewModel"/>.</returns>
         ItemsPageViewModel GetItemsPage(string query, int page = 1, int pageSize = 10, bool descending = false);
+
+        /// <summary>
+        /// Updates an existing item.
+        /// </summary>
+        /// <param name="item">The item to edit with its new details.</param>
+        /// <param name="userId">The id of the acting DNN user.</param>
+        void UpdateItem(UpdateItemDTO item, int userId);
     }
 }

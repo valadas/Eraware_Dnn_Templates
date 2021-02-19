@@ -57,6 +57,7 @@
     <Compile Include="Data\Repositories\IRepository.cs" />
     <Compile Include="Data\Repositories\Repository.cs" />
     <Compile Include="DTO\CreateItemDTO.cs" />
+    <Compile Include="DTO\UpdateItemDTO.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\ModuleApiController.cs" />

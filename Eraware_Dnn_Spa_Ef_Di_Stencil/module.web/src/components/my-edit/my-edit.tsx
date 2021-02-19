@@ -1,9 +1,9 @@
 import {
-  Component, Host, h, State, Element, Method,
-  Event, EventEmitter
+  Component, Host, h, Element, Method,
+  Event, EventEmitter, Prop
 } from '@stencil/core';
-import { CreateItemDTO, IItemViewModel, ItemClient } from '../../services/services';
-import state from "../../store/state";
+import { CreateItemDTO, IItemViewModel, ItemClient, UpdateItemDTO } from '../../services/services';
+import state, { store } from "../../store/state";
 
 @Component({
   tag: 'my-edit',
@@ -11,7 +11,9 @@ import state from "../../store/state";
   shadow: true,
 })
 export class MyEdit {
-  @State() item: IItemViewModel;
+  /** The item to create or edit. */
+  @Prop({ mutable: true }) item: IItemViewModel;
+
   @Element() el!: HTMLMyEditElement;
 
   private nameInput!: HTMLInputElement;
@@ -31,14 +33,22 @@ export class MyEdit {
     }, 500);
   }
 
-  /** Fires up when an item got created. */
-  @Event() itemCreated: EventEmitter
-
-  componentWillLoad() {
+  /** Resets the form to insert a new item. */
+  @Method()
+  public async resetForm() {
     this.item = {
       id: -1,
       name: "",
       description: "",
+    }
+  }
+
+  /** Fires up when an item got created. */
+  @Event() itemCreated: EventEmitter
+
+  componentWillLoad() {
+    if (this.item == undefined) {
+      this.resetForm();
     }
   }
 
@@ -47,17 +57,34 @@ export class MyEdit {
   }
 
   private saveItem(): void {
-    const createItemDTO = new CreateItemDTO({
-      name: this.item.name,
-      description: this.item.description,
-    });
-    this.itemClient.createItem(createItemDTO)
-      .then(() => {
-        this.itemCreated.emit();
-        this.hideModal();
-      },
-        reason => alert(reason))
-      .catch(reason => alert(reason));
+    if (this.item.id < 1) {
+      const createItemDTO = new CreateItemDTO({
+        name: this.item.name,
+        description: this.item.description,
+      });
+      this.itemClient.createItem(createItemDTO)
+        .then(() => {
+          this.itemCreated.emit();
+          this.hideModal();
+        },
+          reason => alert(reason))
+        .catch(reason => alert(reason));
+    }
+    else {
+      const updateItemDTO = new UpdateItemDTO({
+        id: this.item.id,
+        name: this.item.name,
+        description: this.item.description,
+      });
+      this.itemClient.updateItem(updateItemDTO)
+        .then(() => {
+          this.hideModal();
+        }, reason => alert(reason))
+        .catch(reason => alert(reason));
+    }
+    const oldCanEdit = state.userCanEdit;
+    store.reset();
+    state.userCanEdit = oldCanEdit;
   }
 
   render() {
@@ -88,13 +115,24 @@ export class MyEdit {
           >
             Cancel
           </dnn-button>
-          <dnn-button
-            type="primary"
-            disabled={this.item.name.length === 0}
-            onClick={() => this.saveItem()}
-          >
-            Save
-          </dnn-button>
+          {this.item.id < 1 &&
+            <dnn-button
+              type="primary"
+              disabled={this.item.name.trim().length === 0}
+              onClick={() => this.saveItem()}
+            >
+              Create
+            </dnn-button>
+          }
+          {this.item.id > 0 &&
+            <dnn-button
+              type="primary"
+              disabled={this.item.name.trim().length === 0}
+              onClick={() => this.saveItem()}
+            >
+              Save
+            </dnn-button>
+          }
         </div>
       </Host>
     );

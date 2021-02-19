@@ -40,10 +40,21 @@ export class MyItemsList {
     this.preload();
   }
 
+  componentDidUpdate() {
+    this.preload();
+  }
+
   private preload() {
     if (this.el.getBoundingClientRect().bottom - window.innerHeight < this.preloadPixels) {
-      this.loadMore()
-        .then(() => this.preload());
+      if (!state.allLoaded) {
+        this.loadMore()
+          .then(() => {
+            if (!state.allLoaded) {
+              this.preload();
+            }
+          })
+          .catch(() => { });
+      }
     }
   }
 
@@ -76,18 +87,21 @@ export class MyItemsList {
             state.lastFetchedPage = results.page;
             state.totalPages = results.pageCount;
             this.loading = false;
+            if (state.items.length === results.resultCount) {
+              state.allLoaded = true;
+            }
             resolve();
           }, rejectReason => {
             if (rejectReason instanceof DOMException && rejectReason.code === rejectReason.ABORT_ERR) {
-              reject();
+              reject(() => { });
               return;
             }
             alert(rejectReason);
-            reject();
+            reject(rejectReason);
           })
           .catch(rejectReason => {
             alert(rejectReason);
-            reject();
+            reject(rejectReason);
           });
       }
     });
@@ -114,9 +128,9 @@ export class MyItemsList {
               {item.name}
             </div>
             <dnn-collapsible expanded={state.expandedItemId === item.id}>
-              <div class="item-details">
-                {state.expandedItemId === item.id && item.description}
-              </div>
+              {state.expandedItemId === item.id &&
+                <my-item-details item={item} />
+              }
             </dnn-collapsible>
           </div>
         )}

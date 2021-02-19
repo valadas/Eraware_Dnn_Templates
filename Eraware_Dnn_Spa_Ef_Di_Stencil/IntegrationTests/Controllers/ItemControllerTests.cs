@@ -6,7 +6,6 @@ using $ext_rootnamespace$.Services;
 using $ext_rootnamespace$.ViewModels;
 using DotNetNuke.Entities.Users;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http.Results;
 using Xunit;
@@ -252,6 +251,29 @@ namespace IntegrationTests.Controllers
                 this.dataContext.Items.Add(item);
             }
             this.dataContext.SaveChanges();
+        }
+
+        [Fact]
+        public void EditItem_Saves()
+        {
+            this.CreateItems(1);
+            var name = "New Name";
+            var description = "New Description";
+            var dto = new UpdateItemDTO()
+            {
+                Id = 1,
+                Name = "New Name",
+                Description = "New Description",
+            };
+
+            var result = this.itemController.UpdateItem(dto);
+
+            Assert.IsType<OkResult>(result);
+            var newItem = this.dataContext.Items.FirstOrDefault();
+            Assert.NotNull(newItem);
+            Assert.Equal(1, newItem.Id);
+            Assert.Equal(name, newItem.Name);
+            Assert.Equal(description, newItem.Description);
         }
 
         public class FakeItemController : ItemController

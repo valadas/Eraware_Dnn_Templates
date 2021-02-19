@@ -89,6 +89,7 @@
     <None Include="module.web\src\components\my-component\usage\dnn.md" />
     <None Include="module.web\src\components\my-create\my-create.scss" />
     <None Include="module.web\src\components\my-edit\my-edit.scss" />
+    <None Include="module.web\src\components\my-item-details\my-item-details.scss" />
     <None Include="module.web\src\components\my-items-list\my-items-list.scss" />
     <None Include="module\docfx_project\articles\project-architecture.md" />
     <None Include="module\docfx_project\articles\toc.yml" />
@@ -221,6 +222,7 @@
     <None Include="IntegrationTests\Controllers\ItemControllerTests.cs" />
     <None Include="IntegrationTests\Controllers\ServiceRouteMapperTests.cs" />
     <None Include="IntegrationTests\FakeDataContext.cs" />
+    <None Include="module\DTO\UpdateItemDTO.cs" />
     <Compile Include="module\Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -228,6 +230,7 @@
     <TypeScriptCompile Include="module.web\src\components\my-component\my-component.tsx" />
     <TypeScriptCompile Include="module.web\src\components\my-create\my-create.tsx" />
     <TypeScriptCompile Include="module.web\src\components\my-edit\my-edit.tsx" />
+    <TypeScriptCompile Include="module.web\src\components\my-item-details\my-item-details.tsx" />
     <TypeScriptCompile Include="module.web\src\components\my-items-list\my-items-list.tsx" />
     <TypeScriptCompile Include="module.web\src\index.ts" />
     <TypeScriptCompile Include="module.web\src\services\client-base.ts" />

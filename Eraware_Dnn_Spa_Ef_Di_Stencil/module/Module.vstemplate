@@ -85,6 +85,7 @@
       </Folder>
       <Folder Name="DTO" TargetFolderName="DTO">
         <ProjectItem ReplaceParameters="true">CreateItemDTO.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">UpdateItemDTO.cs</ProjectItem>
       </Folder>
       <Folder Name="Properties" TargetFolderName="Properties">
         <ProjectItem TargetFileName="AssemblyInfo.cs" ReplaceParameters="true">AssemblyInfo.cs</ProjectItem>
