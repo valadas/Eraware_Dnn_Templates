@@ -35,6 +35,10 @@
             <ProjectItem>my-edit.scss</ProjectItem>
             <ProjectItem>my-edit.tsx</ProjectItem>
           </Folder>
+          <Folder Name="my-item-details">
+            <ProjectItem>my-item-details.scss</ProjectItem>
+            <ProjectItem>my-item-details.tsx</ProjectItem>
+          </Folder>
           <Folder Name="my-items-list">
             <ProjectItem>my-items-list.scss</ProjectItem>
             <ProjectItem>my-items-list.tsx</ProjectItem>

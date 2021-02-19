@@ -68,6 +68,11 @@ namespace $ext_rootnamespace$.Services
 
             items = items.GetPage(page, pageSize, out int resultCount, out int pageCount);
 
+            if (pageCount < page)
+            {
+                page = pageCount;
+            }
+
         var itemsPageViewModel = new ItemsPageViewModel()
             {
                 Items = new List<ItemViewModel>(),
@@ -84,6 +89,26 @@ namespace $ext_rootnamespace$.Services
         public void DeleteItem(int itemId)
         {
             this.itemRepository.Delete(itemId);
+        }
+
+        /// <inheritdoc/>
+        public void UpdateItem(UpdateItemDTO dto, int userId)
+        {
+            if (dto is null)
+            {
+                throw new ArgumentNullException(nameof(dto));
+            }
+
+            if (string.IsNullOrWhiteSpace(dto.Name))
+            {
+                throw new ArgumentNullException(nameof(dto.Name));
+            }
+
+            var item = this.itemRepository.GetById(dto.Id);
+            item.Name = dto.Name;
+            item.Description = dto.Description;
+
+            this.itemRepository.Update(item, userId);
         }
     }
 }

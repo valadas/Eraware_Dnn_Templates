@@ -156,6 +156,78 @@ namespace UnitTests.Controllers
             Assert.Equal(canEdit, response.Content);
         }
 
+        [Fact]
+        public void UpdateItem_Updates()
+        {
+            var item = new UpdateItemDTO
+            {
+                Id = 123,
+                Name = "Edited Item",
+                Description = "This item was edited",
+            };
+
+            this.itemController.UpdateItem(item);
+
+            this.itemService.Verify(s => s.UpdateItem(item, It.IsAny<int>()), Times.Once);
+        }
+
+        [Fact]
+        public void UpdateItem_ArgumentNull_BadRequest()
+        {
+            var item = new UpdateItemDTO
+            {
+                Id = 123,
+                Name = "",
+                Description = "",
+            };
+            this.itemService.Setup(s => s.UpdateItem(It.IsAny<UpdateItemDTO>(), It.IsAny<int>()))
+                .Throws(new ArgumentNullException("Name"));
+
+            var actionResult = this.itemController.UpdateItem(item);
+
+            var response = Assert.IsType<BadRequestErrorMessageResult>(actionResult);
+
+            Assert.False(string.IsNullOrWhiteSpace(response.Message));
+        }
+
+        [Fact]
+        public void UpdateItem_ArgumentException_BadRequest()
+        {
+            var item = new UpdateItemDTO
+            {
+                Id = 123,
+                Name = "",
+                Description = "",
+            };
+            this.itemService.Setup(s => s.UpdateItem(It.IsAny<UpdateItemDTO>(), It.IsAny<int>()))
+                .Throws(new ArgumentException("Name"));
+
+            var actionResult = this.itemController.UpdateItem(item);
+
+            var response = Assert.IsType<BadRequestErrorMessageResult>(actionResult);
+
+            Assert.False(string.IsNullOrWhiteSpace(response.Message));
+        }
+
+        [Fact]
+        public void UpdateItem_Exception_InternalServerError()
+        {
+            var item = new UpdateItemDTO
+            {
+                Id = 123,
+                Name = "",
+                Description = "",
+            };
+            this.itemService.Setup(s => s.UpdateItem(It.IsAny<UpdateItemDTO>(), It.IsAny<int>()))
+                .Throws(new Exception("Should not show"));
+
+            var actionResult = this.itemController.UpdateItem(item);
+
+            var response = Assert.IsType<ExceptionResult>(actionResult);
+
+            Assert.False(response.Exception.Message == "Should not show");
+        }
+
         public class FakeItemController : ItemController
         {
             private bool canEdit = false;

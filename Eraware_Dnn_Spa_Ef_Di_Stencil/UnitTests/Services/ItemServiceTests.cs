@@ -62,14 +62,16 @@ namespace UnitTests.Services
         }
 
         [Theory]
-        [InlineData(0, 0, true, 30)]
-        [InlineData(1, 10, false, 3)]
-        [InlineData(1, 20, false, 2)]
+        [InlineData(0, 0, true, 30, 1)]
+        [InlineData(1, 10, false, 3, 1)]
+        [InlineData(1, 20, false, 2, 1)]
+        [InlineData(4, 10, false, 3, 3)]
         public void GetItemsPage_GetsPages(
             int page,
             int pageSize,
             bool descending,
-            int expectedPages)
+            int expectedPages
+            int returnedPage)
         {
             this.itemRepository.Setup(r => r.Get())
                 .Returns(() =>
@@ -86,9 +88,9 @@ namespace UnitTests.Services
             var finalReturn = this.itemService.GetItemsPage("test", page, pageSize, descending);
 
             Assert.IsType<ItemsPageViewModel>(finalReturn);
-            Assert.Equal(page > 1 ? page : 1, finalReturn.Page);
             Assert.Equal(30, finalReturn.ResultCount);
             Assert.Equal(expectedPages, finalReturn.PageCount);
+            Assert.Equal(retunedPage, finalReturn.Page);
         }
 
         [Fact]
@@ -99,6 +101,67 @@ namespace UnitTests.Services
             this.itemService.DeleteItem(itemId);
 
             this.itemRepository.Verify(i => i.Delete(123), Times.Once);
+        }
+
+        [Fact]
+        public void UpdateItem_Updates()
+        {
+            var originalItem = new Item
+            {
+                Id = 1,
+                Name = "Original Name",
+                Description = "Original Description",
+            };
+
+            var item = new UpdateItemDTO
+            {
+                Id = 1,
+                Name = "New Item Name",
+                Description = "New Item Description",
+            };
+            this.itemRepository.Setup(r => r.GetById(It.IsAny<int>()))
+                .Returns(originalItem);
+
+            this.itemService.UpdateItem(item, 2);
+
+            itemRepository.Verify(r => r.Update(It.Is<Item>(i =>
+                i.Id == item.Id &&
+                i.Name == item.Name &&
+                i.Description == item.Description), 2), Times.Once);
+        }
+
+        [Fact]
+        public void UpdateItem_NullDto_Throws()
+        {
+            Action nullDto = () => this.itemService.UpdateItem(null, 2);
+
+            var ex = Assert.Throws<ArgumentNullException>(nullDto);
+            Assert.Equal("dto", ex.ParamName);
+            itemRepository.Verify(r =>
+                r.Update(
+                    It.IsAny<Item>(),
+                    It.IsAny<int>()
+                ), Times.Never);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("  ")]
+        public void UpdateItem_NoName_Throws(string name)
+        {
+            var item = new UpdateItemDTO
+            {
+                Id = 123,
+                Name = name,
+                Description = null,
+            };
+
+            Action noName = () => this.itemService.UpdateItem(item, 2);
+
+            var ex = Assert.Throws<ArgumentNullException>(noName);
+            Assert.Equal("Name", ex.ParamName);
         }
     }
 }

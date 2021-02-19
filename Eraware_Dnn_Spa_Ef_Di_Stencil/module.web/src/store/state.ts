@@ -3,6 +3,8 @@ import { IItemViewModel } from "../services/services";
 
 /** Defines the shape of the global state store. */
 interface IStore {
+  /** Indicates whether all the available items are already loaded. */
+  allLoaded: boolean;
   /** The list of items, could be partial since we have paging. */
   items: IItemViewModel[];
   /** The id of the last page of items we already fetched. */
@@ -24,15 +26,25 @@ interface IStore {
 }
 
 /** Initializes the store with an initial (default) state. */
-const { state } = createStore<IStore>({
+export const store = createStore<IStore>({
+  allLoaded: false,
+  availableItems: 0,
+  expandedItemId: -1,
   items: [],
   lastFetchedPage: 0,
-  totalPages: 0,
-  availableItems: 0,
-  searchQuery: "",
-  expandedItemId: -1,
-  userCanEdit: false,
   moduleId: -1,
+  searchQuery: "",
+  totalPages: 0,
+  userCanEdit: false,
 });
 
-export default state;
+store.onChange("searchQuery", () => {
+  store.state.allLoaded = false;
+  store.state.availableItems = 0;
+  store.state.expandedItemId = -1;
+  store.state.items = [];
+  store.state.lastFetchedPage = 0;
+  store.state.totalPages = 0;
+});
+
+export default store.state;

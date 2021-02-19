@@ -47,7 +47,7 @@ namespace $ext_rootnamespace$.Controllers
                 var result = this.itemService.CreateItem(item, this.UserInfo.UserID);
                 return this.Ok(result);
             }
-            catch (ArgumentNullException ex)
+            catch (ArgumentException ex)
             {
                 this.Logger.Error(ex.Message, ex);
                 return this.BadRequest(ex.Message);
@@ -128,6 +128,38 @@ namespace $ext_rootnamespace$.Controllers
         public IHttpActionResult UserCanEdit()
         {
             return this.Ok(this.CanEdit);
+        }
+
+        /// <summary>
+        /// Updates an existing item.
+        /// </summary>
+        /// <param name="item">The new information about the item, <see cref="UpdateItemDTO"/>.</param>
+        /// <returns>Only a status code and no data.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
+        [SwaggerResponse(HttpStatusCode.OK, null, Description = "OK")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, typeof(ArgumentException), Description = "Malformed request")]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
+        public IHttpActionResult UpdateItem(UpdateItemDTO item)
+        {
+            try
+            {
+                this.itemService.UpdateItem(item, this.UserInfo.UserID);
+                return this.Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                this.Logger.Error(ex.Message, ex);
+                return this.BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                var message = "An unexpected error occured trying to update the item.";
+                this.Logger.Error(message, ex);
+                return this.InternalServerError(new Exception(message));
+                throw;
+            }
         }
     }
 }
