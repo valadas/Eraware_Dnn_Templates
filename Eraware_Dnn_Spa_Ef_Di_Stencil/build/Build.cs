@@ -18,12 +18,12 @@ using Nuke.Common.Tools.Xunit;
 using Nuke.Common.Utilities.Collections;
 using Octokit;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
 using static Nuke.Common.EnvironmentInfo;
@@ -412,7 +412,6 @@ class Build : NukeBuild
         .DependsOn(SetBranch)
         .Executes(() =>
         {
-
             // Get the milestone
             var milestone = gitHubClient.Issue.Milestone.GetAllForRepository(repositoryOwner, repositoryName).Result.Where(m => m.Title == GitVersion.MajorMinorPatch).FirstOrDefault();
             if (milestone == null)
@@ -446,6 +445,12 @@ class Build : NukeBuild
                     releaseNotesBuilder.AppendLine($"- #{pr.Number} {pr.Title}. Thanks @{pr.User.Login}");
                 }
             }
+
+            // Checksums
+            releaseNotesBuilder
+                .AppendLine()
+                .Append(File.ReadAllText(ArtifactsDirectory / "checksums.md"));
+
             releaseNotes = releaseNotesBuilder.ToString();
             using (Logger.Block("Release Notes"))
             {
@@ -597,6 +602,25 @@ class Build : NukeBuild
             fileName += "_install.zip";
             ZipFile.CreateFromDirectory(stagingDirectory, ArtifactsDirectory / fileName);
             DeleteDirectory(stagingDirectory);
+
+            var artifact = ArtifactsDirectory / fileName;
+            string hash;
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = File.OpenRead(artifact))
+                {
+                    var hashBytes = md5.ComputeHash(stream);
+                    hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
+                }
+            }
+
+            var hashMd = new StringBuilder();
+            hashMd.AppendLine($"## MD5 Checksums");
+            hashMd.AppendLine($"| File       | Checksum |");
+            hashMd.AppendLine($"|------------|----------|");
+            hashMd.AppendLine($"| {fileName} | {hash}   |");
+            hashMd.AppendLine();
+            File.WriteAllText(ArtifactsDirectory / "checksums.md", hashMd.ToString());
 
             // Open folder
             if (IsWin)
