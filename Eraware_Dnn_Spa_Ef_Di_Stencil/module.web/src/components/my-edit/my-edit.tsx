@@ -4,6 +4,7 @@ import {
 } from '@stencil/core';
 import { CreateItemDTO, IItemViewModel, ItemClient, UpdateItemDTO } from '../../services/services';
 import state, { store } from "../../store/state";
+import alertError from "../../services/alert-error";
 
 @Component({
   tag: 'my-edit',
@@ -67,8 +68,8 @@ export class MyEdit {
           this.itemCreated.emit();
           this.hideModal();
         },
-          reason => alert(reason))
-        .catch(reason => alert(reason));
+          reason => alertError(reason))
+        .catch(reason => alertError(reason));
     }
     else {
       const updateItemDTO = new UpdateItemDTO({

@@ -13,7 +13,7 @@ namespace $ext_rootnamespace$.DTO
         /// <summary>
         /// Gets or sets the name for the item.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "NameRequired")]
         public string Name { get; set; }
 
         /// <summary>

@@ -19,6 +19,11 @@ export class ClientBase {
   }
 
   protected getBaseUrl(_defaultUrl: string, baseUrl?: string) {
+    baseUrl = this.sf.getServiceRoot("Eraware_MyModule21");
+
+    // Strips the last / if present for future concatenations
+    baseUrl = baseUrl.replace(/\/$/, "");
+
     return baseUrl || "";
   }
 
@@ -50,7 +55,7 @@ export class ItemClient extends ClientBase {
    * @return OK
    */
   createItem(item: CreateItemDTO | null | undefined, signal?: AbortSignal | undefined): Promise<ItemViewModel> {
-    let url_ = this.baseUrl + "/API/$modulename$/Item/CreateItem";
+    let url_ = this.baseUrl + "/Item/CreateItem";
     url_ = url_.replace(/[?&]$/, "");
 
     const content_ = JSON.stringify(item);
@@ -106,30 +111,28 @@ export class ItemClient extends ClientBase {
 
   /**
    * Gets a paged and sorted list of items matching a certain query.
-   * @param query The search query.
-   * @param page (optional) The page number to fetch.
-   * @param pageSize (optional) The number of items per page.
-   * @param descending (optional) Sorts descending if true, or ascending if false.
+   * @param query (optional) Gets or sets the optional search query.
+   * @param page (optional) Gets or sets the page number to get.
+   * @param pageSize (optional) Gets or sets the size of pages.
+   * @param descending (optional) Gets or sets a value indicating whether the items should be ordered descending.
    * @return OK
    */
-  getItemsPage(query: string | null, page: number | undefined, pageSize: number | undefined, descending: boolean | undefined, signal?: AbortSignal | undefined): Promise<ItemsPageViewModel> {
-    let url_ = this.baseUrl + "/API/$modulename$/Item/GetItemsPage?";
-    if (query === undefined)
-      throw new Error("The parameter 'query' must be defined.");
-    else if (query !== null)
-      url_ += "query=" + encodeURIComponent("" + query) + "&";
+  getItemsPage(query: string | null | undefined, page: number | undefined, pageSize: number | undefined, descending: boolean | undefined, signal?: AbortSignal | undefined): Promise<ItemsPageViewModel> {
+    let url_ = this.baseUrl + "/Item/GetItemsPage?";
+    if (query !== undefined && query !== null)
+      url_ += "Query=" + encodeURIComponent("" + query) + "&";
     if (page === null)
       throw new Error("The parameter 'page' cannot be null.");
     else if (page !== undefined)
-      url_ += "page=" + encodeURIComponent("" + page) + "&";
+      url_ += "Page=" + encodeURIComponent("" + page) + "&";
     if (pageSize === null)
       throw new Error("The parameter 'pageSize' cannot be null.");
     else if (pageSize !== undefined)
-      url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+      url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
     if (descending === null)
       throw new Error("The parameter 'descending' cannot be null.");
     else if (descending !== undefined)
-      url_ += "descending=" + encodeURIComponent("" + descending) + "&";
+      url_ += "Descending=" + encodeURIComponent("" + descending) + "&";
     url_ = url_.replace(/[?&]$/, "");
 
     let options_ = <RequestInit>{
@@ -178,7 +181,7 @@ export class ItemClient extends ClientBase {
    * @return OK
    */
   deleteItem(itemId: number, signal?: AbortSignal | undefined): Promise<void> {
-    let url_ = this.baseUrl + "/API/$modulename$/Item/DeleteItem?";
+    let url_ = this.baseUrl + "/Item/DeleteItem?";
     if (itemId === undefined || itemId === null)
       throw new Error("The parameter 'itemId' must be defined and cannot be null.");
     else
@@ -226,7 +229,7 @@ export class ItemClient extends ClientBase {
    * @return OK
    */
   userCanEdit(signal?: AbortSignal | undefined): Promise<boolean> {
-    let url_ = this.baseUrl + "/API/$modulename$/Item/UserCanEdit";
+    let url_ = this.baseUrl + "/Item/UserCanEdit";
     url_ = url_.replace(/[?&]$/, "");
 
     let options_ = <RequestInit>{

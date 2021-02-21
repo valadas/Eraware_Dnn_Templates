@@ -45,6 +45,7 @@
           </Folder>
         </Folder>
         <Folder Name="services">
+          <ProjectItem>alert-error.ts</ProjectItem>
           <ProjectItem ReplaceParameters="true">client-base.ts</ProjectItem>
           <ProjectItem ReplaceParameters="true">services.ts</ProjectItem>
         </Folder>
