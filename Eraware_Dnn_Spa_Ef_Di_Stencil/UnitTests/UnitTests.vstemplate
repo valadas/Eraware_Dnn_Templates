@@ -22,6 +22,7 @@
         <ProjectItem ReplaceParameters="true">ItemControllerTests.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ModuleApiControllerTests.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ServiceRouteMapperTests.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ValidateModelAttributeTests.cs</ProjectItem>
       </Folder>
       <Folder Name="Data">
         <Folder Name="Entities">

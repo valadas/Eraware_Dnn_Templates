@@ -72,7 +72,7 @@ class Build : NukeBuild
     AbsolutePath DocsDirectory => RootDirectory / "docs";
 
     private string devViewsPath = "http://localhost:3333/build/";
-    private string prodViewsPath = "DesktopModules/$ext_modulename$/resources/scripts/$ext_scopeprefixkebab$/";
+    private string prodViewsPath = "/DesktopModules/$ext_modulename$/resources/scripts/$ext_scopeprefixkebab$/";
 
     string releaseNotes = "";
     string repositoryOwner = "";
@@ -157,6 +157,7 @@ class Build : NukeBuild
                 .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
                 .SetLogger($"trx;LogFileName=UnitTests.trx")
                 .SetCoverletOutput(UnitTestsResultsDirectory / "coverage.xml")
+                .SetExcludeByFile("**/App_LocalResources/**/*")
                 .SetProjectFile(RootDirectory / "UnitTests" / "UnitTests.csproj")
                 .SetNoBuild(true));
 
@@ -645,7 +646,7 @@ class Build : NukeBuild
                 .AddAssembly(RootDirectory / "bin" / Configuration / "$ext_rootnamespace$.dll")
                 .SetInfoTitle("$ext_companyname$ $ext_modulefriendlyname$")
                 .SetInfoVersion(GitVersion != null ? GitVersion.AssemblySemVer : "0.1.0")
-                .SetProcessArgumentConfigurator(a => a.Add("/DefaultUrlTemplate:/API/$ext_packagename$/{{controller}}/{{action}}"))
+                .SetProcessArgumentConfigurator(a => a.Add("/DefaultUrlTemplate:{{controller}}/{{action}}"))
                 .SetOutput(swaggerFile));
 
             NSwagTasks.NSwagOpenApiToTypeScriptClient(c => c

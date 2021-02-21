@@ -86,7 +86,7 @@ namespace IntegrationTests.Controllers
         {
             var itemController = new ItemController(null);
 
-            var result = itemController.GetItemsPage("");
+            var result = itemController.GetItemsPage(new GetItemsPageDTO { Query = "" });
 
             var response = Assert.IsType<ExceptionResult>(result);
             Assert.False(string.IsNullOrWhiteSpace(response.Exception.Message));
@@ -101,8 +101,9 @@ namespace IntegrationTests.Controllers
         public void GetItemsPage_GetsProperPages(int amount, int expectedPages)
         {
             this.CreateItems(amount);
+            var dto = new GetItemsPageDTO { Query = "", Page = 1, PageSize = 10, Descending = true };
 
-            var result = this.itemController.GetItemsPage("", 1, 10, true);
+            var result = this.itemController.GetItemsPage(dto);
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
             Assert.True(response.Content.Items.Count() <= 10);
@@ -115,7 +116,8 @@ namespace IntegrationTests.Controllers
         {
             this.CreateItems(1);
 
-            var result = this.itemController.GetItemsPage("", 0, 10, true);
+            var result = this.itemController.GetItemsPage(
+                new GetItemsPageDTO { Query = "", Page = 0, PageSize = 10, Descending = true });
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
             Assert.Equal(1, response.Content.Page);
@@ -126,7 +128,8 @@ namespace IntegrationTests.Controllers
         {
             this.CreateItems(1);
 
-            var result = this.itemController.GetItemsPage("", 1, 0);
+            var result = this.itemController.GetItemsPage(
+                new GetItemsPageDTO { Query = "", Page = 1, PageSize = 0 });
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
             Assert.Equal(1, response.Content.Page);
@@ -137,7 +140,8 @@ namespace IntegrationTests.Controllers
         {
             this.CreateItems(101);
 
-            var results = this.itemController.GetItemsPage("", 1, 50);
+            var results = this.itemController.GetItemsPage(
+                new GetItemsPageDTO { Query = "", Page = 1, PageSize = 50 });
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(results);
             Assert.Equal(50, response.Content.Items.Count);
@@ -151,7 +155,8 @@ namespace IntegrationTests.Controllers
         {
             this.CreateItems(3);
 
-            var result = this.itemController.GetItemsPage("", 1, 10);
+            var result = this.itemController.GetItemsPage(
+                new GetItemsPageDTO { Query = "", Page = 1, PageSize = 10 });
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
             Assert.Equal(1, response.Content.Items[0].Id);
@@ -164,7 +169,8 @@ namespace IntegrationTests.Controllers
         {
             this.CreateItems(3);
 
-            var result = this.itemController.GetItemsPage("", 1, 10, true);
+            var result = this.itemController.GetItemsPage(
+                new GetItemsPageDTO { Query = "", Page = 1, PageSize = 10, Descending = true });
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
             Assert.Equal(3, response.Content.Items[0].Id);
@@ -184,7 +190,8 @@ namespace IntegrationTests.Controllers
         {
             this.CreateItems(100);
 
-            var result = this.itemController.GetItemsPage(query, 1, 10);
+            var result = this.itemController.GetItemsPage(
+                new GetItemsPageDTO { Query = query, Page = 1, PageSize = 10 });
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
             Assert.True(response.Content.Items.Count <= 10);

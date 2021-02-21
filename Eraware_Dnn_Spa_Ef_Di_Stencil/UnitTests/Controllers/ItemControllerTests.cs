@@ -1,6 +1,4 @@
 ﻿using $ext_rootnamespace$.Controllers;
-using $ext_rootnamespace$.Data.Entities;
-using $ext_rootnamespace$.Data.Repositories;
 using $ext_rootnamespace$.DTO;
 using $ext_rootnamespace$.Services;
 using $ext_rootnamespace$.ViewModels;
@@ -8,7 +6,6 @@ using DotNetNuke.Entities.Users;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Http.Results;
 using Xunit;
 
@@ -93,7 +90,7 @@ namespace UnitTests.Controllers
         {
             var itemController = new ItemController(null);
 
-            var result = itemController.GetItemsPage("");
+            var result = itemController.GetItemsPage(new GetItemsPageDTO());
 
             var response = Assert.IsType<ExceptionResult>(result);
             Assert.False(string.IsNullOrWhiteSpace(response.Exception.Message));
@@ -111,8 +108,15 @@ namespace UnitTests.Controllers
             var itemsPageViewModel = new ItemsPageViewModel() { Items = items, Page = 1, PageCount = 10, ResultCount = 100 };
             this.itemService.Setup(i => i.GetItemsPage(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
                 .Returns(itemsPageViewModel);
+            var dto = new GetItemsPageDTO
+            {
+                Query = "Name",
+                Page = 1,
+                PageSize = 10,
+                Descending = true,
+            };
 
-            var result = this.itemController.GetItemsPage("Name", 1, 10, true);
+            var result = this.itemController.GetItemsPage(dto);
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
             Assert.Equal(100, response.Content.Items.Count);

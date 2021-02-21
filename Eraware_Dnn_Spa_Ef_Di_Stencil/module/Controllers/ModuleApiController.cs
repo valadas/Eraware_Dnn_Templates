@@ -13,6 +13,7 @@ namespace $ext_rootnamespace$.Controllers
     /// <summary>
     /// Provides common features to all module controller.
     /// </summary>
+    [ValidateModel]
     public abstract class ModuleApiController : DnnApiController
     {
         /// <summary>

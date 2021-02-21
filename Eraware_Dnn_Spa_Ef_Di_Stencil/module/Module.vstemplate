@@ -23,8 +23,17 @@
           <ProjectItem>build.yml</ProjectItem>
         </Folder>
       </Folder>
+      <Folder Name="App_LocalResources" TargetFolderName="App_LocalResources">
+        <ProjectItem>ModelValidation.resx</ProjectItem>
+      </Folder>
       <Folder Name="Common" TargetFolderName="Common">
         <ProjectItem ReplaceParameters="true">Globals.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Controllers">
+        <ProjectItem ReplaceParameters="true">ItemController.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ModuleApiController.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ServiceRouteMapper.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ValidateModelAttribute.cs</ProjectItem>
       </Folder>
       <Folder Name="Data" TargetFolderName="Data">
         <Folder Name="Entities" TargetFolderName="Entities">
@@ -37,6 +46,11 @@
           <ProjectItem ReplaceParameters="true">Repository.cs</ProjectItem>
         </Folder>
         <ProjectItem ReplaceParameters="true">ModuleDbContext.cs</ProjectItem>
+      </Folder>
+      <Folder Name="DTO" TargetFolderName="DTO">
+        <ProjectItem ReplaceParameters="true">CreateItemDTO.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">GetItemsPageDTO.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">UpdateItemDTO.cs</ProjectItem>
       </Folder>
       <Folder Name="docfx_project" TargetFolderName="docfx_project">
         <Folder Name="articles" TargetFolderName="articles">
@@ -83,10 +97,6 @@
         <ProjectItem ReplaceParameters="true">toc.yml</ProjectItem>
         <ProjectItem>package.json</ProjectItem>
       </Folder>
-      <Folder Name="DTO" TargetFolderName="DTO">
-        <ProjectItem ReplaceParameters="true">CreateItemDTO.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">UpdateItemDTO.cs</ProjectItem>
-      </Folder>
       <Folder Name="Properties" TargetFolderName="Properties">
         <ProjectItem TargetFileName="AssemblyInfo.cs" ReplaceParameters="true">AssemblyInfo.cs</ProjectItem>
       </Folder>
@@ -101,11 +111,6 @@
       <Folder Name="ViewModels">
         <ProjectItem ReplaceParameters="true">ItemsPageViewModel.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ItemViewModel.cs</ProjectItem>
-      </Folder>
-      <Folder Name="Controllers">
-        <ProjectItem ReplaceParameters="true">ItemController.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">ModuleApiController.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">ServiceRouteMapper.cs</ProjectItem>
       </Folder>
       <Folder Name="Services">
         <ProjectItem ReplaceParameters="true">IItemService.cs</ProjectItem>

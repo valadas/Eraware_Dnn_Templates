@@ -10,6 +10,11 @@ export class ClientBase {
   }
 
   protected getBaseUrl(_defaultUrl: string, baseUrl?: string): string {
+    baseUrl = this.sf.getServiceRoot("Eraware_MyModule21");
+
+    // Strips the last / if present for future concatenations
+    baseUrl = baseUrl.replace(/\/$/, "");
+
     return baseUrl || "";
   }
 

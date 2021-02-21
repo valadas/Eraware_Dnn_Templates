@@ -1,6 +1,8 @@
 ﻿// MIT License
 // Copyright $ext_companyname$
 
+using System.ComponentModel.DataAnnotations;
+
 namespace Eraware.Modules.MyModule.DTO
 {
     /// <summary>
@@ -11,6 +13,7 @@ namespace Eraware.Modules.MyModule.DTO
         /// <summary>
         /// Gets or sets the id of the item to edit.
         /// </summary>
+        [Range(1, int.MaxValue, ErrorMessage = "IdGreaterThanZero")]
         public int Id { get; set; }
     }
 }

@@ -61,26 +61,23 @@ namespace $ext_rootnamespace$.Controllers
             }
         }
 
-        /// <summary>
-        /// Gets a paged and sorted list of items matching a certain query.
-        /// </summary>
-        /// <param name="query">The search query.</param>
-        /// <param name="page">The page number to fetch.</param>
-        /// <param name="pageSize">The number of items per page.</param>
-        /// <param name="descending">Sorts descending if true, or ascending if false.</param>
-        /// <returns>List of pages + paging information.</returns>
-        [HttpGet]
+    /// <summary>
+    /// Gets a paged and sorted list of items matching a certain query.
+    /// </summary>
+    /// <param name="dto">The details of the query, <see cref="GetItemsPageDTO"/>.</param>
+    /// <returns>List of pages + paging information.</returns>
+    [HttpGet]
         [AllowAnonymous]
         [SwaggerResponse(
             HttpStatusCode.OK,
             typeof(ItemsPageViewModel),
             Description = "OK")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
-        public IHttpActionResult GetItemsPage(string query, int page = 1, int pageSize = 10, bool descending = false)
+        public IHttpActionResult GetItemsPage([FromUri] GetItemsPageDTO dto)
         {
             try
             {
-                return this.Ok(this.itemService.GetItemsPage(query, page, pageSize, descending));
+                return this.Ok(this.itemService.GetItemsPage(dto.Query, dto.Page, dto.PageSize, dto.Descending));
             }
             catch (Exception ex)
             {

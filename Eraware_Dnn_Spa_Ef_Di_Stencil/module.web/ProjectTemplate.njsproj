@@ -48,6 +48,7 @@
     <Content Include="src\components\my-items-list\my-items-list.tsx" />
     <Content Include="src\index.html" />
     <Content Include="src\index.ts" />
+    <Content Include="src\services\alert-error.ts" />
     <Content Include="src\services\client-base.ts" />
     <Content Include="src\services\services.ts" />
     <Content Include="src\store\state.ts" />

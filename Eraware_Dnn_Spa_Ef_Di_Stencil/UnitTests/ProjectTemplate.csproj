@@ -51,6 +51,7 @@
     <Compile Include="Controllers\ItemControllerTests.cs" />
     <Compile Include="Controllers\ModuleApiControllerTests.cs" />
     <Compile Include="Controllers\ServiceRouteMapperTests.cs" />
+    <Compile Include="Controllers\ValidateModelAttributeTests.cs" />
     <Compile Include="Data\Entities\ItemTests.cs" />
     <Compile Include="Data\ModuleDbContextTests.cs" />
     <Compile Include="Data\Repositories\GenericRepositoryTests.cs" />
