@@ -170,10 +170,12 @@ class Build : NukeBuild
                     .Add("-title:UnitTests"))
                 .SetFramework("netcoreapp2.1"));
 
+            Helpers.CleanCodeCoverageHistoryFiles(RootDirectory / "UnitTests" / "history");
+
             var testBadges = GlobFiles(UnitTestsResultsDirectory, "badge_branchcoverage.svg", "badge_linecoverage.svg");
             testBadges.ForEach(f => CopyFileToDirectory(f, UnitTestBadgesDirectory, FileExistsPolicy.Overwrite, true));
 
-            if (IsWin && InvokedTargets.Contains(UnitTests))
+            if (IsWin && (InvokedTargets.Contains(UnitTests) || InvokedTargets.Contains(Test)))
             {
                 Process.Start(@"cmd.exe ", @"/c " + (UnitTestsResultsDirectory / "index.html"));
             }
@@ -210,10 +212,12 @@ class Build : NukeBuild
                     .Add("-title:IntegrationTests"))
                 .SetFramework("netcoreapp2.1"));
 
+            Helpers.CleanCodeCoverageHistoryFiles(RootDirectory / "IntegrationTests" / "history");
+
             var testBadges = GlobFiles(IntegrationTestsResultsDirectory, "badge_branchcoverage.svg", "badge_linecoverage.svg");
             testBadges.ForEach(f => CopyFileToDirectory(f, IntegrationTestsBadgesDirectory, FileExistsPolicy.Overwrite, true));
 
-            if (IsWin && InvokedTargets.Contains(IntegrationTests))
+            if (IsWin && (InvokedTargets.Contains(IntegrationTests) || InvokedTargets.Contains(Test)))
             {
                 Process.Start(@"cmd.exe ", @"/c " + (IntegrationTestsResultsDirectory / "index.html"));
             }
