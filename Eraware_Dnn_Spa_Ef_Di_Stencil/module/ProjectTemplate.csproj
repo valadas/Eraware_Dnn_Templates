@@ -162,7 +162,7 @@
     <Content Include="docfx_project\templates\mytemplate\styles\toggle-theme.js" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App_LocalResources\ModelValidation.resx" />
+    <None Include="resources\App_LocalResources\ModelValidation.resx" />
   </ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

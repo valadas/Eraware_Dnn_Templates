@@ -1,3 +1,8 @@
 :host {
   display: block;
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
 }
