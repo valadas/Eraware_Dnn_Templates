@@ -29,3 +29,9 @@ updates:
       interval: "weekly"
     ignore:
       - dependency-name: "Newtonsoft.Json"
+  - package-ecosystem: "nuget"
+    directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/IntegrationTests"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "Newtonsoft.Json"
