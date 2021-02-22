@@ -37,7 +37,7 @@
             <assembly>
               <name>NSwag.Annotations.dll</name>
               <path>bin</path>
-              <version>13.10.3</version>
+              <version>13.10.5</version>
             </assembly>
           </assemblies>
         </component>
