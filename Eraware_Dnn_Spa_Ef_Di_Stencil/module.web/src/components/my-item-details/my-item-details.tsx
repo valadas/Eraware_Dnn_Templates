@@ -1,7 +1,6 @@
 import { Component, Host, h, Prop } from '@stencil/core';
-import { IItemViewModel } from '../../services/services';
-import state from '../../store/state';
-
+import { IItemViewModel, ItemClient } from '../../services/services';
+import state, { store } from '../../store/state';
 @Component({
   tag: 'my-item-details',
   styleUrl: 'my-item-details.scss',
@@ -13,32 +12,52 @@ export class MyItemDetails {
 
   private modal!: HTMLDnnModalElement;
   private editForm!: HTMLMyEditElement;
+  private itemClient!: ItemClient;
+
+  constructor() {
+    this.itemClient = new ItemClient({ moduleId: state.moduleId });
+  }
+
+  private deleteItem(): void {
+    this.itemClient.deleteItem(this.item.id)
+      .then(() => {
+        const oldCanEdit = state.userCanEdit;
+        store.reset();
+        state.userCanEdit = oldCanEdit;
+      })
+  }
 
   render() {
     return (
       <Host>
-      <div class= "item-details" >
-      { this.item.description }
-      < /div>
-    {
-      state.userCanEdit &&
-      <div class="controls" >
-        <dnn-button
-      type = "primary"
-      onClick = {() => this.modal.show().then(() => this.editForm.setFocus())
-    }
+        <div class="item-details">
+          {this.item.description}
+        </div>
+        {state.userCanEdit &&
+          <div class="controls">
+            <dnn-button
+              type="primary"
+              onClick={() => this.modal.show().then(() => this.editForm.setFocus())}
             >
-      Edit
-      < /dnn-button>
-      < dnn - modal
-    ref = { e => this.modal = e }
-    showCloseButton = { false}
-    backdropDismiss = { false}
-      >
-      <my-edit ref = { e => this.editForm = e } item = { this.item } />
-        </dnn-modal>
-        < /div>
-  }
+              Edit
+            </dnn-button>
+            <dnn-button
+              type="secondary"
+              confirm
+              confirmMessage="Are you sure you want to delete this item?"
+              confirmNoText="No"
+              confirmYesText="Yes"
+              onConfirmed={() => this.deleteItem()}
+            >Delete</dnn-button>
+            <dnn-modal
+              ref={e => this.modal = e}
+              showCloseButton={false}
+              backdropDismiss={false}
+            >
+              <my-edit ref={e => this.editForm = e} item={this.item} />
+            </dnn-modal>
+          </div>
+        }
       </Host>
     );
   }

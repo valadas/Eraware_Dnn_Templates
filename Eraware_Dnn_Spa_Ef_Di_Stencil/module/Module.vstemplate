@@ -23,9 +23,6 @@
           <ProjectItem>build.yml</ProjectItem>
         </Folder>
       </Folder>
-      <Folder Name="App_LocalResources" TargetFolderName="App_LocalResources">
-        <ProjectItem>ModelValidation.resx</ProjectItem>
-      </Folder>
       <Folder Name="Common" TargetFolderName="Common">
         <ProjectItem ReplaceParameters="true">Globals.cs</ProjectItem>
       </Folder>
@@ -102,6 +99,9 @@
         <ProjectItem TargetFileName="AssemblyInfo.cs" ReplaceParameters="true">AssemblyInfo.cs</ProjectItem>
       </Folder>
       <Folder Name="resources">
+        <Folder Name="App_LocalResources" TargetFolderName="App_LocalResources">
+          <ProjectItem>ModelValidation.resx</ProjectItem>
+        </Folder>
         <Folder Name="images">
           <ProjectItem>module-icon.png</ProjectItem>
         </Folder>

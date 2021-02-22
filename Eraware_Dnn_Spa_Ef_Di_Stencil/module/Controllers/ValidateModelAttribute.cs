@@ -24,7 +24,7 @@ namespace Eraware.Modules.MyModule.Controllers
             {
                 if (string.IsNullOrWhiteSpace(this.resourceFileRoot))
                 {
-                    this.resourceFileRoot = HostingEnvironment.MapPath("~/DesktopModules/MyModule21/App_LocalResources/ModelValidation.resx");
+                    this.resourceFileRoot = HostingEnvironment.MapPath("~/DesktopModules/$ext_modulename$/resources/App_LocalResources/ModelValidation.resx");
                 }
 
                 return this.resourceFileRoot;
