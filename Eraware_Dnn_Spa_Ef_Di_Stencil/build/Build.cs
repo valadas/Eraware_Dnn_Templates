@@ -576,7 +576,8 @@ class Build : NukeBuild
             Compress(RootDirectory / "resources", stagingDirectory / "resources.zip", f => (f.Name != "resources.zip.manifest"));
 
             // Symbols
-            var symbolFiles = GlobFiles(RootDirectory, "bin/Release/**/*.pdb");
+            var moduleAssemblyName = Solution.GetProject("Module").GetProperty("AssemblyName");
+            var symbolFiles = GlobFiles(RootDirectory, $"bin/Release/**/{moduleAssemblyName}.pdb");
             Helpers.AddFilesToZip(stagingDirectory / "symbols.zip", symbolFiles.ToArray());
 
             // Install files
