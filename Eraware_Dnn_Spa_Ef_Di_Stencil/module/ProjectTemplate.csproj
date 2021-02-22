@@ -102,6 +102,7 @@
     <None Include="docfx_project\index.md" />
     <None Include="docfx_project\rest\rest-api.md" />
     <None Include="docfx_project\rest\toc.yml" />
+    <None Include="docfx_project\templates\mytemplate\common.js" />
     <None Include="docfx_project\templates\mytemplate\layout\_master.tmpl" />
     <None Include="docfx_project\templates\mytemplate\partials\footer.tmpl.partial" />
     <None Include="docfx_project\templates\mytemplate\partials\scripts.tmpl.partial" />

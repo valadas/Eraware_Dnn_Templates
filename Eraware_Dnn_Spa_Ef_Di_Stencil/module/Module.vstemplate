@@ -88,6 +88,7 @@
               <ProjectItem>mermaid.min.js.map</ProjectItem>
               <ProjectItem>toggle-theme.js</ProjectItem>
             </Folder>
+            <ProjectItem>common.js</ProjectItem>
           </Folder>
         </Folder>
         <ProjectItem ReplaceParameters="true">.gitignore</ProjectItem>

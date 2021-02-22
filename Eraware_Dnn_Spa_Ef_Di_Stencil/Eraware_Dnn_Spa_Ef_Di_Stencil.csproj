@@ -114,6 +114,7 @@
     <None Include="module\docfx_project\templates\mytemplate\layout\_master.tmpl" />
     <None Include="module\docfx_project\templates\mytemplate\styles\mermaid.min.js" />
     <None Include="module\docfx_project\templates\mytemplate\styles\toggle-theme.js" />
+    <Content Include="module\docfx_project\templates\mytemplate\common.js" />
     <Content Include="UnitTests\UnitTests.vstemplate" />
   </ItemGroup>
   <ItemGroup>
