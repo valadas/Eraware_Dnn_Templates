@@ -390,8 +390,7 @@ class Build : NukeBuild
         {
             if (GitVersion != null)
             {
-                var version = branch == "master" ? GitVersion.MajorMinorPatch : GitVersion.SemVer;
-                Npm($"version --no-git-tag-version --allow-same-version {version}", WebProjectDirectory);
+                Npm($"version --no-git-tag-version --allow-same-version {GitVersion.MajorMinorPatch}", WebProjectDirectory);
             }
         });
 
