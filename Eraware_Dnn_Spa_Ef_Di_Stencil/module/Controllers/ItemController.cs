@@ -42,31 +42,16 @@ namespace $ext_rootnamespace$.Controllers
         [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
         public IHttpActionResult CreateItem(CreateItemDTO item)
         {
-            try
-            {
-                var result = this.itemService.CreateItem(item, this.UserInfo.UserID);
-                return this.Ok(result);
-            }
-            catch (ArgumentException ex)
-            {
-                this.Logger.Error(ex.Message, ex);
-                return this.BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                string message = "An unexpected error occured while trying to create the item";
-                this.Logger.Error(message, ex);
-                return this.InternalServerError(new Exception(message));
-                throw;
-            }
+            var result = this.itemService.CreateItem(item, this.UserInfo.UserID);
+            return this.Ok(result);
         }
 
-    /// <summary>
-    /// Gets a paged and sorted list of items matching a certain query.
-    /// </summary>
-    /// <param name="dto">The details of the query, <see cref="GetItemsPageDTO"/>.</param>
-    /// <returns>List of pages + paging information.</returns>
-    [HttpGet]
+        /// <summary>
+        /// Gets a paged and sorted list of items matching a certain query.
+        /// </summary>
+    	/// <param name="dto">The details of the query, <see cref="GetItemsPageDTO"/>.</param>
+        /// <returns>List of pages + paging information.</returns>
+        [HttpGet]
         [AllowAnonymous]
         [SwaggerResponse(
             HttpStatusCode.OK,
@@ -75,18 +60,8 @@ namespace $ext_rootnamespace$.Controllers
         [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
         public IHttpActionResult GetItemsPage([FromUri] GetItemsPageDTO dto)
         {
-            try
-            {
                 return this.Ok(this.itemService.GetItemsPage(dto.Query, dto.Page, dto.PageSize, dto.Descending));
             }
-            catch (Exception ex)
-            {
-                string message = "An unexpected error occured while trying to fetch items.";
-                this.Logger.Error(message, ex);
-                return this.InternalServerError(new Exception(message));
-                throw;
-            }
-        }
 
         /// <summary>
         /// Deletes an existing item.
@@ -100,18 +75,8 @@ namespace $ext_rootnamespace$.Controllers
         [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
         public IHttpActionResult DeleteItem(int itemId)
         {
-            try
-            {
-                this.itemService.DeleteItem(itemId);
-                return this.Ok();
-            }
-            catch (Exception ex)
-            {
-                string message = "An unexpected error occured while trying to delete an item.";
-                this.Logger.Error(message, ex);
-                return this.InternalServerError(new Exception(message));
-                throw;
-            }
+            this.itemService.DeleteItem(itemId);
+            return this.Ok();
         }
 
         /// <summary>
@@ -140,23 +105,8 @@ namespace $ext_rootnamespace$.Controllers
         [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
         public IHttpActionResult UpdateItem(UpdateItemDTO item)
         {
-            try
-            {
-                this.itemService.UpdateItem(item, this.UserInfo.UserID);
-                return this.Ok();
-            }
-            catch (ArgumentException ex)
-            {
-                this.Logger.Error(ex.Message, ex);
-                return this.BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                var message = "An unexpected error occured trying to update the item.";
-                this.Logger.Error(message, ex);
-                return this.InternalServerError(new Exception(message));
-                throw;
-            }
+            this.itemService.UpdateItem(item, this.UserInfo.UserID);
+            return this.Ok();
         }
     }
 }

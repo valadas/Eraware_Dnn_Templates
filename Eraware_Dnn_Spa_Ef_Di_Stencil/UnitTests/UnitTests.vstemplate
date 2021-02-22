@@ -21,6 +21,7 @@
       <Folder Name="Controllers" TargetFolderName="Controllers">
         <ProjectItem ReplaceParameters="true">ItemControllerTests.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ModuleApiControllerTests.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ModuleExceptionFilterAttributeTests.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ServiceRouteMapperTests.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ValidateModelAttributeTests.cs</ProjectItem>
       </Folder>
@@ -35,6 +36,7 @@
       </Folder>
       <Folder Name="Services">
         <ProjectItem ReplaceParameters="true">ItemServiceTests.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">LoggingServiceTests.cs</ProjectItem>
       </Folder>
       <ProjectItem ReplaceParameters="true">ExtensionMethodsTests.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true">FakeDatacontext.cs</ProjectItem>
