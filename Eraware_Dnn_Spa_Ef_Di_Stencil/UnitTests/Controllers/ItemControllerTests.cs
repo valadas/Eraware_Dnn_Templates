@@ -24,46 +24,6 @@ namespace UnitTests.Controllers
         }
 
         [Fact]
-        public void CreateItem_NoUserInfo_InternalServerError()
-        {
-            var itemController = new ItemController(null);
-            var dto = new CreateItemDTO()
-            {
-                Name = "name",
-                Description = "description",
-            };
-            this.itemService.Setup(i => i.CreateItem(It.IsAny<CreateItemDTO>(), It.IsAny<int>()))
-                .Throws(new Exception("Something is null."));
-
-            var result = itemController.CreateItem(dto);
-
-            var content = Assert.IsType<ExceptionResult>(result);
-            Assert.False(string.IsNullOrWhiteSpace(content.Exception.Message));
-        }
-
-        [Theory]
-        [InlineData(true, null, null)]
-        [InlineData(false, null, null)]
-        [InlineData(false, null, "Description")]
-        public void CreateItem_ArgumentNullThowsBadRequest(bool dtoNull, string name, string description)
-        {
-            CreateItemDTO dto = dtoNull ? null :
-                new CreateItemDTO()
-                {
-                    Name = name,
-                    Description = description,
-                };
-
-            this.itemService.Setup(i => i.CreateItem(It.IsAny<CreateItemDTO>(), It.IsAny<int>()))
-                .Throws(new ArgumentNullException("An argument was null"));
-
-            var actionResult = this.itemController.CreateItem(dto);
-
-            var response = Assert.IsType<BadRequestErrorMessageResult>(actionResult);
-            Assert.False(string.IsNullOrWhiteSpace(response.Message));
-        }
-
-        [Fact]
         public void CreateItem_Creates()
         {
             var name = "Name";
@@ -83,17 +43,6 @@ namespace UnitTests.Controllers
             Assert.Equal(1, response.Content.Id);
             Assert.Equal(name, response.Content.Name);
             Assert.Equal(description, response.Content.Description);
-        }
-
-        [Fact]
-        public void GetItemsPage_NoService_InternalServerError()
-        {
-            var itemController = new ItemController(null);
-
-            var result = itemController.GetItemsPage(new GetItemsPageDTO());
-
-            var response = Assert.IsType<ExceptionResult>(result);
-            Assert.False(string.IsNullOrWhiteSpace(response.Exception.Message));
         }
 
         [Fact]
@@ -123,17 +72,6 @@ namespace UnitTests.Controllers
             Assert.Equal(1, response.Content.Page);
             Assert.Equal(10, response.Content.PageCount);
             Assert.Equal(100, response.Content.ResultCount);
-        }
-
-        [Fact]
-        public void DeleteItem_ThrowsInternalServerError()
-        {
-            this.itemService.Setup(i => i.DeleteItem(It.IsAny<int>()))
-                .Throws(new Exception("Error"));
-
-            var result = this.itemController.DeleteItem(-1);
-            var response = Assert.IsType<ExceptionResult>(result);
-            Assert.False(string.IsNullOrWhiteSpace(response.Exception.Message));
         }
 
         [Theory]
@@ -173,63 +111,6 @@ namespace UnitTests.Controllers
             this.itemController.UpdateItem(item);
 
             this.itemService.Verify(s => s.UpdateItem(item, It.IsAny<int>()), Times.Once);
-        }
-
-        [Fact]
-        public void UpdateItem_ArgumentNull_BadRequest()
-        {
-            var item = new UpdateItemDTO
-            {
-                Id = 123,
-                Name = "",
-                Description = "",
-            };
-            this.itemService.Setup(s => s.UpdateItem(It.IsAny<UpdateItemDTO>(), It.IsAny<int>()))
-                .Throws(new ArgumentNullException("Name"));
-
-            var actionResult = this.itemController.UpdateItem(item);
-
-            var response = Assert.IsType<BadRequestErrorMessageResult>(actionResult);
-
-            Assert.False(string.IsNullOrWhiteSpace(response.Message));
-        }
-
-        [Fact]
-        public void UpdateItem_ArgumentException_BadRequest()
-        {
-            var item = new UpdateItemDTO
-            {
-                Id = 123,
-                Name = "",
-                Description = "",
-            };
-            this.itemService.Setup(s => s.UpdateItem(It.IsAny<UpdateItemDTO>(), It.IsAny<int>()))
-                .Throws(new ArgumentException("Name"));
-
-            var actionResult = this.itemController.UpdateItem(item);
-
-            var response = Assert.IsType<BadRequestErrorMessageResult>(actionResult);
-
-            Assert.False(string.IsNullOrWhiteSpace(response.Message));
-        }
-
-        [Fact]
-        public void UpdateItem_Exception_InternalServerError()
-        {
-            var item = new UpdateItemDTO
-            {
-                Id = 123,
-                Name = "",
-                Description = "",
-            };
-            this.itemService.Setup(s => s.UpdateItem(It.IsAny<UpdateItemDTO>(), It.IsAny<int>()))
-                .Throws(new Exception("Should not show"));
-
-            var actionResult = this.itemController.UpdateItem(item);
-
-            var response = Assert.IsType<ExceptionResult>(actionResult);
-
-            Assert.False(response.Exception.Message == "Should not show");
         }
 
         public class FakeItemController : ItemController

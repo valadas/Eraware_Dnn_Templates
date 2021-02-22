@@ -187,6 +187,10 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="module\Services\ILoggingService.cs" />
+    <None Include="module\Services\LoggingService.cs" />
+    <None Include="UnitTests\Controllers\ModuleExceptionFilterAttributeTests.cs" />
+    <None Include="UnitTests\Services\LoggingServiceTests.cs" />
     <None Include="UnitTests\Controllers\ValidateModelAttributeTests.cs" />
     <None Include="UnitTests\ExtensionMethodsTests.cs" />
     <None Include="UnitTests\Controllers\ServiceRouteMapperTests.cs" />
@@ -224,6 +228,7 @@
     <None Include="IntegrationTests\Controllers\ServiceRouteMapperTests.cs" />
     <None Include="IntegrationTests\FakeDataContext.cs" />
     <None Include="module\DTO\UpdateItemDTO.cs" />
+    <None Include="module\Controllers\ModuleExceptionFilterAttribute.cs" />
     <None Include="module\Controllers\ValidateModelAttribute.cs" />
     <None Include="module\DTO\GetItemsPageDTO.cs" />
     <Compile Include="module\Properties\AssemblyInfo.cs" />

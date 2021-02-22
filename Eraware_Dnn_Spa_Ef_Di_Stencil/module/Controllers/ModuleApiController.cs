@@ -13,16 +13,10 @@ namespace $ext_rootnamespace$.Controllers
     /// <summary>
     /// Provides common features to all module controller.
     /// </summary>
+	[ModuleExceptionFilter]
     [ValidateModel]
     public abstract class ModuleApiController : DnnApiController
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleApiController"/> class.
-        /// </summary>
-        public ModuleApiController()
-        {
-            this.Logger = LoggerSource.Instance.GetLogger(this.GetType());
-        }
 
         /// <summary>
         /// Gets information about the Dnn user.
@@ -52,11 +46,5 @@ namespace $ext_rootnamespace$.Controllers
                 throw new Exception("Only override this setter for testing.");
             }
         }
-
-        /// <summary>
-        /// Logs to the Dnn Log4Net logger.
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:Property summary documentation should match accessors", Justification = "We are not really setting to the log, but logging.")]
-        protected ILog Logger { get; }
     }
 }

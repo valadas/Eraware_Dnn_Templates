@@ -1,4 +1,5 @@
-﻿using $ext_rootnamespace$.Controllers;
+﻿using DotNetNuke.Entities.Users;
+using $ext_rootnamespace$.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,19 @@ namespace UnitTests.Controllers
             var canEdit = controller.CanEdit;
 
             Assert.False(canEdit);
+        }
+
+        [Fact]
+        public void HasUserInfo()
+        {
+            var controller = new Controller();
+            UserInfo userInfo;
+
+            Action getUserInfo = () => userInfo = controller.UserInfo;
+
+            // Not a great test but keeps coverage at 100%.
+            // Could be improved is we get better abstactions in Dnn for UserInfo.
+            Assert.Throws<NullReferenceException>(getUserInfo);
         }
 
         class Controller : ModuleApiController

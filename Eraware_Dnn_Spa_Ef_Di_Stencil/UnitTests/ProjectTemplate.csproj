@@ -50,6 +50,7 @@
     <Compile Include="Common\GlobalsTests.cs" />
     <Compile Include="Controllers\ItemControllerTests.cs" />
     <Compile Include="Controllers\ModuleApiControllerTests.cs" />
+    <Compile Include="Controllers\ModuleExceptionFilterAttributeTests.cs" />
     <Compile Include="Controllers\ServiceRouteMapperTests.cs" />
     <Compile Include="Controllers\ValidateModelAttributeTests.cs" />
     <Compile Include="Data\Entities\ItemTests.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Data\Repositories\GenericRepositoryTests.cs" />
     <Compile Include="ExtensionMethodsTests.cs" />
     <Compile Include="Services\ItemServiceTests.cs" />
+    <Compile Include="Services\LoggingServiceTests.cs" />
     <Compile Include="FakeDataContext.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

@@ -26,42 +26,6 @@ namespace IntegrationTests.Controllers
             this.itemController = new FakeItemController(this.itemService);
         }
 
-        [Fact]
-        public void CreateItem_NoUserInfo_InternalServerError()
-        {
-            var itemController = new ItemController(null);
-            var dto = new CreateItemDTO()
-            {
-                Name = "name",
-                Description = "description",
-            };
-
-            var result = itemController.CreateItem(dto);
-
-            var content = Assert.IsType<ExceptionResult>(result);
-            Assert.False(string.IsNullOrWhiteSpace(content.Exception.Message));
-        }
-
-        [Theory]
-        [InlineData(true, null, null)]
-        [InlineData(false, null, null)]
-        [InlineData(false, null, "Description")]
-        public void CreateItem_ArgumentNullThowsBadRequest(bool dtoNull, string name, string description)
-        {
-            CreateItemDTO dto = dtoNull ? null :
-                new CreateItemDTO()
-                {
-                    Name = name,
-                    Description = description,
-                };
-
-            var actionResult = this.itemController.CreateItem(dto);
-
-            var response = Assert.IsType<BadRequestErrorMessageResult>(actionResult);
-            Assert.False(string.IsNullOrWhiteSpace(response.Message));
-            Assert.Equal(0, dataContext.Items.Count());
-        }
-
         [Theory]
         [InlineData("name1", "description1")]
         [InlineData("name2", "description2")]
@@ -79,17 +43,6 @@ namespace IntegrationTests.Controllers
             Assert.Equal(name, response.Content.Name);
             Assert.Equal(description, response.Content.Description);
             Assert.True(response.Content.Id > 0);
-        }
-
-        [Fact]
-        public void GetItemsPage_NoService_InternalServerError()
-        {
-            var itemController = new ItemController(null);
-
-            var result = itemController.GetItemsPage(new GetItemsPageDTO { Query = "" });
-
-            var response = Assert.IsType<ExceptionResult>(result);
-            Assert.False(string.IsNullOrWhiteSpace(response.Exception.Message));
         }
 
         [Theory]
@@ -196,16 +149,6 @@ namespace IntegrationTests.Controllers
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
             Assert.True(response.Content.Items.Count <= 10);
             Assert.Equal(expectedResults, response.Content.ResultCount);
-        }
-
-        [Fact]
-        public void DeleteItem_ThrowsException()
-        {
-            var itemController = new ItemController(null);
-            var result = itemController.DeleteItem(1);
-
-            var response = Assert.IsType<ExceptionResult>(result);
-            Assert.False(string.IsNullOrWhiteSpace(response.Exception.Message));
         }
 
         [Fact]
