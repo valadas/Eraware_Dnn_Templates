@@ -7,6 +7,8 @@ using System.IO.Compression;
 using System.Text;
 using System.Xml;
 using static Nuke.Common.IO.FileSystemTasks;
+using static Nuke.Common.IO.PathConstruction;
+using static Nuke.Common.IO.XmlTasks;
 
 namespace BuildHelpers
 {
@@ -118,5 +120,56 @@ namespace BuildHelpers
 
             return assemblies;
         }
+
+        public static void CleanCodeCoverageHistoryFiles(string directory)
+        {
+            var files = GlobFiles(directory, "*.xml");
+            if (files == null || files.Count() < 2)
+            {
+                return;
+            }
+
+            var fileInfos = new List<(
+                DateTime FileDate,
+                string FileName,
+                int CoveredLines,
+                int CoverableLines,
+                int TotalLines,
+                int CoveredBranches,
+                int TotalBranches)>();
+            foreach (var file in files)
+            {
+                var d = XmlPeekSingle(file, "/coverage/@date");
+                var date = new DateTime(
+                    int.Parse(d.Substring(0, 4)),
+                    int.Parse(d.Substring(5, 2)),
+                    int.Parse(d.Substring(8, 2)),
+                    int.Parse(d.Substring(11, 2)),
+                    int.Parse(d.Substring(14, 2)),
+                    int.Parse(d.Substring(17, 2)));
+                var coveredLines = XmlPeek(file, "/coverage/assembly/class/@coveredlines").Sum(c => int.Parse(c));
+                var coverableLines = XmlPeek(file, "coverage/assembly/class/@coverablelines").Sum(c => int.Parse(c));
+                var totalLines = XmlPeek(file, "coverage/assembly/class/@totallines").Sum(c => int.Parse(c));
+                var coveredBranches = XmlPeek(file, "coverage/assembly/class/@coveredbranches").Sum(c => int.Parse(c));
+                var totalBranches = XmlPeek(file, "coverage/assembly/class/@totalbranches").Sum(c => int.Parse(c));
+                fileInfos.Add((date, file, coveredLines, coverableLines, totalLines, coveredBranches, totalBranches));
+            }
+
+            var orderedFiles = fileInfos.OrderBy(f => f.FileDate).ToArray();
+            for (int i = 0; i < orderedFiles.Count() - 1; i++)
+            {
+                var fileA = orderedFiles[i];
+                var fileB = orderedFiles[i + 1];
+                if (
+                    fileA.CoveredLines == fileB.CoveredLines &&
+                    fileA.CoverableLines == fileB.CoverableLines &&
+                    fileA.TotalLines == fileB.TotalLines &&
+                    fileA.CoveredBranches == fileB.CoveredBranches &&
+                    fileA.TotalBranches == fileB.TotalBranches)
+                {
+                    DeleteFile(fileB.FileName);
+                }
+            }
         }
+    }
 }
