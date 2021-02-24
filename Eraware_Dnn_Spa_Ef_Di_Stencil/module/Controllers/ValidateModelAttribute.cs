@@ -1,7 +1,7 @@
 ﻿// MIT License
 // Copyright $ext_companyname$
 
-namespace Eraware.Modules.MyModule.Controllers
+namespace $ext_rootnamespace$.Controllers
 {
     using DotNetNuke.Services.Localization;
     using System.Net;

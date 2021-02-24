@@ -70,7 +70,7 @@ namespace UnitTests.Services
             int page,
             int pageSize,
             bool descending,
-            int expectedPages
+            int expectedPages,
             int returnedPage)
         {
             this.itemRepository.Setup(r => r.Get())
@@ -90,7 +90,7 @@ namespace UnitTests.Services
             Assert.IsType<ItemsPageViewModel>(finalReturn);
             Assert.Equal(30, finalReturn.ResultCount);
             Assert.Equal(expectedPages, finalReturn.PageCount);
-            Assert.Equal(retunedPage, finalReturn.Page);
+            Assert.Equal(returnedPage, finalReturn.Page);
         }
 
         [Fact]

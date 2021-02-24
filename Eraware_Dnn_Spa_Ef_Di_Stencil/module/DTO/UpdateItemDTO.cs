@@ -3,7 +3,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Eraware.Modules.MyModule.DTO
+namespace $ext_rootnamespace$.DTO
 {
     /// <summary>
     /// Data transfer object used to update an item.

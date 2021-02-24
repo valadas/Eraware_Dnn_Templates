@@ -17,6 +17,7 @@ export class MyComponent {
   constructor() {
     this.service = new ItemClient({ moduleId: this.moduleId });
     state.moduleId = this.moduleId;
+    this.localizationService = new LocalizationClient({ moduleId: this.moduleId });
   }
 
   @Element() el: HTMLMyComponentElement;
@@ -25,14 +26,11 @@ export class MyComponent {
   @Prop() moduleId!: number;
 
   componentWillLoad() {
-    console.log("componentWillLoad")
     return new Promise<void>((resolve, reject) => {
       this.localizationService.getLocalization()
         .then(l => {
-          console.log(l);
           localizationState.viewModel = l;
           this.resx = localizationState.viewModel;
-          console.log("resolving")
           resolve();
         })
         .catch(reason => {

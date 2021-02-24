@@ -48,7 +48,7 @@ namespace $ext_rootnamespace$.Services
         public LocalizationService()
         {
             this.localizationProvider = new LocalizationProvider();
-            this.cacheKey = "Eraware.Modules.MyModule" + "_Localization_" + Thread.CurrentThread.CurrentCulture;
+            this.cacheKey = "$ext_rootnamespace$" + "_Localization_" + Thread.CurrentThread.CurrentCulture;
             this.viewModel = new LocalizationViewModel();
             var viewModel = DataCache.GetCache<LocalizationViewModel>(this.cacheKey);
             if (viewModel is null)

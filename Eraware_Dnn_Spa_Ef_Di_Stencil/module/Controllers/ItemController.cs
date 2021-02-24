@@ -49,7 +49,7 @@ namespace $ext_rootnamespace$.Controllers
         /// <summary>
         /// Gets a paged and sorted list of items matching a certain query.
         /// </summary>
-    	/// <param name="dto">The details of the query, <see cref="GetItemsPageDTO"/>.</param>
+        /// <param name="dto">The details of the query, <see cref="GetItemsPageDTO"/>.</param>
         /// <returns>List of pages + paging information.</returns>
         [HttpGet]
         [AllowAnonymous]

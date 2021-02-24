@@ -1,7 +1,6 @@
 ﻿// MIT License
 // Copyright $ext_companyname$
-
-namespace Eraware.Modules.MyModule.DTO
+namespace $ext_rootnamespace$.DTO
 {
     /// <summary>
     /// The data object to request a paged list of items.
