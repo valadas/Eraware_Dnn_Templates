@@ -53,6 +53,7 @@
 	</ItemGroup>
 	<ItemGroup>
     <Compile Include="Common\Globals.cs" />
+    <Compile Include="Controllers\LocalizationController.cs" />
     <Compile Include="DTO\GetItemsPageDTO.cs" />
     <Compile Include="Controllers\ValidateModelAttribute.cs" />
     <Compile Include="Data\Entities\BaseEntity.cs" />
@@ -71,10 +72,13 @@
     <Compile Include="Services\ILoggingService.cs" />
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\IItemService.cs" />
+    <Compile Include="Services\ILocalizationService.cs" />
     <Compile Include="Services\ItemService.cs" />
+    <Compile Include="Services\LocalizationService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ItemsPageViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
+    <Compile Include="ViewModels\LocalizationViewModel.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Resource Include=".gitignore" />
     <Resource Include="resources\images\module-icon.png" />
@@ -162,7 +166,8 @@
     <Content Include="docfx_project\templates\mytemplate\styles\toggle-theme.js" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="resources\App_LocalResources\ModelValidation.resx" />
+    <EmbeddedResource Include="resources\App_LocalResources\ModelValidation.resx" />
+    <EmbeddedResource Include="resources\App_LocalResources\UI.resx" />
   </ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

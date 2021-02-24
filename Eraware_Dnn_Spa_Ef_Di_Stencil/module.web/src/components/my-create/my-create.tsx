@@ -1,4 +1,5 @@
 import { Component, Host, h } from '@stencil/core';
+import { localizationState } from "../../store/state";
 
 @Component({
   tag: 'my-create',
@@ -11,6 +12,7 @@ export class MyCreate {
   private editForm!: HTMLMyEditElement;
 
   render() {
+    const resx = localizationState.viewModel.uI;
     return (
       <Host>
         <dnn-button
@@ -22,7 +24,7 @@ export class MyCreate {
                   .then(() =>
                     this.editForm.setFocus()))}
         >
-          Add Item
+          {resx.addItem}
         </dnn-button>
         <dnn-modal
           ref={e => this.modal = e}

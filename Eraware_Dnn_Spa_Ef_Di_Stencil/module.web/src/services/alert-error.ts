@@ -16,7 +16,6 @@ export default function alertError(reason: any) {
         }
       }
     }
-    debugger;
     if (reason.hasOwnProperty("isApiException") && reason.isApiException) {
       var response = JSON.parse(reason.response);
       alert(response.Message);

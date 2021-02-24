@@ -1,28 +1,35 @@
 import { createStore } from "@stencil/store";
-import { IItemViewModel } from "../services/services";
+import { IItemViewModel, LocalizationViewModel } from "../services/services";
 
 /** Defines the shape of the global state store. */
 interface IStore {
   /** Indicates whether all the available items are already loaded. */
   allLoaded: boolean;
-  /** The list of items, could be partial since we have paging. */
-  items: IItemViewModel[];
-  /** The id of the last page of items we already fetched. */
-  lastFetchedPage: number;
-  /** The total amount of pages we know will be available to fetch. */
-  totalPages: number;
+
   /** The total amount of items availalble
-   * (but may not be fetched yet because of paging support)
-  */
+   * (but may not be fetched yet because of paging support) */
   availableItems: number;
-  /** The current search query */
-  searchQuery: string;
+
   /** The currently expanded item id */
   expandedItemId: number;
-  /** Indicates whether the current user can edit items. */
-  userCanEdit: boolean;
+
+  /** The list of items, could be partial since we have paging. */
+  items: IItemViewModel[];
+
+  /** The id of the last page of items we already fetched. */
+  lastFetchedPage: number;
+
   /** The id of the Dnn module */
   moduleId: number;
+
+  /** The current search query */
+  searchQuery: string;
+
+  /** The total amount of pages we know will be available to fetch. */
+  totalPages: number;
+
+  /** Indicates whether the current user can edit items. */
+  userCanEdit: boolean;
 }
 
 /** Initializes the store with an initial (default) state. */
@@ -48,3 +55,14 @@ store.onChange("searchQuery", () => {
 });
 
 export default store.state;
+
+interface LocalizationStore {
+  viewModel: LocalizationViewModel;
+}
+
+const localizationStore = createStore<LocalizationStore>({
+  viewModel: new LocalizationViewModel(),
+});
+
+export const localizationState = localizationStore.state;
+export const resx = localizationStore.state.viewModel; 

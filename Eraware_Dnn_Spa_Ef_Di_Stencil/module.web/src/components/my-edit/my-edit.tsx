@@ -2,8 +2,8 @@ import {
   Component, Host, h, Element, Method,
   Event, EventEmitter, Prop
 } from '@stencil/core';
-import { CreateItemDTO, IItemViewModel, ItemClient, UpdateItemDTO } from '../../services/services';
-import state, { store } from "../../store/state";
+import { CreateItemDTO, IItemViewModel, ItemClient, UIInfo, UpdateItemDTO } from '../../services/services';
+import state, { store, localizationState } from "../../store/state";
 import alertError from "../../services/alert-error";
 
 @Component({
@@ -19,11 +19,13 @@ export class MyEdit {
 
   private nameInput!: HTMLInputElement;
   private itemClient!: ItemClient;
+  private resx: UIInfo;
 
   constructor() {
     this.itemClient = new ItemClient({
       moduleId: state.moduleId,
     });
+    this.resx = localizationState.viewModel.uI;
   }
 
   /** Sets focus on the first form element */
@@ -92,7 +94,7 @@ export class MyEdit {
     return (
       <Host>
         <div class="grid">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name">{this.resx.name || "Name"}</label>
           <input
             id="name"
             type="text"
@@ -102,7 +104,7 @@ export class MyEdit {
             onInput={e => this.item = { ...this.item, name: (e.target as HTMLInputElement).value }}
           />
 
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description">{this.resx.description || "Description"}</label>
           <textarea
             id="description"
             value={this.item.description}
@@ -114,7 +116,7 @@ export class MyEdit {
             reversed
             onClick={() => this.hideModal()}
           >
-            Cancel
+            {this.resx.cancel || "Cancel"}
           </dnn-button>
           {this.item.id < 1 &&
             <dnn-button
@@ -122,7 +124,7 @@ export class MyEdit {
               disabled={this.item.name.trim().length === 0}
               onClick={() => this.saveItem()}
             >
-              Create
+              {this.resx.create || "Create"}
             </dnn-button>
           }
           {this.item.id > 0 &&
@@ -131,7 +133,7 @@ export class MyEdit {
               disabled={this.item.name.trim().length === 0}
               onClick={() => this.saveItem()}
             >
-              Save
+              {this.resx.save || "Save"}
             </dnn-button>
           }
         </div>

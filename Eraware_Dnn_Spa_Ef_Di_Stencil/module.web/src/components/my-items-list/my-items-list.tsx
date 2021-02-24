@@ -1,7 +1,7 @@
 import { Debounce } from '@eraware/dnn-elements';
 import { Component, Host, h, State, Prop, Element } from '@stencil/core';
-import { ItemClient } from '../../services/services';
-import state from '../../store/state';
+import { ItemClient, UIInfo } from '../../services/services';
+import state, { localizationState } from '../../store/state';
 
 @Component({
   tag: 'my-items-list',
@@ -21,11 +21,13 @@ export class MyItemsList {
 
   private itemClient!: ItemClient;
   private abortController: AbortController;
+  private resx: UIInfo;
 
   constructor() {
     this.itemClient = new ItemClient({
       moduleId: state.moduleId,
     });
+    this.resx = localizationState.viewModel.uI;
   }
 
   connectedCallback() {
@@ -138,12 +140,12 @@ export class MyItemsList {
           <div class="loading"></div>
         }
         <div class="footer">
-          <p>Showing {state.items.length} of {state.availableItems} items.</p>
+          <p>{this.resx.shownItems.replace("{0}", state.items.length.toString()).replace("{1}", state.availableItems.toString())}</p>
           {!this.loading && state.items.length < state.availableItems &&
             <dnn-button type="primary" reversed
               onClick={() => this.loadMore()}
             >
-              Load More
+              {this.resx.loadMore || "Load More"}
             </dnn-button>
           }
         </div>

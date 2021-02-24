@@ -20,6 +20,7 @@
       </Folder>
       <Folder Name="Controllers" TargetFolderName="Controllers">
         <ProjectItem ReplaceParameters="true">ItemControllerTests.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">LocalizationControllerTests.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ModuleApiControllerTests.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ModuleExceptionFilterAttributeTests.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ServiceRouteMapperTests.cs</ProjectItem>

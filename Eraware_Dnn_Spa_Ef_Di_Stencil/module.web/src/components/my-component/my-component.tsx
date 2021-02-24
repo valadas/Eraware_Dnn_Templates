@@ -1,7 +1,8 @@
 import { Component, h, Prop, Host, Element, Listen } from "@stencil/core";
 import "@eraware/dnn-elements";
-import { ItemClient } from "../../services/services";
-import state from "../../store/state";
+import { ItemClient, LocalizationClient, LocalizationViewModel } from "../../services/services";
+import state, { localizationState } from "../../store/state";
+import alertError from "../../services/alert-error";
 
 @Component({
   tag: 'my-component',
@@ -10,6 +11,8 @@ import state from "../../store/state";
 })
 export class MyComponent {
   private service: ItemClient;
+  private localizationService: LocalizationClient;
+  private resx: LocalizationViewModel;
 
   constructor() {
     this.service = new ItemClient({ moduleId: this.moduleId });
@@ -20,6 +23,24 @@ export class MyComponent {
 
   /** The Dnn module id, required in order to access web services. */
   @Prop() moduleId!: number;
+
+  componentWillLoad() {
+    console.log("componentWillLoad")
+    return new Promise<void>((resolve, reject) => {
+      this.localizationService.getLocalization()
+        .then(l => {
+          console.log(l);
+          localizationState.viewModel = l;
+          this.resx = localizationState.viewModel;
+          console.log("resolving")
+          resolve();
+        })
+        .catch(reason => {
+          alertError(reason);
+          reject();
+        });
+    })
+  }
 
   componentDidLoad(): void {
     this.service.userCanEdit().then(canEdit => state.userCanEdit = canEdit);
@@ -33,7 +54,7 @@ export class MyComponent {
   render() {
     return <Host>
       <div class="header">
-        <dnn-searchbox placeholder="Search" onQueryChanged={e => state.searchQuery = e.detail} />
+        <dnn-searchbox placeholder={this.resx.uI.searchPlaceholder || "Search"} onQueryChanged={e => state.searchQuery = e.detail} />
         {state.userCanEdit &&
           <my-create />
         }
