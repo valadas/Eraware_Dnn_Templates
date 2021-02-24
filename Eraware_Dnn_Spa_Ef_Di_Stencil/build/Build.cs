@@ -238,6 +238,8 @@ class Build : NukeBuild
         .DependsOn(SetBranch)
         .Executes(() =>
         {
+            var moduleAssemblyName = Solution.GetProject("Module").GetProperty("AssemblyName");
+            Helpers.GenerateLocalizationFiles(moduleAssemblyName);
             MSBuildTasks.MSBuild(s => s
                 .SetProjectFile(Solution.GetProject("Module"))
                 .SetConfiguration(Configuration)

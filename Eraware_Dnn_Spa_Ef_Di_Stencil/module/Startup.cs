@@ -4,6 +4,7 @@
 namespace $ext_rootnamespace$
 {
     using DotNetNuke.DependencyInjection;
+    using DotNetNuke.Services.Localization;
     using $ext_rootnamespace$.Data;
     using $ext_rootnamespace$.Data.Entities;
     using $ext_rootnamespace$.Data.Repositories;

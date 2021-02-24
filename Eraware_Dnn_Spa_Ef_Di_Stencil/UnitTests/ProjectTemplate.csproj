@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Common\GlobalsTests.cs" />
     <Compile Include="Controllers\ItemControllerTests.cs" />
+    <Compile Include="Controllers\LocalizationControllerTests.cs" />
     <Compile Include="Controllers\ModuleApiControllerTests.cs" />
     <Compile Include="Controllers\ModuleExceptionFilterAttributeTests.cs" />
     <Compile Include="Controllers\ServiceRouteMapperTests.cs" />

@@ -1,6 +1,7 @@
 import { Component, Host, h, Prop } from '@stencil/core';
-import { IItemViewModel, ItemClient } from '../../services/services';
-import state, { store } from '../../store/state';
+import { IItemViewModel, ItemClient, UIInfo } from '../../services/services';
+import state, { store, localizationState } from '../../store/state';
+
 @Component({
   tag: 'my-item-details',
   styleUrl: 'my-item-details.scss',
@@ -13,9 +14,11 @@ export class MyItemDetails {
   private modal!: HTMLDnnModalElement;
   private editForm!: HTMLMyEditElement;
   private itemClient!: ItemClient;
+  private resx: UIInfo;
 
   constructor() {
     this.itemClient = new ItemClient({ moduleId: state.moduleId });
+    this.resx = localizationState.viewModel.uI;
   }
 
   private deleteItem(): void {
@@ -39,16 +42,16 @@ export class MyItemDetails {
               type="primary"
               onClick={() => this.modal.show().then(() => this.editForm.setFocus())}
             >
-              Edit
+              {this.resx.edit || "Edit"}
             </dnn-button>
             <dnn-button
               type="secondary"
               confirm
-              confirmMessage="Are you sure you want to delete this item?"
-              confirmNoText="No"
-              confirmYesText="Yes"
+              confirmMessage={this.resx.deleteItemConfirm || "Are you sure you want to delete this item?"}
+              confirmNoText={this.resx.no || "No"}
+              confirmYesText={this.resx.yes || "Yes"}
               onConfirmed={() => this.deleteItem()}
-            >Delete</dnn-button>
+            >{this.resx.delete || "Delete"}</dnn-button>
             <dnn-modal
               ref={e => this.modal = e}
               showCloseButton={false}

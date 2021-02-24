@@ -1,14 +1,22 @@
 ﻿using Newtonsoft.Json;
 using Nuke.Common;
 using System;
+using System.CodeDom;
+using System.CodeDom.Compiler;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.IO.XmlTasks;
+using static Nuke.Common.IO.TextTasks;
+using Nuke.Common.IO;
 
 namespace BuildHelpers
 {
@@ -170,6 +178,237 @@ namespace BuildHelpers
                     DeleteFile(fileB.FileName);
                 }
             }
+        }
+
+        public static void GenerateLocalizationFiles(string rootNamespace)
+        {
+            var localizationFiles = GlobFiles(RootDirectory / "resources" / "App_LocalResources", "*.resx")
+                .Where(l => Regex.Matches(l, @"\.").Count == 1).ToList();
+            var generatedComment = GetGeneratedComment();
+            var vm = new StringBuilder();
+            vm.AppendLine(GetGeneratedComment());
+            vm.Append(GenerateLocalizationViewModel(rootNamespace, localizationFiles));
+
+            var svc = new StringBuilder();
+            svc.AppendLine(GetGeneratedComment());
+            svc.AppendLine(GenerateLocalizationService(rootNamespace, localizationFiles));
+
+            File.WriteAllText(RootDirectory / "ViewModels" / "LocalizationViewModel.cs", vm.ToString());
+            File.WriteAllText(RootDirectory / "Services" / "LocalizationService.cs", svc.ToString());
+        }
+
+        private static string GenerateLocalizationService(string rootNamespace, List<string> localizationFiles)
+        {
+            var moduleFolderName = new DirectoryInfo(RootDirectory).Name;
+            var sb = new StringBuilder();
+            sb
+                .AppendLine($"namespace {rootNamespace}.Services")
+                 .AppendLine("{")
+                 .AppendLine("    using DotNetNuke.Common.Utilities;")
+                .AppendLine($"    using DotNetNuke.Services.Localization;")
+                .AppendLine($"    using {rootNamespace}.ViewModels;")
+                .AppendLine($"    using System.Diagnostics.CodeAnalysis;")
+                .AppendLine($"    using System.Web.Hosting;")
+                .AppendLine($"    using System.Threading;")
+                .AppendLine($"    using static {rootNamespace}.ViewModels.LocalizationViewModel;")
+                .AppendLine()
+                .AppendLine($"    /// <summary>")
+                .AppendLine($"    /// Provides strongly typed localization services for this module.")
+                .AppendLine($"    /// </summary>")
+                .AppendLine($"    [ExcludeFromCodeCoverage]")
+                .AppendLine($"    public class LocalizationService : ILocalizationService")
+                 .AppendLine("    {")
+                .AppendLine($"        private readonly ILocalizationProvider localizationProvider;")
+                .AppendLine($"        private readonly LocalizationViewModel viewModel;")
+                .AppendLine($"        private readonly string cacheKey;")
+                .AppendLine($"        private string resourceFileRoot;")
+                .AppendLine()
+                .AppendLine($"        private string ResourceFileRoot")
+                 .AppendLine("        {")
+                .AppendLine($"            get")
+                 .AppendLine("            {")
+                .AppendLine($"                if (string.IsNullOrWhiteSpace(this.resourceFileRoot))")
+                 .AppendLine("                {")
+                .AppendLine($"                    this.resourceFileRoot = HostingEnvironment.MapPath(")
+                .AppendLine($"                        \"~/DesktopModules/{moduleFolderName}/resources/App_LocalResources/\");")
+                 .AppendLine("                }")
+                 .AppendLine()
+                 .AppendLine("                return this.resourceFileRoot;")
+                 .AppendLine("            }")
+                 .AppendLine("        }")
+                 .AppendLine()
+                .AppendLine($"        /// <summary>")
+                .AppendLine($"        /// Initializes a new instance of the <see cref=\"LocalizationService\"/> class.")
+                .AppendLine($"        /// </summary>")
+                .AppendLine($"        public LocalizationService()")
+                 .AppendLine("        {")
+                .AppendLine($"            this.localizationProvider = new LocalizationProvider();")
+                .AppendLine($"            this.cacheKey = \"{rootNamespace}\" + \"_Localization_\" + Thread.CurrentThread.CurrentCulture;")
+                .AppendLine($"            this.viewModel = new LocalizationViewModel();")
+                .AppendLine($"            var viewModel = DataCache.GetCache<LocalizationViewModel>(this.cacheKey);")
+                 .AppendLine("            if (viewModel is null)")
+                 .AppendLine("            {")
+                 .AppendLine("                viewModel = this.HydrateViewModel();")
+                 .AppendLine("                DataCache.SetCache(this.cacheKey, viewModel);")
+                 .AppendLine("            }")
+                 .AppendLine("            this.viewModel = viewModel;")
+                 .AppendLine("        }")
+                 .AppendLine()
+                 .AppendLine("        /// <summary>")
+                 .AppendLine("        /// A viewmodel that strongly types all resource keys.")
+                 .AppendLine("        /// </summary>")
+                 .AppendLine("        public LocalizationViewModel ViewModel")
+                 .AppendLine("        {")
+                 .AppendLine("            get")
+                 .AppendLine("            {")
+                 .AppendLine("                return this.viewModel;")
+                 .AppendLine("            }")
+                 .AppendLine("        }")
+                 .AppendLine()
+                 .AppendLine("        private string GetString(string key, string file)")
+                 .AppendLine("        {")
+                 .AppendLine("            return this.localizationProvider.GetString(key, this.ResourceFileRoot + file);")
+                 .AppendLine("        }")
+                 .AppendLine()
+                 .AppendLine("        private LocalizationViewModel HydrateViewModel()")
+                 .AppendLine("        {")
+                 .AppendLine(GetLocalizationFilesForViewModel(localizationFiles))
+                 .AppendLine("        }")
+                 .AppendLine("    }")
+                 .AppendLine("}");
+            return sb.ToString();
+        }
+
+        private static string GetLocalizationFilesForViewModel(List<string> localizationFiles)
+        {
+            var sb = new StringBuilder();
+            foreach (var file in localizationFiles)
+            {
+                var fileInfo = new FileInfo(file);
+                var fileName = fileInfo.Name.Split('.')[0];
+                sb
+                   .AppendLine($"            var {fileName.ToLower()} = new {fileName}Info")
+                    .AppendLine("            {")
+                    .AppendLine(GetLocalizationKeysForViewModel(file))
+                    .AppendLine("            };")
+                   .AppendLine($"            viewModel.{fileName} = {fileName.ToLower()};");
+            }
+            sb.AppendLine("            return viewModel;");
+            return sb.ToString();
+        }
+
+        private static string GetLocalizationKeysForViewModel(string file)
+        {
+            var fileInfo = new FileInfo(file);
+            var fileName = fileInfo.Name;
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(file);
+            var items = xmlDoc.SelectNodes("/root/data");
+            var sb = new StringBuilder();
+            foreach (XmlNode item in items)
+            {
+                var name = item.Attributes["name"].InnerText.Replace(".Text", "");
+                var valueNode = item.SelectSingleNode("value");
+                var value = valueNode.InnerText;
+                sb
+                    .AppendLine($"                {name} = this.GetString(\"{name}\", \"{fileName}\"),");
+            }
+            return sb.ToString();
+        }
+
+        private static string GenerateLocalizationViewModel(string rootNamespace, List<string> localizationFiles)
+        {
+            var sb = new StringBuilder();
+            sb
+                .AppendLine($"namespace {rootNamespace}.ViewModels")
+                .AppendLine("{")
+                .AppendLine("    using System.Diagnostics.CodeAnalysis;")
+                .AppendLine()
+                .AppendLine("    /// <summary>")
+                .AppendLine("    /// A viewmodel that exposes all resource keys in strong types.")
+                .AppendLine("    /// </summary>")
+                .AppendLine("    [ExcludeFromCodeCoverage]")
+                .AppendLine("    public class LocalizationViewModel")
+                .AppendLine("    {")
+                .AppendLine(GetLocalizationViewModelClass(localizationFiles))
+                .AppendLine("    }")
+                .AppendLine("}");
+            return sb.ToString();
+        }
+
+        private static string GetLocalizationViewModelClass(List<string> localizationFiles)
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < localizationFiles.Count(); i++)
+            {
+                var fileName = new FileInfo(localizationFiles[i]).Name.Split('.')[0];
+                sb
+                    .AppendLine("        /// <summary>")
+                   .AppendLine($"        /// Localized strings present the {fileName} resources.")
+                    .AppendLine("        /// </summary>")
+                   .AppendLine($"        public {fileName}Info {fileName}" + " { get; set; }");
+                if (i < localizationFiles.Count() - 1) sb.AppendLine();
+            }
+            sb.AppendLine(GetLocalizationFilePropertiesClasses(localizationFiles));
+            return sb.ToString();
+        }
+
+        private static string GetLocalizationFilePropertiesClasses(List<string> localizationFiles)
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < localizationFiles.Count(); i++)
+            {
+                var file = localizationFiles[i];
+                var fileInfo = new FileInfo(file);
+                var fileName = fileInfo.Name.Split('.')[0];
+
+                sb
+                    .AppendLine("        /// <summary>")
+                   .AppendLine($"        /// Localized strings for the {fileName} resources.")
+                    .AppendLine("        /// </summary>")
+                   .AppendLine($"        public class {fileName}Info")
+                    .AppendLine("        {")
+                    .AppendLine(GetLocalizationFileProperties(file))
+                    .AppendLine("        }");
+                if (i < localizationFiles.Count() - 1) sb.AppendLine();
+
+            }
+            return sb.ToString();
+        }
+
+        private static string GetLocalizationFileProperties(string file)
+        {
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(file);
+            var items = xmlDoc.SelectNodes("/root/data");
+            var sb = new StringBuilder();
+            foreach (XmlNode item in items)
+            {
+                var name = item.Attributes["name"].InnerText.Replace(".Text", "");
+                var valueNode = item.SelectSingleNode("value");
+                var value = valueNode.InnerText;
+                sb
+                    .AppendLine($"            /// <summary>Gets or sets the {name} localized text.</summary>")
+                    .AppendLine($"            /// <example>{value}</example>")
+                    .AppendLine($"            public string {name}" + " { get; set; }")
+                    .AppendLine();
+            }
+            return sb.ToString();
+        }
+
+        private static string GetGeneratedComment()
+        {
+            var sb = new StringBuilder();
+            sb
+                .AppendLine("//------------------------------------------------------------------------------")
+                .AppendLine("// <auto-generated>")
+                .AppendLine("//     This code was generated by a tool.")
+                .AppendLine()
+                .AppendLine("//     Changes to this file may cause incorrect behavior and will be lost if")
+                .AppendLine("//     the code is regenerated.")
+                .AppendLine("// </auto-generated>")
+                .AppendLine("//------------------------------------------------------------------------------");
+            return sb.ToString();
         }
     }
 }
