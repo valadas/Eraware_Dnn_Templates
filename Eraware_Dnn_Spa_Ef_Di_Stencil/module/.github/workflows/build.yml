@@ -1,0 +1,32 @@
+﻿name: Build
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - 'release/**'
+  pull_request:
+    branches:
+      - master
+      - develop
+      - 'release/**'
+
+jobs:
+  build:
+    name: build
+    runs-on: windows-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+
+      - name: Fetch unshallow
+        run: git fetch --prune --tags --unshallow
+      - name: Run './build.ps1'
+        run: ./build.ps1 --github-token $GITHUB_TOKEN --target CI
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          path: artifacts/*

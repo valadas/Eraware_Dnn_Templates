@@ -1,0 +1,79 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "Module.csproj"
+          ],
+          "src": ".."
+        }
+      ],
+      "dest": "api",
+      "force": true
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/**.yml",
+          "api/index.md"
+        ]
+      },
+      {
+        "files": [
+          "articles/**.md",
+          "articles/**/toc.yml",
+          "toc.yml",
+          "*.md"
+        ]
+      },
+      {
+        "files": [
+          "rest/*.md",
+          "rest/toc.yml"
+        ]
+      },
+      {
+        "files": "components/*.md"
+      },
+      {
+        "files": "client/*.md"
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**",
+          "rest/*.json"
+        ]
+      }
+    ],
+    "overwrite": [
+      {
+        "files": [
+          "apidoc/**.md"
+        ],
+        "exclude": [
+          "obj/**",
+          "_site/**"
+        ]
+      }
+    ],
+    "dest": "docs",
+    "globalMetadata": {
+      "_gitContribute": {
+        "branch": "develop"
+      }
+    },
+    "fileMetadataFiles": [],
+    "template": [
+      "default",
+      "templates/mytemplate"
+    ],
+    "postProcessors": [ "ExtractSearchIndex" ],
+    "markdownEngineName": "markdig",
+    "noLangKeyword": false
+  }
+} 

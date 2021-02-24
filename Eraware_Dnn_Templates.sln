@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eraware_Dnn_Spa_Ef_Di_Stencil", "Eraware_Dnn_Spa_Ef_Di_Stencil\Eraware_Dnn_Spa_Ef_Di_Stencil.csproj", "{6C652B7C-F011-419E-B90D-F75AB49A8F4B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eraware_Dnn_Templates", "Eraware_Dnn_Templates\Eraware_Dnn_Templates.csproj", "{1AABA73D-8159-4BD7-BD86-F711E9BF8106}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eraware_Dnn_Spa_Ef_Di_Stencil", "Eraware_Dnn_Spa_Ef_Di_Stencil\Eraware_Dnn_Spa_Ef_Di_Stencil.csproj", "{6C652B7C-F011-419E-B90D-F75AB49A8F4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>build</Name>
+    <Description>build</Description>
+    <ProjectType>CSharp</ProjectType>
+    <LanguageTag>csharp</LanguageTag>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <SortOrder>1000</SortOrder>
+    <TemplateID>d8de2bc5-5d03-4c21-ba29-74cbb620cfe7</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>build</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <Hidden>true</Hidden>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="ProjectTemplate.csproj" TargetFileName="_build.csproj">
+      <Folder Name="docs" TargetFolderName="docs">
+        <Folder Name="articles" TargetFolderName="articles">
+          <ProjectItem OpenInWebBrowser="true">intro.html</ProjectItem>
+          <ProjectItem>git.html</ProjectItem>
+        </Folder>
+        <Folder Name="images" TargetFolderName="images">
+          <ProjectItem>create-beta-release.gif</ProjectItem>
+          <ProjectItem>create-develop-branch.gif</ProjectItem>
+          <ProjectItem>create-pull-request.gif</ProjectItem>
+          <ProjectItem>create-release.gif</ProjectItem>
+          <ProjectItem>initial-commit.gif</ProjectItem>
+          <ProjectItem>install-module.gif</ProjectItem>
+          <ProjectItem>Package.gif</ProjectItem>
+          <ProjectItem>setup-git-docs.gif</ProjectItem>
+        </Folder>
+      </Folder>
+      <Folder Name="Properties">
+        <ProjectItem ReplaceParameters="true">launchSettings.json</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="true">.editorconfig</ProjectItem>
+      <ProjectItem ReplaceParameters="true">_build.csproj.DotSettings</ProjectItem>          
+      <ProjectItem ReplaceParameters="true">Build.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true">Configuration.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true">Helpers.cs</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

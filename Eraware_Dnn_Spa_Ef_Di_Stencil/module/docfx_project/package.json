@@ -1,0 +1,29 @@
+{
+  "name": "docfx_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "watch": {
+    "build_serve": {
+      "patterns": [
+        "articles"
+      ],
+      "extensions": "md,yml"
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\"",
+    "watch_docfx": "npm-watch build_serve",
+    "adjust_toc": "node adjust-toc-namespaces.js",
+    "build_serve": "docfx build --serve"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "js-yaml": "^4.0.0",
+    "npm-watch": "^0.7.0"
+  }
+}

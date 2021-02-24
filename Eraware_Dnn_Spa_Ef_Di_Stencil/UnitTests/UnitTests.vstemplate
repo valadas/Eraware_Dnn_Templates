@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextensions/2010">
+  <TemplateData>
+    <Name>UnitTests</Name>
+    <Description>UnitTests</Description>
+    <ProjectType>CSharp</ProjectType>
+    <LanguageTag>csharp</LanguageTag>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <SortOrder>1000</SortOrder>
+    <TemplateID>D3A47104-F56E-40F1-8FDC-C26E061AE87E</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>UnitTests</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <Hidden>true</Hidden>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="ProjectTemplate.csproj" TargetFileName="UnitTests.csproj">
+      <Folder Name="Common">
+        <ProjectItem ReplaceParameters="true">GlobalsTests.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Controllers" TargetFolderName="Controllers">
+        <ProjectItem ReplaceParameters="true">ItemControllerTests.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">LocalizationControllerTests.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ModuleApiControllerTests.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ModuleExceptionFilterAttributeTests.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ServiceRouteMapperTests.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ValidateModelAttributeTests.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Data">
+        <Folder Name="Entities">
+          <ProjectItem ReplaceParameters="true">ItemTests.cs</ProjectItem>
+        </Folder>
+        <Folder Name="Repositories">
+          <ProjectItem ReplaceParameters="true">GenericRepositoryTests.cs</ProjectItem>
+        </Folder>
+        <ProjectItem ReplaceParameters="true">ModuleDbContextTests.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Services">
+        <ProjectItem ReplaceParameters="true">ItemServiceTests.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">LoggingServiceTests.cs</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="true">ExtensionMethodsTests.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true">FakeDatacontext.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="false">App.config</ProjectItem>
+      <ProjectItem ReplaceParameters="false">Startup.cs</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

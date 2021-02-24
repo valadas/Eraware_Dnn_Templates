@@ -1,0 +1,37 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/module.web" # Location of package manifests
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/build"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/module"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "Microsoft.AspNet.WebApi.Client"
+      - dependency-name: "Microsoft.AspNet.WebApi.Core"
+      - dependency-name: "Microsoft.Extensions.DependencyInjection"
+      - dependency-name: "Microsoft.Extensions.DependencyInjection.Abstractions"
+      - dependency-name: "Newtonsoft.Json"
+  - package-ecosystem: "nuget"
+    directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/UnitTests"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "Newtonsoft.Json"
+  - package-ecosystem: "nuget"
+    directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/IntegrationTests"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "Newtonsoft.Json"

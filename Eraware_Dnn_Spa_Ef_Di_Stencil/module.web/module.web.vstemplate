@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>module web</Name>
+    <Description>module web</Description>
+    <Icon>module-icon.ico</Icon>
+    <ProjectType>CSharp</ProjectType>
+    <LanguageTag>csharp</LanguageTag>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <SortOrder>1000</SortOrder>
+    <TemplateID>CDDF75C9-EFAB-4818-BBBC-210BE3EBD95D</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>module.web</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <Hidden>true</Hidden>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="ProjectTemplate.njsproj" TargetFileName="ProjectTemplate.njsproj" ReplaceParameters="true">
+      <Folder Name="src">
+        <Folder Name="components">
+          <Folder Name="my-component">
+            <Folder Name="usage">
+              <ProjectItem>dnn.md</ProjectItem>
+              <ProjectItem>javascript.md</ProjectItem>
+            </Folder>
+            <ProjectItem>my-component.scss</ProjectItem>
+            <ProjectItem>my-component.tsx</ProjectItem>
+            <ProjectItem>readme.md</ProjectItem>
+          </Folder>
+          <Folder Name="my-create">
+            <ProjectItem>my-create.scss</ProjectItem>
+            <ProjectItem>my-create.tsx</ProjectItem>
+          </Folder>
+          <Folder Name="my-edit">
+            <ProjectItem>my-edit.scss</ProjectItem>
+            <ProjectItem>my-edit.tsx</ProjectItem>
+          </Folder>
+          <Folder Name="my-item-details">
+            <ProjectItem>my-item-details.scss</ProjectItem>
+            <ProjectItem>my-item-details.tsx</ProjectItem>
+          </Folder>
+          <Folder Name="my-items-list">
+            <ProjectItem>my-items-list.scss</ProjectItem>
+            <ProjectItem>my-items-list.tsx</ProjectItem>
+          </Folder>
+        </Folder>
+        <Folder Name="services">
+          <ProjectItem>alert-error.ts</ProjectItem>
+          <ProjectItem ReplaceParameters="true">client-base.ts</ProjectItem>
+          <ProjectItem ReplaceParameters="true">services.ts</ProjectItem>
+        </Folder>
+        <Folder Name="store">
+          <ProjectItem>state.ts</ProjectItem>
+        </Folder>
+        <ProjectItem>components.d.ts</ProjectItem>
+        <ProjectItem ReplaceParameters="true">index.html</ProjectItem>
+        <ProjectItem>index.ts</ProjectItem>
+      </Folder>
+      <ProjectItem>.editorconfig</ProjectItem>
+      <ProjectItem>.eslintrc.json</ProjectItem>
+      <ProjectItem>.gitignore</ProjectItem>
+      <ProjectItem>api-extractor.json</ProjectItem>
+      <ProjectItem>LICENSE</ProjectItem>
+      <ProjectItem ReplaceParameters="true">package.json</ProjectItem>
+      <ProjectItem>readme.md</ProjectItem>
+      <ProjectItem ReplaceParameters="true">stencil.config.ts</ProjectItem>
+      <ProjectItem>tsconfig.json</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

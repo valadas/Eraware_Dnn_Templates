@@ -1,0 +1,17 @@
+:host {
+  display: block;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+
+    dnn-searchbox {
+      width: 100%;
+    }
+
+    my-create {
+      white-space: nowrap;
+      margin-left: 1em;
+    }
+  }
+}

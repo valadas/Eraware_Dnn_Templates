@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>Eraware_Dnn_Spa_Ef_Di_Stencil</Name>
+    <Description>Eraware_Dnn_Spa_Ef_Di_Stencil</Description>
+    <Icon>module-icon.ico</Icon>
+    <ProjectType>CSharp</ProjectType>
+    <LanguageTag>csharp</LanguageTag>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <SortOrder>1000</SortOrder>
+    <TemplateID>cd947cbe-339c-41f7-a789-061d1c59222c</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>Eraware_Dnn_Spa_Ef_Di_Stencil</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <Hidden>true</Hidden>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="ProjectTemplate.csproj" TargetFileName="ProjectTemplate.csproj" ReplaceParameters="true">
+      <Folder Name=".github" TargetFolderName=".github">
+        <ProjectItem TargetFileName="dependabot.yml">dependabot.yml</ProjectItem>
+        <ProjectItem TargetFileName="mergeable.yml">mergeable.yml</ProjectItem>
+        <Folder Name="workflows" TargetFolderName="workflows">
+          <ProjectItem>build.yml</ProjectItem>
+        </Folder>
+      </Folder>
+      <Folder Name="Common" TargetFolderName="Common">
+        <ProjectItem ReplaceParameters="true">Globals.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Controllers">
+        <ProjectItem ReplaceParameters="true">ItemController.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">LocalizationController.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ModuleApiController.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ServiceRouteMapper.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ValidateModelAttribute.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Data" TargetFolderName="Data">
+        <Folder Name="Entities" TargetFolderName="Entities">
+          <ProjectItem ReplaceParameters="true">BaseEntity.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true">Item.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true">IEntity.cs</ProjectItem>
+        </Folder>
+        <Folder Name="Repositories" TargetFolderName="Repositories">
+          <ProjectItem ReplaceParameters="true">IRepository.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true">Repository.cs</ProjectItem>
+        </Folder>
+        <ProjectItem ReplaceParameters="true">ModuleDbContext.cs</ProjectItem>
+      </Folder>
+      <Folder Name="DTO" TargetFolderName="DTO">
+        <ProjectItem ReplaceParameters="true">CreateItemDTO.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">GetItemsPageDTO.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">UpdateItemDTO.cs</ProjectItem>
+      </Folder>
+      <Folder Name="docfx_project" TargetFolderName="docfx_project">
+        <Folder Name="articles" TargetFolderName="articles">
+          <ProjectItem>git.md</ProjectItem>
+          <ProjectItem ReplaceParameters="true">intro.md</ProjectItem>
+          <ProjectItem>project-architecture.md</ProjectItem>
+          <ProjectItem ReplaceParameters="true">toc.yml</ProjectItem>
+        </Folder>
+        <Folder Name="images" TargetFolderName="images">
+          <ProjectItem>create-beta-release.gif</ProjectItem>
+          <ProjectItem>create-develop-branch.gif</ProjectItem>
+          <ProjectItem>create-pull-request.gif</ProjectItem>
+          <ProjectItem>create-release.gif</ProjectItem>
+          <ProjectItem>initial-commit.gif</ProjectItem>
+          <ProjectItem>install-module.gif</ProjectItem>
+          <ProjectItem>Package.gif</ProjectItem>
+        </Folder>
+        <Folder Name="rest" TargetFolderName="rest">
+          <ProjectItem>rest-api.md</ProjectItem>
+          <ProjectItem>toc.yml</ProjectItem>
+        </Folder>
+        <Folder Name="templates" TargetFolderName="templates">
+          <Folder Name="mytemplate" TargetFolderName="mytemplate">
+            <Folder Name="layout" TargetFolderName="layout">
+              <ProjectItem>_master.tmpl</ProjectItem>
+            </Folder>
+            <Folder Name="partials" TargetFolderName="partials">
+              <ProjectItem>footer.tmpl.partial</ProjectItem>
+              <ProjectItem>scripts.tmpl.partial</ProjectItem>
+            </Folder>
+            <Folder Name="styles" TargetFolderName="styles">
+              <ProjectItem>main.css</ProjectItem>
+              <ProjectItem>main.js</ProjectItem>
+              <ProjectItem>mermaid.min.js</ProjectItem>
+              <ProjectItem>mermaid.min.js.map</ProjectItem>
+              <ProjectItem>toggle-theme.js</ProjectItem>
+            </Folder>
+            <ProjectItem>common.js</ProjectItem>
+          </Folder>
+        </Folder>
+        <ProjectItem ReplaceParameters="true">.gitignore</ProjectItem>
+        <ProjectItem>adjust-toc-namespaces.js</ProjectItem>
+        <ProjectItem ReplaceParameters="true">docfx.json</ProjectItem>
+        <ProjectItem ReplaceParameters="true">index.md</ProjectItem>
+        <ProjectItem ReplaceParameters="true">toc.yml</ProjectItem>
+        <ProjectItem>package.json</ProjectItem>
+      </Folder>
+      <Folder Name="Properties" TargetFolderName="Properties">
+        <ProjectItem TargetFileName="AssemblyInfo.cs" ReplaceParameters="true">AssemblyInfo.cs</ProjectItem>
+      </Folder>
+      <Folder Name="resources">
+        <Folder Name="App_LocalResources" TargetFolderName="App_LocalResources">
+          <ProjectItem>ModelValidation.resx</ProjectItem>
+          <ProjectItem>UI.resx</ProjectItem>
+        </Folder>
+        <Folder Name="images">
+          <ProjectItem>module-icon.png</ProjectItem>
+        </Folder>
+        <Folder Name="views">
+          <ProjectItem ReplaceParameters="true">view.html</ProjectItem>
+        </Folder>        
+      </Folder>
+      <Folder Name="ViewModels">
+        <ProjectItem ReplaceParameters="true">ItemsPageViewModel.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ItemViewModel.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">LocalizationViewModel.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Controllers">
+        <ProjectItem ReplaceParameters="true">ItemController.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ModuleApiController.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ModuleExceptionFilterAttribute.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ServiceRouteMapper.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Services">
+        <ProjectItem ReplaceParameters="true">ILoggingService.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">LoggingService.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">IItemService.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ILocalizationService.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ItemService.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">LocalizationService.cs</ProjectItem>
+      </Folder>
+      <ProjectItem>.gitignore</ProjectItem>
+      <ProjectItem>.editorconfig</ProjectItem>
+      <ProjectItem ReplaceParameters="true">.nuke</ProjectItem>
+      <ProjectItem ReplaceParameters="true">App.Config</ProjectItem>
+      <ProjectItem>build.ps1</ProjectItem>
+      <ProjectItem>build.sh</ProjectItem>
+      <ProjectItem ReplaceParameters="true">LICENSE</ProjectItem>
+      <ProjectItem ReplaceParameters="true">manifest.dnn</ProjectItem>
+      <ProjectItem ReplaceParameters="true">README.md</ProjectItem>
+      <ProjectItem ReplaceParameters="true">ReleaseNotes.html</ProjectItem>
+      <ProjectItem ReplaceParameters="true">Startup.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true">stylecop.json</ProjectItem>
+      <ProjectItem ReplaceParameters="true">ExtensionMethods.cs</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

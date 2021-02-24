@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextensions/2010">
+  <TemplateData>
+    <Name>IntegrationTests</Name>
+    <Description>IntegrationTests</Description>
+    <ProjectType>CSharp</ProjectType>
+    <LanguageTag>csharp</LanguageTag>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <SortOrder>1000</SortOrder>
+    <TemplateID>03F8C761-4AC0-47F2-BB17-961796F914CC</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>IntegrationTests</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <Hidden>true</Hidden>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="ProjectTemplate.csproj" TargetFileName="IntegrationTests.csproj">
+      <Folder Name="Controllers" TargetFolderName="Controllers">
+        <ProjectItem ReplaceParameters="true">ItemControllerTests.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ServiceRouteMapperTests.cs</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="true">FakeDataContext.cs</ProjectItem>
+      <ProjectItem>App.config</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

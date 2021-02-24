@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <RootNamespace></RootNamespace>
+    <IsPackable>False</IsPackable>
+    <NoWarn>CS0649;CS0169</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NuGet.CommandLine" Version="5.8.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Nuke.Common" Version="5.0.2" />
+    <PackageReference Include="ReportGenerator" Version="4.8.6" />
+    <PackageReference Include="xunit.runner.console" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NSwag.MSBuild" Version="13.10.5" />
+    <PackageDownload Include="docfx.console" Version="[2.56.6]" />
+    <PackageDownload Include="GitVersion.Tool" Version="[5.3.7]" />
+    <PackageDownload Include="coverlet.console" Version="[1.7.2]" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <NukeSpecificationFiles Include="**\Specifications\*.json" Exclude="bin\**;obj\**;Properties\launchSettings.json" />
+    <NukeExternalFiles Include="**\*.*.ext" Exclude="bin\**;obj\**" />
+    <None Remove="*.csproj.DotSettings;*.ref.*.txt" />
+
+    <!-- Common build related files -->
+    <None Include="..\build.ps1" />
+    <None Include="..\build.sh" />
+    <None Include=".editorconfig" />
+    <None Include="_build.csproj.DotSettings" />
+    
+    <None Include="..\.nuke" LinkBase="config" />
+    <None Include="..\global.json" LinkBase="config" Condition="Exists('..\global.json')" />
+    <None Include="..\nuget.config" LinkBase="config" Condition="Exists('..\nuget.config')" />
+    <None Include="..\GitVersion.yml" LinkBase="config" Condition="Exists('..\GitVersion.yml')" />
+    <None Include="..\.teamcity\settings.kts" LinkBase="ci" Condition="Exists('..\.teamcity\settings.kts')" />
+    <None Include="..\.github\workflows\build.yml" LinkBase="ci" Condition="Exists('..\.github\workflows\build.yml')" />
+    <None Include="..\azure-pipelines.yml" LinkBase="ci" Condition="Exists('..\azure-pipelines.yml')" />
+    <None Include="..\Jenkinsfile" LinkBase="ci" Condition="Exists('..\Jenkinsfile')" />
+    <None Include="..\appveyor.yml" LinkBase="ci" Condition="Exists('..\appveyor.yml')" />
+    <None Include="..\.travis.yml" LinkBase="ci" Condition="Exists('..\.travis.yml')" />
+
+    <None Include="App.config" LinkBase="config" Condition="Exists('App.config')" />
+    <None Include="..\.github\dependabot.yml" LinkBase="config" Condition="Exists('..\.github\dependabot.yml')" />
+    <None Include="..\.github\mergeable.yml" LinkBase="config" Condition="Exists('..\.github\mergeable.yml')" />
+    
+    <None Include="Build.cs" />
+    <None Include="Configuration.cs" />
+    <None Include="Helpers.cs" />
+    <None Include="docs\articles\git.html" />
+    <None Include="docs\articles\intro.html" />
+    <None Include="docs\images\create-beta-release.gif" />
+    <None Include="docs\images\create-develop-branch.gif" />
+    <None Include="docs\images\create-pull-request.gif" />
+    <None Include="docs\images\create-release.gif" />
+    <None Include="docs\images\initial-commit.gif" />
+    <None Include="docs\images\install-module.gif" />
+    <None Include="docs\images\Package.gif" />
+    <None Include="docs\images\setup-git-docs.gif" />
+    <None Include="Properties\launchSettings.json" />
+  </ItemGroup>
+
+</Project>

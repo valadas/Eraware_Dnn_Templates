@@ -1,0 +1,88 @@
+﻿<Window x:Name="Project_Setup_Wizard" x:Class="Eraware_Dnn_Templates.SetupWizard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Eraware_Dnn_Templates"
+            xmlns:data="clr-namespace:Eraware_Dnn_Templates.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="561.192" d:DesignWidth="800" Title="Project Setup Wizard" Margin="0" SizeToContent="Height" 
+            WindowStyle="None" Width="600" Height="600" WindowStartupLocation="CenterScreen"
+            Background="#202020" Foreground="white">
+    <Window.Resources>
+        <ControlTemplate x:Key="errorTemplate">
+            <Border BorderBrush="OrangeRed" BorderThickness="2">
+                <Grid>
+                    <AdornedElementPlaceholder/>
+                    <TextBlock Text="{Binding [0].ErrorContent}" Foreground="OrangeRed"
+                               VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,4,0"/>
+                </Grid>
+            </Border>
+        </ControlTemplate>
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Validation.ErrorTemplate" Value="{StaticResource errorTemplate}"/>
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Background" Value="#333333" />
+            <Setter Property="Foreground" Value="White" />
+            <Style.Triggers>
+                <Trigger Property="IsReadOnly" Value="true">
+                    <Setter Property="Background" Value="#202020" />
+                    <Setter Property="Foreground" Value="#666666" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#333333" />
+            <Setter Property="Foreground" Value="#eeeeee" />
+        </Style>
+    </Window.Resources>
+    <Window.DataContext>
+        <data:ModuleSettingsVM />
+    </Window.DataContext>
+    <Grid VerticalAlignment="Top" Margin="15" x:Name="FormData">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Label Content="Company Name" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" ToolTip="Your company name"/>
+        <TextBox x:Name="txtCompanyName" Grid.Column="1" Text="{local:SimpleBinding CompanyName}" />
+        <Label Content="Owner Name" HorizontalAlignment="Right" Grid.Row="1" />
+        <TextBox x:Name="txtOwnerName" Grid.Row="1" Grid.Column="1" Text="{local:SimpleBinding OwnerName}" />
+        <Label Content="Owner Email" Grid.Row="2" HorizontalAlignment="Right" />
+        <TextBox x:Name="txtOwnerEmail" Grid.Row="2" Grid.Column="1" Text="{local:SimpleBinding OwnerEmail}" />
+        <Label Content="Owner Website" Grid.Row="3" HorizontalAlignment="Right" />
+        <TextBox x:Name="txtOwnerWebsite" Grid.Row="3" Grid.Column="1" Text="{local:SimpleBinding OwnerWebsite}" />
+        <Label Content="Module Name" Grid.Row="4" HorizontalAlignment="Right" />
+        <TextBox x:Name="txtModuleName" Grid.Row="4" Grid.Column="1" Text="{local:SimpleBinding ModuleName}" />
+        <Label Content="Module Friendly Name" Grid.Row="5" HorizontalAlignment="Right"/>
+        <TextBox x:Name="txtModuleFriendlyName" Grid.Row="5" Grid.Column="1" Text="{local:SimpleBinding ModuleFriendlyName}"/>
+        <Separator Grid.Row="6" Grid.ColumnSpan="2" Margin="0,10,0,10" Height="10" />
+        <Label Content="Root Namespace" Grid.Row="7" HorizontalAlignment="Right" />
+        <TextBox x:Name="txtRootNamespace" Grid.Row="7" Grid.Column="1" IsReadOnly="{Binding RootNamespaceLocked}" Text="{local:SimpleBinding RootNamespace}" GotFocus="TxtRootNamespace_GotFocus"/>
+        <Label Content="Package Name" Grid.Row="8" HorizontalAlignment="Right" />
+        <TextBox x:Name="txtPackageName" Grid.Row="8" Grid.Column="1" IsReadOnly="{Binding PackageNameLocked}" Text="{local:SimpleBinding PackageName}" GotFocus="TxtPackageName_GotFocus"/>
+        <Label Content="Scope Prefix" Grid.Row="9" HorizontalAlignment="Right"/>
+        <TextBox x:Name="txtScopePrefix" Grid.Row="9" Grid.Column="1" IsReadOnly="{Binding ScopePrefixLocked}" Text="{local:SimpleBinding ScopePrefix}" GotFocus="TxtScopePrefix_GotFocus" />
+        <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button x:Name="btnCancel" Content="Cancel" Margin="0,0,20,0" Padding="20,10" Click="BtnCancel_Click"  />
+            <Button x:Name="btnCreate" Content="Create" Padding="20,10" Click="BtnCreate_Click" />
+        </StackPanel>
+    </Grid>
+</Window>
