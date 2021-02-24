@@ -8,7 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
 
-namespace Eraware.Modules.MyModule.Controllers
+namespace $ext_rootnamespace$.Controllers
 {
     /// <summary>
     /// Handles exceptions on API endpoint calls.

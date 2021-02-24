@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Eraware.Modules.MyModule.Services
+namespace $ext_rootnamespace$.Services
 {
     /// <summary>
     /// Allows logging.

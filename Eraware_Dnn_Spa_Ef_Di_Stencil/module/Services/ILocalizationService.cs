@@ -1,4 +1,6 @@
-﻿using $ext_rootnamespace$.ViewModels;
+﻿// MIT License
+// Copyright $ext_companyname$
+using $ext_rootnamespace$.ViewModels;
 
 namespace $ext_rootnamespace$.Services
 {
@@ -8,7 +10,7 @@ namespace $ext_rootnamespace$.Services
     public interface ILocalizationService
     {
         /// <summary>
-        /// A viewmodel that strongly types all resource keys.
+        /// Gets viewmodel that strongly types all resource keys.
         /// </summary>
         LocalizationViewModel ViewModel { get; }
     }

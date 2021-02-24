@@ -6,7 +6,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace Eraware.Modules.MyModule.Services
+namespace $ext_rootnamespace$.Services
 {
     /// <summary>
     /// Implements a default logging mechanism.

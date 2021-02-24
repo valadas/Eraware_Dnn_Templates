@@ -4,7 +4,6 @@
 namespace $ext_rootnamespace$.Controllers
 {
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Web.Api;
     using System;
@@ -13,11 +12,10 @@ namespace $ext_rootnamespace$.Controllers
     /// <summary>
     /// Provides common features to all module controller.
     /// </summary>
-	[ModuleExceptionFilter]
+    [ModuleExceptionFilter]
     [ValidateModel]
     public abstract class ModuleApiController : DnnApiController
     {
-
         /// <summary>
         /// Gets information about the Dnn user.
         /// </summary>

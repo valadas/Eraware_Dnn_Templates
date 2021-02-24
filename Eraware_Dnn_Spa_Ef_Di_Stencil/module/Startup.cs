@@ -28,6 +28,7 @@ namespace $ext_rootnamespace$
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IItemService>(provider => new ItemService(provider.GetService<IRepository<Item>>()));
             services.AddScoped<ILoggingService, LoggingService>();
-    }
+            services.AddScoped<ILocalizationService, LocalizationService>();
+        }
     }
 }
