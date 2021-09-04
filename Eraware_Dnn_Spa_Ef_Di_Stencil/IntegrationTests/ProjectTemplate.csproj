@@ -72,19 +72,19 @@
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="DotNetNuke.Abstractions">
-			<Version>9.8.0</Version>
+			<Version>9.10.1</Version>
 		</PackageReference>
 		<PackageReference Include="DotNetNuke.Core">
-			<Version>9.8.0</Version>
+			<Version>9.10.1</Version>
 		</PackageReference>
 		<PackageReference Include="DotNetNuke.Instrumentation">
-			<Version>9.8.0</Version>
+			<Version>9.10.1</Version>
 		</PackageReference>
 		<PackageReference Include="DotNetNuke.Web">
-			<Version>9.8.0</Version>
+			<Version>9.10.1</Version>
 		</PackageReference>
 		<PackageReference Include="DotNetNuke.WebApi">
-			<Version>9.8.0</Version>
+			<Version>9.10.1</Version>
 		</PackageReference>
 		<PackageReference Include="Effort.EF6">
 			<Version>2.2.14</Version>
