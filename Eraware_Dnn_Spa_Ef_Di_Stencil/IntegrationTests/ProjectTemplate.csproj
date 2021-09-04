@@ -90,7 +90,7 @@
 			<Version>2.2.14</Version>
 		</PackageReference>
 		<PackageReference Include="Moq">
-			<Version>4.16.0</Version>
+			<Version>4.16.1</Version>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json">
 			<Version>10.0.3</Version>
