@@ -86,9 +86,12 @@
     <Resource Include="LICENSE" />
     <Resource Include="manifest.dnn" />
     <Resource Include="ReleaseNotes.html" />
-    <Resource Include=".nuke" />
+    <Resource Include=".nuke\build.schema.json" />
+    <Resource Include=".nuke\parameters.json" />
+    <Resource Include="build.cmd" />
     <Resource Include="build.ps1" />
     <Resource Include="build.sh" />
+    <Resource Include="global.json" />
     <Resource Include=".github\dependabot.yml" />
     <Resource Include=".github\mergeable.yml" />
     <Resource Include=".github\workflows\build.yml" />
