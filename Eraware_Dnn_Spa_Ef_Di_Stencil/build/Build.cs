@@ -155,7 +155,7 @@ class Build : NukeBuild
                 .SetResultsDirectory(UnitTestsResultsDirectory)
                 .EnableCollectCoverage()
                 .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
-                .SetLogger($"trx;LogFileName=UnitTests.trx")
+                .SetLoggers("trx;LogFileName=UnitTests.trx")
                 .SetCoverletOutput(UnitTestsResultsDirectory / "coverage.xml")
                 .SetExcludeByFile("**/App_LocalResources/**/*")
                 .SetProjectFile(RootDirectory / "UnitTests" / "UnitTests.csproj")
@@ -197,7 +197,7 @@ class Build : NukeBuild
                 .SetResultsDirectory(IntegrationTestsResultsDirectory)
                 .EnableCollectCoverage()
                 .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
-                .SetLogger($"trx;LogFileName=IntegrationTests.trx")
+                .SetLoggers("trx;LogFileName=IntegrationTests.trx")
                 .SetCoverletOutput(IntegrationTestsResultsDirectory / "coverage.xml")
                 .SetProjectFile(RootDirectory / "IntegrationTests" / "IntegrationTests.csproj")
                 .SetNoBuild(true));
