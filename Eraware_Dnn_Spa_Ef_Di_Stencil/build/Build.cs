@@ -71,8 +71,8 @@ class Build : NukeBuild
     AbsolutePath DocFxProjectDirectory => RootDirectory / "docfx_project";
     AbsolutePath DocsDirectory => RootDirectory / "docs";
 
-    private string devViewsPath = "http://localhost:3333/build/";
-    private string prodViewsPath = "/DesktopModules/$ext_modulename$/resources/scripts/$ext_scopeprefixkebab$/";
+    private const string devViewsPath = "http://localhost:3333/build/";
+    private const string prodViewsPath = "/DesktopModules/$ext_modulename$/resources/scripts/$ext_scopeprefixkebab$/";
 
     string releaseNotes = "";
     string repositoryOwner = "";
@@ -108,7 +108,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             Logger.Info($"Original branch name is {GitRepository.Branch}");
-            Logger.Info($"We are on branch {branch} and IsOnMasterBranch is {GitRepository.IsOnMasterBranch()} and the version will be {GitVersion.SemVer}");
+            Logger.Info($"We are on branch {branch} and IsOnMainOrMasterBranch is {GitRepository.IsOnMainOrMasterBranch()} and the version will be {GitVersion.SemVer}");
             using (var group = Logger.Block("GitVersion"))
             {
                 Logger.Info(SerializationTasks.JsonSerialize(GitVersion));
@@ -243,10 +243,10 @@ class Build : NukeBuild
             MSBuildTasks.MSBuild(s => s
                 .SetProjectFile(Solution.GetProject("Module"))
                 .SetConfiguration(Configuration)
-                .SetAssemblyVersion(branch == "master"
+                .SetAssemblyVersion(GitRepository.IsOnMainOrMasterBranch()
                     ? GitVersion.MajorMinorPatch
                     : GitVersion != null ? GitVersion.AssemblySemVer : "0.1.0")
-                .SetFileVersion(branch == "master"
+                .SetFileVersion(GitRepository.IsOnMainOrMasterBranch()
                     ? GitVersion.MajorMinorPatch
                     : GitVersion != null ? GitVersion.InformationalVersion : "0.1.0"));
         });
@@ -411,7 +411,7 @@ class Build : NukeBuild
         });
 
     Target GenerateReleaseNotes => _ => _
-        .OnlyWhenDynamic(() => branch == "master" || branch.StartsWith("release"))
+        .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch())
         .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GithubToken))
         .DependsOn(SetupGitHubClient)
         .DependsOn(TagRelease)
@@ -465,20 +465,20 @@ class Build : NukeBuild
         });
 
     Target TagRelease => _ => _
-        .OnlyWhenDynamic(() => branch == "master" || branch.StartsWith("release"))
+        .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch())
         .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GithubToken))
         .DependsOn(SetupGitHubClient)
         .DependsOn(SetBranch)
         .Executes(() =>
         {
-            var version = branch == "master" ? GitVersion.MajorMinorPatch : GitVersion.SemVer;
+            var version = GitRepository.IsOnMainOrMasterBranch() ? GitVersion.MajorMinorPatch : GitVersion.SemVer;
             GitLogger = (type, output) => Logger.Info(output);
             Git($"tag v{version}");
             Git($"push --tags");
         });
 
     Target Release => _ => _
-        .OnlyWhenDynamic(() => branch == "master" || branch.StartsWith("release"))
+        .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch())
         .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GithubToken))
         .DependsOn(SetBranch)
         .DependsOn(SetupGitHubClient)
@@ -487,11 +487,11 @@ class Build : NukeBuild
         .DependsOn(Package)
         .Executes(() =>
         {
-            var newRelease = new NewRelease(branch == "master" ? $"v{GitVersion.MajorMinorPatch}" : $"v{GitVersion.SemVer}")
+            var newRelease = new NewRelease(GitRepository.IsOnMainOrMasterBranch() ? $"v{GitVersion.MajorMinorPatch}" : $"v{GitVersion.SemVer}")
             {
                 Body = releaseNotes,
                 Draft = true,
-                Name = branch == "master" ? $"v{GitVersion.MajorMinorPatch}" : $"v{GitVersion.SemVer}",
+                Name = GitRepository.IsOnMainOrMasterBranch() ? $"v{GitVersion.MajorMinorPatch}" : $"v{GitVersion.SemVer}",
                 TargetCommitish = GitVersion.Sha,
                 Prerelease = branch.StartsWith("release")
             };
@@ -603,7 +603,7 @@ class Build : NukeBuild
 
             // Install package
             string fileName = new DirectoryInfo(RootDirectory).Name + "_";
-            fileName += branch == "master"
+            fileName += GitRepository.IsOnMainOrMasterBranch()
                 ? GitVersion != null ? GitVersion.MajorMinorPatch : "0.1.0"
                 : GitVersion != null ? GitVersion.SemVer : "0.1.0";
             fileName += "_install.zip";
