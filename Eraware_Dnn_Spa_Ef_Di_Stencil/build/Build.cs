@@ -695,7 +695,7 @@ class Build : NukeBuild
                 .AppendLine()
                 .AppendLine("This section documents the APIs available in the backend (c#) code.")
                 .AppendLine()
-                .AppendLine("Please expande the namespaces to navigate through the APIs.");
+                .AppendLine("Please expand the namespaces to navigate through the APIs.");
             WriteAllText(DocFxProjectDirectory / "api" / "index.md", sb.ToString());
 
             NpmTasks.NpmInstall(s => s
