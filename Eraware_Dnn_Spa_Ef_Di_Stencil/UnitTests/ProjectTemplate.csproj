@@ -90,7 +90,7 @@
       <Version>9.10.1</Version>
     </PackageReference>
     <PackageReference Include="DotNetNuke.Instrumentation">
-      <Version>9.10.1</Version>
+      <Version>9.10.2</Version>
     </PackageReference>
     <PackageReference Include="DotNetNuke.Web">
       <Version>9.10.1</Version>
