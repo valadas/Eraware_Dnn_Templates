@@ -19,18 +19,18 @@ Commit your module to Github by clicking the `Add to Source Control`button in th
 In a few minutes if you navigate to your repository on Github, you will notice there is a draft release for v0.1.0. It has no release notes yet but it does have the fully packaged module ready for production install.
 
 > [!TIP]
-> This is a draft an the public won't see it as an available release yet. Since this is probably not ready for production, you can delete the release and the tag if you don't want to keep it (and reserve the v0.1.0 version from future use). If you do want to keep it, you can edit it and publish it. Each push to the `master` branch will trigger a draf release that is non-beta, this is how we will do releases in the future.
+> This is a draft an the public won't see it as an available release yet. Since this is probably not ready for production, you can delete the release and the tag if you don't want to keep it (and reserve the v0.1.0 version from future use). If you do want to keep it, you can edit it and publish it. Each push to the `main` or `master` branch will trigger a draf release that is non-beta, this is how we will do releases in the future.
 ## Automatic Versioning
 
 The template uses [GitVersion](https://github.com/GitTools/GitVersion) and the [GitFlow](https://gitversion.net/docs/git-branching-strategies/gitflow) branching strategy in order to manage versions and releases.
 
 This means:
-- The **master** branch contains the code from the latest published production release. Only merge commits comming from a `release` or `hotfix` branch should be merged to it. Each push to this branch will produce a draft release.
+- The **main** or **master** branch contains the code from the latest published production release. Only merge commits comming from a `release` or `hotfix` branch should be merged to it. Each push to this branch will produce a draft release.
 - The **develop** branch contains the latest development code (alpha). Merging or pushing to this branch does not produce any release but you can get the (alpha) build from the branch build status badge. Also any pull request to it builds the project and you also have the PR build artifact available in the action status.
-- **release** branches are used to prepare the next release, when a `release/1.0.0` branch is created, a few minutes after, you will have an unpublished release called `v1.0.0-beta-1`. For each further merge or push to the `release/1.0.0` branch, you will get the same version but a new beta sequential member like `v1.0.0-beta-2`. When the release is ready for production, you can merge the `release/1.0.0` into the `master` branch (usually through a pull request) and it will produce a draft release called v1.0.0 (no longer beta).
+- **release** branches are used to prepare the next release, when a `release/1.0.0` branch is created, a few minutes after, you will have an unpublished release called `v1.0.0-beta-1`. For each further merge or push to the `release/1.0.0` branch, you will get the same version but a new beta sequential member like `v1.0.0-beta-2`. When the release is ready for production, you can merge the `release/1.0.0` into the `main` or `master` branch (usually through a pull request) and it will produce a draft release called v1.0.0 (no longer beta).
 
 > [!TIP]
-> By default when you initially pushed the first commit to github earlier, it created only the `master` branch. You should on github create a `develop` branch from it and then pull that branch before any further development.
+> By default when you initially pushed the first commit to github earlier, it created only the `main` or `master` branch. You should on github create a `develop` branch from it and then pull that branch before any further development.
 ## Automatic Release Notes
 
 Release notes for each of those versions are automatically generated from Pull Request (PR) titles for which the milestone matches the released version. The notes are also grouped by label.
@@ -53,7 +53,7 @@ Release notes for each of those versions are automatically generated from Pull R
 ![Create a PR](../images/create-pull-request.gif)
 3. Now we will create a 1.0.0-beta release simply by creating a release/1.0.0 branch (it will take a few minutes to create the release). Note that this time because we had a PR with a milestone, we get automatic release notes generated for us.
 ![Create a beta RC](../images/create-beta-release.gif)
-4. Now let's assume this beta got properly tested and we want to produce the final the final 1.0.0 release, we simply need to merge the `release/1.0.0` branch into our `master` branch, we will do so using a pull request and we'll do a `merge commit`.
+4. Now let's assume this beta got properly tested and we want to produce the final the final 1.0.0 release, we simply need to merge the `release/1.0.0` branch into our `main` or `master` branch, we will do so using a pull request and we'll do a `merge commit`.
 ![Create Release](../images/create-release.gif)
 
 ## Documentation
@@ -65,7 +65,7 @@ Github allows having a free documentation website as part of every repository. Y
 We simply have to return to github repository settings and set the source for that site. The code can be a folder on any branch or a special branch. Here we will select the docs folder on the branch of our choice.
 
 > [!TIP]
-> Selecting the `master` branch will mean that your published documentation will always be in sync with the latest published official release (non-beta). If you want your documentation to be in sync with the latest changes, you can select the `develop` branch or if you have long standing betas and you want the documentation to reflect it, you can select a `release/x.x.x` branch.
+> Selecting the `main` or `master` branch will mean that your published documentation will always be in sync with the latest published official release (non-beta). If you want your documentation to be in sync with the latest changes, you can select the `develop` branch or if you have long standing betas and you want the documentation to reflect it, you can select a `release/x.x.x` branch.
 > [!WARNING]
 > Do not select a theme in the settings, this is for Jekyll sites which we are not using. Also, it may take Github a few minutes to publish your site.
 ![Setup Github Docs](../images/setup-git-docs.gif)
