@@ -119,16 +119,16 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DotNetNuke.Core">
-      <Version>9.10.1</Version>
+      <Version>9.10.2</Version>
     </PackageReference>
     <PackageReference Include="DotNetNuke.Instrumentation">
-      <Version>9.10.1</Version>
+      <Version>9.10.2</Version>
     </PackageReference>
     <PackageReference Include="DotNetNuke.Web">
-      <Version>9.10.1</Version>
+      <Version>9.10.2</Version>
     </PackageReference>
     <PackageReference Include="DotNetNuke.WebApi">
-      <Version>9.10.1</Version>
+      <Version>9.10.2</Version>
     </PackageReference>
     <PackageReference Include="EntityFramework">
       <Version>6.4.4</Version>
