@@ -168,7 +168,7 @@ class Build : NukeBuild
                 .SetHistoryDirectory(RootDirectory / "UnitTests" / "history")
                 .SetProcessArgumentConfigurator(a => a
                     .Add("-title:UnitTests"))
-                .SetFramework("netcoreapp2.1"));
+                .SetFramework("net5.0"));
 
             Helpers.CleanCodeCoverageHistoryFiles(RootDirectory / "UnitTests" / "history");
 
