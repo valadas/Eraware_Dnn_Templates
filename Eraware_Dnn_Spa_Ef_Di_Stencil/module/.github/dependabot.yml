@@ -8,11 +8,11 @@ updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/module.web/" # Location of package manifests
     schedule:
-      interval: "daily"
+      interval: "monthly"
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
     ignore:
       - dependency-name: "Microsoft.AspNet.WebApi.Client"
       - dependency-name: "Microsoft.AspNet.WebApi.Core"
