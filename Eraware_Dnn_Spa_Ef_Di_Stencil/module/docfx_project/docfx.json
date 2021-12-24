@@ -40,6 +40,12 @@
       },
       {
         "files": "client/*.md"
+      },
+      {
+        "files": "unitTests/*.html"
+      },
+      {
+        "files": "integrationTests/*.html"
       }
     ],
     "resource": [

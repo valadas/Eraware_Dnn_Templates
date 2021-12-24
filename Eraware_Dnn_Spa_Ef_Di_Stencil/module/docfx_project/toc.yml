@@ -11,4 +11,11 @@
   homepage: client/index.md
 - name: Web Components
   href: components/
-  homepage: components/index.md 
+  homepage: components/index.md
+- name: Tests
+  dropdown: true
+  items:
+    - name: Unit Tests
+      href: unitTests/index.html
+    - name: Integration Tests
+      href: integrationTests/index.html
