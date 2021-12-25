@@ -34,7 +34,6 @@
     <!-- Common build related files -->
     <None Include=".editorconfig" />
     <None Include="..\.teamcity\settings.kts" LinkBase="ci" Condition="Exists('..\.teamcity\settings.kts')" />
-    <None Include="..\.github\workflows\build.yml" LinkBase="ci" Condition="Exists('..\.github\workflows\build.yml')" />
 
     <None Include="App.config" LinkBase="config" Condition="Exists('App.config')" />
     <None Include="..\.github\dependabot.yml" LinkBase="config" Condition="Exists('..\.github\dependabot.yml')" />

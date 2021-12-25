@@ -344,3 +344,7 @@ healthchecksdb
 /Swagger
 /docfx_project/docs
 /docfx_project/components
+.github/badges
+/docfx_project/integrationTests
+/docfx_project/unitTests
+docs/

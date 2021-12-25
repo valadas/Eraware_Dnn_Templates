@@ -18,7 +18,7 @@
     "test": "echo \"Error: no test specified\"",
     "watch_docfx": "npm-watch build_serve",
     "adjust_toc": "node adjust-toc-namespaces.js",
-    "build_serve": "docfx build --serve"
+    "build_serve": "docfx build --serve --port 8081"
   },
   "author": "",
   "license": "ISC",

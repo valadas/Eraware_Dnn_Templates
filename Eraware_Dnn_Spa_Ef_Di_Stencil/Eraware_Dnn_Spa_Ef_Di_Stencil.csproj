@@ -130,9 +130,6 @@
     <None Include="module\.github\mergeable.yml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="module\.github\workflows\build.yml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="module\docfx_project\articles\intro.md" />
     <None Include="module\docfx_project\docfx.json" />
     <None Include="module\global.json" />

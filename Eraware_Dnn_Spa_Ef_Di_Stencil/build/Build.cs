@@ -1,5 +1,6 @@
 ﻿using BuildHelpers;
 using Nuke.Common;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
@@ -38,6 +39,27 @@ using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 using static Nuke.Common.Tools.Npm.NpmTasks;
 using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
 
+[GitHubActions(
+    "Release",
+    GitHubActionsImage.WindowsLatest,
+    ImportGitHubTokenAs = "GithubToken",
+    OnPushBranches = new[] { "master", "main", "release/*" },
+    InvokedTargets = new[] { nameof(Release) }
+)]
+[GitHubActions(
+    "PR_Validation",
+    GitHubActionsImage.WindowsLatest,
+    ImportGitHubTokenAs = "GithubToken",
+    OnPullRequestBranches = new[] { "master", "main", "develop", "development", "release/*" },
+    InvokedTargets = new[] { nameof(Package) }
+)]
+[GitHubActions(
+    "Build",
+    GitHubActionsImage.WindowsLatest,
+    ImportGitHubTokenAs = "GithubToken",
+    OnPushBranches = new[] { "master", "develop", "release/*" },
+    InvokedTargets = new[] { nameof(DeployGeneratedFiles) }
+    )]
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild
 {
@@ -99,7 +121,6 @@ class Build : NukeBuild
 
     Target LogInfo => _ => _
         .Before(Release)
-        .DependsOn(TagRelease)
         .DependsOn(UpdateTokens)
         .Executes(() =>
         {
@@ -229,7 +250,6 @@ class Build : NukeBuild
         .DependsOn(Clean)
         .DependsOn(Restore)
         .DependsOn(SetManifestVersions)
-        .DependsOn(TagRelease)
         .DependsOn(UpdateTokens)
         .Executes(() =>
         {
@@ -369,7 +389,6 @@ class Build : NukeBuild
     Target BuildFrontEnd => _ => _
         .DependsOn(InstallNpmPackages)
         .DependsOn(SetManifestVersions)
-        .DependsOn(TagRelease)
         .DependsOn(SetPackagesVersions)
         .DependsOn(Swagger)
         .Executes(() =>
@@ -381,7 +400,6 @@ class Build : NukeBuild
         });
 
     Target SetPackagesVersions => _ => _
-        .DependsOn(TagRelease)
         .DependsOn(UpdateTokens)
         .Executes(() =>
         {
@@ -410,7 +428,6 @@ class Build : NukeBuild
         .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch())
         .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GithubToken))
         .DependsOn(SetupGitHubClient)
-        .DependsOn(TagRelease)
         .DependsOn(UpdateTokens)
         .Executes(() =>
         {
@@ -473,8 +490,10 @@ class Build : NukeBuild
         .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GithubToken))
         .DependsOn(SetupGitHubClient)
         .DependsOn(UpdateTokens)
+        .Before(Compile)
         .Executes(() =>
         {
+            Git($"remote set-url origin https://{GitRepository.GetGitHubOwner()}:{GithubToken}@github.com/{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git");
             var version = GitRepository.IsOnMainOrMasterBranch() ? GitVersion.MajorMinorPatch : GitVersion.SemVer;
             GitLogger = (type, output) => Logger.Info(output);
             Git($"tag v{version}");
@@ -526,6 +545,7 @@ class Build : NukeBuild
         .DependsOn(SetRelativeScripts)
         .Executes(() =>
         {
+            ResetDocs();
         });
 
     /// <summary>
@@ -535,6 +555,7 @@ class Build : NukeBuild
     .DependsOn(SetLiveServer)
     .Executes(() =>
     {
+        ResetDocs();
         NpmRun(s => s
             .SetProcessWorkingDirectory(WebProjectDirectory)
             .AddArguments("start")
@@ -574,7 +595,6 @@ class Build : NukeBuild
         .DependsOn(GenerateAppConfig)
         .DependsOn(Test)
         .DependsOn(UpdateTokens)
-        .DependsOn(TagRelease)
         .DependsOn(Docs)
         .Executes(() =>
         {
@@ -644,6 +664,8 @@ class Build : NukeBuild
                 // Uncomment next line if you would like a package task to auto-open the package in explorer.
                 // Process.Start("explorer.exe", ArtifactsDirectory);
             }
+
+            ResetDocs();
 
             Logger.Success("Packaging succeeded!");
         });
@@ -721,6 +743,7 @@ class Build : NukeBuild
         .DependsOn(CleanDocsFolder)
         .DependsOn(Swagger)
         .DependsOn(ComponentsDocs)
+        .DependsOn(TestsDocs)
         .DependsOn(TsDoc)
         .DependsOn(DocFx)
         .Executes(() =>
@@ -734,6 +757,46 @@ class Build : NukeBuild
                     .SetProcessWorkingDirectory(DocFxProjectDirectory)
                     .SetArguments("watch_docfx"));
             }
+        });
+
+    Target DeployGeneratedFiles => _ => _
+        .DependsOn(Docs)
+        .DependsOn(Test)
+        .Executes(() =>
+        {
+            Git($"config --global user.name '{GitRepository.GetGitHubOwner()}'");
+            Git($"config --global user.email '{Helpers.GetManifestOwnerEmail(GlobFiles(RootDirectory / "*.dnn").FirstOrDefault())}'");
+            Git($"remote set-url origin https://{GitRepository.GetGitHubOwner()}:{GithubToken}@github.com/{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git");
+            Git("status");
+            Git("add docs -f");
+            Git("add IntegrationTests/history -f");
+            Git("add UnitTests/history -f");
+            Git("add .github/badges -f");
+            Git("status");
+            Git("commit --allow-empty -m \"Commit latest generated files\""); // We allow an empty commit in case the last change did not affect the site.
+            Git("status");
+            Git($"push --set-upstream origin {GitRepository.Branch}");
+        });
+
+    Target TestsDocs => _ => _
+        .DependsOn(Test)
+        .DependsOn(CleanDocsFolder)
+        .Executes(() => {
+            var integrationTestsDocsDirectory = DocsDirectory / "integrationTests";
+            EnsureCleanDirectory(integrationTestsDocsDirectory);
+            CopyDirectoryRecursively(
+                IntegrationTestsResultsDirectory,
+                integrationTestsDocsDirectory,
+                DirectoryExistsPolicy.Merge,
+                FileExistsPolicy.Overwrite);
+
+            var unitTestsDocsDirectory = DocsDirectory / "unitTests";
+            EnsureCleanDirectory(unitTestsDocsDirectory);
+            CopyDirectoryRecursively(
+                UnitTestsResultsDirectory,
+                unitTestsDocsDirectory,
+                DirectoryExistsPolicy.Merge,
+                FileExistsPolicy.Overwrite);
         });
 
     Target TsDoc => _ => _
@@ -811,14 +874,11 @@ class Build : NukeBuild
             RenameFile(componentsDocsDirectory / "readme.md", "index.md", FileExistsPolicy.Overwrite);
         });
 
-    Target CI => _ => _
-        .DependsOn(LogInfo)
-        .DependsOn(Package)
-        .DependsOn(GenerateReleaseNotes)
-        .DependsOn(TagRelease)
-        .DependsOn(Release)
-        .Executes(() =>
+    private void ResetDocs()
+    {
+        if (GitRepository != null && IsLocalBuild)
         {
-
-        });
+            Git("checkout -q HEAD -- docs", workingDirectory: RootDirectory);
+        }
+    }
 }

@@ -197,6 +197,22 @@ namespace BuildHelpers
             File.WriteAllText(RootDirectory / "Services" / "LocalizationService.cs", svc.ToString());
         }
 
+        public static string GetManifestOwnerName(string manifestPath)
+        {
+            var doc = new XmlDocument();
+            doc.Load(manifestPath);
+            var node = doc.SelectSingleNode("dotnetnuke/packages/package/owner/name");
+            return node.InnerText;
+        }
+
+        public static string GetManifestOwnerEmail(string manifestPath)
+        {
+            var doc = new XmlDocument();
+            doc.Load(manifestPath);
+            var node = doc.SelectSingleNode("dotnetnuke/packages/package/owner/email");
+            return node.InnerText;
+        }
+
         private static string GenerateLocalizationService(string rootNamespace, List<string> localizationFiles)
         {
             var moduleFolderName = new DirectoryInfo(RootDirectory).Name;
