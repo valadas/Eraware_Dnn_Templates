@@ -16,12 +16,13 @@
   </TemplateData>
   <TemplateContent>
     <Project File="ProjectTemplate.csproj" TargetFileName="ProjectTemplate.csproj" ReplaceParameters="true">
+      <Folder Name=".nuke" TargetFolderName=".nuke">
+        <ProjectItem TargetFileName="build.schema.json">build.schema.json</ProjectItem>
+        <ProjectItem TargetFileName="parameters.json" ReplaceParameters="true">parameters.json</ProjectItem>
+      </Folder>
       <Folder Name=".github" TargetFolderName=".github">
         <ProjectItem TargetFileName="dependabot.yml">dependabot.yml</ProjectItem>
         <ProjectItem TargetFileName="mergeable.yml">mergeable.yml</ProjectItem>
-        <Folder Name="workflows" TargetFolderName="workflows">
-          <ProjectItem>build.yml</ProjectItem>
-        </Folder>
       </Folder>
       <Folder Name="Common" TargetFolderName="Common">
         <ProjectItem ReplaceParameters="true">Globals.cs</ProjectItem>
@@ -132,10 +133,11 @@
       </Folder>
       <ProjectItem>.gitignore</ProjectItem>
       <ProjectItem>.editorconfig</ProjectItem>
-      <ProjectItem ReplaceParameters="true">.nuke</ProjectItem>
       <ProjectItem ReplaceParameters="true">App.Config</ProjectItem>
+      <ProjectItem>build.cmd</ProjectItem>
       <ProjectItem>build.ps1</ProjectItem>
       <ProjectItem>build.sh</ProjectItem>
+      <ProjectItem>global.json</ProjectItem>
       <ProjectItem ReplaceParameters="true">LICENSE</ProjectItem>
       <ProjectItem ReplaceParameters="true">manifest.dnn</ProjectItem>
       <ProjectItem ReplaceParameters="true">README.md</ProjectItem>

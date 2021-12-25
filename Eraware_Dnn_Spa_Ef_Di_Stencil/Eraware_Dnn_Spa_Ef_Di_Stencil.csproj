@@ -91,6 +91,9 @@
     <None Include="module.web\src\components\my-edit\my-edit.scss" />
     <None Include="module.web\src\components\my-item-details\my-item-details.scss" />
     <None Include="module.web\src\components\my-items-list\my-items-list.scss" />
+    <None Include="module\.nuke\build.schema.json" />
+    <None Include="module\.nuke\parameters.json" />
+    <None Include="module\build.cmd" />
     <None Include="module\docfx_project\articles\project-architecture.md" />
     <None Include="module\docfx_project\articles\toc.yml" />
     <None Include="module\docfx_project\package.json" />
@@ -127,11 +130,9 @@
     <None Include="module\.github\mergeable.yml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="module\.github\workflows\build.yml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="module\docfx_project\articles\intro.md" />
     <None Include="module\docfx_project\docfx.json" />
+    <None Include="module\global.json" />
     <None Include="module\README.md" />
     <None Include="module\stylecop.json" />
     <None Include="UnitTests\ProjectTemplate.csproj" />
@@ -153,9 +154,6 @@
     <None Include="module.web\readme.md" />
     <None Include="module.web\src\components\my-component\readme.md" />
     <None Include="module.web\tsconfig.json" />
-    <None Include="module\.nuke">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="module\App.Config" />
     <None Include="module\build.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

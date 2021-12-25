@@ -1,5 +1,6 @@
 ﻿using BuildHelpers;
 using Nuke.Common;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
@@ -8,6 +9,7 @@ using Nuke.Common.Tooling;
 using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.DocFX;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.GitHub;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Tools.Npm;
@@ -37,6 +39,27 @@ using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 using static Nuke.Common.Tools.Npm.NpmTasks;
 using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
 
+[GitHubActions(
+    "Release",
+    GitHubActionsImage.WindowsLatest,
+    ImportGitHubTokenAs = "GithubToken",
+    OnPushBranches = new[] { "master", "main", "release/*" },
+    InvokedTargets = new[] { nameof(Release) }
+)]
+[GitHubActions(
+    "PR_Validation",
+    GitHubActionsImage.WindowsLatest,
+    ImportGitHubTokenAs = "GithubToken",
+    OnPullRequestBranches = new[] { "master", "main", "develop", "development", "release/*" },
+    InvokedTargets = new[] { nameof(Package) }
+)]
+[GitHubActions(
+    "Build",
+    GitHubActionsImage.WindowsLatest,
+    ImportGitHubTokenAs = "GithubToken",
+    OnPushBranches = new[] { "master", "develop", "release/*" },
+    InvokedTargets = new[] { nameof(DeployGeneratedFiles) }
+    )]
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild
 {
@@ -71,44 +94,37 @@ class Build : NukeBuild
     AbsolutePath DocFxProjectDirectory => RootDirectory / "docfx_project";
     AbsolutePath DocsDirectory => RootDirectory / "docs";
 
-    private string devViewsPath = "http://localhost:3333/build/";
-    private string prodViewsPath = "/DesktopModules/$ext_modulename$/resources/scripts/$ext_scopeprefixkebab$/";
+    private const string devViewsPath = "http://localhost:3333/build/";
+    private const string prodViewsPath = "/DesktopModules/$ext_modulename$/resources/scripts/$ext_scopeprefixkebab$/";
 
     string releaseNotes = "";
-    string repositoryOwner = "";
-    string repositoryName = "";
-    string branch = "";
     GitHubClient gitHubClient;
     Release release;
 
-    Target SetBranch => _ => _
+    Target UpdateTokens => _ => _
+        .OnlyWhenDynamic(() => GitRepository != null)
         .Executes(() =>
         {
             if (GitRepository != null)
             {
-                branch = GitRepository.Branch.StartsWith("refs/") ? GitRepository.Branch.Substring(11) : GitRepository.Branch;
-                repositoryOwner = GitRepository.Identifier.Split('/')[0];
-                repositoryName = GitRepository.Identifier.Split('/')[1];
+                Logger.Info($"We are on branch {GitRepository.Branch}");
                 var repositoryFiles = GlobFiles(RootDirectory, "README.md", "build/**/git.html", "**/articles/git.md");
                 repositoryFiles.ForEach(f =>
                 {
                     var file = ReadAllText(f, Encoding.UTF8);
-                    file = file.Replace("{owner}", repositoryOwner);
-                    file = file.Replace("{repository}", repositoryName);
+                    file = file.Replace("{owner}", GitRepository.GetGitHubOwner());
+                    file = file.Replace("{repository}", GitRepository.GetGitHubName());
                     WriteAllText(f, file, Encoding.UTF8);
                 });
             }
-            Logger.Info($"Set branch name to {branch}");
         });
 
     Target LogInfo => _ => _
         .Before(Release)
-        .DependsOn(TagRelease)
-        .DependsOn(SetBranch)
+        .DependsOn(UpdateTokens)
         .Executes(() =>
         {
-            Logger.Info($"Original branch name is {GitRepository.Branch}");
-            Logger.Info($"We are on branch {branch} and IsOnMasterBranch is {GitRepository.IsOnMasterBranch()} and the version will be {GitVersion.SemVer}");
+            Logger.Info($"Branch name is {GitRepository.Branch}");
             using (var group = Logger.Block("GitVersion"))
             {
                 Logger.Info(SerializationTasks.JsonSerialize(GitVersion));
@@ -155,7 +171,7 @@ class Build : NukeBuild
                 .SetResultsDirectory(UnitTestsResultsDirectory)
                 .EnableCollectCoverage()
                 .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
-                .SetLogger($"trx;LogFileName=UnitTests.trx")
+                .SetLoggers("trx;LogFileName=UnitTests.trx")
                 .SetCoverletOutput(UnitTestsResultsDirectory / "coverage.xml")
                 .SetExcludeByFile("**/App_LocalResources/**/*")
                 .SetProjectFile(RootDirectory / "UnitTests" / "UnitTests.csproj")
@@ -168,7 +184,7 @@ class Build : NukeBuild
                 .SetHistoryDirectory(RootDirectory / "UnitTests" / "history")
                 .SetProcessArgumentConfigurator(a => a
                     .Add("-title:UnitTests"))
-                .SetFramework("netcoreapp2.1"));
+                .SetFramework("net5.0"));
 
             Helpers.CleanCodeCoverageHistoryFiles(RootDirectory / "UnitTests" / "history");
 
@@ -197,7 +213,7 @@ class Build : NukeBuild
                 .SetResultsDirectory(IntegrationTestsResultsDirectory)
                 .EnableCollectCoverage()
                 .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
-                .SetLogger($"trx;LogFileName=IntegrationTests.trx")
+                .SetLoggers("trx;LogFileName=IntegrationTests.trx")
                 .SetCoverletOutput(IntegrationTestsResultsDirectory / "coverage.xml")
                 .SetProjectFile(RootDirectory / "IntegrationTests" / "IntegrationTests.csproj")
                 .SetNoBuild(true));
@@ -210,7 +226,7 @@ class Build : NukeBuild
                 .AddClassFilters("-*Data.ModuleDbContext")
                 .SetProcessArgumentConfigurator(a => a
                     .Add("-title:IntegrationTests"))
-                .SetFramework("netcoreapp2.1"));
+                .SetFramework("net5.0"));
 
             Helpers.CleanCodeCoverageHistoryFiles(RootDirectory / "IntegrationTests" / "history");
 
@@ -234,8 +250,7 @@ class Build : NukeBuild
         .DependsOn(Clean)
         .DependsOn(Restore)
         .DependsOn(SetManifestVersions)
-        .DependsOn(TagRelease)
-        .DependsOn(SetBranch)
+        .DependsOn(UpdateTokens)
         .Executes(() =>
         {
             var moduleAssemblyName = Solution.GetProject("Module").GetProperty("AssemblyName");
@@ -243,10 +258,10 @@ class Build : NukeBuild
             MSBuildTasks.MSBuild(s => s
                 .SetProjectFile(Solution.GetProject("Module"))
                 .SetConfiguration(Configuration)
-                .SetAssemblyVersion(branch == "master"
+                .SetAssemblyVersion(GitRepository != null && GitRepository.IsOnMainOrMasterBranch()
                     ? GitVersion.MajorMinorPatch
                     : GitVersion != null ? GitVersion.AssemblySemVer : "0.1.0")
-                .SetFileVersion(branch == "master"
+                .SetFileVersion(GitRepository != null && GitRepository.IsOnMainOrMasterBranch()
                     ? GitVersion.MajorMinorPatch
                     : GitVersion != null ? GitVersion.InformationalVersion : "0.1.0"));
         });
@@ -374,7 +389,6 @@ class Build : NukeBuild
     Target BuildFrontEnd => _ => _
         .DependsOn(InstallNpmPackages)
         .DependsOn(SetManifestVersions)
-        .DependsOn(TagRelease)
         .DependsOn(SetPackagesVersions)
         .DependsOn(Swagger)
         .Executes(() =>
@@ -386,8 +400,7 @@ class Build : NukeBuild
         });
 
     Target SetPackagesVersions => _ => _
-        .DependsOn(TagRelease)
-        .DependsOn(SetBranch)
+        .DependsOn(UpdateTokens)
         .Executes(() =>
         {
             if (GitVersion != null)
@@ -398,11 +411,12 @@ class Build : NukeBuild
 
     Target SetupGitHubClient => _ => _
         .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GithubToken))
-        .DependsOn(SetBranch)
+        .OnlyWhenDynamic(() => GitRepository != null)
+        .DependsOn(UpdateTokens)
         .Executes(() =>
         {
-            Logger.Info($"We are on branch {branch}");
-            if (branch == "master" || branch.StartsWith("release"))
+            Logger.Info($"We are on branch {GitRepository.Branch}");
+            if (GitRepository.IsOnMainOrMasterBranch())
             {
                 gitHubClient = new GitHubClient(new ProductHeaderValue("Nuke"));
                 var tokenAuth = new Credentials(GithubToken);
@@ -411,15 +425,17 @@ class Build : NukeBuild
         });
 
     Target GenerateReleaseNotes => _ => _
-        .OnlyWhenDynamic(() => branch == "master" || branch.StartsWith("release"))
+        .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch())
         .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GithubToken))
         .DependsOn(SetupGitHubClient)
-        .DependsOn(TagRelease)
-        .DependsOn(SetBranch)
+        .DependsOn(UpdateTokens)
         .Executes(() =>
         {
             // Get the milestone
-            var milestone = gitHubClient.Issue.Milestone.GetAllForRepository(repositoryOwner, repositoryName).Result.Where(m => m.Title == GitVersion.MajorMinorPatch).FirstOrDefault();
+            var milestone = gitHubClient.Issue.Milestone.GetAllForRepository(
+                GitRepository.GetGitHubOwner(),
+                GitRepository.GetGitHubName()).Result
+                .Where(m => m.Title == GitVersion.MajorMinorPatch).FirstOrDefault();
             if (milestone == null)
             {
                 Logger.Warn("Milestone not found for this version");
@@ -432,16 +448,21 @@ class Build : NukeBuild
             {
                 State = ItemStateFilter.All
             };
-            var pullRequests = gitHubClient.Repository.PullRequest.GetAllForRepository(repositoryOwner, repositoryName, prRequest).Result.Where(p =>
-                p.Milestone?.Title == milestone.Title &&
-                p.Merged == true &&
-                p.Milestone?.Title == GitVersion.MajorMinorPatch);
+            var pullRequests = gitHubClient.Repository.PullRequest.GetAllForRepository(
+                GitRepository.GetGitHubOwner(),
+                GitRepository.GetGitHubName(), prRequest).Result
+                .Where(p =>
+                    p.Milestone?.Title == milestone.Title &&
+                    p.Merged == true &&
+                    p.Milestone?.Title == GitVersion.MajorMinorPatch);
 
             // Build release notes
             var releaseNotesBuilder = new StringBuilder();
-            releaseNotesBuilder.AppendLine($"# {repositoryName} {milestone.Title}")
-                .AppendLine("")
-                .AppendLine($"A total of {pullRequests.Count()} pull requests where merged in this release.").AppendLine();
+            releaseNotesBuilder
+                .AppendLine($"# {GitRepository.GetGitHubName()} {milestone.Title}")
+                .AppendLine()
+                .AppendLine($"A total of {pullRequests.Count()} pull requests where merged in this release.")
+                .AppendLine();
 
             foreach (var group in pullRequests.GroupBy(p => p.Labels[0]?.Name, (label, prs) => new { label, prs }))
             {
@@ -465,37 +486,42 @@ class Build : NukeBuild
         });
 
     Target TagRelease => _ => _
-        .OnlyWhenDynamic(() => branch == "master" || branch.StartsWith("release"))
+        .OnlyWhenDynamic(() => GitRepository != null && (GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch()))
         .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GithubToken))
         .DependsOn(SetupGitHubClient)
-        .DependsOn(SetBranch)
+        .DependsOn(UpdateTokens)
+        .Before(Compile)
         .Executes(() =>
         {
-            var version = branch == "master" ? GitVersion.MajorMinorPatch : GitVersion.SemVer;
+            Git($"remote set-url origin https://{GitRepository.GetGitHubOwner()}:{GithubToken}@github.com/{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git");
+            var version = GitRepository.IsOnMainOrMasterBranch() ? GitVersion.MajorMinorPatch : GitVersion.SemVer;
             GitLogger = (type, output) => Logger.Info(output);
             Git($"tag v{version}");
             Git($"push --tags");
         });
 
     Target Release => _ => _
-        .OnlyWhenDynamic(() => branch == "master" || branch.StartsWith("release"))
+        .OnlyWhenDynamic(() => GitRepository != null && (GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch()))
         .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GithubToken))
-        .DependsOn(SetBranch)
+        .DependsOn(UpdateTokens)
         .DependsOn(SetupGitHubClient)
         .DependsOn(GenerateReleaseNotes)
         .DependsOn(TagRelease)
         .DependsOn(Package)
         .Executes(() =>
         {
-            var newRelease = new NewRelease(branch == "master" ? $"v{GitVersion.MajorMinorPatch}" : $"v{GitVersion.SemVer}")
+            var newRelease = new NewRelease(GitRepository.IsOnMainOrMasterBranch() ? $"v{GitVersion.MajorMinorPatch}" : $"v{GitVersion.SemVer}")
             {
                 Body = releaseNotes,
                 Draft = true,
-                Name = branch == "master" ? $"v{GitVersion.MajorMinorPatch}" : $"v{GitVersion.SemVer}",
+                Name = GitRepository.IsOnMainOrMasterBranch() ? $"v{GitVersion.MajorMinorPatch}" : $"v{GitVersion.SemVer}",
                 TargetCommitish = GitVersion.Sha,
-                Prerelease = branch.StartsWith("release")
+                Prerelease = GitRepository.IsOnReleaseBranch(),
             };
-            release = gitHubClient.Repository.Release.Create(repositoryOwner, repositoryName, newRelease).Result;
+            release = gitHubClient.Repository.Release.Create(
+                GitRepository.GetGitHubOwner(),
+                GitRepository.GetGitHubName(),
+                newRelease).Result;
             Logger.Info($"{release.Name} released !");
 
             var artifactFile = GlobFiles(RootDirectory, "artifacts/**/*.zip").FirstOrDefault();
@@ -519,6 +545,7 @@ class Build : NukeBuild
         .DependsOn(SetRelativeScripts)
         .Executes(() =>
         {
+            ResetDocs();
         });
 
     /// <summary>
@@ -528,6 +555,7 @@ class Build : NukeBuild
     .DependsOn(SetLiveServer)
     .Executes(() =>
     {
+        ResetDocs();
         NpmRun(s => s
             .SetProcessWorkingDirectory(WebProjectDirectory)
             .AddArguments("start")
@@ -566,8 +594,7 @@ class Build : NukeBuild
         .DependsOn(SetRelativeScripts)
         .DependsOn(GenerateAppConfig)
         .DependsOn(Test)
-        .DependsOn(SetBranch)
-        .DependsOn(TagRelease)
+        .DependsOn(UpdateTokens)
         .DependsOn(Docs)
         .Executes(() =>
         {
@@ -603,7 +630,7 @@ class Build : NukeBuild
 
             // Install package
             string fileName = new DirectoryInfo(RootDirectory).Name + "_";
-            fileName += branch == "master"
+            fileName += GitRepository != null && GitRepository.IsOnMainOrMasterBranch()
                 ? GitVersion != null ? GitVersion.MajorMinorPatch : "0.1.0"
                 : GitVersion != null ? GitVersion.SemVer : "0.1.0";
             fileName += "_install.zip";
@@ -637,6 +664,8 @@ class Build : NukeBuild
                 // Uncomment next line if you would like a package task to auto-open the package in explorer.
                 // Process.Start("explorer.exe", ArtifactsDirectory);
             }
+
+            ResetDocs();
 
             Logger.Success("Packaging succeeded!");
         });
@@ -695,7 +724,7 @@ class Build : NukeBuild
                 .AppendLine()
                 .AppendLine("This section documents the APIs available in the backend (c#) code.")
                 .AppendLine()
-                .AppendLine("Please expande the namespaces to navigate through the APIs.");
+                .AppendLine("Please expand the namespaces to navigate through the APIs.");
             WriteAllText(DocFxProjectDirectory / "api" / "index.md", sb.ToString());
 
             NpmTasks.NpmInstall(s => s
@@ -714,6 +743,7 @@ class Build : NukeBuild
         .DependsOn(CleanDocsFolder)
         .DependsOn(Swagger)
         .DependsOn(ComponentsDocs)
+        .DependsOn(TestsDocs)
         .DependsOn(TsDoc)
         .DependsOn(DocFx)
         .Executes(() =>
@@ -727,6 +757,46 @@ class Build : NukeBuild
                     .SetProcessWorkingDirectory(DocFxProjectDirectory)
                     .SetArguments("watch_docfx"));
             }
+        });
+
+    Target DeployGeneratedFiles => _ => _
+        .DependsOn(Docs)
+        .DependsOn(Test)
+        .Executes(() =>
+        {
+            Git($"config --global user.name '{GitRepository.GetGitHubOwner()}'");
+            Git($"config --global user.email '{Helpers.GetManifestOwnerEmail(GlobFiles(RootDirectory / "*.dnn").FirstOrDefault())}'");
+            Git($"remote set-url origin https://{GitRepository.GetGitHubOwner()}:{GithubToken}@github.com/{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git");
+            Git("status");
+            Git("add docs -f");
+            Git("add IntegrationTests/history -f");
+            Git("add UnitTests/history -f");
+            Git("add .github/badges -f");
+            Git("status");
+            Git("commit --allow-empty -m \"Commit latest generated files\""); // We allow an empty commit in case the last change did not affect the site.
+            Git("status");
+            Git($"push --set-upstream origin {GitRepository.Branch}");
+        });
+
+    Target TestsDocs => _ => _
+        .DependsOn(Test)
+        .DependsOn(CleanDocsFolder)
+        .Executes(() => {
+            var integrationTestsDocsDirectory = DocsDirectory / "integrationTests";
+            EnsureCleanDirectory(integrationTestsDocsDirectory);
+            CopyDirectoryRecursively(
+                IntegrationTestsResultsDirectory,
+                integrationTestsDocsDirectory,
+                DirectoryExistsPolicy.Merge,
+                FileExistsPolicy.Overwrite);
+
+            var unitTestsDocsDirectory = DocsDirectory / "unitTests";
+            EnsureCleanDirectory(unitTestsDocsDirectory);
+            CopyDirectoryRecursively(
+                UnitTestsResultsDirectory,
+                unitTestsDocsDirectory,
+                DirectoryExistsPolicy.Merge,
+                FileExistsPolicy.Overwrite);
         });
 
     Target TsDoc => _ => _
@@ -804,14 +874,11 @@ class Build : NukeBuild
             RenameFile(componentsDocsDirectory / "readme.md", "index.md", FileExistsPolicy.Overwrite);
         });
 
-    Target CI => _ => _
-        .DependsOn(LogInfo)
-        .DependsOn(Package)
-        .DependsOn(GenerateReleaseNotes)
-        .DependsOn(TagRelease)
-        .DependsOn(Release)
-        .Executes(() =>
+    private void ResetDocs()
+    {
+        if (GitRepository != null && IsLocalBuild)
         {
-
-        });
+            Git("checkout -q HEAD -- docs", workingDirectory: RootDirectory);
+        }
+    }
 }

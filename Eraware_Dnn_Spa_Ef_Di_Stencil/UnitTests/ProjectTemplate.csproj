@@ -74,35 +74,35 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="coverlet.collector">
-      <Version>3.0.3</Version>
+      <Version>3.1.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="coverlet.msbuild">
-      <Version>3.0.3</Version>
+      <Version>3.1.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="DotNetNuke.Abstractions">
-      <Version>9.8.0</Version>
+      <Version>9.10.2</Version>
     </PackageReference>
     <PackageReference Include="DotNetNuke.Core">
-      <Version>9.8.0</Version>
+      <Version>9.10.2</Version>
     </PackageReference>
     <PackageReference Include="DotNetNuke.Instrumentation">
-      <Version>9.8.0</Version>
+      <Version>9.10.2</Version>
     </PackageReference>
     <PackageReference Include="DotNetNuke.Web">
-      <Version>9.8.0</Version>
+      <Version>9.10.2</Version>
     </PackageReference>
     <PackageReference Include="DotNetNuke.WebApi">
-      <Version>9.8.0</Version>
+      <Version>9.10.2</Version>
     </PackageReference>
     <PackageReference Include="Effort.EF6">
-      <Version>2.2.12</Version>
+      <Version>2.2.15</Version>
     </PackageReference>
     <PackageReference Include="Moq">
-      <Version>4.16.0</Version>
+      <Version>4.16.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>10.0.3</Version>
