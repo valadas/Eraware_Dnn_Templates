@@ -764,18 +764,26 @@ class Build : NukeBuild
         .DependsOn(Test)
         .Executes(() =>
         {
-            Git($"config --global user.name '{GitRepository.GetGitHubOwner()}'");
-            Git($"config --global user.email '{Helpers.GetManifestOwnerEmail(GlobFiles(RootDirectory / "*.dnn").FirstOrDefault())}'");
-            Git($"remote set-url origin https://{GitRepository.GetGitHubOwner()}:{GithubToken}@github.com/{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git");
-            Git("status");
-            Git("add docs -f");
-            Git("add IntegrationTests/history -f");
-            Git("add UnitTests/history -f");
-            Git("add .github/badges -f");
-            Git("status");
-            Git("commit --allow-empty -m \"Commit latest generated files\""); // We allow an empty commit in case the last change did not affect the site.
-            Git("status");
-            Git($"push --set-upstream origin {GitRepository.Branch}");
+            var gitHubClient = new GitHubClient(new ProductHeaderValue("Nuke"));
+            var authToken = new Credentials(GithubToken);
+            gitHubClient.Credentials = authToken;
+
+            var repo = gitHubClient.Repository.Get(GitRepository.GetGitHubOwner(), GitRepository.GetGitHubName()).Result;
+            if (!repo.Fork)
+            {
+                Git($"config --global user.name '{GitRepository.GetGitHubOwner()}'");
+                Git($"config --global user.email '{Helpers.GetManifestOwnerEmail(GlobFiles(RootDirectory / "*.dnn").FirstOrDefault())}'");
+                Git($"remote set-url origin https://{GitRepository.GetGitHubOwner()}:{GithubToken}@github.com/{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git");
+                Git("status");
+                Git("add docs -f");
+                Git("add IntegrationTests/history -f");
+                Git("add UnitTests/history -f");
+                Git("add .github/badges -f");
+                Git("status");
+                Git("commit --allow-empty -m \"Commit latest generated files\""); // We allow an empty commit in case the last change did not affect the site.
+                Git("status");
+                Git($"push --set-upstream origin {GitRepository.Branch}");
+            }
         });
 
     Target TestsDocs => _ => _
