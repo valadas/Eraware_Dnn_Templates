@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="Eraware_Dnn_Templates.e12cae32-028f-413c-85f0-b294a18224bf" Version="1.0.2" Language="en-US" Publisher="Daniel Valadas" />
+        <Identity Id="Eraware_Dnn_Templates.e12cae32-028f-413c-85f0-b294a18224bf" Version="1.0.3" Language="en-US" Publisher="Daniel Valadas" />
         <DisplayName>Eraware_Dnn_Templates</DisplayName>
-        <Description xml:space="preserve">Eraware Dnn templates</Description>
+        <Description xml:space="preserve">A WebAPI/WebComponents module template for DNN extensions.</Description>
+        <License>LICENSE</License>
+        <GettingStartedGuide>https://github.com/valadas/Eraware_Dnn_Templates#readme</GettingStartedGuide>
+        <Icon>Eraware.ico</Icon>
         <Tags>dnn</Tags>
     </Metadata>
     <Installation>
-        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 18.0)">
+            <ProductArchitecture>amd64</ProductArchitecture>
+        </InstallationTarget>
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
@@ -17,6 +22,7 @@
         <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="Eraware_Dnn_Spa_Ef_Di_Stencil" d:TargetPath="|Eraware_Dnn_Spa_Ef_Di_Stencil;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
     </Assets>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.0,17.0)" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.0,18.0)" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.TypeScript.SDK.4.4" Version="[17.0.31804.368,18.0)" DisplayName="TypeScript 4.4 SDK" />
     </Prerequisites>
 </PackageManifest>
