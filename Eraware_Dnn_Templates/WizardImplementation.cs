@@ -64,7 +64,11 @@ namespace Eraware_Dnn_Templates
                     foreach (ProjectItem item in project.ProjectItems)
                     {
                         string[] ignoredFiles = { ".nuke", "build.ps1", "build.sh", ".github" };
-                        if (ignoredFiles.Any(i => i == item.Name)){
+                        if (ignoredFiles.Any(i =>
+                        {
+                            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+                            return i == item.Name;
+                        })){
                             item.Remove();
                         }
                     }
