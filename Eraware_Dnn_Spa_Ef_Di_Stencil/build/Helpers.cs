@@ -45,7 +45,7 @@ namespace BuildHelpers
             if (!destinationExists || !sameSize || !sameContent)
             {
                 CopyFileToDirectory(source, target, Nuke.Common.IO.FileExistsPolicy.OverwriteIfNewer);
-                Logger.Success("Copied {0} to {1}", sourceFile.FullName, destinationFile.FullName);
+                Serilog.Log.Information("Copied {0} to {1}", sourceFile.FullName, destinationFile.FullName);
             }
             else
             {
