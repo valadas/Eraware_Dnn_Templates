@@ -33,4 +33,4 @@ Welcome to you new module template!
 
 Congratulations, you have a working module!
 
-Now let's make it a [git](./git.md) repository.
+Now let's make it a git repository. [Learn How](./git.md)
