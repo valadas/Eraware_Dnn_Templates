@@ -181,7 +181,7 @@ namespace BuildHelpers
         public static void GenerateLocalizationFiles(string rootNamespace)
         {
             var localizationFiles = GlobFiles(RootDirectory / "resources" / "App_LocalResources", "*.resx")
-                .Where(l => Regex.Matches(l, @"\.").Count == 1).ToList();
+                .Where(l => Regex.Matches(new FileInfo(l).Name, @"\.").Count == 1).ToList();
             var generatedComment = GetGeneratedComment();
             var vm = new StringBuilder();
             vm.AppendLine(GetGeneratedComment());
