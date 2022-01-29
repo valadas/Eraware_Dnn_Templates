@@ -105,7 +105,7 @@ namespace Eraware_Dnn_Templates
             Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
             this.dte = automationObject as DTE2;
             string destinationDirectory = replacementsDictionary["$destinationdirectory$"];
-
+            var moduleFolderName = new DirectoryInfo(destinationDirectory).Name;
             try
             {
                 var inputForm = new SetupWizard();
@@ -126,6 +126,7 @@ namespace Eraware_Dnn_Templates
                 replacementsDictionary.Add("$packagename$", inputForm.settings.PackageName);
                 replacementsDictionary.Add("$scopeprefix$", inputForm.settings.ScopePrefix);
                 replacementsDictionary.Add("$scopeprefixkebab$", inputForm.settings.ScopePrefix.ToLower().Replace('_', '-'));
+                replacementsDictionary.Add("$modulefoldername$", moduleFolderName);
             }
             catch (WizardCancelledException ex)
             {
