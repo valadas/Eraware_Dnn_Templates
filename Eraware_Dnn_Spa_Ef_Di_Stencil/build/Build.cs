@@ -93,7 +93,7 @@ class Build : NukeBuild
     AbsolutePath DocsDirectory => RootDirectory / "docs";
 
     private const string devViewsPath = "http://localhost:3333/build/";
-    private const string prodViewsPath = "/DesktopModules/$ext_modulename$/resources/scripts/$ext_scopeprefixkebab$/";
+    private const string prodViewsPath = "/DesktopModules/$ext_modulefoldername$/resources/scripts/$ext_scopeprefixkebab$/";
 
     string releaseNotes = "";
     GitHubClient gitHubClient;

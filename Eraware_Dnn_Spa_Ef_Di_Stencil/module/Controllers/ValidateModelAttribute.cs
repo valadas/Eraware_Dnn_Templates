@@ -24,7 +24,7 @@ namespace $ext_rootnamespace$.Controllers
             {
                 if (string.IsNullOrWhiteSpace(this.resourceFileRoot))
                 {
-                    this.resourceFileRoot = HostingEnvironment.MapPath("~/DesktopModules/$ext_modulename$/resources/App_LocalResources/ModelValidation.resx");
+                    this.resourceFileRoot = HostingEnvironment.MapPath("~/DesktopModules/$ext_modulefoldername$/resources/App_LocalResources/ModelValidation.resx");
                 }
 
                 return this.resourceFileRoot;
