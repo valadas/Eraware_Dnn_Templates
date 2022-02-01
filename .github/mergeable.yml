@@ -10,3 +10,4 @@ mergeable:
         no_empty:
           enabled: true
           message: 'A lebel must be assigned to this pull request'
+          
