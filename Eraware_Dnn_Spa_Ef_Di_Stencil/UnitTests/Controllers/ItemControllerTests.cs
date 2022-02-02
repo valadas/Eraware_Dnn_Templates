@@ -6,6 +6,7 @@ using DotNetNuke.Entities.Users;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http.Results;
 using Xunit;
 
@@ -24,7 +25,7 @@ namespace UnitTests.Controllers
         }
 
         [Fact]
-        public void CreateItem_Creates()
+        public async Task CreateItem_Creates()
         {
             var name = "Name";
             var description = "Description";
@@ -34,10 +35,10 @@ namespace UnitTests.Controllers
                 Description = description,
             };
             var viewModel = new ItemViewModel() { Id = 1, Name = name, Description = description };
-            this.itemService.Setup(i => i.CreateItem(It.IsAny<CreateItemDTO>(), It.IsAny<int>()))
-                .Returns(new ItemViewModel() { Id = 1, Name = name, Description = description });
+            this.itemService.Setup(i => i.CreateItemAsync(It.IsAny<CreateItemDTO>(), It.IsAny<int>()))
+                .Returns(Task.FromResult(new ItemViewModel() { Id = 1, Name = name, Description = description }));
 
-            var result = this.itemController.CreateItem(dto);
+            var result = await this.itemController.CreateItem(dto);
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemViewModel>>(result);
             Assert.Equal(1, response.Content.Id);
@@ -46,7 +47,7 @@ namespace UnitTests.Controllers
         }
 
         [Fact]
-        public void GetItemsPage_GetsProperPages()
+        public async Task GetItemsPage_GetsProperPages()
         {
             var items = new List<ItemViewModel>();
             for (int i = 0; i < 100; i++)
@@ -55,8 +56,8 @@ namespace UnitTests.Controllers
                 items.Add(item);
             }
             var itemsPageViewModel = new ItemsPageViewModel() { Items = items, Page = 1, PageCount = 10, ResultCount = 100 };
-            this.itemService.Setup(i => i.GetItemsPage(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
-                .Returns(itemsPageViewModel);
+            this.itemService.Setup(i => i.GetItemsPageAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
+                .Returns(Task.FromResult(itemsPageViewModel));
             var dto = new GetItemsPageDTO
             {
                 Query = "Name",
@@ -65,7 +66,7 @@ namespace UnitTests.Controllers
                 Descending = true,
             };
 
-            var result = this.itemController.GetItemsPage(dto);
+            var result = await this.itemController.GetItemsPage(dto);
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
             Assert.Equal(100, response.Content.Items.Count);
@@ -77,12 +78,12 @@ namespace UnitTests.Controllers
         [Theory]
         [InlineData(1)]
         [InlineData(10)]
-        public void DeleteItem_Deletes(int itemId)
+        public async Task DeleteItem_Deletes(int itemId)
         {
-            var result = this.itemController.DeleteItem(itemId);
+            var result = await this.itemController.DeleteItem(itemId);
 
             Assert.IsType<OkResult>(result);
-            this.itemService.Verify(i => i.DeleteItem(itemId), Times.Once);
+            this.itemService.Verify(i => i.DeleteItemAsync(itemId), Times.Once);
         }
 
         [Theory]
@@ -99,7 +100,7 @@ namespace UnitTests.Controllers
         }
 
         [Fact]
-        public void UpdateItem_Updates()
+        public async Task UpdateItem_Updates()
         {
             var item = new UpdateItemDTO
             {
@@ -108,9 +109,9 @@ namespace UnitTests.Controllers
                 Description = "This item was edited",
             };
 
-            this.itemController.UpdateItem(item);
+            await this.itemController.UpdateItem(item);
 
-            this.itemService.Verify(s => s.UpdateItem(item, It.IsAny<int>()), Times.Once);
+            this.itemService.Verify(s => s.UpdateItemAsync(item, It.IsAny<int>()), Times.Once);
         }
 
         public class FakeItemController : ItemController

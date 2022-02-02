@@ -1,6 +1,7 @@
 ﻿// MIT License
 // Copyright $ext_companyname$
 
+using $ext_rootnamespace$.Data.Repositories;
 using $ext_rootnamespace$.Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -32,9 +33,9 @@ namespace $ext_rootnamespace$.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return this.entities.AsEnumerable();
+            return await this.entities.ToListAsync();
         }
 
         /// <inheritdoc/>
@@ -44,13 +45,57 @@ namespace $ext_rootnamespace$.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public T GetById(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
-            return this.entities.SingleOrDefault(e => e.Id == id);
+            return await this.entities.SingleOrDefaultAsync(e => e.Id == id);
         }
 
         /// <inheritdoc/>
-        public void Create(T entity, int userId = -1)
+        public async Task<PagedList<T>> GetPageAsync(
+            int page,
+            int pageSize,
+            Func<IQueryable<T>, IOrderedQueryable<T>> predicate,
+            params Expression<Func<T, object>>[] include)
+        {
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            if (pageSize < 1)
+            {
+                pageSize = 1;
+            }
+
+            var items = this.entities.AsQueryable();
+
+            if (include.Any())
+            {
+                items = include.Aggregate(items, (current, inc) => current.Include(inc));
+            }
+
+            items = items.OrderBy(i => i.Id);
+            items = predicate(items);
+
+            var resultCount = await items.CountAsync();
+            var pageCount = (resultCount + pageSize - 1) / pageSize;
+            int skip = pageSize * (page - 1);
+            var pageItems = await items
+                .Skip(skip)
+                .Take(pageSize)
+                .AsQueryable()
+                .ToListAsync();
+
+            return new PagedList<T>(
+                pageItems,
+                page,
+                pageSize,
+                resultCount,
+                pageCount);
+        }
+
+        /// <inheritdoc/>
+        public async Task<int> CreateAsync(T entity, int userId = -1)
         {
             if (entity == null)
             {
@@ -60,11 +105,12 @@ namespace $ext_rootnamespace$.Data.Repositories
             entity.CreatedByUserId = userId;
             entity.UpdatedByUserId = userId;
             this.entities.Add(entity);
-            this.context.SaveChanges();
+            await this.context.SaveChangesAsync();
+            return entity.Id;
         }
 
         /// <inheritdoc/>
-        public void Update(T entity, int userId = -1)
+        public async Task UpdateAsync(T entity, int userId = -1)
         {
             if (entity == null)
             {
@@ -73,11 +119,11 @@ namespace $ext_rootnamespace$.Data.Repositories
 
             entity.UpdatedAt = DateTime.UtcNow;
             entity.UpdatedByUserId = userId;
-            this.context.SaveChanges();
+            await this.context.SaveChangesAsync();
         }
 
         /// <inheritdoc/>
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             T entity = this.entities.SingleOrDefault(e => e.Id == id);
             if (entity is null)
@@ -86,7 +132,7 @@ namespace $ext_rootnamespace$.Data.Repositories
             }
 
             this.entities.Remove(entity);
-            this.context.SaveChanges();
+            await this.context.SaveChangesAsync();
         }
     }
 }
