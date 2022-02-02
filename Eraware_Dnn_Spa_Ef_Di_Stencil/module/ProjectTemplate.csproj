@@ -62,6 +62,7 @@
     <Compile Include="Data\Entities\Item.cs" />
     <Compile Include="Data\ModuleDbContext.cs" />
     <Compile Include="Data\Repositories\IRepository.cs" />
+	<Compile Include="Data\Repositories\PagedList{T}.cs" />
     <Compile Include="Data\Repositories\Repository.cs" />
     <Compile Include="DTO\CreateItemDTO.cs" />
     <Compile Include="DTO\UpdateItemDTO.cs" />

@@ -1,6 +1,7 @@
 ﻿// MIT License
 // Copyright $ext_companyname$
 
+using $ext_rootnamespace$.Data.Repositories;
 using $ext_rootnamespace$.Data.Entities;
 using System;
 using System.Collections.Generic;

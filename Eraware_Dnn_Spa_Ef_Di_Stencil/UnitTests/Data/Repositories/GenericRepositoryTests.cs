@@ -41,7 +41,7 @@ namespace UnitTests.Data.Repositories
 
             await repository.DeleteAsync(item.Id);
 
-            Assert.Empty(repository.GetAll());
+            Assert.Empty(await repository.GetAllAsync());
         }
 
         [Fact]
@@ -109,7 +109,7 @@ namespace UnitTests.Data.Repositories
 
             Task update() => repository.UpdateAsync(null);
 
-            var ex = Assert.Throws<ArgumentNullException>(update);
+            var ex = await Assert.ThrowsAsync<ArgumentNullException>(update);
             Assert.Equal("entity", ex.ParamName);
         }
 
@@ -182,7 +182,7 @@ namespace UnitTests.Data.Repositories
         {
             var repository = new Repository<Item>(this.dataContext);
 
-            await repository.Delete(1);
+            await repository.DeleteAsync(1);
         }
 
         [Theory]

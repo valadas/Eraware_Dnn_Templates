@@ -107,7 +107,7 @@ namespace $ext_rootnamespace$.Controllers
         [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
         public async Task<IHttpActionResult> UpdateItem(UpdateItemDTO item)
         {
-            await this.itemService.UpdateItem(item, this.UserInfo.UserID);
+            await this.itemService.UpdateItemAsync(item, this.UserInfo.UserID);
             return this.Ok();
         }
     }

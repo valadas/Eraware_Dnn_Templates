@@ -45,7 +45,7 @@
         </Folder>
         <Folder Name="Repositories" TargetFolderName="Repositories">
           <ProjectItem ReplaceParameters="true">IRepository.cs</ProjectItem>
-		  <ProjectItem ReplaceParameters="true">PagedList.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">PagedList{T}.cs</ProjectItem>
           <ProjectItem ReplaceParameters="true">Repository.cs</ProjectItem>
         </Folder>
         <ProjectItem ReplaceParameters="true">ModuleDbContext.cs</ProjectItem>

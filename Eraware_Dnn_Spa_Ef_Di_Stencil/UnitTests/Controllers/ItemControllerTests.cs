@@ -66,7 +66,7 @@ namespace UnitTests.Controllers
                 Descending = true,
             };
 
-            var result = wait this.itemController.GetItemsPage(dto);
+            var result = await this.itemController.GetItemsPage(dto);
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
             Assert.Equal(100, response.Content.Items.Count);

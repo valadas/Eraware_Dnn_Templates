@@ -72,10 +72,12 @@ namespace $ext_rootnamespace$.Services
             ResultCount = items.ResultCount,
             PageCount = items.PageCount,
         };
+
+        return itemsPageViewModel;
     }
 
         /// <inheritdoc/>
-        public async Task DeleteItem(int itemId)
+        public async Task DeleteItemAsync(int itemId)
         {
             await this.itemRepository.DeleteAsync(itemId);
         }
@@ -93,7 +95,7 @@ namespace $ext_rootnamespace$.Services
                 throw new ArgumentNullException(nameof(dto.Name));
             }
 
-            await var item = this.itemRepository.GetByIdAsync(dto.Id);
+            var item = await this.itemRepository.GetByIdAsync(dto.Id);
             item.Name = dto.Name;
             item.Description = dto.Description;
 

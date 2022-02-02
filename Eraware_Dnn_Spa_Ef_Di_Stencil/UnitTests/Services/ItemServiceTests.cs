@@ -44,7 +44,7 @@ namespace UnitTests.Services
         public async Task CreateItem_Creates()
         {
             var item = new CreateItemDTO() { Name = "Name", Description = "Description" };
-            itemRepository.Setup(r => r.Create(It.IsAny<Item>(), It.IsAny<int>()))
+            itemRepository.Setup(r => r.CreateAsync(It.IsAny<Item>(), It.IsAny<int>()))
                 .Callback<Item, int>((i, u) => {
                     i.Id = 1;
                     i.Name = item.Name;
@@ -64,7 +64,7 @@ namespace UnitTests.Services
 
         [Theory]
         [InlineData(false)]
-        public void GetItemsPage_GetsPages(bool descending)
+        public async Task GetItemsPage_GetsPages(bool descending)
         {
             var returnedItems = new List<Item>();
             for (int i = 0; i < 30; i++)
@@ -157,7 +157,7 @@ namespace UnitTests.Services
                 Description = null,
             };
 
-            Task noName() => this.itemService.UpdateItem(item, 2);
+            Task noName() => this.itemService.UpdateItemAsync(item, 2);
 
             var ex = await Assert.ThrowsAsync<ArgumentNullException>(noName);
             Assert.Equal("Name", ex.ParamName);

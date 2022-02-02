@@ -3,6 +3,7 @@
 
 namespace $ext_rootnamespace$.Data.Repositories
 {
+    using $ext_rootnamespace$.Data.Repositories;
     using System.Collections.Generic;
     using System;
     using System.Linq;
@@ -34,7 +35,7 @@ namespace $ext_rootnamespace$.Data.Repositories
         /// </summary>
         /// <param name="id">The id of the entity.</param>
         /// <returns>A single entity.</returns>
-        Task<T> GetById(int id);
+        Task<T> GetByIdAsync(int id);
 
         /// <summary>
         /// Gets a page of entities.
