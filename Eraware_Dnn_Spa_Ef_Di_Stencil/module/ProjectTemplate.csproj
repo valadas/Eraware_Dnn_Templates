@@ -53,6 +53,7 @@
 	</ItemGroup>
 	<ItemGroup>
     <Compile Include="Common\Globals.cs" />
+	<Compile Include="Common\Extensions\IQueryableExtensions.cs" />
     <Compile Include="Controllers\LocalizationController.cs" />
     <Compile Include="DTO\GetItemsPageDTO.cs" />
     <Compile Include="Controllers\ValidateModelAttribute.cs" />
@@ -79,7 +80,6 @@
     <Compile Include="ViewModels\ItemsPageViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="ViewModels\LocalizationViewModel.cs" />
-    <Compile Include="ExtensionMethods.cs" />
     <Resource Include=".gitignore" />
     <Resource Include="resources\images\module-icon.png" />
     <Resource Include="resources\views\view.html" />
