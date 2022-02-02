@@ -38,6 +38,9 @@
     <None Include="App.config" LinkBase="config" Condition="Exists('App.config')" />
     <None Include="..\.github\dependabot.yml" LinkBase="config" Condition="Exists('..\.github\dependabot.yml')" />
     <None Include="..\.github\mergeable.yml" LinkBase="config" Condition="Exists('..\.github\mergeable.yml')" />
+	<None Include="..\.github\workflows\Build.yml" LinkBase="config" Condition="Exists('..\.github\workflows\Build.yml')" />
+	<None Include="..\.github\workflows\PR_Validation.yml" LinkBase="config" Condition="Exists('..\.github\workflows\PR_Validation.yml')" />
+	<None Include="..\.github\workflows\Release.yml" LinkBase="config" Condition="Exists('..\.github\workflows\Release.yml')" />
     
     <None Include="Build.cs" />
     <None Include="Configuration.cs" />
