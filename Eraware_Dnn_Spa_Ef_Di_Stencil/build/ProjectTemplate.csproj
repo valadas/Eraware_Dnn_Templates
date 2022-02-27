@@ -16,7 +16,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Nuke.Common" Version="6.0.1" />
-    <PackageReference Include="ReportGenerator" Version="5.0.2" />
+    <PackageReference Include="ReportGenerator" Version="5.0.3" />
     <PackageReference Include="xunit.runner.console" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -38,6 +38,9 @@
     <None Include="App.config" LinkBase="config" Condition="Exists('App.config')" />
     <None Include="..\.github\dependabot.yml" LinkBase="config" Condition="Exists('..\.github\dependabot.yml')" />
     <None Include="..\.github\mergeable.yml" LinkBase="config" Condition="Exists('..\.github\mergeable.yml')" />
+	<None Include="..\.github\workflows\Build.yml" LinkBase="config" Condition="Exists('..\.github\workflows\Build.yml')" />
+	<None Include="..\.github\workflows\PR_Validation.yml" LinkBase="config" Condition="Exists('..\.github\workflows\PR_Validation.yml')" />
+	<None Include="..\.github\workflows\Release.yml" LinkBase="config" Condition="Exists('..\.github\workflows\Release.yml')" />
     
     <None Include="Build.cs" />
     <None Include="Configuration.cs" />

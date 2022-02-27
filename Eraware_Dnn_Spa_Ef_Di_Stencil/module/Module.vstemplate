@@ -23,9 +23,17 @@
       <Folder Name=".github" TargetFolderName=".github">
         <ProjectItem TargetFileName="dependabot.yml">dependabot.yml</ProjectItem>
         <ProjectItem TargetFileName="mergeable.yml">mergeable.yml</ProjectItem>
+		<Folder Name="workflows" TargetFolderName="workflows">
+		  <ProjectItem TargetFileName="Build.yml">Build.yml</ProjectItem>
+		  <ProjectItem TargetFileName="PR_Validation.yml">PR_Validation.yml</ProjectItem>
+		  <ProjectItem TargetFileName="Release.yml">Release.yml</ProjectItem>
+		</Folder>
       </Folder>
       <Folder Name="Common" TargetFolderName="Common">
         <ProjectItem ReplaceParameters="true">Globals.cs</ProjectItem>
+		  <Folder Name="Extensions" TargetFolderName="Extensions">
+			<ProjectItem ReplaceParameters="true">IQueryableExtensions.cs</ProjectItem>
+		  </Folder>
       </Folder>
       <Folder Name="Controllers">
         <ProjectItem ReplaceParameters="true">ItemController.cs</ProjectItem>
@@ -42,6 +50,7 @@
         </Folder>
         <Folder Name="Repositories" TargetFolderName="Repositories">
           <ProjectItem ReplaceParameters="true">IRepository.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">PagedList{T}.cs</ProjectItem>
           <ProjectItem ReplaceParameters="true">Repository.cs</ProjectItem>
         </Folder>
         <ProjectItem ReplaceParameters="true">ModuleDbContext.cs</ProjectItem>
@@ -144,7 +153,6 @@
       <ProjectItem ReplaceParameters="true">ReleaseNotes.html</ProjectItem>
       <ProjectItem ReplaceParameters="true">Startup.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true">stylecop.json</ProjectItem>
-      <ProjectItem ReplaceParameters="true">ExtensionMethods.cs</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>

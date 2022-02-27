@@ -12,6 +12,9 @@ Welcome to you new module template!
     create a Dnn extension package in the website under the `install\modules` folder.
 
     Don't worry about opening up that folder, see next step.
+    
+    > [!NOTE]
+    > If for some reason you do not see the `Package` target, go to the Solution Explorer and ensure that the build project is set as the startup project for the solution.
 
     > [!NOTE]
     > The build script is simply a console application in the <em>build</em> project, it uses <a href="https://nuke.build/" target="_blank">Nuke</a> to help with utilities.
@@ -30,4 +33,4 @@ Welcome to you new module template!
 
 Congratulations, you have a working module!
 
-Now let's make it a [git](./git.md) repository.
+Now let's make it a git repository. [Learn How](./git.md)

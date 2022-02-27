@@ -11,6 +11,7 @@ namespace $ext_rootnamespace$.Controllers
     using $ext_rootnamespace$.ViewModels;
     using System;
     using System.Net;
+    using System.Threading.Tasks;
     using System.Web.Http;
 
     /// <summary>
@@ -40,9 +41,9 @@ namespace $ext_rootnamespace$.Controllers
         [SwaggerResponse(HttpStatusCode.OK, typeof(ItemViewModel), Description = "OK")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(string), Description = "Bad Request")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
-        public IHttpActionResult CreateItem(CreateItemDTO item)
+        public async Task<IHttpActionResult> CreateItem(CreateItemDTO item)
         {
-            var result = this.itemService.CreateItem(item, this.UserInfo.UserID);
+            var result = await this.itemService.CreateItemAsync(item, this.UserInfo.UserID);
             return this.Ok(result);
         }
 
@@ -58,10 +59,11 @@ namespace $ext_rootnamespace$.Controllers
             typeof(ItemsPageViewModel),
             Description = "OK")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
-        public IHttpActionResult GetItemsPage([FromUri] GetItemsPageDTO dto)
+        public async Task<IHttpActionResult> GetItemsPage([FromUri] GetItemsPageDTO dto)
         {
-                return this.Ok(this.itemService.GetItemsPage(dto.Query, dto.Page, dto.PageSize, dto.Descending));
-            }
+            var page = await this.itemService.GetItemsPageAsync(dto.Query, dto.Page, dto.PageSize, dto.Descending);
+            return this.Ok(page);
+        }
 
         /// <summary>
         /// Deletes an existing item.
@@ -73,9 +75,9 @@ namespace $ext_rootnamespace$.Controllers
         [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
         [SwaggerResponse(HttpStatusCode.OK, typeof(void), Description = "OK")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
-        public IHttpActionResult DeleteItem(int itemId)
+        public async Task<IHttpActionResult> DeleteItem(int itemId)
         {
-            this.itemService.DeleteItem(itemId);
+            await this.itemService.DeleteItemAsync(itemId);
             return this.Ok();
         }
 
@@ -103,9 +105,9 @@ namespace $ext_rootnamespace$.Controllers
         [SwaggerResponse(HttpStatusCode.OK, null, Description = "OK")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(ArgumentException), Description = "Malformed request")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
-        public IHttpActionResult UpdateItem(UpdateItemDTO item)
+        public async Task<IHttpActionResult> UpdateItem(UpdateItemDTO item)
         {
-            this.itemService.UpdateItem(item, this.UserInfo.UserID);
+            await this.itemService.UpdateItemAsync(item, this.UserInfo.UserID);
             return this.Ok();
         }
     }

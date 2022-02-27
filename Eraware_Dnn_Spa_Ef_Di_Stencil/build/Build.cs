@@ -39,24 +39,29 @@ using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 using static Nuke.Common.Tools.Npm.NpmTasks;
 using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
 
+// Not using AutoGenerate here because of https://github.com/nuke-build/nuke/issues/857
+// Not using EnableGitHubContext here because of https://github.com/nuke-build/nuke/issues/858 and/or https://github.com/actions/runner/issues/1647
 [GitHubActions(
     "Release",
     GitHubActionsImage.WindowsLatest,
-    EnableGitHubContext = true,
+    AutoGenerate = false,
+    ImportSecrets = new [] { nameof(GitHubToken) }
     OnPushBranches = new[] { "master", "main", "release/*" },
     InvokedTargets = new[] { nameof(Release) }
 )]
 [GitHubActions(
     "PR_Validation",
     GitHubActionsImage.WindowsLatest,
-    EnableGitHubContext = true,
+    AutoGenerate = false,
+    ImportSecrets = new[] { nameof(GitHubToken) }
     OnPullRequestBranches = new[] { "master", "main", "develop", "development", "release/*" },
     InvokedTargets = new[] { nameof(Package) }
 )]
 [GitHubActions(
     "Build",
     GitHubActionsImage.WindowsLatest,
-    EnableGitHubContext = true,
+    AutoGenerate = false,
+    ImportSecrets = new[] { nameof(GitHubToken) }
     OnPushBranches = new[] { "master", "develop", "release/*" },
     InvokedTargets = new[] { nameof(DeployGeneratedFiles) }
     )]
@@ -73,6 +78,9 @@ class Build : NukeBuild
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+
+    [Parameter("Github token to authenticate in CI")]
+    readonly string GitHubToken;
 
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
@@ -93,7 +101,7 @@ class Build : NukeBuild
     AbsolutePath DocsDirectory => RootDirectory / "docs";
 
     private const string devViewsPath = "http://localhost:3333/build/";
-    private const string prodViewsPath = "/DesktopModules/$ext_modulename$/resources/scripts/$ext_scopeprefixkebab$/";
+    private const string prodViewsPath = "/DesktopModules/$ext_modulefoldername$/resources/scripts/$ext_scopeprefixkebab$/";
 
     string releaseNotes = "";
     GitHubClient gitHubClient;
@@ -409,7 +417,7 @@ class Build : NukeBuild
         });
 
     Target SetupGitHubClient => _ => _
-        .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GitHubActions.Instance.Token))
+        .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GitHubToken))
         .OnlyWhenDynamic(() => GitRepository != null)
         .DependsOn(UpdateTokens)
         .Executes(() =>
@@ -418,14 +426,14 @@ class Build : NukeBuild
             if (GitRepository.IsOnMainOrMasterBranch())
             {
                 gitHubClient = new GitHubClient(new ProductHeaderValue("Nuke"));
-                var tokenAuth = new Credentials(GitHubActions.Instance.Token);
+                var tokenAuth = new Credentials(GitHubToken);
                 gitHubClient.Credentials = tokenAuth;
             }
         });
 
     Target GenerateReleaseNotes => _ => _
         .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch())
-        .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GitHubActions.Instance.Token))
+        .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GitHubToken))
         .DependsOn(SetupGitHubClient)
         .DependsOn(UpdateTokens)
         .Executes(() =>
@@ -483,13 +491,13 @@ class Build : NukeBuild
 
     Target TagRelease => _ => _
         .OnlyWhenDynamic(() => GitRepository != null && (GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch()))
-        .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GitHubActions.Instance.Token))
+        .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GitHubToken))
         .DependsOn(SetupGitHubClient)
         .DependsOn(UpdateTokens)
         .Before(Compile)
         .Executes(() =>
         {
-            Git($"remote set-url origin https://{GitRepository.GetGitHubOwner()}:{GitHubActions.Instance.Token}@github.com/{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git");
+            Git($"remote set-url origin https://{GitRepository.GetGitHubOwner()}:{GitHubToken}@github.com/{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git");
             var version = GitRepository.IsOnMainOrMasterBranch() ? GitVersion.MajorMinorPatch : GitVersion.SemVer;
             GitLogger = (type, output) => Serilog.Log.Information(output);
             Git($"tag v{version}");
@@ -498,7 +506,7 @@ class Build : NukeBuild
 
     Target Release => _ => _
         .OnlyWhenDynamic(() => GitRepository != null && (GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch()))
-        .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GitHubActions.Instance.Token))
+        .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GitHubToken))
         .DependsOn(UpdateTokens)
         .DependsOn(SetupGitHubClient)
         .DependsOn(GenerateReleaseNotes)
@@ -761,7 +769,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             var gitHubClient = new GitHubClient(new ProductHeaderValue("Nuke"));
-            var authToken = new Credentials(GitHubActions.Instance.Token);
+            var authToken = new Credentials(GitHubToken);
             gitHubClient.Credentials = authToken;
 
             var repo = gitHubClient.Repository.Get(GitRepository.GetGitHubOwner(), GitRepository.GetGitHubName()).Result;
@@ -769,7 +777,7 @@ class Build : NukeBuild
             {
                 Git($"config --global user.name '{GitRepository.GetGitHubOwner()}'");
                 Git($"config --global user.email '{Helpers.GetManifestOwnerEmail(GlobFiles(RootDirectory / "*.dnn").FirstOrDefault())}'");
-                Git($"remote set-url origin https://{GitRepository.GetGitHubOwner()}:{GitHubActions.Instance.Token}@github.com/{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git");
+                Git($"remote set-url origin https://{GitRepository.GetGitHubOwner()}:{GitHubToken}@github.com/{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git");
                 Git("status");
                 Git("add docs -f");
                 Git("add IntegrationTests/history -f");

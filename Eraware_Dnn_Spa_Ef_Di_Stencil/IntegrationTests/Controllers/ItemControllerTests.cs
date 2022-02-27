@@ -7,6 +7,7 @@ using $ext_rootnamespace$.ViewModels;
 using DotNetNuke.Entities.Users;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http.Results;
 using Xunit;
 
@@ -29,7 +30,7 @@ namespace IntegrationTests.Controllers
         [Theory]
         [InlineData("name1", "description1")]
         [InlineData("name2", "description2")]
-        public void CreateItem_Creates(string name, string description)
+        public async Task CreateItem_Creates(string name, string description)
         {
             var dto = new CreateItemDTO()
             {
@@ -37,7 +38,7 @@ namespace IntegrationTests.Controllers
                 Description = description,
             };
 
-            var result = this.itemController.CreateItem(dto);
+            var result = await this.itemController.CreateItem(dto);
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemViewModel>>(result);
             Assert.Equal(name, response.Content.Name);
@@ -51,12 +52,12 @@ namespace IntegrationTests.Controllers
         [InlineData(10, 1)]
         [InlineData(99, 10)]
         [InlineData(101, 11)]
-        public void GetItemsPage_GetsProperPages(int amount, int expectedPages)
+        public async Task GetItemsPage_GetsProperPages(int amount, int expectedPages)
         {
             this.CreateItems(amount);
             var dto = new GetItemsPageDTO { Query = "", Page = 1, PageSize = 10, Descending = true };
 
-            var result = this.itemController.GetItemsPage(dto);
+            var result = await this.itemController.GetItemsPage(dto);
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
             Assert.True(response.Content.Items.Count() <= 10);
@@ -65,11 +66,11 @@ namespace IntegrationTests.Controllers
         }
 
         [Fact]
-        public void GetItemsPage_Page0_DefaultsToPage1()
+        public async Task GetItemsPage_Page0_DefaultsToPage1()
         {
             this.CreateItems(1);
 
-            var result = this.itemController.GetItemsPage(
+            var result = await this.itemController.GetItemsPage(
                 new GetItemsPageDTO { Query = "", Page = 0, PageSize = 10, Descending = true });
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
@@ -77,11 +78,11 @@ namespace IntegrationTests.Controllers
         }
 
         [Fact]
-        public void GetItemsPage_PageSize0_DefaultsTo1()
+        public async Task GetItemsPage_PageSize0_DefaultsTo1()
         {
             this.CreateItems(1);
 
-            var result = this.itemController.GetItemsPage(
+            var result = await this.itemController.GetItemsPage(
                 new GetItemsPageDTO { Query = "", Page = 1, PageSize = 0 });
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
@@ -89,11 +90,11 @@ namespace IntegrationTests.Controllers
         }
 
         [Fact]
-        public void GetItemsPage_50Items_GetsProperly()
+        public async Task GetItemsPage_50Items_GetsProperly()
         {
             this.CreateItems(101);
 
-            var results = this.itemController.GetItemsPage(
+            var results = await this.itemController.GetItemsPage(
                 new GetItemsPageDTO { Query = "", Page = 1, PageSize = 50 });
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(results);
@@ -104,11 +105,11 @@ namespace IntegrationTests.Controllers
         }
 
         [Fact]
-        public void GetItemsPage_SortsAscending()
+        public async Task GetItemsPage_SortsAscending()
         {
             this.CreateItems(3);
 
-            var result = this.itemController.GetItemsPage(
+            var result = await this.itemController.GetItemsPage(
                 new GetItemsPageDTO { Query = "", Page = 1, PageSize = 10 });
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
@@ -118,11 +119,11 @@ namespace IntegrationTests.Controllers
         }
 
         [Fact]
-        public void GetItemsPage_SortsDescending()
+        public async Task GetItemsPage_SortsDescending()
         {
             this.CreateItems(3);
 
-            var result = this.itemController.GetItemsPage(
+            var result = await this.itemController.GetItemsPage(
                 new GetItemsPageDTO { Query = "", Page = 1, PageSize = 10, Descending = true });
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
@@ -139,11 +140,11 @@ namespace IntegrationTests.Controllers
         [InlineData("Name 100", 1)]
         [InlineData("Missing", 0)]
         [InlineData("", 100)]
-        public void GetItemsPage_Query_Filters(string query, int expectedResults)
+        public async Task GetItemsPage_Query_Filters(string query, int expectedResults)
         {
             this.CreateItems(100);
 
-            var result = this.itemController.GetItemsPage(
+            var result = await this.itemController.GetItemsPage(
                 new GetItemsPageDTO { Query = query, Page = 1, PageSize = 10 });
 
             var response = Assert.IsType<OkNegotiatedContentResult<ItemsPageViewModel>>(result);
@@ -152,21 +153,21 @@ namespace IntegrationTests.Controllers
         }
 
         [Fact]
-        public void DeleteItem_DeletesMissingItem()
+        public async Task DeleteItem_DeletesMissingItem()
         {
             this.CreateItems(10);
 
-            var result = this.itemController.DeleteItem(100);
+            var result = await this.itemController.DeleteItem(100);
 
             Assert.IsType<OkResult>(result);
         }
 
         [Fact]
-        public void DeleteItem_Deletes()
+        public async Task DeleteItem_Deletes()
         {
             this.CreateItems(10);
 
-            var result = this.itemController.DeleteItem(1);
+            var result = await this.itemController.DeleteItem(1);
             var count = this.dataContext.Items.Count();
             var deletedItem = this.dataContext.Items.Find(1);
 
@@ -204,7 +205,7 @@ namespace IntegrationTests.Controllers
         }
 
         [Fact]
-        public void EditItem_Saves()
+        public async Task EditItem_Saves()
         {
             this.CreateItems(1);
             var name = "New Name";
@@ -216,7 +217,7 @@ namespace IntegrationTests.Controllers
                 Description = "New Description",
             };
 
-            var result = this.itemController.UpdateItem(dto);
+            var result = await this.itemController.UpdateItem(dto);
 
             Assert.IsType<OkResult>(result);
             var newItem = this.dataContext.Items.FirstOrDefault();
