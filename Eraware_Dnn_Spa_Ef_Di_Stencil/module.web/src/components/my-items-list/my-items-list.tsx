@@ -1,4 +1,4 @@
-import { Debounce } from '@eraware/dnn-elements';
+import { Debounce } from '@dnncommunity/dnn-elements';
 import { Component, Host, h, State, Prop, Element } from '@stencil/core';
 import { ItemClient, UIInfo } from '../../services/services';
 import state, { localizationState } from '../../store/state';
