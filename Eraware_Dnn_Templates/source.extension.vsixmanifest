@@ -31,7 +31,6 @@
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" d:InstallSource="Download" Location="https://dotnet.microsoft.com/en-us/download/visual-studio-sdks" />
-        <Dependency d:Source="Installed" Id="Microsoft.VisualStudio.JavaScript.ProjectSystem" DisplayName="JavaScript project system" Version="[1.9,2.0)" d:InstallSource="Download" Location="https://visualstudio.microsoft.com/vs/features/javascript/" />
     </Dependencies>
     <Assets>
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" AssemblyName="|%CurrentProject%;AssemblyName|" />
