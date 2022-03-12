@@ -45,10 +45,10 @@ else
             unset DOTNET_VERSION
         fi
     fi
-    
+
     # Install by channel or version
     DOTNET_DIRECTORY="$TEMP_DIRECTORY/dotnet-unix"
-    if [ -z ${DOTNET_VERSION+x} ]; then
+    if [[ -z ${DOTNET_VERSION+x} ]]; then
         "$DOTNET_INSTALL_FILE" --install-dir "$DOTNET_DIRECTORY" --channel "$DOTNET_CHANNEL" --no-path
     else
         "$DOTNET_INSTALL_FILE" --install-dir "$DOTNET_DIRECTORY" --version "$DOTNET_VERSION" --no-path
