@@ -451,46 +451,57 @@ class Build : NukeBuild
                 return;
             }
 
-            // Get the PRs
-            var prRequest = new PullRequestRequest()
+            try
             {
-                State = ItemStateFilter.All
-            };
-            var pullRequests = gitHubClient.Repository.PullRequest.GetAllForRepository(
-                GitRepository.GetGitHubOwner(),
-                GitRepository.GetGitHubName(), prRequest).Result
-                .Where(p =>
+                // Get the PRs
+                var prRequest = new PullRequestRequest()
+                {
+                    State = ItemStateFilter.All
+                };
+                var allPrs = Task.Run(() =>
+                    gitHubClient.Repository.PullRequest.GetAllForRepository(
+                            GitRepository.GetGitHubOwner(),
+                        GitRepository.GetGitHubName(), prRequest)
+                ).Result;
+
+                var pullRequests = allPrs.Where(p =>
                     p.Milestone?.Title == milestone.Title &&
                     p.Merged == true &&
                     p.Milestone?.Title == GitVersion.MajorMinorPatch);
-            Serilog.Log.Information(SerializationTasks.JsonSerialize(pullRequests));
+                Serilog.Log.Information(SerializationTasks.JsonSerialize(pullRequests));
 
-            // Build release notes
-            var releaseNotesBuilder = new StringBuilder();
-            releaseNotesBuilder
-                .AppendLine($"# {GitRepository.GetGitHubName()} {milestone.Title}")
-                .AppendLine()
-                .AppendLine($"A total of {pullRequests.Count()} pull requests where merged in this release.")
-                .AppendLine();
+                // Build release notes
+                var releaseNotesBuilder = new StringBuilder();
+                releaseNotesBuilder
+                    .AppendLine($"# {GitRepository.GetGitHubName()} {milestone.Title}")
+                    .AppendLine()
+                    .AppendLine($"A total of {pullRequests.Count()} pull requests where merged in this release.")
+                    .AppendLine();
 
-            foreach (var group in pullRequests.GroupBy(p => p.Labels[0]?.Name, (label, prs) => new { label, prs }))
-            {
-                Serilog.Log.Information(SerializationTasks.JsonSerialize(group));
-                releaseNotesBuilder.AppendLine($"## {group.label}");
-                foreach (var pr in group.prs)
+                foreach (var group in pullRequests.GroupBy(p => p.Labels[0]?.Name, (label, prs) => new { label, prs }))
                 {
-                    Serilog.Log.Information(SerializationTasks.JsonSerialize(pr));
-                    releaseNotesBuilder.AppendLine($"- #{pr.Number} {pr.Title}. Thanks @{pr.User.Login}");
+                    Serilog.Log.Information(SerializationTasks.JsonSerialize(group));
+                    releaseNotesBuilder.AppendLine($"## {group.label}");
+                    foreach (var pr in group.prs)
+                    {
+                        Serilog.Log.Information(SerializationTasks.JsonSerialize(pr));
+                        releaseNotesBuilder.AppendLine($"- #{pr.Number} {pr.Title}. Thanks @{pr.User.Login}");
+                    }
                 }
+
+                // Checksums
+                releaseNotesBuilder
+                    .AppendLine()
+                    .Append(File.ReadAllText(ArtifactsDirectory / "checksums.md"));
+
+                releaseNotes = releaseNotesBuilder.ToString();
+                Serilog.Log.Information(releaseNotes);
             }
-
-            // Checksums
-            releaseNotesBuilder
-                .AppendLine()
-                .Append(File.ReadAllText(ArtifactsDirectory / "checksums.md"));
-
-            releaseNotes = releaseNotesBuilder.ToString();
-            Serilog.Log.Information(releaseNotes);
+            catch (Exception ex)
+            {
+                Serilog.Log.Error(ex, "Something went wrong with the github api call.");
+                throw;
+            }
         });
 
     Target TagRelease => _ => _
