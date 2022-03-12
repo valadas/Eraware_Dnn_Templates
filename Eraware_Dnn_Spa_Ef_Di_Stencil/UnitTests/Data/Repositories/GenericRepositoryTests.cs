@@ -147,15 +147,17 @@ namespace UnitTests.Data.Repositories
         {
             var repository = new Repository<Item>(dataContext);
             var item = new Item() { Name = "Name", Description = "Description" };
-            await repository.CreateAsync(item);
-            item.Name = "New Name";
-            item.Description = "New Description";
+            var id = await repository.CreateAsync(item);
+            await Task.Delay(100);
+            var itemToUpdate = await repository.GetByIdAsync(id);
+            itemToUpdate.Name = "New Name";
+            itemToUpdate.Description = "New Description";
 
-            await repository.UpdateAsync(item);
+            await repository.UpdateAsync(itemToUpdate);
 
-            Assert.True(item.CreatedAt < item.UpdatedAt);
-            Assert.Equal(-1, item.CreatedByUserId);
-            Assert.Equal(-1, item.UpdatedByUserId);
+            Assert.True(itemToUpdate.CreatedAt < itemToUpdate.UpdatedAt);
+            Assert.Equal(-1, itemToUpdate.CreatedByUserId);
+            Assert.Equal(-1, itemToUpdate.UpdatedByUserId);
         }
 
         [Fact]
