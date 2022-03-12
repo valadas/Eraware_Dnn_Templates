@@ -443,6 +443,7 @@ class Build : NukeBuild
                 GitRepository.GetGitHubOwner(),
                 GitRepository.GetGitHubName()).Result
                 .Where(m => m.Title == GitVersion.MajorMinorPatch).FirstOrDefault();
+            Serilog.Log.Information(SerializationTasks.JsonSerialize(milestone));
             if (milestone == null)
             {
                 Serilog.Log.Warning("Milestone not found for this version");
@@ -462,6 +463,7 @@ class Build : NukeBuild
                     p.Milestone?.Title == milestone.Title &&
                     p.Merged == true &&
                     p.Milestone?.Title == GitVersion.MajorMinorPatch);
+            Serilog.Log.Information(SerializationTasks.JsonSerialize(pullRequests));
 
             // Build release notes
             var releaseNotesBuilder = new StringBuilder();
@@ -473,9 +475,11 @@ class Build : NukeBuild
 
             foreach (var group in pullRequests.GroupBy(p => p.Labels[0]?.Name, (label, prs) => new { label, prs }))
             {
+                Serilog.Log.Information(SerializationTasks.JsonSerialize(group));
                 releaseNotesBuilder.AppendLine($"## {group.label}");
                 foreach (var pr in group.prs)
                 {
+                    Serilog.Log.Information(SerializationTasks.JsonSerialize(pr));
                     releaseNotesBuilder.AppendLine($"- #{pr.Number} {pr.Title}. Thanks @{pr.User.Login}");
                 }
             }
