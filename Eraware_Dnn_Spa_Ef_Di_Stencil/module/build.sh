@@ -45,10 +45,10 @@ else
             unset DOTNET_VERSION
         fi
     fi
-    
+
     # Install by channel or version
     DOTNET_DIRECTORY="$TEMP_DIRECTORY/dotnet-unix"
-    if [ -z ${DOTNET_VERSION+x} ]; then
+    if [[ -z ${DOTNET_VERSION+x} ]]; then
         "$DOTNET_INSTALL_FILE" --install-dir "$DOTNET_DIRECTORY" --channel "$DOTNET_CHANNEL" --no-path
     else
         "$DOTNET_INSTALL_FILE" --install-dir "$DOTNET_DIRECTORY" --version "$DOTNET_VERSION" --no-path
@@ -56,7 +56,7 @@ else
     export DOTNET_EXE="$DOTNET_DIRECTORY/dotnet"
 fi
 
-echo "Microsoft (R) .NET Core SDK version $("$DOTNET_EXE" --version)"
+echo "Microsoft (R) .NET SDK version $("$DOTNET_EXE" --version)"
 
 "$DOTNET_EXE" build "$BUILD_PROJECT_FILE" /nodeReuse:false /p:UseSharedCompilation=false -nologo -clp:NoSummary --verbosity quiet
 "$DOTNET_EXE" run --project "$BUILD_PROJECT_FILE" --no-build -- "$@"

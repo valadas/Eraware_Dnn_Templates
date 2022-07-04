@@ -72,19 +72,19 @@
         <p>In a few minutes if you navigate to your repository on Github, you will notice there is a draft release for v0.1.0. It has no release notes yet but it does have the fully packaged module ready for production install.</p>
         <div class="TIP">
             <h5>Tip</h5>
-            <p>This is a draft an the public won't see it as an available release yet. Since this is probably not ready for production, you can delete the release and the tag if you don't want to keep it (and reserve the v0.1.0 version from future use). If you do want to keep it, you can edit it and publish it. Each push to the <code>master</code> branch will trigger a draf release that is non-beta, this is how we will do releases in the future.</p>
+            <p>This is a draft and the public won't see it as an available release yet. Since this is probably not ready for production, you can delete the release and the tag if you don't want to keep it (and reserve the v0.1.0 version from future use). If you do want to keep it, you can edit it and publish it. Each push to the <code>main</code> (or legacy <code>master</code>) branch will trigger a draf release that is non-beta, this is how we will do releases in the future.</p>
         </div>
         <h2 id="automatic-versioning">Automatic Versioning</h2>
         <p>The template uses <a href="https://github.com/GitTools/GitVersion">GitVersion</a> and the <a href="https://gitversion.net/docs/git-branching-strategies/gitflow">GitFlow</a> branching strategy in order to manage versions and releases.</p>
         <p>This means:</p>
         <ul>
-            <li>The <strong>master</strong> branch contains the code from the latest published production release. Only merge commits comming from a <code>release</code> or <code>hotfix</code> branch should be merged to it. Each push to this branch will produce a draft release.</li>
+            <li>The <strong>main</strong> (or legacy <strong>master</strong>) branch contains the code from the latest published production release. Only merge commits comming from a <code>release</code> or <code>hotfix</code> branch should be merged to it. Each push to this branch will produce a draft release.</li>
             <li>The <strong>develop</strong> branch contains the latest development code (alpha). Merging or pushing to this branch does not produce any release but you can get the (alpha) build from the branch build status badge. Also any pull request to it builds the project and you also have the PR build artifact available in the action status.</li>
-            <li><strong>release</strong> branches are used to prepare the next release, when a <code>release/1.0.0</code> branch is created, a few minutes after, you will have an unpublished release called <code>v1.0.0-beta-1</code>. For each further merge or push to the <code>release/1.0.0</code> branch, you will get the same version but a new beta sequential member like <code>v1.0.0-beta-2</code>. When the release is ready for production, you can merge the <code>release/1.0.0</code> into the <code>master</code> branch (usually through a pull request) and it will produce a draft release called v1.0.0 (no longer beta).</li>
+            <li><strong>release</strong> branches are used to prepare the next release, when a <code>release/1.0.0</code> branch is created, a few minutes after, you will have an unpublished release called <code>v1.0.0-beta-1</code>. For each further merge or push to the <code>release/1.0.0</code> branch, you will get the same version but a new beta sequential member like <code>v1.0.0-beta-2</code>. When the release is ready for production, you can merge the <code>release/1.0.0</code> into the <code>main</code> (or legacy <code>master</code>) branch (usually through a pull request) and it will produce a draft release called v1.0.0 (no longer beta).</li>
         </ul>
         <div class="TIP">
             <h5>Tip</h5>
-            <p>By default when you initially pushed the first commit to github earlier, it created only the <code>master</code> branch. You should on github create a <code>develop</code> branch from it and then pull that branch before any further development.</p>
+            <p>By default when you initially pushed the first commit to github earlier, it created only the <code>main</code> (or legacy <code>master</code>) branch. You should on github create a <code>develop</code> branch from it and then pull that branch before any further development.</p>
         </div>
         <h2 id="automatic-release-notes">Automatic Release Notes</h2>
         <p>Release notes for each of those versions are automatically generated from Pull Request (PR) titles for which the milestone matches the released version. The notes are also grouped by label.</p>
@@ -111,7 +111,7 @@
                 <img src="../images/create-beta-release.gif" alt="Create a beta RC">
             </li>
             <li>
-                Now let's assume this beta got properly tested and we want to produce the final the final 1.0.0 release, we simply need to merge the <code>release/1.0.0</code> branch into our <code>master</code> branch, we will do so using a pull request and we'll do a <code>merge commit</code>.
+                Now let's assume this beta got properly tested and we want to produce the final the final 1.0.0 release, we simply need to merge the <code>release/1.0.0</code> branch into our <code>main</code> (or legacy <code>master</code>) branch, we will do so using a pull request and we'll do a <code>merge commit</code>.
                 <img src="../images/create-release.gif" alt="Create Release">
             </li>
         </ol>
@@ -121,7 +121,7 @@
         <p>We simply have to return to github repository settings and set the source for that site. The code can be a folder on any branch or a special branch. Here we will select the docs folder on the branch of our choice.</p>
         <div class="TIP">
             <h5>Tip</h5>
-            <p>Selecting the <code>master</code> branch will mean that your published documentation will always be in sync with the latest published official release (non-beta). If you want your documentation to be in sync with the latest changes, you can select the <code>develop</code> branch or if you have long standing betas and you want the documentation to reflect it, you can select a <code>release/x.x.x</code> branch.</p>
+            <p>Selecting the <code>main</code> (or legacy <code>master</code>) branch will mean that your published documentation will always be in sync with the latest published official release (non-beta). If you want your documentation to be in sync with the latest changes, you can select the <code>develop</code> branch or if you have long standing betas and you want the documentation to reflect it, you can select a <code>release/x.x.x</code> branch.</p>
         </div>
         <div class="WARNING">
             <h5>Warning</h5>

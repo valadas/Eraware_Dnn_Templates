@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="Eraware_Dnn_Templates.e12cae32-028f-413c-85f0-b294a18224bf" Version="1.3.0" Language="en-US" Publisher="Daniel Valadas" />
+        <Identity Id="Eraware_Dnn_Templates.e12cae32-028f-413c-85f0-b294a18224bf" Version="1.3.1" Language="en-US" Publisher="Daniel Valadas" />
         <DisplayName>Eraware_Dnn_Templates</DisplayName>
         <Description xml:space="preserve">A WebAPI/WebComponents module template for DNN extensions.</Description>
         <License>LICENSE</License>
@@ -38,6 +38,5 @@
     </Assets>
     <Prerequisites>
         <Prerequisite Id="Microsoft.Net.ComponentGroup.DevelopmentPrerequisites" Version="[17.0.31804.368,18.0)" DisplayName=".NET Framework 4.7.2 development tools" />
-        <Prerequisite Id="Microsoft.NetCore.Component.Runtime.6.0" Version="[17.0.31902.203,18.0)" DisplayName=".NET 6.0 Runtime" />
     </Prerequisites>
 </PackageManifest>

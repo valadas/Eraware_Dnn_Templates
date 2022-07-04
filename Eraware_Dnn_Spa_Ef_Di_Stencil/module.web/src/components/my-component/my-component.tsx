@@ -1,5 +1,4 @@
 import { Component, h, Prop, Host, Element, Listen } from "@stencil/core";
-import "@eraware/dnn-elements";
 import { ItemClient, LocalizationClient, LocalizationViewModel } from "../../services/services";
 import state, { localizationState } from "../../store/state";
 import alertError from "../../services/alert-error";

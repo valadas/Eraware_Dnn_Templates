@@ -95,6 +95,9 @@
     <Resource Include="global.json" />
     <Resource Include=".github\dependabot.yml" />
     <Resource Include=".github\mergeable.yml" />
+	<Resource Include=".github\workflows\Build.yml" />
+	<Resource Include=".github\workflows\PR_Validation.yml" />
+	<Resource Include=".github\workflows\Release.yml" />
 	</ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
@@ -145,7 +148,7 @@
       <Version>10.0.3</Version>
     </PackageReference>
     <PackageReference Include="NSwag.Annotations">
-      <Version>13.15.5</Version>
+      <Version>13.16.1</Version>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
       <Version>1.1.118</Version>

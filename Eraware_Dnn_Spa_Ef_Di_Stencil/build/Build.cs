@@ -27,6 +27,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.CompressionTasks;
@@ -45,7 +46,7 @@ using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
     "Release",
     GitHubActionsImage.WindowsLatest,
     AutoGenerate = false,
-    ImportSecrets = new [] { nameof(GitHubToken) }
+    ImportSecrets = new [] { nameof(GitHubToken) },
     OnPushBranches = new[] { "master", "main", "release/*" },
     InvokedTargets = new[] { nameof(Release) }
 )]
@@ -53,7 +54,7 @@ using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
     "PR_Validation",
     GitHubActionsImage.WindowsLatest,
     AutoGenerate = false,
-    ImportSecrets = new[] { nameof(GitHubToken) }
+    ImportSecrets = new[] { nameof(GitHubToken) },
     OnPullRequestBranches = new[] { "master", "main", "develop", "development", "release/*" },
     InvokedTargets = new[] { nameof(Package) }
 )]
@@ -61,7 +62,7 @@ using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
     "Build",
     GitHubActionsImage.WindowsLatest,
     AutoGenerate = false,
-    ImportSecrets = new[] { nameof(GitHubToken) }
+    ImportSecrets = new[] { nameof(GitHubToken) },
     OnPushBranches = new[] { "master", "develop", "release/*" },
     InvokedTargets = new[] { nameof(DeployGeneratedFiles) }
     )]
@@ -276,7 +277,7 @@ class Build : NukeBuild
     Target SetManifestVersions => _ => _
         .Executes(() =>
         {
-            var manifests = GlobFiles(RootDirectory, "**/*.dnn");
+            var manifests = GlobFiles(RootDirectory, "*.dnn");
             foreach (var manifest in manifests)
             {
                 var doc = new XmlDocument();
@@ -423,7 +424,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             Serilog.Log.Information($"We are on branch {GitRepository.Branch}");
-            if (GitRepository.IsOnMainOrMasterBranch())
+            if (GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch())
             {
                 gitHubClient = new GitHubClient(new ProductHeaderValue("Nuke"));
                 var tokenAuth = new Credentials(GitHubToken);
@@ -443,6 +444,7 @@ class Build : NukeBuild
                 GitRepository.GetGitHubOwner(),
                 GitRepository.GetGitHubName()).Result
                 .Where(m => m.Title == GitVersion.MajorMinorPatch).FirstOrDefault();
+            Serilog.Log.Information(SerializationTasks.JsonSerialize(milestone));
             if (milestone == null)
             {
                 Serilog.Log.Warning("Milestone not found for this version");
@@ -450,43 +452,57 @@ class Build : NukeBuild
                 return;
             }
 
-            // Get the PRs
-            var prRequest = new PullRequestRequest()
+            try
             {
-                State = ItemStateFilter.All
-            };
-            var pullRequests = gitHubClient.Repository.PullRequest.GetAllForRepository(
-                GitRepository.GetGitHubOwner(),
-                GitRepository.GetGitHubName(), prRequest).Result
-                .Where(p =>
+                // Get the PRs
+                var prRequest = new PullRequestRequest()
+                {
+                    State = ItemStateFilter.All
+                };
+                var allPrs = Task.Run(() =>
+                    gitHubClient.Repository.PullRequest.GetAllForRepository(
+                            GitRepository.GetGitHubOwner(),
+                        GitRepository.GetGitHubName(), prRequest)
+                ).Result;
+
+                var pullRequests = allPrs.Where(p =>
                     p.Milestone?.Title == milestone.Title &&
                     p.Merged == true &&
                     p.Milestone?.Title == GitVersion.MajorMinorPatch);
+                Serilog.Log.Information(SerializationTasks.JsonSerialize(pullRequests));
 
-            // Build release notes
-            var releaseNotesBuilder = new StringBuilder();
-            releaseNotesBuilder
-                .AppendLine($"# {GitRepository.GetGitHubName()} {milestone.Title}")
-                .AppendLine()
-                .AppendLine($"A total of {pullRequests.Count()} pull requests where merged in this release.")
-                .AppendLine();
+                // Build release notes
+                var releaseNotesBuilder = new StringBuilder();
+                releaseNotesBuilder
+                    .AppendLine($"# {GitRepository.GetGitHubName()} {milestone.Title}")
+                    .AppendLine()
+                    .AppendLine($"A total of {pullRequests.Count()} pull requests where merged in this release.")
+                    .AppendLine();
 
-            foreach (var group in pullRequests.GroupBy(p => p.Labels[0]?.Name, (label, prs) => new { label, prs }))
-            {
-                releaseNotesBuilder.AppendLine($"## {group.label}");
-                foreach (var pr in group.prs)
+                foreach (var group in pullRequests.GroupBy(p => p.Labels[0]?.Name, (label, prs) => new { label, prs }))
                 {
-                    releaseNotesBuilder.AppendLine($"- #{pr.Number} {pr.Title}. Thanks @{pr.User.Login}");
+                    Serilog.Log.Information(SerializationTasks.JsonSerialize(group));
+                    releaseNotesBuilder.AppendLine($"## {group.label}");
+                    foreach (var pr in group.prs)
+                    {
+                        Serilog.Log.Information(SerializationTasks.JsonSerialize(pr));
+                        releaseNotesBuilder.AppendLine($"- #{pr.Number} {pr.Title}. Thanks @{pr.User.Login}");
+                    }
                 }
+
+                // Checksums
+                releaseNotesBuilder
+                    .AppendLine()
+                    .Append(File.ReadAllText(ArtifactsDirectory / "checksums.md"));
+
+                releaseNotes = releaseNotesBuilder.ToString();
+                Serilog.Log.Information(releaseNotes);
             }
-
-            // Checksums
-            releaseNotesBuilder
-                .AppendLine()
-                .Append(File.ReadAllText(ArtifactsDirectory / "checksums.md"));
-
-            releaseNotes = releaseNotesBuilder.ToString();
-            Serilog.Log.Information(releaseNotes);
+            catch (Exception ex)
+            {
+                Serilog.Log.Error(ex, "Something went wrong with the github api call.");
+                throw;
+            }
         });
 
     Target TagRelease => _ => _
@@ -786,6 +802,8 @@ class Build : NukeBuild
                 Git("status");
                 Git("commit --allow-empty -m \"Commit latest generated files\""); // We allow an empty commit in case the last change did not affect the site.
                 Git("status");
+                Git("fetch origin");
+                Git($"pull origin {GitRepository.Branch}");
                 Git($"push --set-upstream origin {GitRepository.Branch}");
             }
         });

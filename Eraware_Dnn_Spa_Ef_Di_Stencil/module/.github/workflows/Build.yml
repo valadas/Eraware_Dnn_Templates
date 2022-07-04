@@ -20,6 +20,8 @@ on:
   push:
     branches:
       - master
+      - main
+      - development
       - develop
       - 'release/*'
 

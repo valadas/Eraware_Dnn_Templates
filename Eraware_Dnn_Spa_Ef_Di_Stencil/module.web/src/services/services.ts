@@ -7,7 +7,7 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
-import { DnnServicesFramework } from '@eraware/dnn-elements';
+import { DnnServicesFramework } from '@dnncommunity/dnn-elements';
 export class ClientBase {
 
   private sf: DnnServicesFramework;

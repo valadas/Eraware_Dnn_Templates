@@ -33,12 +33,12 @@ function ExecSafe([scriptblock] $cmd) {
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
 }
 
-# If dotnet is installed locally, and expected version is not set or installation matches the expected version
+# If dotnet CLI is installed globally and it matches requested version, use for execution
 if ($null -ne (Get-Command "dotnet" -ErrorAction SilentlyContinue) -and `
      $(dotnet --version) -and $LASTEXITCODE -eq 0) {
     $env:DOTNET_EXE = (Get-Command "dotnet").Path
 }
-else {   
+else {
     # Download install script
     $DotNetInstallFile = "$TempDirectory\dotnet-install.ps1"
     New-Item -ItemType Directory -Path $TempDirectory -Force | Out-Null
@@ -63,7 +63,7 @@ else {
     $env:DOTNET_EXE = "$DotNetDirectory\dotnet.exe"
 }
 
-Write-Output "Microsoft (R) .NET Core SDK version $(& $env:DOTNET_EXE --version)"
+Write-Output "Microsoft (R) .NET SDK version $(& $env:DOTNET_EXE --version)"
 
 ExecSafe { & $env:DOTNET_EXE build $BuildProjectFile /nodeReuse:false /p:UseSharedCompilation=false -nologo -clp:NoSummary --verbosity quiet }
 ExecSafe { & $env:DOTNET_EXE run --project $BuildProjectFile --no-build -- $BuildArguments }
