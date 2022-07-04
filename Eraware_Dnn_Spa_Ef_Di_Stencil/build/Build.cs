@@ -277,7 +277,7 @@ class Build : NukeBuild
     Target SetManifestVersions => _ => _
         .Executes(() =>
         {
-            var manifests = GlobFiles(RootDirectory, "**/*.dnn");
+            var manifests = GlobFiles(RootDirectory, "*.dnn");
             foreach (var manifest in manifests)
             {
                 var doc = new XmlDocument();
