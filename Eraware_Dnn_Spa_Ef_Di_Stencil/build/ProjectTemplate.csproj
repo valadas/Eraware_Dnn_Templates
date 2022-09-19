@@ -21,7 +21,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NSwag.MSBuild" Version="13.16.1" />
+    <PackageReference Include="NSwag.MSBuild" Version="13.17.0" />
     <PackageDownload Include="docfx.console" Version="[2.56.6]" />
     <PackageDownload Include="GitVersion.Tool" Version="[5.8.1]" />
     <PackageDownload Include="coverlet.console" Version="[1.7.2]" />
