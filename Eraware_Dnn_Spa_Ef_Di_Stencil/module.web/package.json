@@ -29,7 +29,7 @@
     "@microsoft/api-extractor": "^7.18.9",
     "@stencil/core": "^2.3.0",
     "@stencil/eslint-plugin": "^0.4.0",
-    "@stencil/sass": "^1.1.1",
+    "@stencil/sass": "^2.0.3",
     "@stencil/store": "^2.0.0",
     "eslint-plugin-tsdoc": "^0.2.11"
   },
