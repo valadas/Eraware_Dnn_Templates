@@ -21,7 +21,7 @@
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate",
-    "tsdoc": "tsc -d --emitDeclarationOnly ./src/services/services.ts && api-extractor run --local && api-documenter markdown -i temp -o tempmd"
+    "tsdoc": "tsc ./src/services/services.ts --declaration --emitDeclarationOnly --target es2017 --moduleResolution nodenext && api-extractor run --local && api-documenter markdown -i temp -o tempmd"
   },
   "devDependencies": {
     "@dnncommunity/dnn-elements": "^0.15.0",
