@@ -122,7 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DotNetNuke.Core">
-      <Version>9.10.2</Version>
+      <Version>9.11.2</Version>
     </PackageReference>
     <PackageReference Include="DotNetNuke.Instrumentation">
       <Version>9.10.2</Version>
