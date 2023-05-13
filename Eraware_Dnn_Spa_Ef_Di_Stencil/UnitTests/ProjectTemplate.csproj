@@ -93,7 +93,7 @@
       <Version>9.10.2</Version>
     </PackageReference>
     <PackageReference Include="DotNetNuke.Web">
-      <Version>9.10.2</Version>
+      <Version>9.11.2</Version>
     </PackageReference>
     <PackageReference Include="DotNetNuke.WebApi">
       <Version>9.10.2</Version>
