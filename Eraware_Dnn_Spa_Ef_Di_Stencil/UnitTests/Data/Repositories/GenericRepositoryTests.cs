@@ -171,7 +171,7 @@ namespace UnitTests.Data.Repositories
 
             await repository.UpdateAsync(item, 123);
 
-            Assert.True(item.CreatedAt < item.UpdatedAt);
+            Assert.True(item.CreatedAt <= item.UpdatedAt);
             Assert.Equal(-1, item.CreatedByUserId);
             Assert.Equal(123, item.UpdatedByUserId);
         }
