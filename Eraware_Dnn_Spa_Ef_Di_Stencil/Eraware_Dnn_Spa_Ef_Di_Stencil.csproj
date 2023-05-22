@@ -91,9 +91,6 @@
     <None Include="module.web\src\components\my-edit\my-edit.scss" />
     <None Include="module.web\src\components\my-item-details\my-item-details.scss" />
     <None Include="module.web\src\components\my-items-list\my-items-list.scss" />
-    <None Include="module\.github\workflows\Build.yml" />
-    <None Include="module\.github\workflows\PR_Validation.yml" />
-    <None Include="module\.github\workflows\Release.yml" />
     <None Include="module\.nuke\build.schema.json" />
     <None Include="module\.nuke\parameters.json" />
     <None Include="module\build.cmd" />

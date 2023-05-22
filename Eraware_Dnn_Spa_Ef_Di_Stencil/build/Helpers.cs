@@ -91,9 +91,9 @@ namespace BuildHelpers
             return true;
         }
 
-        public static void AddFilesToZip(string zipPath, string[] files)
+        public static void AddFilesToZip(string zipPath, List<AbsolutePath> files)
         {
-            if (files == null || files.Length == 0)
+            if (files == null || files.Count == 0)
             {
                 return;
             }
@@ -127,9 +127,9 @@ namespace BuildHelpers
             return assemblies;
         }
 
-        public static void CleanCodeCoverageHistoryFiles(string directory)
+        public static void CleanCodeCoverageHistoryFiles(AbsolutePath directory)
         {
-            var files = GlobFiles(directory, "*.xml");
+            var files = directory.GlobFiles("*.xml");
             if (files == null || files.Count() < 2)
             {
                 return;
@@ -173,14 +173,14 @@ namespace BuildHelpers
                     fileA.CoveredBranches == fileB.CoveredBranches &&
                     fileA.TotalBranches == fileB.TotalBranches)
                 {
-                    DeleteFile(fileB.FileName);
+                    ((AbsolutePath)fileB.FileName).DeleteFile();
                 }
             }
         }
 
         public static void GenerateLocalizationFiles(string rootNamespace)
         {
-            var localizationFiles = GlobFiles(RootDirectory / "resources" / "App_LocalResources", "*.resx")
+            var localizationFiles = (RootDirectory / "resources" / "App_LocalResources").GlobFiles("*.resx")
                 .Where(l => Regex.Matches(new FileInfo(l).Name, @"\.").Count == 1).ToList();
             var generatedComment = GetGeneratedComment();
             var vm = new StringBuilder();
@@ -211,7 +211,7 @@ namespace BuildHelpers
             return node.InnerText;
         }
 
-        private static string GenerateLocalizationService(string rootNamespace, List<string> localizationFiles)
+        private static string GenerateLocalizationService(string rootNamespace, List<AbsolutePath> localizationFiles)
         {
             var moduleFolderName = new DirectoryInfo(RootDirectory).Name;
             var sb = new StringBuilder();
@@ -292,7 +292,7 @@ namespace BuildHelpers
             return sb.ToString();
         }
 
-        private static string GetLocalizationFilesForViewModel(List<string> localizationFiles)
+        private static string GetLocalizationFilesForViewModel(List<AbsolutePath> localizationFiles)
         {
             var sb = new StringBuilder();
             foreach (var file in localizationFiles)
@@ -329,7 +329,7 @@ namespace BuildHelpers
             return sb.ToString();
         }
 
-        private static string GenerateLocalizationViewModel(string rootNamespace, List<string> localizationFiles)
+        private static string GenerateLocalizationViewModel(string rootNamespace, List<AbsolutePath> localizationFiles)
         {
             var sb = new StringBuilder();
             sb
@@ -349,7 +349,7 @@ namespace BuildHelpers
             return sb.ToString();
         }
 
-        private static string GetLocalizationViewModelClass(List<string> localizationFiles)
+        private static string GetLocalizationViewModelClass(List<AbsolutePath> localizationFiles)
         {
             var sb = new StringBuilder();
             for (int i = 0; i < localizationFiles.Count(); i++)
@@ -366,7 +366,7 @@ namespace BuildHelpers
             return sb.ToString();
         }
 
-        private static string GetLocalizationFilePropertiesClasses(List<string> localizationFiles)
+        private static string GetLocalizationFilePropertiesClasses(List<AbsolutePath> localizationFiles)
         {
             var sb = new StringBuilder();
             for (int i = 0; i < localizationFiles.Count(); i++)
