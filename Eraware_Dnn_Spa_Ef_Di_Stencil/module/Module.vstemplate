@@ -22,12 +22,7 @@
       </Folder>
       <Folder Name=".github" TargetFolderName=".github">
         <ProjectItem TargetFileName="dependabot.yml">dependabot.yml</ProjectItem>
-        <ProjectItem TargetFileName="mergeable.yml">mergeable.yml</ProjectItem>
-		<Folder Name="workflows" TargetFolderName="workflows">
-		  <ProjectItem TargetFileName="Build.yml">Build.yml</ProjectItem>
-		  <ProjectItem TargetFileName="PR_Validation.yml">PR_Validation.yml</ProjectItem>
-		  <ProjectItem TargetFileName="Release.yml">Release.yml</ProjectItem>
-		</Folder>
+        <ProjectItem TargetFileName="mergeable.yml">mergeable.yml</ProjectItem>s
       </Folder>
       <Folder Name="Common" TargetFolderName="Common">
         <ProjectItem ReplaceParameters="true">Globals.cs</ProjectItem>
