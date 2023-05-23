@@ -23,7 +23,7 @@
     </PackageReference>
     <PackageReference Include="NSwag.MSBuild" Version="13.19.0" />
     <PackageDownload Include="docfx.console" Version="[2.59.4]" />
-    <PackageDownload Include="GitVersion.Tool" Version="[5.8.1]" />
+    <PackageDownload Include="GitVersion.Tool" Version="[5.10.1]" />
     <PackageDownload Include="coverlet.console" Version="[1.7.2]" />
   </ItemGroup>
 
