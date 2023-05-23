@@ -48,21 +48,24 @@ using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
     GitHubActionsImage.WindowsLatest,
     ImportSecrets = new [] { nameof(GitHubToken) },
     OnPushBranches = new[] { "master", "main", "release/*" },
-    InvokedTargets = new[] { nameof(Release) }
+    InvokedTargets = new[] { nameof(Release) },
+    FetchDepth = 0
 )]
 [GitHubActions(
     "PR_Validation",
     GitHubActionsImage.WindowsLatest,
     ImportSecrets = new[] { nameof(GitHubToken) },
     OnPullRequestBranches = new[] { "master", "main", "develop", "development", "release/*" },
-    InvokedTargets = new[] { nameof(Package) }
+    InvokedTargets = new[] { nameof(Package) },
+    FetchDepth = 0
 )]
 [GitHubActions(
     "Build",
     GitHubActionsImage.WindowsLatest,
     ImportSecrets = new[] { nameof(GitHubToken) },
     OnPushBranches = new[] { "master", "develop", "release/*" },
-    InvokedTargets = new[] { nameof(DeployGeneratedFiles) }
+    InvokedTargets = new[] { nameof(DeployGeneratedFiles) },
+    FetchDepth = 0
     )]
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild
