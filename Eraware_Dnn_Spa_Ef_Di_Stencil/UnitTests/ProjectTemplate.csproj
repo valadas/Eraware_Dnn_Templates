@@ -1,131 +1,50 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RuntimeIdentifier>win</RuntimeIdentifier>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{745843B0-F86F-4CE1-BE21-E6FBCFE167DC}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitTests</RootNamespace>
-    <AssemblyName>UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
     <NETCoreSdkVersion>3.1</NETCoreSdkVersion>
+    <OutputPath>bin\</OuputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\GlobalsTests.cs" />
-	<Compile Include="Common\Extensions\IQueryableExtensionsTests.cs" />
-    <Compile Include="Controllers\ItemControllerTests.cs" />
-    <Compile Include="Controllers\LocalizationControllerTests.cs" />
-    <Compile Include="Controllers\ModuleApiControllerTests.cs" />
-    <Compile Include="Controllers\ModuleExceptionFilterAttributeTests.cs" />
-    <Compile Include="Controllers\ServiceRouteMapperTests.cs" />
-    <Compile Include="Controllers\ValidateModelAttributeTests.cs" />
-    <Compile Include="Data\Entities\ItemTests.cs" />
-    <Compile Include="Data\ModuleDbContextTests.cs" />
-    <Compile Include="Data\Repositories\GenericRepositoryTests.cs" />
-    <Compile Include="Services\ItemServiceTests.cs" />
-    <Compile Include="Services\LoggingServiceTests.cs" />
-    <Compile Include="FakeDataContext.cs" />
-    <Compile Include="Startup.cs" />
+    <ProjectReference Include="..\Module.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Module.csproj">
-      <Project>{eb6800e3-56cb-44a4-b9b0-b2961d478d20}</Project>
-      <Name>Module</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="coverlet.collector">
-      <Version>3.2.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <PackageReference Include="coverlet.collector" version="3.2.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.msbuild">
-      <Version>3.2.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <PackageReference Include="coverlet.msbuild" version="3.2.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="DotNetNuke.Abstractions">
-      <Version>9.11.2</Version>
-    </PackageReference>
-    <PackageReference Include="DotNetNuke.Core">
-      <Version>9.11.2</Version>
-    </PackageReference>
-    <PackageReference Include="DotNetNuke.Instrumentation">
-      <Version>9.11.2</Version>
-    </PackageReference>
-    <PackageReference Include="DotNetNuke.Web">
-      <Version>9.11.2</Version>
-    </PackageReference>
-    <PackageReference Include="DotNetNuke.WebApi">
-      <Version>9.11.2</Version>
-    </PackageReference>
-    <PackageReference Include="Effort.EF6">
-      <Version>2.2.16</Version>
-    </PackageReference>
-    <PackageReference Include="EntityFramework">
-      <Version>6.4.4</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
-      <Version>17.6.0</Version>
-    </PackageReference>
-    <PackageReference Include="Moq">
-      <Version>4.18.4</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="xunit">
-      <Version>2.4.2</Version>
-    </PackageReference>
-    <PackageReference Include="xunit.runner.msbuild">
-      <Version>2.4.2</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <PackageReference Include="DotNetNuke.Abstractions" version="9.11.2" />
+    <PackageReference Include="DotNetNuke.Core"  version="9.11.2" />
+    <PackageReference Include="DotNetNuke.Instrumentation" version="9.11.2" />
+    <PackageReference Include="DotNetNuke.Web" version="9.11.2" />
+    <PackageReference Include="DotNetNuke.WebApi" version="9.11.2" />
+    <PackageReference Include="Effort.EF6" version="2.2.16" />
+    <PackageReference Include="EntityFramework" version="6.4.4" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" version="17.6.0" />
+    <PackageReference Include="Moq" version="4.18.4" />
+    <PackageReference Include="Newtonsoft.Json" version="13.0.3" />
+    <PackageReference Include="xunit" version="2.4.2" />
+    <PackageReference Include="xunit.runner.msbuild" version="2.4.2">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="xunit.runner.visualstudio">
-      <Version>2.4.5</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <PackageReference Include="xunit.runner.visualstudio" version="2.4.45">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
