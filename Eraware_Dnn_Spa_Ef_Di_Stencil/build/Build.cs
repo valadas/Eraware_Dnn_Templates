@@ -41,30 +41,13 @@ using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 using static Nuke.Common.Tools.Npm.NpmTasks;
 using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
 
-// Not using AutoGenerate here because of https://github.com/nuke-build/nuke/issues/857
-// Not using EnableGitHubContext here because of https://github.com/nuke-build/nuke/issues/858 and/or https://github.com/actions/runner/issues/1647
-[GitHubActions(
-    "Release",
-    GitHubActionsImage.WindowsLatest,
-    ImportSecrets = new [] { nameof(GitHubToken) },
-    OnPushBranches = new[] { "master", "main", "release/*" },
-    InvokedTargets = new[] { nameof(Release) },
-    FetchDepth = 0
-)]
-[GitHubActions(
-    "PR_Validation",
-    GitHubActionsImage.WindowsLatest,
-    ImportSecrets = new[] { nameof(GitHubToken) },
-    OnPullRequestBranches = new[] { "master", "main", "develop", "development", "release/*" },
-    InvokedTargets = new[] { nameof(Package) },
-    FetchDepth = 0
-)]
 [GitHubActions(
     "Build",
     GitHubActionsImage.WindowsLatest,
     ImportSecrets = new[] { nameof(GitHubToken) },
-    OnPushBranches = new[] { "master", "develop", "release/*" },
-    InvokedTargets = new[] { nameof(DeployGeneratedFiles) },
+    OnPullRequestBranches = new[] { "develop", "main", "master", "release/*" },
+    OnPushBranches = new[] { "main", "master", "develop", "release/*" },
+    InvokedTargets = new[] { nameof(Package), nameof(DeployGeneratedFiles), nameof(Release) },
     FetchDepth = 0
     )]
 [UnsetVisualStudioEnvironmentVariables]
@@ -529,6 +512,7 @@ class Build : NukeBuild
         .DependsOn(GenerateReleaseNotes)
         .DependsOn(TagRelease)
         .DependsOn(Package)
+        .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch())
         .Executes(() =>
         {
             var newRelease = new NewRelease(GitRepository.IsOnMainOrMasterBranch() ? $"v{GitVersion.MajorMinorPatch}" : $"v{GitVersion.SemVer}")
@@ -787,6 +771,7 @@ class Build : NukeBuild
     Target DeployGeneratedFiles => _ => _
         .DependsOn(Docs)
         .DependsOn(Test)
+        .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnDevelopBranch() || GitRepository.IsOnReleaseBranch())
         .Executes(() =>
         {
             var gitHubClient = new GitHubClient(new ProductHeaderValue("Nuke"));
