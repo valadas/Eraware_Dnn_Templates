@@ -43,7 +43,7 @@ using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
 
 [GitHubActions(
     "Build",
-    GitHubActionsImage.WindowsLatest,
+    GitHubActionsImage.UbuntuLatest,
     ImportSecrets = new[] { nameof(GitHubToken) },
     OnPullRequestBranches = new[] { "develop", "main", "master", "release/*" },
     OnPushBranches = new[] { "main", "master", "develop", "release/*" },
@@ -73,7 +73,7 @@ class Build : NukeBuild
 
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath InstallDirectory => RootDirectory.Parent.Parent / "Install" / "Module";
-    AbsolutePath WebProjectDirectory => RootDirectory / "Module.Web";
+    AbsolutePath WebProjectDirectory => RootDirectory / "module.web";
     AbsolutePath TestResultsDirectory => RootDirectory / "TestResults";
     AbsolutePath UnitTestsResultsDirectory => TestResultsDirectory / "UnitTests";
     AbsolutePath IntegrationTestsResultsDirectory => TestResultsDirectory / "IntegrationTests";
@@ -239,6 +239,7 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .DependsOn(SetManifestVersions)
         .DependsOn(UpdateTokens)
+        .DependsOn(EnsureBootstrapingScriptsAreExecutable)
         .Executes(() =>
         {
             var moduleAssemblyName = Solution.GetProject("Module").GetProperty("AssemblyName");
@@ -350,7 +351,7 @@ class Build : NukeBuild
         {
             var scriptsDestination = RootDirectory / "resources" / "scripts" / "$ext_scopeprefixkebab$";
             scriptsDestination.CreateOrCleanDirectory();
-            CopyDirectoryRecursively(RootDirectory / "module.web" / "dist" / "$ext_scopeprefixkebab$", scriptsDestination, DirectoryExistsPolicy.Merge);
+            CopyDirectoryRecursively(WebProjectDirectory / "dist" / "$ext_scopeprefixkebab$", scriptsDestination, DirectoryExistsPolicy.Merge);
         });
 
     Target InstallNpmPackages => _ => _
@@ -867,6 +868,16 @@ class Build : NukeBuild
             tempDirectory.DeleteDirectory();
             tempMdDirectory.DeleteDirectory();
         });
+
+    Target EnsureBootstrapingScriptsAreExecutable => _ => _
+    .OnlyWhenDynamic(() => !IsServerBuild)
+    .Executes(() => {
+        var files = RootDirectory.GlobFiles("build.sh", "build.cmd");
+        foreach (var file in files)
+        {
+            Git($"update-index --chmod=+x {file.Name}");
+        }
+    });
 
     Target ComponentsDocs => _ => _
         .DependsOn(BuildFrontEnd)
