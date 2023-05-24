@@ -790,7 +790,7 @@ class Build : NukeBuild
                 Git("add UnitTests/history -f");
                 Git("add .github/badges -f");
                 Git("status");
-                Git("commit --allow-empty -m \"Commit latest generated files\""); // We allow an empty commit in case the last change did not affect the site.
+                Git($"commit --allow-empty -m \"Commit latest generated files\""); // We allow an empty commit in case the last change did not affect the site.
                 Git("status");
                 Git("fetch origin");
                 Git($"pull origin {GitRepository.Branch}");
