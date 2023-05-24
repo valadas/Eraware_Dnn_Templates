@@ -148,13 +148,13 @@ class Build : NukeBuild
         .Executes(() =>
         {
             MSBuild(_ => _
-                .SetConfiguration(Configuration.Debug)
+                .SetConfiguration(Configuration)
                 .SetProjectFile(Solution.GetProject("UnitTests"))
                 .SetTargets("Build")
                 .ResetVerbosity());
 
             DotNetTest(_ => _
-                .SetConfiguration(Configuration.Debug)
+                .SetConfiguration(Configuration)
                 .ResetVerbosity()
                 .SetResultsDirectory(UnitTestsResultsDirectory)
                 .EnableCollectCoverage()
@@ -190,13 +190,13 @@ class Build : NukeBuild
         .Executes(() =>
         {
             MSBuild(_ => _
-                .SetConfiguration(Configuration.Debug)
+                .SetConfiguration(Configuration)
                 .SetProjectFile(Solution.GetProject("IntegrationTests"))
                 .SetTargets("Build")
                 .ResetVerbosity());
 
             DotNetTest(_ => _
-                .SetConfiguration(Configuration.Debug)
+                .SetConfiguration(Configuration)
                 .ResetVerbosity()
                 .SetResultsDirectory(IntegrationTestsResultsDirectory)
                 .EnableCollectCoverage()
