@@ -23,6 +23,7 @@ namespace UnitTests
         {
             this.connection = Effort.DbConnectionFactory.CreateTransient();
             this.dataContext = new ModuleDbContext(this.connection);
+            this.dataContext.Database.CreateIfNotExists();
         }
 
         public void Dispose()
