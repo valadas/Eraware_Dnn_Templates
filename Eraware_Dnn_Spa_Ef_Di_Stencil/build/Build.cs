@@ -239,6 +239,7 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .DependsOn(SetManifestVersions)
         .DependsOn(UpdateTokens)
+        .DependsOn(EnsureBootstrapingScriptsAreExecutable)
         .Executes(() =>
         {
             var moduleAssemblyName = Solution.GetProject("Module").GetProperty("AssemblyName");
@@ -894,6 +895,16 @@ class Build : NukeBuild
             CopyFileToDirectory(index, componentsDocsDirectory, FileExistsPolicy.Overwrite, true);
             RenameFile(componentsDocsDirectory / "readme.md", "index.md", FileExistsPolicy.Overwrite);
         });
+
+    Target EnsureBootstrapingScriptsAreExecutable => _ => _
+    .OnlyWhenDynamic(() => !IsServerBuild)
+    .Executes(() => {
+        var files = RootDirectory.GlobFiles("build.sh", "build.cmd");
+        foreach (var file in files)
+        {
+            Git($"update-index --chmod=+x {file.Name}", RootDirectory);
+        }
+    });
 
     private void ResetDocs()
     {
