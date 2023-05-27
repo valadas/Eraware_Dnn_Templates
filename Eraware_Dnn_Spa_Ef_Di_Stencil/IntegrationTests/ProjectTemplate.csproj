@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
 	<PropertyGroup>
@@ -62,44 +62,44 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="coverlet.collector">
-			<Version>3.1.2</Version>
+			<Version>3.2.0</Version>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="coverlet.msbuild">
-			<Version>3.1.2</Version>
+			<Version>3.2.0</Version>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="DotNetNuke.Abstractions">
-			<Version>9.10.2</Version>
+			<Version>9.11.2</Version>
 		</PackageReference>
 		<PackageReference Include="DotNetNuke.Core">
-			<Version>9.10.2</Version>
+			<Version>9.11.2</Version>
 		</PackageReference>
 		<PackageReference Include="DotNetNuke.Instrumentation">
-			<Version>9.10.2</Version>
+			<Version>9.11.2</Version>
 		</PackageReference>
 		<PackageReference Include="DotNetNuke.Web">
-			<Version>9.10.2</Version>
+			<Version>9.11.2</Version>
 		</PackageReference>
 		<PackageReference Include="DotNetNuke.WebApi">
-			<Version>9.10.2</Version>
+			<Version>9.11.2</Version>
 		</PackageReference>
 		<PackageReference Include="Effort.EF6">
 			<Version>2.2.16</Version>
 		</PackageReference>
 		<PackageReference Include="Moq">
-			<Version>4.18.1</Version>
+			<Version>4.18.4</Version>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json">
-			<Version>10.0.3</Version>
+			<Version>13.0.3</Version>
 		</PackageReference>
 		<PackageReference Include="xunit">
-			<Version>2.4.1</Version>
+			<Version>2.4.2</Version>
 		</PackageReference>
 		<PackageReference Include="xunit.runner.msbuild">
-			<Version>2.4.1</Version>
+			<Version>2.4.2</Version>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>

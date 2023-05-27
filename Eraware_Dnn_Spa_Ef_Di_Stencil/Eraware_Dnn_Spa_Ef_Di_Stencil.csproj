@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -91,9 +91,6 @@
     <None Include="module.web\src\components\my-edit\my-edit.scss" />
     <None Include="module.web\src\components\my-item-details\my-item-details.scss" />
     <None Include="module.web\src\components\my-items-list\my-items-list.scss" />
-    <None Include="module\.github\workflows\Build.yml" />
-    <None Include="module\.github\workflows\PR_Validation.yml" />
-    <None Include="module\.github\workflows\Release.yml" />
     <None Include="module\.nuke\build.schema.json" />
     <None Include="module\.nuke\parameters.json" />
     <None Include="module\build.cmd" />
