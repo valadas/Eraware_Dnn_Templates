@@ -348,3 +348,4 @@ healthchecksdb
 /docfx_project/integrationTests
 /docfx_project/unitTests
 docs/
+.nuke/temp

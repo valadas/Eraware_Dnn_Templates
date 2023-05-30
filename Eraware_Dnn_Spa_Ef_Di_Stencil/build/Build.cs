@@ -41,28 +41,14 @@ using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 using static Nuke.Common.Tools.Npm.NpmTasks;
 using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
 
-// Not using AutoGenerate here because of https://github.com/nuke-build/nuke/issues/857
-// Not using EnableGitHubContext here because of https://github.com/nuke-build/nuke/issues/858 and/or https://github.com/actions/runner/issues/1647
-[GitHubActions(
-    "Release",
-    GitHubActionsImage.WindowsLatest,
-    ImportSecrets = new [] { nameof(GitHubToken) },
-    OnPushBranches = new[] { "master", "main", "release/*" },
-    InvokedTargets = new[] { nameof(Release) }
-)]
-[GitHubActions(
-    "PR_Validation",
-    GitHubActionsImage.WindowsLatest,
-    ImportSecrets = new[] { nameof(GitHubToken) },
-    OnPullRequestBranches = new[] { "master", "main", "develop", "development", "release/*" },
-    InvokedTargets = new[] { nameof(Package) }
-)]
 [GitHubActions(
     "Build",
-    GitHubActionsImage.WindowsLatest,
+    GitHubActionsImage.UbuntuLatest,
     ImportSecrets = new[] { nameof(GitHubToken) },
-    OnPushBranches = new[] { "master", "develop", "release/*" },
-    InvokedTargets = new[] { nameof(DeployGeneratedFiles) }
+    OnPullRequestBranches = new[] { "develop", "main", "master", "release/*" },
+    OnPushBranches = new[] { "main", "master", "develop", "release/*" },
+    InvokedTargets = new[] { nameof(Package), nameof(DeployGeneratedFiles), nameof(Release) },
+    FetchDepth = 0
     )]
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild
@@ -253,6 +239,7 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .DependsOn(SetManifestVersions)
         .DependsOn(UpdateTokens)
+        .DependsOn(EnsureBootstrapingScriptsAreExecutable)
         .Executes(() =>
         {
             var moduleAssemblyName = Solution.GetProject("Module").GetProperty("AssemblyName");
@@ -526,6 +513,7 @@ class Build : NukeBuild
         .DependsOn(GenerateReleaseNotes)
         .DependsOn(TagRelease)
         .DependsOn(Package)
+        .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch())
         .Executes(() =>
         {
             var newRelease = new NewRelease(GitRepository.IsOnMainOrMasterBranch() ? $"v{GitVersion.MajorMinorPatch}" : $"v{GitVersion.SemVer}")
@@ -784,6 +772,7 @@ class Build : NukeBuild
     Target DeployGeneratedFiles => _ => _
         .DependsOn(Docs)
         .DependsOn(Test)
+        .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnDevelopBranch() || GitRepository.IsOnReleaseBranch())
         .Executes(() =>
         {
             var gitHubClient = new GitHubClient(new ProductHeaderValue("Nuke"));
@@ -802,7 +791,7 @@ class Build : NukeBuild
                 Git("add UnitTests/history -f");
                 Git("add .github/badges -f");
                 Git("status");
-                Git("commit --allow-empty -m \"Commit latest generated files\""); // We allow an empty commit in case the last change did not affect the site.
+                Git($"commit --allow-empty -m \"Commit latest generated files\""); // We allow an empty commit in case the last change did not affect the site.
                 Git("status");
                 Git("fetch origin");
                 Git($"pull origin {GitRepository.Branch}");
@@ -906,6 +895,16 @@ class Build : NukeBuild
             CopyFileToDirectory(index, componentsDocsDirectory, FileExistsPolicy.Overwrite, true);
             RenameFile(componentsDocsDirectory / "readme.md", "index.md", FileExistsPolicy.Overwrite);
         });
+
+    Target EnsureBootstrapingScriptsAreExecutable => _ => _
+    .OnlyWhenDynamic(() => !IsServerBuild)
+    .Executes(() => {
+        var files = RootDirectory.GlobFiles("build.sh", "build.cmd");
+        foreach (var file in files)
+        {
+            Git($"update-index --chmod=+x {file.Name}", RootDirectory);
+        }
+    });
 
     private void ResetDocs()
     {
