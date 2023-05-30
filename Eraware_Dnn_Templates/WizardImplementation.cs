@@ -1,6 +1,4 @@
 ﻿using EnvDTE;
-using EnvDTE100;
-using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.TemplateWizard;
 using System;
@@ -18,7 +16,7 @@ namespace Eraware_Dnn_Templates
     internal class WizardImplementation : IWizard
     {
         private bool isValid = false;
-        private DTE2 dte;
+        private DTE dte;
 
         public void BeforeOpeningFile(ProjectItem projectItem)
         {
@@ -103,7 +101,7 @@ namespace Eraware_Dnn_Templates
         public void RunStarted(object automationObject, Dictionary<string, string> replacementsDictionary, WizardRunKind runKind, object[] customParams)
         {
             Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
-            this.dte = automationObject as DTE2;
+            this.dte = automationObject as DTE;
             string destinationDirectory = replacementsDictionary["$destinationdirectory$"];
             var moduleFolderName = new DirectoryInfo(destinationDirectory).Name;
             try
