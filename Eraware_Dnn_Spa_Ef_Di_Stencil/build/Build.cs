@@ -73,7 +73,7 @@ class Build : NukeBuild
 
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath InstallDirectory => RootDirectory.Parent.Parent / "Install" / "Module";
-    AbsolutePath WebProjectDirectory => RootDirectory / "Module.Web";
+    AbsolutePath WebProjectDirectory => RootDirectory / "module.web";
     AbsolutePath TestResultsDirectory => RootDirectory / "TestResults";
     AbsolutePath UnitTestsResultsDirectory => TestResultsDirectory / "UnitTests";
     AbsolutePath IntegrationTestsResultsDirectory => TestResultsDirectory / "IntegrationTests";
@@ -87,13 +87,14 @@ class Build : NukeBuild
 
     private const string devViewsPath = "http://localhost:3333/build/";
     private const string prodViewsPath = "/DesktopModules/$ext_modulefoldername$/resources/scripts/$ext_scopeprefixkebab$/";
+    private bool FirstBuild = false;
 
     string releaseNotes = "";
     GitHubClient gitHubClient;
     Release release;
 
     Target UpdateTokens => _ => _
-        .OnlyWhenDynamic(() => GitRepository != null)
+        .OnlyWhenDynamic(() => GitRepository != null && GitRepository.IsGitHubRepository())
         .Executes(() =>
         {
             if (GitRepository != null)
@@ -148,13 +149,13 @@ class Build : NukeBuild
         .Executes(() =>
         {
             MSBuild(_ => _
-                .SetConfiguration(Configuration.Debug)
+                .SetConfiguration(Configuration)
                 .SetProjectFile(Solution.GetProject("UnitTests"))
                 .SetTargets("Build")
                 .ResetVerbosity());
 
             DotNetTest(_ => _
-                .SetConfiguration(Configuration.Debug)
+                .SetConfiguration(Configuration)
                 .ResetVerbosity()
                 .SetResultsDirectory(UnitTestsResultsDirectory)
                 .EnableCollectCoverage()
@@ -162,7 +163,7 @@ class Build : NukeBuild
                 .SetLoggers("trx;LogFileName=UnitTests.trx")
                 .SetCoverletOutput(UnitTestsResultsDirectory / "coverage.xml")
                 .SetExcludeByFile("**/App_LocalResources/**/*")
-                .SetProjectFile(RootDirectory / "UnitTests" / "UnitTests.csproj")
+                .SetProjectFile(Solution.GetProject("UnitTests"))
                 .SetNoBuild(true));
 
             ReportGenerator(_ => _
@@ -190,20 +191,20 @@ class Build : NukeBuild
         .Executes(() =>
         {
             MSBuild(_ => _
-                .SetConfiguration(Configuration.Debug)
+                .SetConfiguration(Configuration)
                 .SetProjectFile(Solution.GetProject("IntegrationTests"))
                 .SetTargets("Build")
                 .ResetVerbosity());
 
             DotNetTest(_ => _
-                .SetConfiguration(Configuration.Debug)
+                .SetConfiguration(Configuration)
                 .ResetVerbosity()
                 .SetResultsDirectory(IntegrationTestsResultsDirectory)
                 .EnableCollectCoverage()
                 .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
                 .SetLoggers("trx;LogFileName=IntegrationTests.trx")
                 .SetCoverletOutput(IntegrationTestsResultsDirectory / "coverage.xml")
-                .SetProjectFile(RootDirectory / "IntegrationTests" / "IntegrationTests.csproj")
+                .SetProjectFile(Solution.GetProject("IntegrationTests"))
                 .SetNoBuild(true));
 
             ReportGenerator(_ => _
@@ -254,6 +255,18 @@ class Build : NukeBuild
 
             MSBuildTasks.MSBuild(s => s
                 .SetProjectFile(Solution.GetProject("Module"))
+                .SetConfiguration(Configuration)
+                .SetAssemblyVersion(assemblyVersion)
+                .SetFileVersion(fileVersion));
+
+            MSBuildTasks.MSBuild(s => s
+                .SetProjectFile(Solution.GetProject("UnitTests"))
+                .SetConfiguration(Configuration)
+                .SetAssemblyVersion(assemblyVersion)
+                .SetFileVersion(fileVersion));
+
+            MSBuildTasks.MSBuild(s => s
+                .SetProjectFile(Solution.GetProject("IntegrationTests"))
                 .SetConfiguration(Configuration)
                 .SetAssemblyVersion(assemblyVersion)
                 .SetFileVersion(fileVersion));
@@ -675,6 +688,12 @@ class Build : NukeBuild
 
             ResetDocs();
 
+            if (FirstBuild)
+            {
+                Git($"add .", RootDirectory, logger: (outputType, message) => Serilog.Log.Information($"{message}"));
+                Git($"commit -m \"Commit generated files from first build.\"");
+            }
+
             Serilog.Log.Information("Packaging succeeded!");
         });
 
@@ -898,11 +917,26 @@ class Build : NukeBuild
 
     Target EnsureBootstrapingScriptsAreExecutable => _ => _
     .OnlyWhenDynamic(() => !IsServerBuild)
-    .Executes(() => {
-        var files = RootDirectory.GlobFiles("build.sh", "build.cmd");
-        foreach (var file in files)
+    .Executes(() =>
+    {
+        if (GitRepository is null)
         {
-            Git($"update-index --chmod=+x {file.Name}", RootDirectory);
+            FirstBuild = true;
+            Git($"init -b develop", RootDirectory);
+            Git($"add .", RootDirectory, logger: (outputType, message) => Serilog.Log.Information($"{message}"));
+            Git($"commit -m \"Initial Commit\"", RootDirectory);
+
+            var files = RootDirectory.GlobFiles("build.sh", "build.cmd");
+            foreach (var file in files)
+            {
+                var fileContent = file.ReadAllText();
+                fileContent = fileContent.Replace("\r\n", "\n");
+                file.WriteAllText(fileContent);
+                Git($"update-index --chmod=+x {file.Name}", RootDirectory);
+            }
+
+            Git($"add .", RootDirectory, logger: (outputType, message) => Serilog.Log.Information($"{message}"));
+            Git($"commit -m \"Made build bootstrapping scripts executable", RootDirectory);
         }
     });
 

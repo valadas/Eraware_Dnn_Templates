@@ -40,6 +40,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CopyVsixExtensionFiles>False</CopyVsixExtensionFiles>
+    <CopyVsixExtensionLocation>
+    </CopyVsixExtensionLocation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -84,6 +87,7 @@
     <Content Include="module\docfx_project\.gitignore" />
     <Content Include="module\docfx_project\adjust-toc-namespaces.js" />
     <None Include="IntegrationTests\App.Config" />
+    <None Include="module.web\.eslintignore" />
     <None Include="module.web\api-extractor.json" />
     <None Include="module.web\src\components\my-component\usage\javascript.md" />
     <None Include="module.web\src\components\my-component\usage\dnn.md" />
@@ -186,6 +190,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IntegrationTests\Startup.cs" />
+    <Compile Include="UnitTests\Startup.cs" />
     <None Include="UnitTests\Common\Extensions\IQueryableExtensionsTests.cs" />
     <None Include="module\ViewModels\LocalizationViewModel.cs" />
     <None Include="UnitTests\Controllers\LocalizationControllerTests.cs" />
@@ -204,7 +210,6 @@
     <None Include="UnitTests\Services\ItemServiceTests.cs" />
     <None Include="module\Services\ItemService.cs" />
     <None Include="module\Services\IItemService.cs" />
-    <None Include="UnitTests\Startup.cs" />
     <None Include="UnitTests\Common\GlobalsTests.cs" />
     <None Include="UnitTests\Data\Entities\ItemTests.cs" />
     <None Include="UnitTests\Data\ModuleDbContextTests.cs" />

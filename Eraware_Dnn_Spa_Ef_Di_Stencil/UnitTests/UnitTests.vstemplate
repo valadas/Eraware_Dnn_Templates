@@ -12,6 +12,7 @@
     <DefaultName>UnitTests</DefaultName>
     <ProvideDefaultName>true</ProvideDefaultName>
     <Hidden>true</Hidden>
+	<CreateInPlace>true</CreateInPlace>
   </TemplateData>
   <TemplateContent>
     <Project File="ProjectTemplate.csproj" TargetFileName="UnitTests.csproj">
@@ -43,8 +44,8 @@
         <ProjectItem ReplaceParameters="true">LoggingServiceTests.cs</ProjectItem>
       </Folder>
       <ProjectItem ReplaceParameters="true">FakeDatacontext.cs</ProjectItem>
+	  <ProjectItem>Startup.cs</ProjectItem>
       <ProjectItem ReplaceParameters="false">App.config</ProjectItem>
-      <ProjectItem ReplaceParameters="false">Startup.cs</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>
