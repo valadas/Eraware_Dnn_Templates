@@ -190,8 +190,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IntegrationTests\Startup.cs" />
-    <Compile Include="UnitTests\Startup.cs" />
+    <None Include="IntegrationTests\Startup.cs" />
+    <None Include="UnitTests\Startup.cs" />
     <None Include="UnitTests\Common\Extensions\IQueryableExtensionsTests.cs" />
     <None Include="module\ViewModels\LocalizationViewModel.cs" />
     <None Include="UnitTests\Controllers\LocalizationControllerTests.cs" />
