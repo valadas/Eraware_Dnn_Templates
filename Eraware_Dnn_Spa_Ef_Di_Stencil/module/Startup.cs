@@ -4,10 +4,10 @@
 namespace $ext_rootnamespace$
 {
     using DotNetNuke.DependencyInjection;
-    using DotNetNuke.Services.Localization;
     using $ext_rootnamespace$.Data;
     using $ext_rootnamespace$.Data.Entities;
     using $ext_rootnamespace$.Data.Repositories;
+    using $ext_rootnamespace$.Providers;
     using $ext_rootnamespace$.Services;
     using Microsoft.Extensions.DependencyInjection;
     using System.Diagnostics.CodeAnalysis;
@@ -29,6 +29,7 @@ namespace $ext_rootnamespace$
             services.AddScoped<IItemService>(provider => new ItemService(provider.GetService<IRepository<Item>>()));
             services.AddScoped<ILoggingService, LoggingService>();
             services.AddScoped<ILocalizationService, LocalizationService>();
+            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         }
     }
 }
