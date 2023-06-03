@@ -8,15 +8,15 @@ updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/module.web" # Location of package manifests
     schedule:
-      interval: "weekly"
+      interval: "monthly"
   - package-ecosystem: "nuget"
     directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/build"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
   - package-ecosystem: "nuget"
     directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/module"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     ignore:
       - dependency-name: "Microsoft.AspNet.WebApi.Client"
       - dependency-name: "Microsoft.AspNet.WebApi.Core"
@@ -26,12 +26,12 @@ updates:
   - package-ecosystem: "nuget"
     directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/UnitTests"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     ignore:
       - dependency-name: "Newtonsoft.Json"
   - package-ecosystem: "nuget"
     directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/IntegrationTests"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     ignore:
       - dependency-name: "Newtonsoft.Json"

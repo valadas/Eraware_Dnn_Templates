@@ -17,6 +17,7 @@ using Nuke.Common.Tools.NSwag;
 using Nuke.Common.Tools.ReportGenerator;
 using Nuke.Common.Tools.VSTest;
 using Nuke.Common.Tools.Xunit;
+using Nuke.Common.Utilities;
 using Nuke.Common.Utilities.Collections;
 using Octokit;
 using System;
@@ -40,31 +41,14 @@ using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 using static Nuke.Common.Tools.Npm.NpmTasks;
 using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
 
-// Not using AutoGenerate here because of https://github.com/nuke-build/nuke/issues/857
-// Not using EnableGitHubContext here because of https://github.com/nuke-build/nuke/issues/858 and/or https://github.com/actions/runner/issues/1647
-[GitHubActions(
-    "Release",
-    GitHubActionsImage.WindowsLatest,
-    AutoGenerate = false,
-    ImportSecrets = new [] { nameof(GitHubToken) },
-    OnPushBranches = new[] { "master", "main", "release/*" },
-    InvokedTargets = new[] { nameof(Release) }
-)]
-[GitHubActions(
-    "PR_Validation",
-    GitHubActionsImage.WindowsLatest,
-    AutoGenerate = false,
-    ImportSecrets = new[] { nameof(GitHubToken) },
-    OnPullRequestBranches = new[] { "master", "main", "develop", "development", "release/*" },
-    InvokedTargets = new[] { nameof(Package) }
-)]
 [GitHubActions(
     "Build",
-    GitHubActionsImage.WindowsLatest,
-    AutoGenerate = false,
+    GitHubActionsImage.UbuntuLatest,
     ImportSecrets = new[] { nameof(GitHubToken) },
-    OnPushBranches = new[] { "master", "develop", "release/*" },
-    InvokedTargets = new[] { nameof(DeployGeneratedFiles) }
+    OnPullRequestBranches = new[] { "develop", "main", "master", "release/*" },
+    OnPushBranches = new[] { "main", "master", "develop", "release/*" },
+    InvokedTargets = new[] { nameof(Package), nameof(DeployGeneratedFiles), nameof(Release) },
+    FetchDepth = 0
     )]
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild
@@ -89,7 +73,7 @@ class Build : NukeBuild
 
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath InstallDirectory => RootDirectory.Parent.Parent / "Install" / "Module";
-    AbsolutePath WebProjectDirectory => RootDirectory / "Module.Web";
+    AbsolutePath WebProjectDirectory => RootDirectory / "module.web";
     AbsolutePath TestResultsDirectory => RootDirectory / "TestResults";
     AbsolutePath UnitTestsResultsDirectory => TestResultsDirectory / "UnitTests";
     AbsolutePath IntegrationTestsResultsDirectory => TestResultsDirectory / "IntegrationTests";
@@ -103,25 +87,26 @@ class Build : NukeBuild
 
     private const string devViewsPath = "http://localhost:3333/build/";
     private const string prodViewsPath = "/DesktopModules/$ext_modulefoldername$/resources/scripts/$ext_scopeprefixkebab$/";
+    private bool FirstBuild = false;
 
     string releaseNotes = "";
     GitHubClient gitHubClient;
     Release release;
 
     Target UpdateTokens => _ => _
-        .OnlyWhenDynamic(() => GitRepository != null)
+        .OnlyWhenDynamic(() => GitRepository != null && GitRepository.IsGitHubRepository())
         .Executes(() =>
         {
             if (GitRepository != null)
             {
                 Serilog.Log.Information($"We are on branch {GitRepository.Branch}");
-                var repositoryFiles = GlobFiles(RootDirectory, "README.md", "build/**/git.html", "**/articles/git.md");
-                repositoryFiles.ForEach(f =>
+                var repositoryFiles = RootDirectory.GlobFiles("README.md", "build/**/git.html", "**/articles/git.md");
+                repositoryFiles.ForEach(file =>
                 {
-                    var file = ReadAllText(f, Encoding.UTF8);
-                    file = file.Replace("{owner}", GitRepository.GetGitHubOwner());
-                    file = file.Replace("{repository}", GitRepository.GetGitHubName());
-                    WriteAllText(f, file, Encoding.UTF8);
+                    var fileContent = file.ReadAllText(Encoding.UTF8);
+                    fileContent = fileContent.Replace("{owner}", GitRepository.GetGitHubOwner());
+                    fileContent = fileContent.Replace("{repository}", GitRepository.GetGitHubName());
+                    file.WriteAllText(fileContent, Encoding.UTF8);
                 });
             }
         });
@@ -132,7 +117,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             Serilog.Log.Information($"Branch name is {GitRepository.Branch}");
-            Serilog.Log.Information(SerializationTasks.JsonSerialize(GitVersion));
+            Serilog.Log.Information(GitVersion.ToJson());
         });
 
     Target Clean => _ => _
@@ -140,10 +125,10 @@ class Build : NukeBuild
         .Before(Package)
         .Executes(() =>
         {
-            EnsureCleanDirectory(ArtifactsDirectory);
-            EnsureCleanDirectory(TestResultsDirectory);
-            EnsureCleanDirectory(UnitTestsResultsDirectory);
-            EnsureCleanDirectory(IntegrationTestsResultsDirectory);
+            ArtifactsDirectory.CreateOrCleanDirectory();
+            TestResultsDirectory.CreateOrCleanDirectory();
+            UnitTestsResultsDirectory.CreateOrCleanDirectory();
+            IntegrationTestsResultsDirectory.CreateOrCleanDirectory();
         });
 
     Target Restore => _ => _
@@ -164,13 +149,13 @@ class Build : NukeBuild
         .Executes(() =>
         {
             MSBuild(_ => _
-                .SetConfiguration(Configuration.Debug)
+                .SetConfiguration(Configuration)
                 .SetProjectFile(Solution.GetProject("UnitTests"))
                 .SetTargets("Build")
                 .ResetVerbosity());
 
             DotNetTest(_ => _
-                .SetConfiguration(Configuration.Debug)
+                .SetConfiguration(Configuration)
                 .ResetVerbosity()
                 .SetResultsDirectory(UnitTestsResultsDirectory)
                 .EnableCollectCoverage()
@@ -178,7 +163,7 @@ class Build : NukeBuild
                 .SetLoggers("trx;LogFileName=UnitTests.trx")
                 .SetCoverletOutput(UnitTestsResultsDirectory / "coverage.xml")
                 .SetExcludeByFile("**/App_LocalResources/**/*")
-                .SetProjectFile(RootDirectory / "UnitTests" / "UnitTests.csproj")
+                .SetProjectFile(Solution.GetProject("UnitTests"))
                 .SetNoBuild(true));
 
             ReportGenerator(_ => _
@@ -192,7 +177,7 @@ class Build : NukeBuild
 
             Helpers.CleanCodeCoverageHistoryFiles(RootDirectory / "UnitTests" / "history");
 
-            var testBadges = GlobFiles(UnitTestsResultsDirectory, "badge_branchcoverage.svg", "badge_linecoverage.svg");
+            var testBadges = UnitTestsResultsDirectory.GlobFiles("badge_branchcoverage.svg", "badge_linecoverage.svg");
             testBadges.ForEach(f => CopyFileToDirectory(f, UnitTestBadgesDirectory, FileExistsPolicy.Overwrite, true));
 
             if (IsWin && (InvokedTargets.Contains(UnitTests) || InvokedTargets.Contains(Test)))
@@ -206,20 +191,20 @@ class Build : NukeBuild
         .Executes(() =>
         {
             MSBuild(_ => _
-                .SetConfiguration(Configuration.Debug)
+                .SetConfiguration(Configuration)
                 .SetProjectFile(Solution.GetProject("IntegrationTests"))
                 .SetTargets("Build")
                 .ResetVerbosity());
 
             DotNetTest(_ => _
-                .SetConfiguration(Configuration.Debug)
+                .SetConfiguration(Configuration)
                 .ResetVerbosity()
                 .SetResultsDirectory(IntegrationTestsResultsDirectory)
                 .EnableCollectCoverage()
                 .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
                 .SetLoggers("trx;LogFileName=IntegrationTests.trx")
                 .SetCoverletOutput(IntegrationTestsResultsDirectory / "coverage.xml")
-                .SetProjectFile(RootDirectory / "IntegrationTests" / "IntegrationTests.csproj")
+                .SetProjectFile(Solution.GetProject("IntegrationTests"))
                 .SetNoBuild(true));
 
             ReportGenerator(_ => _
@@ -234,7 +219,7 @@ class Build : NukeBuild
 
             Helpers.CleanCodeCoverageHistoryFiles(RootDirectory / "IntegrationTests" / "history");
 
-            var testBadges = GlobFiles(IntegrationTestsResultsDirectory, "badge_branchcoverage.svg", "badge_linecoverage.svg");
+            var testBadges = IntegrationTestsResultsDirectory.GlobFiles("badge_branchcoverage.svg", "badge_linecoverage.svg");
             testBadges.ForEach(f => CopyFileToDirectory(f, IntegrationTestsBadgesDirectory, FileExistsPolicy.Overwrite, true));
 
             if (IsWin && (InvokedTargets.Contains(IntegrationTests) || InvokedTargets.Contains(Test)))
@@ -255,6 +240,7 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .DependsOn(SetManifestVersions)
         .DependsOn(UpdateTokens)
+        .DependsOn(EnsureBootstrapingScriptsAreExecutable)
         .Executes(() =>
         {
             var moduleAssemblyName = Solution.GetProject("Module").GetProperty("AssemblyName");
@@ -272,12 +258,24 @@ class Build : NukeBuild
                 .SetConfiguration(Configuration)
                 .SetAssemblyVersion(assemblyVersion)
                 .SetFileVersion(fileVersion));
+
+            MSBuildTasks.MSBuild(s => s
+                .SetProjectFile(Solution.GetProject("UnitTests"))
+                .SetConfiguration(Configuration)
+                .SetAssemblyVersion(assemblyVersion)
+                .SetFileVersion(fileVersion));
+
+            MSBuildTasks.MSBuild(s => s
+                .SetProjectFile(Solution.GetProject("IntegrationTests"))
+                .SetConfiguration(Configuration)
+                .SetAssemblyVersion(assemblyVersion)
+                .SetFileVersion(fileVersion));
         });
 
     Target SetManifestVersions => _ => _
         .Executes(() =>
         {
-            var manifests = GlobFiles(RootDirectory, "*.dnn");
+            var manifests = RootDirectory.GlobFiles("*.dnn");
             foreach (var manifest in manifests)
             {
                 var doc = new XmlDocument();
@@ -319,9 +317,9 @@ class Build : NukeBuild
         .DependsOn(Compile)
         .Executes(() =>
         {
-            var manifest = GlobFiles(RootDirectory, "*.dnn").FirstOrDefault();
+            var manifest = RootDirectory.GlobFiles("*.dnn").FirstOrDefault();
             var assemblyFiles = Helpers.GetAssembliesFromManifest(manifest);
-            var files = GlobFiles(RootDirectory, "bin/Debug/*.dll", "bin/Debug/*.pdb", "bin/Debug/*.xml");
+            var files = RootDirectory.GlobFiles("bin/Debug/*.dll", "bin/Debug/*.pdb", "bin/Debug/*.xml");
             foreach (var file in files)
             {
                 var fileInfo = new FileInfo(file);
@@ -336,12 +334,12 @@ class Build : NukeBuild
         .DependsOn(DeployFrontEnd)
         .Executes(() =>
         {
-            var views = GlobFiles(RootDirectory, "resources/views/**/*.html");
+            var views = RootDirectory.GlobFiles("resources/views/**/*.html");
             foreach (var view in views)
             {
-                var content = ReadAllText(view);
+                var content = view.ReadAllText();
                 content = content.Replace(devViewsPath, prodViewsPath, StringComparison.OrdinalIgnoreCase);
-                WriteAllText(view, content, System.Text.Encoding.UTF8);
+                view.WriteAllText(content, System.Text.Encoding.UTF8);
                 Serilog.Log.Information("Set scripts path to {0} in {1}", prodViewsPath, view);
             }
         });
@@ -350,12 +348,12 @@ class Build : NukeBuild
         .DependsOn(DeployFrontEnd)
         .Executes(() =>
         {
-            var views = GlobFiles(RootDirectory, "resources/views/**/*.html");
+            var views = RootDirectory.GlobFiles("resources/views/**/*.html");
             foreach (var view in views)
             {
-                var content = ReadAllText(view);
+                var content = view.ReadAllText();
                 content = content.Replace(prodViewsPath, devViewsPath, StringComparison.OrdinalIgnoreCase);
-                WriteAllText(view, content, System.Text.Encoding.UTF8);
+                view.WriteAllText(content, System.Text.Encoding.UTF8);
                 Serilog.Log.Information("Set scripts path to {0} in {1}", devViewsPath, view);
             }
         });
@@ -365,7 +363,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             var scriptsDestination = RootDirectory / "resources" / "scripts" / "$ext_scopeprefixkebab$";
-            EnsureCleanDirectory(scriptsDestination);
+            scriptsDestination.CreateOrCleanDirectory();
             CopyDirectoryRecursively(RootDirectory / "module.web" / "dist" / "$ext_scopeprefixkebab$", scriptsDestination, DirectoryExistsPolicy.Merge);
         });
 
@@ -444,7 +442,7 @@ class Build : NukeBuild
                 GitRepository.GetGitHubOwner(),
                 GitRepository.GetGitHubName()).Result
                 .Where(m => m.Title == GitVersion.MajorMinorPatch).FirstOrDefault();
-            Serilog.Log.Information(SerializationTasks.JsonSerialize(milestone));
+            Serilog.Log.Information(milestone.ToJson());
             if (milestone == null)
             {
                 Serilog.Log.Warning("Milestone not found for this version");
@@ -469,7 +467,7 @@ class Build : NukeBuild
                     p.Milestone?.Title == milestone.Title &&
                     p.Merged == true &&
                     p.Milestone?.Title == GitVersion.MajorMinorPatch);
-                Serilog.Log.Information(SerializationTasks.JsonSerialize(pullRequests));
+                Serilog.Log.Information(pullRequests.ToJson());
 
                 // Build release notes
                 var releaseNotesBuilder = new StringBuilder();
@@ -481,11 +479,11 @@ class Build : NukeBuild
 
                 foreach (var group in pullRequests.GroupBy(p => p.Labels[0]?.Name, (label, prs) => new { label, prs }))
                 {
-                    Serilog.Log.Information(SerializationTasks.JsonSerialize(group));
+                    Serilog.Log.Information(group.ToJson());
                     releaseNotesBuilder.AppendLine($"## {group.label}");
                     foreach (var pr in group.prs)
                     {
-                        Serilog.Log.Information(SerializationTasks.JsonSerialize(pr));
+                        Serilog.Log.Information(pr.ToJson());
                         releaseNotesBuilder.AppendLine($"- #{pr.Number} {pr.Title}. Thanks @{pr.User.Login}");
                     }
                 }
@@ -528,6 +526,7 @@ class Build : NukeBuild
         .DependsOn(GenerateReleaseNotes)
         .DependsOn(TagRelease)
         .DependsOn(Package)
+        .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch())
         .Executes(() =>
         {
             var newRelease = new NewRelease(GitRepository.IsOnMainOrMasterBranch() ? $"v{GitVersion.MajorMinorPatch}" : $"v{GitVersion.SemVer}")
@@ -544,7 +543,7 @@ class Build : NukeBuild
                 newRelease).Result;
             Serilog.Log.Information($"{release.Name} released !");
 
-            var artifactFile = GlobFiles(RootDirectory, "artifacts/**/*.zip").FirstOrDefault();
+            var artifactFile = RootDirectory.GlobFiles("artifacts/**/*.zip").FirstOrDefault();
             var artifact = File.OpenRead(artifactFile);
             var artifactInfo = new FileInfo(artifactFile);
             var assetUpload = new ReleaseAssetUpload()
@@ -619,23 +618,25 @@ class Build : NukeBuild
         .Executes(() =>
         {
             var stagingDirectory = ArtifactsDirectory / "staging";
-            EnsureCleanDirectory(stagingDirectory);
+            stagingDirectory.CreateOrCleanDirectory();
 
-            // Resources
-            Compress(RootDirectory / "resources", stagingDirectory / "resources.zip", f => (f.Name != "resources.zip.manifest"));
+            // Resources7
+            var resourcesDirectory = RootDirectory / "resources";
+            resourcesDirectory.CompressTo(stagingDirectory / "resources.zip", f => (f.Name != "resources.zip.manifest"));
 
             // Symbols
             var moduleAssemblyName = Solution.GetProject("Module").GetProperty("AssemblyName");
-            var symbolFiles = GlobFiles(RootDirectory, $"bin/Release/**/{moduleAssemblyName}.pdb");
-            Helpers.AddFilesToZip(stagingDirectory / "symbols.zip", symbolFiles.ToArray());
+            var symbolFiles = RootDirectory.GlobFiles($"bin/Release/**/{moduleAssemblyName}.pdb");
+            Helpers.AddFilesToZip(stagingDirectory / "symbols.zip", symbolFiles.ToList());
 
             // Install files
-            var installFiles = GlobFiles(RootDirectory, "LICENSE", "manifest.dnn", "ReleaseNotes.html");
+            var installFiles = RootDirectory.GlobFiles("LICENSE", "manifest.dnn", "ReleaseNotes.html");
             installFiles.ForEach(i => CopyFileToDirectory(i, stagingDirectory));
 
             // Libraries
-            var manifest = GlobFiles(RootDirectory, "*.dnn").FirstOrDefault();
-            var assemblies = GlobFiles(RootDirectory / "bin" / Configuration, "*.dll");
+            var manifest = RootDirectory.GlobFiles("*.dnn").FirstOrDefault();
+            var binDirectory = RootDirectory / "bin" / Configuration;
+            var assemblies = binDirectory.GlobFiles("*.dll");
             var manifestAssemblies = Helpers.GetAssembliesFromManifest(manifest);
             assemblies.ForEach(assembly =>
             {
@@ -655,7 +656,7 @@ class Build : NukeBuild
                 : GitVersion != null ? GitVersion.SemVer : "0.1.0";
             fileName += "_install.zip";
             ZipFile.CreateFromDirectory(stagingDirectory, ArtifactsDirectory / fileName);
-            DeleteDirectory(stagingDirectory);
+            stagingDirectory.DeleteDirectory();
 
             var artifact = ArtifactsDirectory / fileName;
             string hash;
@@ -687,6 +688,12 @@ class Build : NukeBuild
 
             ResetDocs();
 
+            if (FirstBuild)
+            {
+                Git($"add .", RootDirectory, logger: (outputType, message) => Serilog.Log.Information($"{message}"));
+                Git($"commit -m \"Commit generated files from first build.\"");
+            }
+
             Serilog.Log.Information("Packaging succeeded!");
         });
 
@@ -702,11 +709,13 @@ class Build : NukeBuild
                 .SetInfoTitle("$ext_companyname$ $ext_modulefriendlyname$")
                 .SetInfoVersion(GitVersion != null ? GitVersion.AssemblySemVer : "0.1.0")
                 .SetProcessArgumentConfigurator(a => a.Add("/DefaultUrlTemplate:{{controller}}/{{action}}"))
-                .SetOutput(swaggerFile));
+                .SetOutput(swaggerFile)
+                .SetNSwagRuntime("Net70"));
 
             NSwagTasks.NSwagOpenApiToTypeScriptClient(c => c
                 .SetInput(swaggerFile)
                 .SetOutput(ClientServicesDirectory / "services.ts")
+                .SetNSwagRuntime("Net70")
                 .SetProcessArgumentConfigurator(c => c
                     .Add("/Template:Fetch")
                     .Add("/GenerateClientClasses:True")
@@ -726,7 +735,7 @@ class Build : NukeBuild
         .Before(DocFx)
         .Executes(() =>
         {
-            EnsureCleanDirectory(DocsDirectory);
+            DocsDirectory.CreateOrCleanDirectory();
         });
 
     Target DocFx => _ => _
@@ -745,7 +754,7 @@ class Build : NukeBuild
                 .AppendLine("This section documents the APIs available in the backend (c#) code.")
                 .AppendLine()
                 .AppendLine("Please expand the namespaces to navigate through the APIs.");
-            WriteAllText(DocFxProjectDirectory / "api" / "index.md", sb.ToString());
+            (DocFxProjectDirectory / "api" / "index.md").WriteAllText(sb.ToString());
 
             NpmTasks.NpmInstall(s => s
                 .SetProcessWorkingDirectory(DocFxProjectDirectory));
@@ -782,6 +791,7 @@ class Build : NukeBuild
     Target DeployGeneratedFiles => _ => _
         .DependsOn(Docs)
         .DependsOn(Test)
+        .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnDevelopBranch() || GitRepository.IsOnReleaseBranch())
         .Executes(() =>
         {
             var gitHubClient = new GitHubClient(new ProductHeaderValue("Nuke"));
@@ -792,7 +802,7 @@ class Build : NukeBuild
             if (!repo.Fork)
             {
                 Git($"config --global user.name '{GitRepository.GetGitHubOwner()}'");
-                Git($"config --global user.email '{Helpers.GetManifestOwnerEmail(GlobFiles(RootDirectory / "*.dnn").FirstOrDefault())}'");
+                Git($"config --global user.email '{Helpers.GetManifestOwnerEmail(RootDirectory.GlobFiles("*.dnn").FirstOrDefault())}'");
                 Git($"remote set-url origin https://{GitRepository.GetGitHubOwner()}:{GitHubToken}@github.com/{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git");
                 Git("status");
                 Git("add docs -f");
@@ -800,7 +810,7 @@ class Build : NukeBuild
                 Git("add UnitTests/history -f");
                 Git("add .github/badges -f");
                 Git("status");
-                Git("commit --allow-empty -m \"Commit latest generated files\""); // We allow an empty commit in case the last change did not affect the site.
+                Git($"commit --allow-empty -m \"Commit latest generated files\""); // We allow an empty commit in case the last change did not affect the site.
                 Git("status");
                 Git("fetch origin");
                 Git($"pull origin {GitRepository.Branch}");
@@ -813,7 +823,7 @@ class Build : NukeBuild
         .DependsOn(CleanDocsFolder)
         .Executes(() => {
             var integrationTestsDocsDirectory = DocsDirectory / "integrationTests";
-            EnsureCleanDirectory(integrationTestsDocsDirectory);
+            integrationTestsDocsDirectory.CreateOrCleanDirectory();
             CopyDirectoryRecursively(
                 IntegrationTestsResultsDirectory,
                 integrationTestsDocsDirectory,
@@ -821,7 +831,7 @@ class Build : NukeBuild
                 FileExistsPolicy.Overwrite);
 
             var unitTestsDocsDirectory = DocsDirectory / "unitTests";
-            EnsureCleanDirectory(unitTestsDocsDirectory);
+            unitTestsDocsDirectory.CreateOrCleanDirectory();
             CopyDirectoryRecursively(
                 UnitTestsResultsDirectory,
                 unitTestsDocsDirectory,
@@ -836,9 +846,9 @@ class Build : NukeBuild
             var tempMdDirectory = WebProjectDirectory / "tempmd";
             var clientDocDirectory = DocFxProjectDirectory / "client";
 
-            EnsureCleanDirectory(tempDirectory);
-            EnsureCleanDirectory(tempMdDirectory);
-            EnsureCleanDirectory(clientDocDirectory);
+            tempDirectory.CreateOrCleanDirectory();
+            tempMdDirectory.CreateOrCleanDirectory();
+            clientDocDirectory.CreateOrCleanDirectory();
 
             NpmRun(s => s
                 .SetProcessWorkingDirectory(WebProjectDirectory)
@@ -853,11 +863,11 @@ class Build : NukeBuild
             // Create a table of content
             var toc = new StringBuilder();
 
-            var files = GlobFiles(clientDocDirectory, "**/*.md");
+            var files = clientDocDirectory.GlobFiles("**/*.md");
             files = files
-                .OrderBy(f => f.Split('.').Count())
-                .ThenBy(f => f)
-                .ToArray();
+                .OrderBy(f => f.Name.Split('.').Count())
+                .ThenBy(f => f.Name)
+                .ToList();
 
             files.ForEach(file =>
             {
@@ -867,15 +877,15 @@ class Build : NukeBuild
                     return;
                 }
 
-                var fileLines = ReadAllLines(file);
+                var fileLines = file.ReadAllLines();
                 var cleanName = fileLines[4];
                 cleanName = string.Join(' ', cleanName.Split(' ').Skip(1).ToArray());
                 toc.AppendLine($"{new String('#', fileInfo.Name.Split('.').Count() - 1)} [{cleanName}](./{fileInfo.Name})");
             });
-            WriteAllText(clientDocDirectory / "toc.md", toc.ToString());
+            (clientDocDirectory / "toc.md").WriteAllText(toc.ToString());
 
-            DeleteDirectory(tempDirectory);
-            DeleteDirectory(tempMdDirectory);
+            tempDirectory.DeleteDirectory();
+            tempMdDirectory.DeleteDirectory();
         });
 
     Target ComponentsDocs => _ => _
@@ -883,8 +893,9 @@ class Build : NukeBuild
         .Executes(() =>
         {
             var componentsDocsDirectory = DocFxProjectDirectory / "components";
-            EnsureCleanDirectory(componentsDocsDirectory);
-            var docFiles = GlobFiles(WebProjectDirectory / "src" / "components", "**/*.md");
+            componentsDocsDirectory.CreateOrCleanDirectory();
+            var componentsDirectory = WebProjectDirectory / "src" / "components";
+            var docFiles = componentsDirectory.GlobFiles("**/*.md");
             var toc = new StringBuilder();
             docFiles.ForEach(f => {
                 var fileInfo = new FileInfo(f);
@@ -897,12 +908,37 @@ class Build : NukeBuild
                 toc.AppendLine($"# [{fileInfo.Directory.Name}]({newFileName})");
             });
             toc.AppendLine();
-            WriteAllText(componentsDocsDirectory / "toc.md", toc.ToString());
+            (componentsDocsDirectory / "toc.md").WriteAllText(toc.ToString());
 
-            var index = GlobFiles(WebProjectDirectory, "readme.md").FirstOrDefault();
+            var index = WebProjectDirectory.GlobFiles("readme.md").FirstOrDefault();
             CopyFileToDirectory(index, componentsDocsDirectory, FileExistsPolicy.Overwrite, true);
             RenameFile(componentsDocsDirectory / "readme.md", "index.md", FileExistsPolicy.Overwrite);
         });
+
+    Target EnsureBootstrapingScriptsAreExecutable => _ => _
+    .OnlyWhenDynamic(() => !IsServerBuild)
+    .Executes(() =>
+    {
+        if (GitRepository is null)
+        {
+            FirstBuild = true;
+            Git($"init -b develop", RootDirectory);
+            Git($"add .", RootDirectory, logger: (outputType, message) => Serilog.Log.Information($"{message}"));
+            Git($"commit -m \"Initial Commit\"", RootDirectory);
+
+            var files = RootDirectory.GlobFiles("build.sh", "build.cmd");
+            foreach (var file in files)
+            {
+                var fileContent = file.ReadAllText();
+                fileContent = fileContent.Replace("\r\n", "\n");
+                file.WriteAllText(fileContent);
+                Git($"update-index --chmod=+x {file.Name}", RootDirectory);
+            }
+
+            Git($"add .", RootDirectory, logger: (outputType, message) => Serilog.Log.Information($"{message}"));
+            Git($"commit -m \"Made build bootstrapping scripts executable", RootDirectory);
+        }
+    });
 
     private void ResetDocs()
     {

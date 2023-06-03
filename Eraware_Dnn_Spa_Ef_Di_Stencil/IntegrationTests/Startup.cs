@@ -1,5 +1,5 @@
-﻿[assembly: Xunit.TestFramework("UnitTests.Startup", "UnitTests")]
-namespace UnitTests
+﻿[assembly: Xunit.TestFramework("IntegrationTests.Startup", "IntegrationTests")]
+namespace IntegrationTests
 {
     using Xunit.Abstractions;
     using Xunit.Sdk;

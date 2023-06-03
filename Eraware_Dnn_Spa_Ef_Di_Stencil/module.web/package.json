@@ -16,7 +16,8 @@
     "loader/"
   ],
   "scripts": {
-    "build": "eslint --fix --ext .ts --ext .tsx --ext .js --ignore-pattern **/*.d.ts ./src && stencil build --docs",
+    "lint": "eslint src/**/*{.ts,.tsx}",
+    "build": "npm run lint && stencil build --docs",
     "start": "stencil build --dev --watch --serve --no-open",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
@@ -24,12 +25,12 @@
     "tsdoc": "tsc ./src/services/services.ts --declaration --emitDeclarationOnly --target es2017 --moduleResolution nodenext && api-extractor run --local && api-documenter markdown -i temp -o tempmd"
   },
   "devDependencies": {
-    "@dnncommunity/dnn-elements": "^0.15.0",
+    "@dnncommunity/dnn-elements": "^0.18.0",
     "@microsoft/api-documenter": "^7.13.49",
     "@microsoft/api-extractor": "^7.18.9",
-    "@stencil/core": "^2.3.0",
-    "@stencil/eslint-plugin": "^0.4.0",
-    "@stencil/sass": "^1.1.1",
+    "@stencil-community/eslint-plugin": "^0.5.0",
+    "@stencil/core": "^3.2.2",
+    "@stencil/sass": "^3.0.2",
     "@stencil/store": "^2.0.0",
     "eslint-plugin-tsdoc": "^0.2.11"
   },

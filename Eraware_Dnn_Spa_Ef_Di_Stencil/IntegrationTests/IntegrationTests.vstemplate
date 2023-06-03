@@ -12,6 +12,7 @@
     <DefaultName>IntegrationTests</DefaultName>
     <ProvideDefaultName>true</ProvideDefaultName>
     <Hidden>true</Hidden>
+	<CreateInPlace>true</CreateInPlace>
   </TemplateData>
   <TemplateContent>
     <Project File="ProjectTemplate.csproj" TargetFileName="IntegrationTests.csproj">
@@ -20,6 +21,7 @@
         <ProjectItem ReplaceParameters="true">ServiceRouteMapperTests.cs</ProjectItem>
       </Folder>
       <ProjectItem ReplaceParameters="true">FakeDataContext.cs</ProjectItem>
+	  <ProjectItem>Startup.cs</ProjectItem>
       <ProjectItem>App.config</ProjectItem>
     </Project>
   </TemplateContent>

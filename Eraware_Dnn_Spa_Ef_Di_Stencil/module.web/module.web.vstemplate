@@ -57,6 +57,7 @@
         <ProjectItem>index.ts</ProjectItem>
       </Folder>
       <ProjectItem>.editorconfig</ProjectItem>
+      <ProjectItem>.eslintignore</ProjectItem>
       <ProjectItem>.eslintrc.json</ProjectItem>
       <ProjectItem>.gitignore</ProjectItem>
       <ProjectItem>api-extractor.json</ProjectItem>
