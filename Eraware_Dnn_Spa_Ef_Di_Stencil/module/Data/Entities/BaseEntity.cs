@@ -14,15 +14,15 @@ namespace $ext_rootnamespace$.Data.Entities
         public int Id { get; set; }
 
         /// <inheritdoc/>
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
 
         /// <inheritdoc/>
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; }
 
         /// <inheritdoc/>
-        public int CreatedByUserId { get; set; } = -1;
+        public int CreatedByUserId { get; set; }
 
         /// <inheritdoc/>
-        public int UpdatedByUserId { get; set; } = -1;
+        public int UpdatedByUserId { get; set; }
     }
 }
