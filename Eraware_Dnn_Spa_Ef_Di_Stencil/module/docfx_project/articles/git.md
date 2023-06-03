@@ -6,9 +6,13 @@ To gain the full benefits of this module template it is recommended to set it up
 > Git and Github are 2 different things. Git is a version control system that works locally and supports having remotes. Github is one of these possible remotes.
 ## Create a git repository
 
+## Push and create new repository
+
 > [!TIP]
 > You can do the next steps using any git client (even the command line), however in this tutorial we'll be using [Github Extensions for VisualStudio](https://visualstudio.github.com/). If you did not select this option when you installed VisualStudio you can download this extension at the link above.
-Commit your module to Github by clicking the `Add to Source Control`button in the lower right corner of VisualStudio and complete the wizard that opens.
+Create you repository by heading to View > Git Changes, the Git Changes side bar menu will appear and you can press on `Push` to have your repository created. 
+
+![Push Selection](../images/Push-Selection.png)
 
 > [!NOTE]
 > You may be asked to login if it's the first time you are using Github integration in Visual Studio. If you are asked to login, it is recommended to create a [Personal Access Token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) instead of using your login/password. Also the Github automations support both private and public repositories.
