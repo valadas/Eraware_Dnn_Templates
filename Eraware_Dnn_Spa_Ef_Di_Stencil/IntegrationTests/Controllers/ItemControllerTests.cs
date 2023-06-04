@@ -2,9 +2,11 @@
 using $ext_rootnamespace$.Data.Entities;
 using $ext_rootnamespace$.Data.Repositories;
 using $ext_rootnamespace$.DTO;
+using $ext_rootnamespace$.Providers;
 using $ext_rootnamespace$.Services;
 using $ext_rootnamespace$.ViewModels;
 using DotNetNuke.Entities.Users;
+using Moq;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +17,7 @@ namespace IntegrationTests.Controllers
 {
     public class ItemControllerTests : FakeDataContext
     {
+        private readonly Mock<IDateTimeProvider> dateTimeProvider;
         private readonly IRepository<Item> itemRepository;
         private readonly IItemService itemService;
         private readonly ItemController itemController;
@@ -22,7 +25,9 @@ namespace IntegrationTests.Controllers
 
         public ItemControllerTests()
         {
-            this.itemRepository = new Repository<Item>(this.dataContext);
+            this.dateTimeProvider = new Mock<IDateTimeProvider>();
+            this.dateTimeProvider.Setup(p => p.GetUtcNow()).Returns(new DateTime(2022, 1, 1));
+            this.itemRepository = new Repository<Item>(this.dataContext, this.dateTimeProvider.Object);
             this.itemService = new ItemService(this.itemRepository);
             this.itemController = new FakeItemController(this.itemService);
         }

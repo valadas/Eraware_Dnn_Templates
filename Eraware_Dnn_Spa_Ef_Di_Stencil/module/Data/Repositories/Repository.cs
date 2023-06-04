@@ -1,8 +1,8 @@
 ﻿// MIT License
 // Copyright $ext_companyname$
 
-using $ext_rootnamespace$.Data.Repositories;
 using $ext_rootnamespace$.Data.Entities;
+using $ext_rootnamespace$.Providers;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -20,16 +20,21 @@ namespace $ext_rootnamespace$.Data.Repositories
         where T : BaseEntity
     {
         private readonly ModuleDbContext context;
-        private DbSet<T> entities;
+        private readonly DbSet<T> entities;
+        private readonly IDateTimeProvider dateTimeProvider;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Repository{TEntity}"/> class.
-        /// </summary>
-        /// <param name="context">The module database context.</param>
-        public Repository(ModuleDbContext context)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Repository{TEntity}"/> class.
+    /// </summary>
+    /// <param name="context">The module database context.</param>
+    /// <param name="dateTimeProvider">Provides date and time information.</param>
+    public Repository(
+        ModuleDbContext context,
+        IDateTimeProvider dateTimeProvider)
         {
             this.context = context;
             this.entities = context.Set<T>();
+            this.dateTimeProvider = dateTimeProvider;
         }
 
         /// <inheritdoc/>
@@ -102,7 +107,9 @@ namespace $ext_rootnamespace$.Data.Repositories
                 throw new ArgumentNullException("entity");
             }
 
+            entity.CreatedAt = this.dateTimeProvider.GetUtcNow();
             entity.CreatedByUserId = userId;
+            entity.UpdatedAt = this.dateTimeProvider.GetUtcNow();
             entity.UpdatedByUserId = userId;
             this.entities.Add(entity);
             await this.context.SaveChangesAsync();
@@ -117,7 +124,7 @@ namespace $ext_rootnamespace$.Data.Repositories
                 throw new ArgumentNullException("entity");
             }
 
-            entity.UpdatedAt = DateTime.UtcNow;
+            entity.UpdatedAt = this.dateTimeProvider.GetUtcNow();
             entity.UpdatedByUserId = userId;
             await this.context.SaveChangesAsync();
         }
