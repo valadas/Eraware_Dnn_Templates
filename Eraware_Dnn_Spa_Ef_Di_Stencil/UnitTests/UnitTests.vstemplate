@@ -39,13 +39,17 @@
         </Folder>
         <ProjectItem ReplaceParameters="true">ModuleDbContextTests.cs</ProjectItem>
       </Folder>
+      <Folder Name="Providers">
+		<ProjectItem ReplaceParameters="true">DateTimeProviderTests.cs</ProjectItem>
+	  </Folder>
       <Folder Name="Services">
         <ProjectItem ReplaceParameters="true">ItemServiceTests.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">LoggingServiceTests.cs</ProjectItem>
       </Folder>
       <ProjectItem ReplaceParameters="true">FakeDatacontext.cs</ProjectItem>
 	  <ProjectItem>Startup.cs</ProjectItem>
-      <ProjectItem ReplaceParameters="false">App.config</ProjectItem>
+      <ProjectItem ReplaceParameters="false">app.config</ProjectItem>
+	  <ProjectItem ReplaceParameters="true">StartupTests.cs</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>

@@ -86,7 +86,7 @@
     <Content Include="IntegrationTests\ProjectTemplate.csproj" />
     <Content Include="module\docfx_project\.gitignore" />
     <Content Include="module\docfx_project\adjust-toc-namespaces.js" />
-    <None Include="IntegrationTests\App.Config" />
+    <None Include="IntegrationTests\app.Config" />
     <None Include="module.web\.eslintignore" />
     <None Include="module.web\api-extractor.json" />
     <None Include="module.web\src\components\my-component\usage\javascript.md" />
@@ -144,7 +144,7 @@
     <Content Include="module.web\module-icon.ico" />
     <None Include="module.web\src\components\my-component\my-component.scss" />
     <Content Include="module.web\src\index.html" />
-    <None Include="UnitTests\App.config" />
+    <None Include="UnitTests\app.config" />
     <None Include="module\.gitignore" />
     <Content Include="module\manifest.dnn" />
     <Content Include="build\.editorconfig">
@@ -158,7 +158,7 @@
     <None Include="module.web\readme.md" />
     <None Include="module.web\src\components\my-component\readme.md" />
     <None Include="module.web\tsconfig.json" />
-    <None Include="module\App.Config" />
+    <None Include="module\app.Config" />
     <None Include="module\build.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -190,6 +190,10 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="UnitTests\StartupTests.cs" />
+    <None Include="UnitTests\Providers\DateTimeProviderTests.cs" />
+    <None Include="module\Providers\IDateTimeProvider.cs" />
+    <None Include="module\Providers\DateTimeProvider.cs" />
     <None Include="IntegrationTests\Startup.cs" />
     <None Include="UnitTests\Startup.cs" />
     <None Include="UnitTests\Common\Extensions\IQueryableExtensionsTests.cs" />

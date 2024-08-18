@@ -22,7 +22,7 @@
       </Folder>
       <ProjectItem ReplaceParameters="true">FakeDataContext.cs</ProjectItem>
 	  <ProjectItem>Startup.cs</ProjectItem>
-      <ProjectItem>App.config</ProjectItem>
+      <ProjectItem>app.config</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>

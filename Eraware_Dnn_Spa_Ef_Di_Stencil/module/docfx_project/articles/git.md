@@ -6,9 +6,13 @@ To gain the full benefits of this module template it is recommended to set it up
 > Git and Github are 2 different things. Git is a version control system that works locally and supports having remotes. Github is one of these possible remotes.
 ## Create a git repository
 
+## Push and create new repository
+
 > [!TIP]
 > You can do the next steps using any git client (even the command line), however in this tutorial we'll be using [Github Extensions for VisualStudio](https://visualstudio.github.com/). If you did not select this option when you installed VisualStudio you can download this extension at the link above.
-Commit your module to Github by clicking the `Add to Source Control`button in the lower right corner of VisualStudio and complete the wizard that opens.
+Create you repository by heading to View > Git Changes, the Git Changes side bar menu will appear and you can press on `Push` to have your repository created. 
+
+![Push Selection](../images/Push-Selection.png)
 
 > [!NOTE]
 > You may be asked to login if it's the first time you are using Github integration in Visual Studio. If you are asked to login, it is recommended to create a [Personal Access Token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) instead of using your login/password. Also the Github automations support both private and public repositories.
@@ -19,7 +23,7 @@ Commit your module to Github by clicking the `Add to Source Control`button in th
 In a few minutes if you navigate to your repository on Github, you will notice there is a draft release for v0.1.0. It has no release notes yet but it does have the fully packaged module ready for production install.
 
 > [!TIP]
-> This is a draft an the public won't see it as an available release yet. Since this is probably not ready for production, you can delete the release and the tag if you don't want to keep it (and reserve the v0.1.0 version from future use). If you do want to keep it, you can edit it and publish it. Each push to the `main` or `master` branch will trigger a draf release that is non-beta, this is how we will do releases in the future.
+> This is a draft and the public won't see it as an available release yet. Since this is probably not ready for production, you can delete the release and the tag if you don't want to keep it (and reserve the v0.1.0 version from future use). If you do want to keep it, you can edit it and publish it. Each push to the `main` or `master` branch will trigger a draf release that is non-beta, this is how we will do releases in the future.
 ## Automatic Versioning
 
 The template uses [GitVersion](https://github.com/GitTools/GitVersion) and the [GitFlow](https://gitversion.net/docs/git-branching-strategies/gitflow) branching strategy in order to manage versions and releases.

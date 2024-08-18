@@ -104,6 +104,10 @@
       <Folder Name="Properties" TargetFolderName="Properties">
         <ProjectItem TargetFileName="AssemblyInfo.cs" ReplaceParameters="true">AssemblyInfo.cs</ProjectItem>
       </Folder>
+	  <Folder Name="Providers" TargetFolderName="Providers">
+		  <ProjectItem ReplaceParameters="true">DateTimeProvider.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">IDateTimeProvider.cs</ProjectItem>
+	  </Folder>
       <Folder Name="resources">
         <Folder Name="App_LocalResources" TargetFolderName="App_LocalResources">
           <ProjectItem>ModelValidation.resx</ProjectItem>
@@ -137,7 +141,7 @@
       </Folder>
       <ProjectItem>.gitignore</ProjectItem>
       <ProjectItem>.editorconfig</ProjectItem>
-      <ProjectItem ReplaceParameters="true">App.Config</ProjectItem>
+      <ProjectItem ReplaceParameters="true">app.Config</ProjectItem>
       <ProjectItem>build.cmd</ProjectItem>
       <ProjectItem>build.ps1</ProjectItem>
       <ProjectItem>build.sh</ProjectItem>
