@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<RuntimeIdentifier>win</RuntimeIdentifier>
 		<ProjectGuid>{745843B0-F86F-4CE1-BE21-E6FBCFE167DC}</ProjectGuid>
-		<TargetFramework>net472</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 		<AssemblyTitle>Unit Tests</AssemblyTitle>
 		<Product>UnitTests</Product>
 		<Copyright>Copyright ©  2023</Copyright>
