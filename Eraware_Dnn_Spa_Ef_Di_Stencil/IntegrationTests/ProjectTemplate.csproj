@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<RuntimeIdentifier>win</RuntimeIdentifier>
 		<ProjectGuid>{71A94484-BE72-4864-AEC0-B42E766313BF}</ProjectGuid>
-		<TargetFramework>net472</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 		<AssemblyTitle>IntegrationTests</AssemblyTitle>
 		<Product>IntegrationTests</Product>
 		<Copyright>Copyright ©  2023</Copyright>
