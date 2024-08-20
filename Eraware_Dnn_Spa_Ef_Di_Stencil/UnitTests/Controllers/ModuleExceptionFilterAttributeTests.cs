@@ -1,5 +1,7 @@
 ﻿using DotNetNuke.Web.Api;
+using Moq;
 using $ext_rootnamespace$.Controllers;
+using DotNetNuke.Instrumentation;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -16,6 +18,10 @@ namespace UnitTests.Controllers
         public static void NoException_DoesNothing()
         {
             var attribute = new ModuleExceptionFilterAttribute();
+            var loggerSource = new Mock<ILoggerSource>();
+            var log = new Mock<ILog>();
+            loggerSource.Setup(l => l.GetLogger(It.IsAny<string>())).Returns(log.Object);
+            attribute.LoggerSource = loggerSource.Object;
             var actionContext = new HttpActionContext
             {
                 Response = new HttpResponseMessage(HttpStatusCode.OK)
@@ -33,6 +39,10 @@ namespace UnitTests.Controllers
             Exception exception, HttpStatusCode expectedStatusCode)
         {
             var attribute = new ModuleExceptionFilterAttribute();
+            var loggerSource = new Mock<ILoggerSource>();
+            var log = new Mock<ILog>();
+            loggerSource.Setup(l => l.GetLogger(It.IsAny<string>())).Returns(log.Object);
+            attribute.LoggerSource = loggerSource.Object;
             var actionContext = new HttpActionContext
             {
                 Response = new HttpResponseMessage(HttpStatusCode.OK),
@@ -49,6 +59,10 @@ namespace UnitTests.Controllers
         public static void SystemException_DoesNotExposeDetails()
         {
             var attribute = new ModuleExceptionFilterAttribute();
+            var loggerSource = new Mock<ILoggerSource>();
+            var log = new Mock<ILog>();
+            loggerSource.Setup(l => l.GetLogger(It.IsAny<string>())).Returns(log.Object);
+            attribute.LoggerSource = loggerSource.Object;
             var actionContext = new HttpActionContext
             {
                 Response = new HttpResponseMessage(HttpStatusCode.OK),

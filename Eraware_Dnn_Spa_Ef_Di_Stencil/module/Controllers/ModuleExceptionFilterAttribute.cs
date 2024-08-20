@@ -1,11 +1,13 @@
 ﻿// MIT License
 // Copyright $ext_companyname$
 
+using DotNetNuke.DependencyInjection;
 using DotNetNuke.Instrumentation;
 using $ext_rootnamespace$.Services;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Web.Http.Filters;
 
 namespace $ext_rootnamespace$.Controllers
@@ -15,6 +17,12 @@ namespace $ext_rootnamespace$.Controllers
     /// </summary>
     internal class ModuleExceptionFilterAttribute : ExceptionFilterAttribute
     {
+        /// <summary>
+        /// Gets or sets the logger source.
+        /// </summary>
+        [DotNetNuke.DependencyInjection.Dependency]
+        public ILoggerSource LoggerSource { get; set; }
+        
         /// <inheritdoc/>
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
@@ -25,9 +33,8 @@ namespace $ext_rootnamespace$.Controllers
                 return;
             }
 
-            // TODO: When 9.9.0 comes out, this can be replaced with property injection.
-            ILoggingService logger = new LoggingService();
-            logger.LogError(exception.Message, exception);
+            var log = this.LoggerSource.GetLogger(nameof(ModuleExceptionFilterAttribute));
+            log.Error(exception.Message, exception);
 
             if (exception is ArgumentException)
             {

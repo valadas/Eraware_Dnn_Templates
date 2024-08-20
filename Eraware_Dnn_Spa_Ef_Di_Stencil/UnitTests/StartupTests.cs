@@ -2,6 +2,7 @@
 using $ext_rootnamespace$.Data.Repositories;
 using $ext_rootnamespace$.Providers;
 using $ext_rootnamespace$.Services;
+using DotNetNuke.Instrumentation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace UnitTests
                 typeof(ModuleDbContext),
                 typeof(IRepository<>),
                 typeof(IItemService),
-                typeof(ILoggingService),
+                typeof(ILoggerSource),
                 typeof(ILocalizationService),
                 typeof(IDateTimeProvider),
             };

@@ -201,10 +201,7 @@
     <None Include="UnitTests\Controllers\LocalizationControllerTests.cs" />
     <None Include="module\Services\LocalizationService.cs" />
     <None Include="module\Services\ILocalizationService.cs" />
-    <None Include="module\Services\ILoggingService.cs" />
-    <None Include="module\Services\LoggingService.cs" />
     <None Include="UnitTests\Controllers\ModuleExceptionFilterAttributeTests.cs" />
-    <None Include="UnitTests\Services\LoggingServiceTests.cs" />
     <None Include="UnitTests\Controllers\ValidateModelAttributeTests.cs" />
     <None Include="UnitTests\Controllers\ServiceRouteMapperTests.cs" />
     <None Include="UnitTests\Controllers\ModuleApiControllerTests.cs" />

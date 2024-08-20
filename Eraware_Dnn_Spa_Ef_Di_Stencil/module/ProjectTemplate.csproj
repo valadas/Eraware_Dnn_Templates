@@ -73,8 +73,6 @@
     <Compile Include="Controllers\ServiceRouteMapper.cs" />
 	<Compile Include="Providers\DateTimeProvider.cs" />
 	<Compile Include="Providers\IDateTimeProvider.cs" />
-    <Compile Include="Services\ILoggingService.cs" />
-    <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\IItemService.cs" />
     <Compile Include="Services\ILocalizationService.cs" />
     <Compile Include="Services\ItemService.cs" />
