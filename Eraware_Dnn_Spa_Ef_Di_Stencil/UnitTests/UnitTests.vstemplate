@@ -44,7 +44,6 @@
 	  </Folder>
       <Folder Name="Services">
         <ProjectItem ReplaceParameters="true">ItemServiceTests.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">LoggingServiceTests.cs</ProjectItem>
       </Folder>
       <ProjectItem ReplaceParameters="true">FakeDatacontext.cs</ProjectItem>
 	  <ProjectItem>Startup.cs</ProjectItem>

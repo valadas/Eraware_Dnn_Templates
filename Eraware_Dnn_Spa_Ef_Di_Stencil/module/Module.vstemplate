@@ -22,7 +22,7 @@
       </Folder>
       <Folder Name=".github" TargetFolderName=".github">
         <ProjectItem TargetFileName="dependabot.yml">dependabot.yml</ProjectItem>
-        <ProjectItem TargetFileName="mergeable.yml">mergeable.yml</ProjectItem>s
+        <ProjectItem TargetFileName="mergeable.yml">mergeable.yml</ProjectItem>
       </Folder>
       <Folder Name="Common" TargetFolderName="Common">
         <ProjectItem ReplaceParameters="true">Globals.cs</ProjectItem>
@@ -132,8 +132,6 @@
         <ProjectItem ReplaceParameters="true">ServiceRouteMapper.cs</ProjectItem>
       </Folder>
       <Folder Name="Services">
-        <ProjectItem ReplaceParameters="true">ILoggingService.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">LoggingService.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">IItemService.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ILocalizationService.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ItemService.cs</ProjectItem>
