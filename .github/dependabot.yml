@@ -5,8 +5,8 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/module.web" # Location of package manifests
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
       interval: "monthly"
   - package-ecosystem: "nuget"
@@ -14,7 +14,7 @@ updates:
     schedule:
       interval: "monthly"
   - package-ecosystem: "nuget"
-    directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/module"
+    directory: "/"
     schedule:
       interval: "monthly"
     ignore:
@@ -23,15 +23,13 @@ updates:
       - dependency-name: "Microsoft.Extensions.DependencyInjection"
       - dependency-name: "Microsoft.Extensions.DependencyInjection.Abstractions"
       - dependency-name: "Newtonsoft.Json"
-  - package-ecosystem: "nuget"
-    directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/UnitTests"
-    schedule:
-      interval: "monthly"
-    ignore:
-      - dependency-name: "Newtonsoft.Json"
-  - package-ecosystem: "nuget"
-    directory: "/Eraware_Dnn_Spa_Ef_Di_Stencil/IntegrationTests"
-    schedule:
-      interval: "monthly"
-    ignore:
-      - dependency-name: "Newtonsoft.Json"
+    groups:
+      xunit:
+        patterns:
+          - "xunit*"
+      dnn:
+        patterns:
+          - "DotNetNuke*"
+      nswag:
+        patterns:
+          - "NSwag*"
