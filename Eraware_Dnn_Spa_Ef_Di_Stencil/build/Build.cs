@@ -724,12 +724,12 @@ class Build : NukeBuild
                 .SetInfoVersion(GitVersion != null ? GitVersion.AssemblySemVer : "0.1.0")
                 .SetProcessArgumentConfigurator(a => a.Add("/DefaultUrlTemplate:{{controller}}/{{action}}"))
                 .SetOutput(swaggerFile)
-                .SetNSwagRuntime("Net70"));
+                .SetNSwagRuntime("Net80"));
 
             NSwagTasks.NSwagOpenApiToTypeScriptClient(c => c
                 .SetInput(swaggerFile)
                 .SetOutput(ClientServicesDirectory / "services.ts")
-                .SetNSwagRuntime("Net70")
+                .SetNSwagRuntime("Net80")
                 .SetProcessArgumentConfigurator(c => c
                     .Add("/Template:Fetch")
                     .Add("/GenerateClientClasses:True")
