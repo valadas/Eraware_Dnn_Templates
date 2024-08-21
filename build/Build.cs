@@ -22,7 +22,7 @@ using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
     GitHubActionsImage.WindowsLatest,
     OnPullRequestBranches = new[] { "master", "main", "develop", "development", "release/*" },
     OnPushBranches = new[] { "master", "develop", "release/*" },
-    InvokedTargets = new[] { nameof(Compile) },
+    InvokedTargets = new[] { nameof(CI) },
     FetchDepth = 0,
     CacheKeyFiles = new string[0]
     )]
@@ -42,6 +42,7 @@ class Build : NukeBuild
     [Solution] readonly Solution Solution;
 
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+    AbsolutePath TemplateProjectDirectory => RootDirectory / "Eraware_Dnn_Templates";
 
     Target Clean => _ => _
         .Before(Restore)
@@ -64,7 +65,6 @@ class Build : NukeBuild
 
     Target Compile => _ => _
         .DependsOn(Restore)
-        .Produces(ArtifactsDirectory / "*.vsix")
         .Executes(() =>
         {
             MSBuild(s => s
@@ -72,4 +72,12 @@ class Build : NukeBuild
                 .SetConfiguration(Configuration));
         });
 
+    Target CI => _ => _
+        .DependsOn(Compile)
+        .Produces(ArtifactsDirectory / "*.vsix")
+        .Executes(() =>
+        {
+            var vsix = TemplateProjectDirectory / "bin" / Configuration / "Eraware_Dnn_Templates.vsix";
+            CopyFileToDirectory(vsix, ArtifactsDirectory, FileExistsPolicy.Overwrite);
+        });
 }
