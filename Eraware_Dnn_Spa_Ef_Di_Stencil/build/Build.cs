@@ -723,9 +723,10 @@ class Build : NukeBuild
             var swaggerDir = DocsDirectory / "rest";
             swaggerDir.CreateOrCleanDirectory();
             var swaggerFile = DocsDirectory / "rest" / "rest.json";
-            var assembly = RootDirectory / "bin" / Configuration / $"{ModuleName}.dll";
+            var assembly = RootDirectory / "bin" / Configuration / $"{moduleName}.dll";
             var version = GitVersion != null ? GitVersion.AssemblySemVer : "0.1.0";
-            WebApiToOpenApiReflector($@"{assembly} --title "$ext_companyname$ $ext_modulefriendlyname$"" --info-version {version} --default-url-template {{controller}}/{{action}} --output {swaggerFile}");
+            var title = "$ext_companyname$ $ext_modulefriendlyname$";
+            WebApiToOpenApiReflector($@"{assembly} --title {title} --info-version {version} --default-url-template {{controller}}/{{action}} --output {swaggerFile}");
 
             NSwagTasks.NSwagOpenApiToTypeScriptClient(c => c
                 .SetInput(swaggerFile)
