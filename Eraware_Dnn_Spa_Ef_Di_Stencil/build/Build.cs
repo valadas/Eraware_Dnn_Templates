@@ -48,7 +48,8 @@ using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
     OnPullRequestBranches = new[] { "develop", "main", "master", "release/*" },
     OnPushBranches = new[] { "main", "master", "develop", "release/*" },
     InvokedTargets = new[] { nameof(Package), nameof(DeployGeneratedFiles), nameof(Release) },
-    FetchDepth = 0
+    FetchDepth = 0,
+    CacheKeyFiles = new string[] { }
     )]
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild
