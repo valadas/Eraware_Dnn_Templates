@@ -32,10 +32,10 @@
 		<ProjectReference Include="..\Module.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="coverlet.collector" Version="6.0.0">
+		<PackageReference Include="coverlet.collector" Version="6.0.2">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="coverlet.msbuild" Version="6.0.0">
+		<PackageReference Include="coverlet.msbuild" Version="6.0.2">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="DotNetNuke.Abstractions" Version="9.13.4" />

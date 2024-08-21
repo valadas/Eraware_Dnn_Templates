@@ -29,3 +29,6 @@ updates:
       nswag:
         patterns:
           - "NSwag*"
+      coverlet:
+        patterns:
+          - "coverlet*"
