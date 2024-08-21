@@ -19,7 +19,7 @@ using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 
 [GitHubActions(
     "Build",
-    GitHubActionsImage.UbuntuLatest,
+    GitHubActionsImage.WindowsLatest,
     OnPullRequestBranches = new[] { "master", "main", "develop", "development", "release/*" },
     OnPushBranches = new[] { "master", "develop", "release/*" },
     InvokedTargets = new[] { nameof(Compile) },
