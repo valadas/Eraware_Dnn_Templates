@@ -32,7 +32,7 @@
     "@stencil/core": "^4.20.0",
     "@stencil/sass": "^3.0.2",
     "@stencil/store": "^2.0.0",
-    "eslint-plugin-tsdoc": "^0.2.11"
+    "eslint-plugin-tsdoc": "^0.3.0"
   },
   "license": "MIT"
 }
