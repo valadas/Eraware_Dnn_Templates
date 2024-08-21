@@ -144,8 +144,21 @@ class Build : NukeBuild
                 .SetProjectFile(Solution.GetProject("IntegrationTests")));
         });
 
+    // TODO: This is a workaround for https://github.com/dnnsoftware/Dnn.Platform/issues/6024 and can be removed once a new release with that fix comes out.
+    Target AdjustCasing => _ => _
+        .After(Compile)
+        .Executes(() =>
+        {
+            if (!IsWin)
+            {
+                var log4netFiles = RootDirectory.GlobFiles("**/DotNetNuke.Log4Net.dll");
+                log4netFiles.ForEach(f => f.Rename("DotNetNuke.log4net.dll"));
+            }
+        });
+
     Target UnitTests => _ => _
         .DependsOn(Compile)
+        .DependsOn(AdjustCasing)
         .Executes(() =>
         {
             MSBuild(_ => _
@@ -188,6 +201,7 @@ class Build : NukeBuild
 
     Target IntegrationTests => _ => _
         .DependsOn(Compile)
+        .DependsOn(AdjustCasing)
         .Executes(() =>
         {
             MSBuild(_ => _
