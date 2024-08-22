@@ -6,10 +6,8 @@ namespace $ext_rootnamespace$.Controllers
     using DotNetNuke.Security;
     using DotNetNuke.Web.Api;
     using NSwag.Annotations;
-    using $ext_rootnamespace$.DTO;
-    using $ext_rootnamespace$.Services;
-    using $ext_rootnamespace$.ViewModels;
-    using System;
+    using $ext_rootnamespace$.Services.Items;
+    using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
     using System.Web.Http;
@@ -43,7 +41,9 @@ namespace $ext_rootnamespace$.Controllers
         public async Task<IHttpActionResult> CreateItem(CreateItemDTO item)
         {
             var result = await this.itemService.CreateItemAsync(item, this.UserInfo.UserID);
-            return this.Ok(result);
+            return result.Match<IHttpActionResult>(
+                success => this.Ok(success.Value),
+                error => this.BadRequest(string.Join(System.Environment.NewLine, error.Value.Select(e => e.ErrorMessage))));
         }
 
         /// <summary>
@@ -101,8 +101,10 @@ namespace $ext_rootnamespace$.Controllers
         [SwaggerResponse(HttpStatusCode.OK, null, Description = "OK")]
         public async Task<IHttpActionResult> UpdateItem(UpdateItemDTO item)
         {
-            await this.itemService.UpdateItemAsync(item, this.UserInfo.UserID);
-            return this.Ok();
-        }
+            var result = await this.itemService.UpdateItemAsync(item, this.UserInfo.UserID);
+            return result.Match<IHttpActionResult>(
+                success => this.Ok(),
+                error => this.BadRequest(string.Join(System.Environment.NewLine, error.Value.Select(e => e.ErrorMessage))));
+    }
     }
 }

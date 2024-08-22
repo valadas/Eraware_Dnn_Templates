@@ -2,10 +2,9 @@
 // Copyright $ext_companyname$
 
 using $ext_rootnamespace$.Data.Entities;
-using $ext_rootnamespace$.DTO;
 using System.ComponentModel.DataAnnotations;
 
-namespace $ext_rootnamespace$.ViewModels
+namespace $ext_rootnamespace$.Services.Items
 {
     /// <summary>
     /// Represents the basic information about an item.

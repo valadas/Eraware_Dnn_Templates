@@ -1,7 +1,6 @@
 ﻿using DotNetNuke.Entities.Users;
 using $ext_rootnamespace$.Controllers;
-using $ext_rootnamespace$.Services;
-using $ext_rootnamespace$.ViewModels;
+using $ext_rootnamespace$.Services.Localization;
 using Moq;
 using System.Web.Http.Results;
 using Xunit;

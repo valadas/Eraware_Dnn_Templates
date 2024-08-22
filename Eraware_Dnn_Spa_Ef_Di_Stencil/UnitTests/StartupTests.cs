@@ -1,7 +1,9 @@
 ﻿using $ext_rootnamespace$.Data;
 using $ext_rootnamespace$.Data.Repositories;
 using $ext_rootnamespace$.Providers;
-using $ext_rootnamespace$.Services;
+using $ext_rootnamespace$.Services.Items;
+using $ext_rootnamespace$.Services.Localization;
+using FluentValidation;
 using DotNetNuke.Instrumentation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -27,6 +29,8 @@ namespace UnitTests
                 typeof(ILoggerSource),
                 typeof(ILocalizationService),
                 typeof(IDateTimeProvider),
+                typeof(IValidator<CreateItemDTO>),
+                typeof(IValidator<UpdateItemDTO>),
             };
 
             // Act

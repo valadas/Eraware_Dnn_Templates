@@ -26,9 +26,7 @@
         <ProjectItem ReplaceParameters="true">ItemControllerTests.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">LocalizationControllerTests.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ModuleApiControllerTests.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">ModuleExceptionFilterAttributeTests.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ServiceRouteMapperTests.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">ValidateModelAttributeTests.cs</ProjectItem>
       </Folder>
       <Folder Name="Data">
         <Folder Name="Entities">
@@ -43,7 +41,11 @@
 		<ProjectItem ReplaceParameters="true">DateTimeProviderTests.cs</ProjectItem>
 	  </Folder>
       <Folder Name="Services">
-        <ProjectItem ReplaceParameters="true">ItemServiceTests.cs</ProjectItem>
+		<Folder Name="Items">
+          <ProjectItem ReplaceParameters="true">ItemServiceTests.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">CreateItemDtoValidatorTests.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">UpdateItemDtoValidatorTests.cs</ProjectItem>
+		</Folder>
       </Folder>
       <ProjectItem ReplaceParameters="true">FakeDatacontext.cs</ProjectItem>
 	  <ProjectItem>Startup.cs</ProjectItem>

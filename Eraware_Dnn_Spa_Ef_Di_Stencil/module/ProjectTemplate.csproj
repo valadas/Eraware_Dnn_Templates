@@ -56,31 +56,31 @@
 	<Compile Include="Common\Extensions\IQueryableExtensions.cs" />
     <Compile Include="Controllers\LocalizationController.cs" />
 	<Compile Include="Data\Entities\BaseEntity.cs" />
-    <Compile Include="DTO\GetItemsPageDTO.cs" />
-    <Compile Include="Controllers\ValidateModelAttribute.cs" />
+	<Compile Include="Services\Items\CreateItemDtoValidator.cs" />
+	<Compile Include="Services\Items\GetItemsPageDTO.cs" />
     <Compile Include="Data\Entities\IEntity.cs" />
     <Compile Include="Data\Entities\Item.cs" />
     <Compile Include="Data\ModuleDbContext.cs" />
     <Compile Include="Data\Repositories\IRepository.cs" />
 	<Compile Include="Data\Repositories\PagedList{T}.cs" />
     <Compile Include="Data\Repositories\Repository.cs" />
-    <Compile Include="DTO\CreateItemDTO.cs" />
-    <Compile Include="DTO\UpdateItemDTO.cs" />
+	<Compile Include="Services\Items\CreateItemDTO.cs" />
+	<Compile Include="Services\Items\UpdateItemDTO.cs" />
 	<Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\ModuleApiController.cs" />
-    <Compile Include="Controllers\ModuleExceptionFilterAttribute.cs" />
     <Compile Include="Controllers\ServiceRouteMapper.cs" />
 	<Compile Include="Providers\DateTimeProvider.cs" />
 	<Compile Include="Providers\IDateTimeProvider.cs" />
-    <Compile Include="Services\IItemService.cs" />
-    <Compile Include="Services\ILocalizationService.cs" />
-    <Compile Include="Services\ItemService.cs" />
-    <Compile Include="Services\LocalizationService.cs" />
+	<Compile Include="Services\Items\IItemService.cs" />
+	<Compile Include="Services\Items\UpdateItemDtoValidator.cs" />
+	<Compile Include="Services\Localization\ILocalizationService.cs" />
+	<Compile Include="Services\Items\ItemService.cs" />
+	<Compile Include="Services\Localization\LocalizationService.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\ItemsPageViewModel.cs" />
-    <Compile Include="ViewModels\ItemViewModel.cs" />
-    <Compile Include="ViewModels\LocalizationViewModel.cs" />
+	<Compile Include="Services\Items\ItemsPageViewModel.cs" />
+	<Compile Include="Services\Items\ItemViewModel.cs" />
+	<Compile Include="Services\Localization\LocalizationViewModel.cs" />
     <Resource Include=".gitignore" />
     <Resource Include="resources\images\module-icon.png" />
     <Resource Include="resources\views\view.html" />
@@ -136,6 +136,9 @@
     <PackageReference Include="EntityFramework">
       <Version>6.5.1</Version>
     </PackageReference>
+	<PackageReference Include="FluentValidation">
+	  <Version>11.9.2</Version>
+	</PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.Core">
       <Version>5.2.9</Version>
     </PackageReference>
@@ -150,6 +153,9 @@
     <PackageReference Include="NSwag.Annotations">
       <Version>14.1.0</Version>
     </PackageReference>
+	<PackageReference Include="OneOf">
+	  <Version>3.0.271</Version>
+	</PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
       <Version>1.1.118</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
