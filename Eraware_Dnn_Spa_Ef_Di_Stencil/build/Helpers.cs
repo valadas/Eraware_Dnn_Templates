@@ -191,8 +191,8 @@ namespace BuildHelpers
             svc.AppendLine(GetGeneratedComment());
             svc.AppendLine(GenerateLocalizationService(rootNamespace, localizationFiles));
 
-            File.WriteAllText(RootDirectory / "ViewModels" / "LocalizationViewModel.cs", vm.ToString());
-            File.WriteAllText(RootDirectory / "Services" / "LocalizationService.cs", svc.ToString());
+            File.WriteAllText(RootDirectory / "Services" / "Localization" / "LocalizationViewModel.cs", vm.ToString());
+            File.WriteAllText(RootDirectory / "Services" / "Localization" / "LocalizationService.cs", svc.ToString());
         }
 
         public static string GetManifestOwnerName(string manifestPath)
@@ -216,15 +216,14 @@ namespace BuildHelpers
             var moduleFolderName = new DirectoryInfo(RootDirectory).Name;
             var sb = new StringBuilder();
             sb
-                .AppendLine($"namespace {rootNamespace}.Services")
+                .AppendLine($"namespace {rootNamespace}.Services.Localization")
                  .AppendLine("{")
                  .AppendLine("    using DotNetNuke.Common.Utilities;")
                 .AppendLine($"    using DotNetNuke.Services.Localization;")
-                .AppendLine($"    using {rootNamespace}.ViewModels;")
                 .AppendLine($"    using System.Diagnostics.CodeAnalysis;")
                 .AppendLine($"    using System.Web.Hosting;")
                 .AppendLine($"    using System.Threading;")
-                .AppendLine($"    using static {rootNamespace}.ViewModels.LocalizationViewModel;")
+                .AppendLine($"    using static {rootNamespace}.Services.Localization.LocalizationViewModel;")
                 .AppendLine()
                 .AppendLine($"    /// <summary>")
                 .AppendLine($"    /// Provides strongly typed localization services for this module.")
@@ -333,7 +332,7 @@ namespace BuildHelpers
         {
             var sb = new StringBuilder();
             sb
-                .AppendLine($"namespace {rootNamespace}.ViewModels")
+                .AppendLine($"namespace {rootNamespace}.Services.Localization")
                 .AppendLine("{")
                 .AppendLine("    using System.Diagnostics.CodeAnalysis;")
                 .AppendLine()

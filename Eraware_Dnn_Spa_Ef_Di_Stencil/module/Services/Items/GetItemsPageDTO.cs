@@ -1,6 +1,6 @@
 ﻿// MIT License
 // Copyright $ext_companyname$
-namespace $ext_rootnamespace$.DTO
+namespace $ext_rootnamespace$.Services.Items
 {
     /// <summary>
     /// The data object to request a paged list of items.

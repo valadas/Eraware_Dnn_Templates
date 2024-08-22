@@ -1,11 +1,11 @@
 ﻿using $ext_rootnamespace$.Controllers;
 using $ext_rootnamespace$.Data.Entities;
 using $ext_rootnamespace$.Data.Repositories;
-using $ext_rootnamespace$.DTO;
 using $ext_rootnamespace$.Providers;
-using $ext_rootnamespace$.Services;
-using $ext_rootnamespace$.ViewModels;
+using $ext_rootnamespace$.Services.Items;
+using $ext_rootnamespace$.Services.Localization;
 using DotNetNuke.Entities.Users;
+using FluentValidation;
 using Moq;
 using System;
 using System.Linq;
@@ -20,6 +20,9 @@ namespace IntegrationTests.Controllers
         private readonly Mock<IDateTimeProvider> dateTimeProvider;
         private readonly IRepository<Item> itemRepository;
         private readonly IItemService itemService;
+        private readonly IValidator<CreateItemDTO> createItemDtoValidator;
+        private readonly IValidator<UpdateItemDTO> updateItemDtoValidator;
+        private readonly Mock<ILocalizationService> localizationService;
         private readonly ItemController itemController;
 
 
@@ -28,7 +31,36 @@ namespace IntegrationTests.Controllers
             this.dateTimeProvider = new Mock<IDateTimeProvider>();
             this.dateTimeProvider.Setup(p => p.GetUtcNow()).Returns(new DateTime(2022, 1, 1));
             this.itemRepository = new Repository<Item>(this.dataContext, this.dateTimeProvider.Object);
-            this.itemService = new ItemService(this.itemRepository);
+            this.localizationService = new Mock<ILocalizationService>();
+            var resx = new LocalizationViewModel
+            {
+                ModelValidation = new LocalizationViewModel.ModelValidationInfo
+                {
+                    NameRequired = "Name is required.",
+                    IdGreaterThanZero = "Id must be greater than zero.",
+                },
+                UI = new LocalizationViewModel.UIInfo
+                {
+                    AddItem = "Add Item",
+                    Cancel = "Cancel",
+                    Create = "Create",
+                    Delete = "Delete",
+                    DeleteItemConfirm = "Are you sure you want to delete this item?",
+                    Description = "Description",
+                    Edit = "Edit",
+                    LoadMore = "Load more",
+                    Name = "Name",
+                    No = "No",
+                    Save = "Save",
+                    Yes = "Yes",
+                    SearchPlaceholder = "Search...",
+                    ShownItems = "Shown items",
+                },
+            };
+            this.localizationService.SetupGet(s => s.ViewModel).Returns(resx);
+            this.createItemDtoValidator = new CreateItemDtoValidator(localizationService.Object);
+            this.updateItemDtoValidator = new UpdateItemDtoValidator(localizationService.Object);
+            this.itemService = new ItemService(this.itemRepository, this.createItemDtoValidator, this.updateItemDtoValidator);
             this.itemController = new FakeItemController(this.itemService);
         }
 
