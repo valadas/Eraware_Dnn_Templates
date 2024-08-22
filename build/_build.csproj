@@ -15,4 +15,8 @@
     <PackageReference Include="Nuke.Common" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageDownload Include="GitVersion.Tool" Version="[6.0.2]" />
+  </ItemGroup>
+
 </Project>

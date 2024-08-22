@@ -40,6 +40,8 @@ jobs:
           fetch-depth: 0
       - name: 'Run: CI'
         run: ./build.cmd CI
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Publish: artifacts'
         uses: actions/upload-artifact@v3
         with:
