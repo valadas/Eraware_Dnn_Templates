@@ -56,7 +56,7 @@ namespace UnitTests.Controllers
         }
 
         [Fact]
-        public static void SystemException_DoesNotExposeDetails()
+        public async Task SystemException_DoesNotExposeDetails()
         {
             var attribute = new ModuleExceptionFilterAttribute();
             var loggerSource = new Mock<ILoggerSource>();
@@ -72,7 +72,8 @@ namespace UnitTests.Controllers
             attribute.OnException(actionExecutedContext);
 
             Assert.Equal(HttpStatusCode.InternalServerError, actionExecutedContext.Response.StatusCode);
-            Assert.NotEqual("Danger", actionExecutedContext.Response.Content.ReadAsStringAsync().Result);
+            var response = await actionExecutedContext.Response.Content.ReadAsStringAsync();
+            Assert.NotEqual("Danger", response);
         }
 
         public static IEnumerable<object[]> GetExceptionsTestData()
