@@ -18,12 +18,22 @@ Create you repository by heading to View > Git Changes, the Git Changes side bar
 > You may be asked to login if it's the first time you are using Github integration in Visual Studio. If you are asked to login, it is recommended to create a [Personal Access Token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) instead of using your login/password. Also the Github automations support both private and public repositories.
 ![Initial Commit](../images/initial-commit.gif)
 
+## First CI Build
+In a few minutes you should see that github actinos has run your first build automatically.
+This first build will fail because the repository is new and actions don't yet have permissions to write to the repository.
+In your repository settings, go to 'Actions' then 'Workflows' and enable "Read/Write" access.
+
 ## Automated releases
 
-In a few minutes if you navigate to your repository on Github, you will notice there is a draft release for v0.1.0. It has no release notes yet but it does have the fully packaged module ready for production install.
+When you feel you are ready for a beta release, you can create a release branch.
+The branch name should include the version number you want, such as `release/0.1.0`.
+A few minutes later if you navigate to your repository on Github, you will notice there is a draft release for v0.1.0.
+It has auto-generated release notes wrote from the title of all the PRs that went into a milestone of the save version.
+It also has the fully packaged module ready for install from testers.
+Each additional push or merge into that release branch will produce a new beta release for you automatically.
+When you are ready for production, you can simply merge that release branch into `main` or `master` and it will produce a final release for you (non-beta).
+If you had any last minute fixes on the release branch that don't exist in `develop` don't forget to merge that branch into `develop` too.
 
-> [!TIP]
-> This is a draft and the public won't see it as an available release yet. Since this is probably not ready for production, you can delete the release and the tag if you don't want to keep it (and reserve the v0.1.0 version from future use). If you do want to keep it, you can edit it and publish it. Each push to the `main` or `master` branch will trigger a draf release that is non-beta, this is how we will do releases in the future.
 ## Automatic Versioning
 
 The template uses [GitVersion](https://github.com/GitTools/GitVersion) and the [GitFlow](https://gitversion.net/docs/git-branching-strategies/gitflow) branching strategy in order to manage versions and releases.
