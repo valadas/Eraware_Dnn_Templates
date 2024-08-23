@@ -1,5 +1,5 @@
 ﻿using $ext_rootnamespace$.Providers;
-using Moq;
+using NSubstitute;
 using System;
 using Xunit;
 
@@ -8,12 +8,12 @@ namespace UnitTests.Providers
     public class DateTimeProviderTests
     {
         private readonly IDateTimeProvider provider;
-        private readonly Mock<IDateTimeProvider> providerMock;
+        private readonly IDateTimeProvider providerMock;
 
         public DateTimeProviderTests()
         {
             this.provider = new DateTimeProvider();
-            this.providerMock = new Mock<IDateTimeProvider>();
+            this.providerMock = Substitute.For<IDateTimeProvider>();
         }
 
         [Fact]
@@ -36,10 +36,10 @@ namespace UnitTests.Providers
         {
             // Arrange
             var expected = new DateTime(2022, 1, 1);
-            this.providerMock.Setup(p => p.GetUtcNow()).Returns(expected);
+            this.providerMock.GetUtcNow().Returns(expected);
 
             // Act
-            var actual = this.providerMock.Object.GetUtcNow();
+            var actual = this.providerMock.GetUtcNow();
 
             // Assert
             Assert.Equal(expected, actual);

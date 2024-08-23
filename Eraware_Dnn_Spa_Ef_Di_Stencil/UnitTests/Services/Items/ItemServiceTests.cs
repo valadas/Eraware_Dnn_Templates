@@ -3,7 +3,7 @@ using $ext_rootnamespace$.Data.Repositories;
 using $ext_rootnamespace$.Services.Items;
 using FluentValidation;
 using FluentValidation.Results;
-using Moq;
+using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,21 +16,21 @@ namespace UnitTests.Services.Items
     public class ItemServiceTests
     {
         private CancellationToken token;
-        private Mock<IRepository<Item>> itemRepository;
+        private IRepository<Item> itemRepository;
         private IItemService itemService;
-        private Mock<IValidator<CreateItemDTO>> createItemDtoValidator;
-        private Mock<IValidator<UpdateItemDTO>> updateItemDtoValidator;
+        private IValidator<CreateItemDTO> createItemDtoValidator;
+        private IValidator<UpdateItemDTO> updateItemDtoValidator;
 
         public ItemServiceTests()
         {
             this.token = new CancellationToken();
-            this.itemRepository = new Mock<IRepository<Item>>();
-            this.createItemDtoValidator = new Mock<IValidator<CreateItemDTO>>();
-            this.updateItemDtoValidator = new Mock<IValidator<UpdateItemDTO>>();
+            this.itemRepository = Substitute.For<IRepository<Item>>();
+            this.createItemDtoValidator = Substitute.For<IValidator<CreateItemDTO>>();
+            this.updateItemDtoValidator = Substitute.For<IValidator<UpdateItemDTO>>();
             this.itemService = new ItemService(
-                this.itemRepository.Object,
-                this.createItemDtoValidator.Object,
-                this.updateItemDtoValidator.Object);
+                this.itemRepository,
+                this.createItemDtoValidator,
+                this.updateItemDtoValidator);
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace UnitTests.Services.Items
             // Arrange
             var dto = new CreateItemDTO();
             var userId = 123;
-            this.createItemDtoValidator.Setup(v => v.ValidateAsync(It.IsAny<CreateItemDTO>(), this.token))
+            this.createItemDtoValidator.ValidateAsync(Arg.Any<CreateItemDTO>(), this.token)
                 .Returns(Task.FromResult(new ValidationResult
                 {
                     Errors = { new ValidationFailure("Name", "Name is required.") },
@@ -55,21 +55,24 @@ namespace UnitTests.Services.Items
         public async Task CreateItem_Creates()
         {
             var item = new CreateItemDTO() { Name = "Name", Description = "Description" };
-            this.createItemDtoValidator.Setup(v => v.ValidateAsync(It.IsAny<CreateItemDTO>(), this.token))
+            this.createItemDtoValidator.ValidateAsync(Arg.Any<CreateItemDTO>(), this.token)
                 .Returns(Task.FromResult(new ValidationResult()));
-            this.itemRepository.Setup(r => r.CreateAsync(It.IsAny<Item>(), It.IsAny<int>()))
-                .Callback<Item, int>((i, u) =>
+            this.itemRepository.CreateAsync(Arg.Any<Item>(), Arg.Any<int>())
+                .Returns(callInfo =>
                 {
+                    var i = callInfo.ArgAt<Item>(0);
                     i.Id = 1;
                     i.Name = item.Name;
                     i.Description = item.Description;
+                    return 1;
                 });
+
             var result = await this.itemService.CreateItemAsync(item, 123);
 
-            this.itemRepository.Verify(r =>
-                r.CreateAsync(It.Is<Item>(i =>
-                i.Name == item.Name &&
-                i.Description == item.Description), 123));
+            await this.itemRepository.Received(1).CreateAsync(
+               Arg.Is<Item>(i =>
+               i.Name == item.Name &&
+               i.Description == item.Description), 123);
             result.Switch(
                 success => {
                     Assert.Equal(1, success.Value.Id);
@@ -95,10 +98,10 @@ namespace UnitTests.Services.Items
             }
             var returnedPage = new PagedList<Item>(
                 returnedItems, 1, 10, 30, 3);
-            this.itemRepository.Setup(i => i.GetPageAsync(
-                It.IsAny<int>(),
-                It.IsAny<int>(),
-                It.IsAny<Func<IQueryable<Item>, IOrderedQueryable<Item>>>()))
+            this.itemRepository.GetPageAsync(
+                Arg.Any<int>(),
+                Arg.Any<int>(),
+                Arg.Any<Func<IQueryable<Item>, IOrderedQueryable<Item>>>())
                 .Returns(Task.FromResult(returnedPage));
             
             var finalReturn = await this.itemService.GetItemsPageAsync("test", 1, 10, descending);
@@ -116,7 +119,7 @@ namespace UnitTests.Services.Items
 
             await this.itemService.DeleteItemAsync(itemId);
 
-            this.itemRepository.Verify(i => i.DeleteAsync(123), Times.Once);
+            await this.itemRepository.Received().DeleteAsync(123);
         }
 
         [Fact]
@@ -136,9 +139,9 @@ namespace UnitTests.Services.Items
                 Description = "New Item Description",
             };
             var userId = 123;
-            this.itemRepository.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
+            this.itemRepository.GetByIdAsync(Arg.Any<int>())
                 .Returns(Task.FromResult(originalItem));
-            this.updateItemDtoValidator.Setup(v => v.ValidateAsync(It.IsAny<UpdateItemDTO>(), this.token))
+            this.updateItemDtoValidator.ValidateAsync(Arg.Any<UpdateItemDTO>(), this.token)
                 .Returns(Task.FromResult(new ValidationResult
                 {
                     Errors = { new ValidationFailure("Id", "ID must be positive") },
@@ -169,17 +172,17 @@ namespace UnitTests.Services.Items
                 Name = "New Item Name",
                 Description = "New Item Description",
             };
-            this.itemRepository.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
+            this.itemRepository.GetByIdAsync(Arg.Any<int>())
                 .Returns(Task.FromResult(originalItem));
-            this.updateItemDtoValidator.Setup(v => v.ValidateAsync(It.IsAny<UpdateItemDTO>(), this.token))
+            this.updateItemDtoValidator.ValidateAsync(Arg.Any<UpdateItemDTO>(), this.token)
                 .Returns(Task.FromResult(new ValidationResult()));
 
             await this.itemService.UpdateItemAsync(item, 2);
 
-            itemRepository.Verify(r => r.UpdateAsync(It.Is<Item>(i =>
+            await itemRepository.Received().UpdateAsync(Arg.Is<Item>(i =>
                 i.Id == item.Id &&
                 i.Name == item.Name &&
-                i.Description == item.Description), 2), Times.Once);
+                i.Description == item.Description), 2);
         }
     }
 }
