@@ -6,7 +6,7 @@ using $ext_rootnamespace$.Services.Items;
 using $ext_rootnamespace$.Services.Localization;
 using DotNetNuke.Entities.Users;
 using FluentValidation;
-using Moq;
+using NSubstitute;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,21 +17,21 @@ namespace IntegrationTests.Controllers
 {
     public class ItemControllerTests : FakeDataContext
     {
-        private readonly Mock<IDateTimeProvider> dateTimeProvider;
+        private readonly IDateTimeProvider dateTimeProvider;
         private readonly IRepository<Item> itemRepository;
         private readonly IItemService itemService;
         private readonly IValidator<CreateItemDTO> createItemDtoValidator;
         private readonly IValidator<UpdateItemDTO> updateItemDtoValidator;
-        private readonly Mock<ILocalizationService> localizationService;
+        private readonly ILocalizationService localizationService;
         private readonly ItemController itemController;
 
 
         public ItemControllerTests()
         {
-            this.dateTimeProvider = new Mock<IDateTimeProvider>();
-            this.dateTimeProvider.Setup(p => p.GetUtcNow()).Returns(new DateTime(2022, 1, 1));
-            this.itemRepository = new Repository<Item>(this.dataContext, this.dateTimeProvider.Object);
-            this.localizationService = new Mock<ILocalizationService>();
+            this.dateTimeProvider = Substitute.For<IDateTimeProvider>();
+            this.dateTimeProvider.GetUtcNow().Returns(new DateTime(2022, 1, 1));
+            this.itemRepository = new Repository<Item>(this.dataContext, this.dateTimeProvider);
+            this.localizationService = Substitute.For<ILocalizationService>();
             var resx = new LocalizationViewModel
             {
                 ModelValidation = new LocalizationViewModel.ModelValidationInfo
@@ -57,9 +57,9 @@ namespace IntegrationTests.Controllers
                     ShownItems = "Shown items",
                 },
             };
-            this.localizationService.SetupGet(s => s.ViewModel).Returns(resx);
-            this.createItemDtoValidator = new CreateItemDtoValidator(localizationService.Object);
-            this.updateItemDtoValidator = new UpdateItemDtoValidator(localizationService.Object);
+            this.localizationService.ViewModel.Returns(resx);
+            this.createItemDtoValidator = new CreateItemDtoValidator(localizationService);
+            this.updateItemDtoValidator = new UpdateItemDtoValidator(localizationService);
             this.itemService = new ItemService(this.itemRepository, this.createItemDtoValidator, this.updateItemDtoValidator);
             this.itemController = new FakeItemController(this.itemService);
         }

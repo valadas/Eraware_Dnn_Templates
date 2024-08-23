@@ -1,11 +1,6 @@
 ﻿using $ext_rootnamespace$.Controllers;
 using DotNetNuke.Web.Api;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NSubstitute;
 using Xunit;
 
 namespace UnitTests.Controllers
@@ -15,12 +10,12 @@ namespace UnitTests.Controllers
         [Fact]
         public void RegisterRoutes_RegistersAtLestOneRoute()
         {
-            var mapRouteManager = new Mock<IMapRoute>();
+            var mapRouteManager = Substitute.For<IMapRoute>();
             var serviceRouteMapper = new ServiceRouteMapper();
 
-            serviceRouteMapper.RegisterRoutes(mapRouteManager.Object);
+            serviceRouteMapper.RegisterRoutes(mapRouteManager);
 
-            mapRouteManager.Verify(m => m.MapHttpRoute(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsNotNull<string[]>()), Times.AtLeastOnce);
+            mapRouteManager.MapHttpRoute(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Is<string[]>(x => x != null));
         }
     }
 }

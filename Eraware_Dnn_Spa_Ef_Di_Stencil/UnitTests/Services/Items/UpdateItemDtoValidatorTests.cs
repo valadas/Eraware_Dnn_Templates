@@ -1,7 +1,7 @@
 ﻿using $ext_rootnamespace$.Services.Items;
 using $ext_rootnamespace$.Services.Localization;
 using FluentValidation;
-using Moq;
+using NSubstitute;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -10,7 +10,7 @@ namespace UnitTests.Services.Items
     public class UpdateItemDtoValidatorTests
     {
         LocalizationViewModel localizationViewModel;
-        Mock<ILocalizationService> localizationService;
+        ILocalizationService localizationService;
         private readonly IValidator<UpdateItemDTO> validator;
 
         public UpdateItemDtoValidatorTests()
@@ -23,9 +23,9 @@ namespace UnitTests.Services.Items
                     IdGreaterThanZero = "Id must be greater than zero",
                 },
             };
-            this.localizationService = new Mock<ILocalizationService>();
-            localizationService.Setup(l => l.ViewModel).Returns(localizationViewModel);
-            this.validator = new UpdateItemDtoValidator(localizationService.Object);
+            this.localizationService = Substitute.For<ILocalizationService>();
+            localizationService.ViewModel.Returns(localizationViewModel);
+            this.validator = new UpdateItemDtoValidator(localizationService);
         }
 
         [Theory]
