@@ -4,6 +4,16 @@ Welcome to you new module template!
 
 ## First build
 
+-   **Before you start**
+
+    This module template makes a few assumptions about your environment, make sure you have the following installed:
+    - Latest version of Visual Studio, and updates (Free community edition is fine)
+    - Latest version of .NET Core SDK (LST)
+    - A test site that uses the latest version of DNN (you can target older versions but out-of-the-box this template is set to the latest)
+    - The solution and the project are expected to be in the same folder.
+      If you move the project to a different folder, you will need to update the paths in the `Build.cs` file.
+
+
 -   **Package your module**
 
     Build tasks are placed in the launch profiles menu in Visual Studio,
