@@ -634,6 +634,7 @@ class Build : NukeBuild
         .DependsOn(Test)
         .DependsOn(UpdateTokens)
         .DependsOn(Docs)
+        .Produces(ArtifactsDirectory / "*.zip")
         .Executes(() =>
         {
             var stagingDirectory = ArtifactsDirectory / "staging";
