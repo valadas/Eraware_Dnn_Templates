@@ -2,11 +2,14 @@
 // Copyright $ext_companyname$
 
 using $ext_rootnamespace$.Data.Entities;
-using $ext_rootnamespace$.DTO;
-using $ext_rootnamespace$.ViewModels;
+using FluentValidation.Results;
+using OneOf;
+using OneOf.Types;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace $ext_rootnamespace$.Services
+namespace $ext_rootnamespace$.Services.Items
 {
     /// <summary>
     /// Provides services to manage items.
@@ -18,8 +21,12 @@ namespace $ext_rootnamespace$.Services
         /// </summary>
         /// <param name="item">The item to create.</param>
         /// <param name="userId">The acting user id.</param>
-        /// <returns><see cref="Item"/>.</returns>
-        Task<ItemViewModel> CreateItemAsync(CreateItemDTO item, int userId);
+        /// <param name="token">A token that can be used to abort the request early.</param>
+        /// <returns>Either a success of <see cref="Item"/> of an error of string.</returns>
+        Task<OneOf<Success<ItemViewModel>, Error<List<ValidationFailure>>>> CreateItemAsync(
+            CreateItemDTO item,
+            int userId,
+            CancellationToken token = default);
 
         /// <summary>
         /// Deletes an item.
@@ -43,7 +50,8 @@ namespace $ext_rootnamespace$.Services
         /// </summary>
         /// <param name="item">The item to edit with its new details.</param>
         /// <param name="userId">The id of the acting DNN user.</param>
+        /// <param name="token">A token that can be used to abort the request early.</param>
         /// <returns>An awaitable task.</returns>
-        Task UpdateItemAsync(UpdateItemDTO item, int userId);
+        Task<OneOf<Success, Error<List<ValidationFailure>>>> UpdateItemAsync(UpdateItemDTO item, int userId, CancellationToken token = default);
     }
 }

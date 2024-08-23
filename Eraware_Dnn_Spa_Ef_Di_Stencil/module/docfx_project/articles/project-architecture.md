@@ -73,6 +73,8 @@ graph TB
     ItemClient[FrontEnd<br/>ItemClient] -->|CreateItemDTO as JSON<br />Name and Description| ItemController[Backend<br/>ItemController]
     ItemController -->|CreateItemDTO<br/>UserId| ItemService
     ItemService -->|Item| Repository[Repository<Item>]
+    ItemService -->|Validate| Validator[IValidator<CreateItemDto>]
+    Validator --> ItemService
     Repository -->|Item| DataContext[DataContext<br/>Entity Framework] 
     DataContext -->|SQL INSERT ...| Database
     Database -->|Table row| DataContext
@@ -100,17 +102,28 @@ The below diagram explains the backend code that is part of the module. We will 
 
 As we saw earlier, to create an item, the minimum information needed is only the `Name` and `Description`. The `ItemController` adds the acting user id and asks the `ItemService` to create the item.
 
-Then the `Repository` adds the information each entity should have like the creation data and others and will save the data to the database (more on this later). It then knows about the `Id` of the recently created item and can return a fully populated `Item` back to the `ItemService`.
+The IValidator class is used to ensure the data is valid and to provide user friendly localized messages if it is not.
+
+If the data is valid, then the `Repository` adds the information each entity should have like the creation data and others and will save the data to the database (more on this later). It then knows about the `Id` of the recently created item and can return a fully populated `Item` back to the `ItemService`.
 
 Because we don't need all this information for this view, it converts it into an `ItemViewModel` that only has the Id, Name and Description. The `ItemController` then serializes this `ItemViewModel` as json and returns it to the frontend.
 
 ```mermaid
 sequenceDiagram
     ItemController ->> ItemService: CreateItem(<br/>CreateItemDTO item = {<br/>Name = "First Item",<br/>Description = "This is the first item"},<br/>UserId userId = 123)
+    ItemService ->> IValidator#lt;T#gt;: ValidateAsync(createItemDto)
+    IValidator#lt;T#gt; ->> ItemService: ValidationResult.IsValid
     ItemService ->> Repository#lt;T#gt;: Create<T>(Item item = {<br/>Name = "First Item",<br/>Description = "This is the first item"})
     Repository#lt;T#gt; ->> ItemService: returns Item item = {<br/>Id = 10,<br/>CreatedAt = 2021-01-23 18:05:30,<br/>CreatedByUserId = 123,<br/>UpdatedAt = 2021-01-23 18:05:30,<br/>UpdatedByUserId = 123,<br/>Name = "First Item",<br/>Description = "This is the first item"}
     ItemService ->> ItemController: returns<br/>ItemViewModel item = {<br/>Id = 10,<br/>Name = "First Item",<br/>Description = "This is the first item"}
 ```
+
+> [!NOTE]
+> **What if the data is not valid?**
+> We use [OneOf](https://www.nuget.org/packages/OneOf) to return either a Success or an Error as a "discriminated union".
+> Basically the consumer of a OneOf with have to handle either a .Switch or .Match method to handle all possible return scenarios.
+> Each of these scenarios may be a different object as a success and an error are wildly different things.
+> In our case, should the DTO not be valid we have an Error&lt;string&gt; with localized errors (one per line) that are user friendly and we return a BadRequest from our controller.
 
 ### External code
 This module uses [Entity Framework](https://www.entityframeworktutorial.net/what-is-entityframework.aspx) for the data layer. This means amongst other things that we define all our data entities from code using attributes and do not need SQL Scripts in the Dnn extension package. In combination with the [Repository Pattern](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design) it allows in most cases to also not need complex stored procedures. It also uses IQueryable to combine many filtering/sorting requests and only actually touch the database when needed with a very optimized single query. EF (Entity Framework) supports many different types of databases, this unlinks the module logic from any type of data infrastructure. Right now, this module uses the Dnn database but it can easily be changed to a separate database or even another database type altogether.
@@ -144,6 +157,8 @@ The itemController is responsible for:
 - Provide Dnn context information about the module, the portal and the user for the current request
 
 As you can see, this class has more than one responsability and inherits from other base classes that are not under our control. One of them, `DnnApiController` was not built with unit testing in mind. For those reasons, as part of our unit tests, we exclude the `Controllers` folder.
+
+We use OneOf here to return a result that can be only one of many things. This avoids having to handle exceptions which are not great for performance and have no ways to force consumer implementations. In this case, we ensure that we always have to implement what to do for a success or a failure.
 
 #### Inheritance
 
@@ -235,22 +250,10 @@ public class ItemController : ModuleApiController
     ...
     public IHttpActionResult CreateItem(CreateItemDTO item)
     {
-        try
-        {
-            return this.Ok(this.itemService.CreateItem(item, this.UserInfo.UserID));
-        }
-        catch (ArgumentNullException ex)
-        {
-            this.Logger.Error(ex.Message, ex);
-            return this.BadRequest(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            string message = "An unexpected error occured while trying to create the item";
-            this.Logger.Error(message, ex);
-            return this.InternalServerError(new Exception(message));
-            throw;
-        }
+        var result = await this.itemService.CreateItemAsync(item, this.UserInfo.UserID);
+            return result.Match<IHttpActionResult>(
+                success => this.Ok(success.Value),
+                error => this.BadRequest(string.Join(System.Environment.NewLine, error.Value.Select(e => e.ErrorMessage))));
     }
     ...
 }
@@ -263,6 +266,7 @@ Service classes are core of our business logic in this pattern. In this case it 
 
 #### Inheritance
 The `ItemController` inherits from the `IItemController` interface, again this is to allow using dependency injection where we need it and also help out with unit tests and decoupling classes for easier maintenance.
+We also use [FluentValidation](https://www.nuget.org/packages/FluentValidation) here to extract validation into its own class (single responsability principle).
 
 #### Dependencies
 Again we only depend on interfaces and data-objects. For instance here we never create an instance of the `Repository`, we get in injected in the constructor from whowever calls this service.
@@ -280,14 +284,16 @@ classDiagram
 
     class ItemService
         ItemService: -IRepository<Item> itemRepository
+        ItemService: -IValidator<CreateItemDto> createItemDtoValidator
         ItemService: +ItemService(IRepository<Item> itemRepository)
         ItemService: +CreateItem(CreateItemDTO item, int userId) ItemViewModel
         ItemService: +GetItemsPage(GetItemsPageDTO request) ItemsPageViewModel
         ItemService: +DeleteItem(int itemId)
-    ItemService ..> CreateItemDTO
-    ItemService ..> ItemViewModel
-    ItemService ..> IRepository~T~
-    ItemService ..> Item
+        ItemService ..> CreateItemDTO
+        ItemService ..> ItemViewModel
+        ItemService ..> IRepository~T~
+        ItemService ..> Item
+        ItemService ..> IValidator~T~
 
     class IItemService
         <<interface>> IItemService
@@ -323,6 +329,14 @@ classDiagram
         IEntity: +DateTime UpdatedAt
         IEntity: +int UpdatedByUserId
     IEntity <|-- BaseEntity
+
+    class SaveItemDtoValidator
+        SaveItemDtoValidator: +ValidationResult Validate
+
+    class IValidator~T~
+        <<interface>> IValidator~T~
+
+    IValidator~T~ <|-- SaveItemDtoValidator
 ```
 
 ```cs
@@ -346,20 +360,18 @@ public class ItemService : IItemService
     /// <exception cref="ArgumentNullException"> is thrown if the item or one of its required properties are missing.</exception>
     public ItemViewModel CreateItem(CreateItemDTO item, int userId)
     {
-        if (item == null)
-        {
-            throw new ArgumentNullException(nameof(item));
-        }
+        var validationResult = await this.createItemDtoValidator.ValidateAsync(item);
 
-        if (string.IsNullOrWhiteSpace(item.Name))
+        if (!validationResult.IsValid)
         {
-            throw new ArgumentNullException("The item name is required.", nameof(item.Name));
+            return new Error<List<ValidationFailure>>(validationResult.Errors);
         }
 
         var newItem = new Item() { Name = item.Name, Description = item.Description };
-        this.itemRepository.Create(newItem, userId);
+        await this.itemRepository.CreateAsync(newItem, userId);
 
-        return new ItemViewModel(newItem);
+        var vm = new ItemViewModel(newItem);
+        return new Success<ItemViewModel>(vm);
     }
 
     ...

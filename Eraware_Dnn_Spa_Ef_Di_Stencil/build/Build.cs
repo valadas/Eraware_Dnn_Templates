@@ -48,7 +48,8 @@ using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
     OnPullRequestBranches = new[] { "develop", "main", "master", "release/*" },
     OnPushBranches = new[] { "main", "master", "develop", "release/*" },
     InvokedTargets = new[] { nameof(Package), nameof(DeployGeneratedFiles), nameof(Release) },
-    FetchDepth = 0
+    FetchDepth = 0,
+    CacheKeyFiles = new string[] { }
     )]
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild
@@ -71,6 +72,9 @@ class Build : NukeBuild
     [GitRepository] readonly GitRepository GitRepository;
     [GitVersion(Framework = "net6.0", UpdateAssemblyInfo = false, NoFetch = true)] readonly GitVersion GitVersion;
 
+    [NuGetPackage("WebApiToOpenApiReflector", "WebApiToOpenApiReflector.dll")]
+    readonly Tool WebApiToOpenApiReflector;
+
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath InstallDirectory => RootDirectory.Parent.Parent / "Install" / "Module";
     AbsolutePath WebProjectDirectory => RootDirectory / "module.web";
@@ -87,6 +91,7 @@ class Build : NukeBuild
 
     private const string devViewsPath = "http://localhost:3333/build/";
     private const string prodViewsPath = "/DesktopModules/$ext_modulefoldername$/resources/scripts/$ext_scopeprefixkebab$/";
+    private const string moduleName = "$ext_rootnamespace$";
     private bool FirstBuild = false;
 
     string releaseNotes = "";
@@ -144,8 +149,21 @@ class Build : NukeBuild
                 .SetProjectFile(Solution.GetProject("IntegrationTests")));
         });
 
+    // TODO: This is a workaround for https://github.com/dnnsoftware/Dnn.Platform/issues/6024 and can be removed once a new release with that fix comes out.
+    Target AdjustCasing => _ => _
+        .After(Compile)
+        .Executes(() =>
+        {
+            if (!IsWin)
+            {
+                var log4netFiles = RootDirectory.GlobFiles("**/DotNetNuke.Log4Net.dll");
+                log4netFiles.ForEach(f => f.Rename("DotNetNuke.log4net.dll"));
+            }
+        });
+
     Target UnitTests => _ => _
         .DependsOn(Compile)
+        .DependsOn(AdjustCasing)
         .Executes(() =>
         {
             MSBuild(_ => _
@@ -188,6 +206,7 @@ class Build : NukeBuild
 
     Target IntegrationTests => _ => _
         .DependsOn(Compile)
+        .DependsOn(AdjustCasing)
         .Executes(() =>
         {
             MSBuild(_ => _
@@ -615,6 +634,7 @@ class Build : NukeBuild
         .DependsOn(Test)
         .DependsOn(UpdateTokens)
         .DependsOn(Docs)
+        .Produces(ArtifactsDirectory / "*.zip")
         .Executes(() =>
         {
             var stagingDirectory = ArtifactsDirectory / "staging";
@@ -702,31 +722,27 @@ class Build : NukeBuild
         .DependsOn(Compile)
         .Executes(() =>
         {
+            var swaggerDir = DocsDirectory / "rest";
+            swaggerDir.CreateOrCleanDirectory();
             var swaggerFile = DocsDirectory / "rest" / "rest.json";
-
-            NSwagTasks.NSwagWebApiToOpenApi(c => c
-                .AddAssembly(RootDirectory / "bin" / Configuration / "$ext_rootnamespace$.dll")
-                .SetInfoTitle("$ext_companyname$ $ext_modulefriendlyname$")
-                .SetInfoVersion(GitVersion != null ? GitVersion.AssemblySemVer : "0.1.0")
-                .SetProcessArgumentConfigurator(a => a.Add("/DefaultUrlTemplate:{{controller}}/{{action}}"))
-                .SetOutput(swaggerFile)
-                .SetNSwagRuntime("Net70"));
+            var assembly = RootDirectory / "bin" / Configuration / $"{moduleName}.dll";
+            var version = GitVersion != null ? GitVersion.AssemblySemVer : "0.1.0";
+            var title = "$ext_companyname$ $ext_modulefriendlyname$";
+            WebApiToOpenApiReflector($@"{assembly} --title {title} --info-version {version} --default-url-template {{controller}}/{{action}} --output {swaggerFile}");
 
             NSwagTasks.NSwagOpenApiToTypeScriptClient(c => c
                 .SetInput(swaggerFile)
                 .SetOutput(ClientServicesDirectory / "services.ts")
-                .SetNSwagRuntime("Net70")
+                .SetNSwagRuntime("Net80")
                 .SetProcessArgumentConfigurator(c => c
                     .Add("/Template:Fetch")
                     .Add("/GenerateClientClasses:True")
-                    .Add("/GenerateOptionalParameters")
                     .Add("/ClientBaseClass:ClientBase")
                     .Add("/ConfigurationClass:ConfigureRequest")
                     .Add("/UseTransformOptionsMethod:True")
                     .Add("/MarkOptionalProperties:True")
                     .Add($"/ExtensionCode:{ClientServicesDirectory / "client-base.ts"}")
                     .Add("/UseGetBaseUrlMethod:True")
-                    .Add("/ProtectedMethods=ClientBase.getBaseUrl,ClientBase.transformOptions")
                     .Add("/UseAbortSignal:True")));
         });
 

@@ -1,8 +1,7 @@
 ﻿using DotNetNuke.Entities.Users;
 using $ext_rootnamespace$.Controllers;
-using $ext_rootnamespace$.Services;
-using $ext_rootnamespace$.ViewModels;
-using Moq;
+using $ext_rootnamespace$.Services.Localization;
+using NSubstitute;
 using System.Web.Http.Results;
 using Xunit;
 
@@ -10,21 +9,20 @@ namespace UnitTests.Controllers
 {
     public class LocalizationControllerTests
     {
-        private readonly Mock<ILocalizationService> localizationService;
+        private readonly ILocalizationService localizationService;
         private readonly LocalizationController localizationController;
 
         public LocalizationControllerTests()
         {
-            this.localizationService = new Mock<ILocalizationService>();
-            this.localizationController = new FakeLocalizationController(this.localizationService.Object);
+            this.localizationService = Substitute.For<ILocalizationService>();
+            this.localizationController = new FakeLocalizationController(this.localizationService);
         }
 
         [Fact]
         public void GetLocalization_CallsLocalizationService()
         {
             var expectedResponse = new LocalizationViewModel();
-            this.localizationService.Setup(s => s.ViewModel)
-                .Returns(expectedResponse);
+            this.localizationService.ViewModel.Returns(expectedResponse);
 
             var result = this.localizationController.GetLocalization();
 

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -190,6 +191,10 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="UnitTests\Services\Items\UpdateItemDtoValidatorTests.cs" />
+    <None Include="UnitTests\Services\Items\CreateItemDtoValidatorTests.cs" />
+    <None Include="module\Services\Items\UpdateItemDtoValidator.cs" />
+    <None Include="module\Services\Items\CreateItemDtoValidator.cs" />
     <None Include="UnitTests\StartupTests.cs" />
     <None Include="UnitTests\Providers\DateTimeProviderTests.cs" />
     <None Include="module\Providers\IDateTimeProvider.cs" />
@@ -197,23 +202,18 @@
     <None Include="IntegrationTests\Startup.cs" />
     <None Include="UnitTests\Startup.cs" />
     <None Include="UnitTests\Common\Extensions\IQueryableExtensionsTests.cs" />
-    <None Include="module\ViewModels\LocalizationViewModel.cs" />
+    <None Include="module\Services\Localization\LocalizationViewModel.cs" />
     <None Include="UnitTests\Controllers\LocalizationControllerTests.cs" />
-    <None Include="module\Services\LocalizationService.cs" />
-    <None Include="module\Services\ILocalizationService.cs" />
-    <None Include="module\Services\ILoggingService.cs" />
-    <None Include="module\Services\LoggingService.cs" />
-    <None Include="UnitTests\Controllers\ModuleExceptionFilterAttributeTests.cs" />
-    <None Include="UnitTests\Services\LoggingServiceTests.cs" />
-    <None Include="UnitTests\Controllers\ValidateModelAttributeTests.cs" />
+    <None Include="module\Services\Localization\LocalizationService.cs" />
+    <None Include="module\Services\Localization\ILocalizationService.cs" />
     <None Include="UnitTests\Controllers\ServiceRouteMapperTests.cs" />
     <None Include="UnitTests\Controllers\ModuleApiControllerTests.cs" />
     <None Include="UnitTests\Controllers\ItemControllerTests.cs" />
-    <None Include="module\ViewModels\ItemsPageViewModel.cs" />
-    <None Include="module\ViewModels\ItemViewModel.cs" />
-    <None Include="UnitTests\Services\ItemServiceTests.cs" />
-    <None Include="module\Services\ItemService.cs" />
-    <None Include="module\Services\IItemService.cs" />
+    <None Include="module\Services\Items\ItemsPageViewModel.cs" />
+    <None Include="module\Services\Items\ItemViewModel.cs" />
+    <None Include="UnitTests\Services\Items\ItemServiceTests.cs" />
+    <None Include="module\Services\Items\ItemService.cs" />
+    <None Include="module\Services\Items\IItemService.cs" />
     <None Include="UnitTests\Common\GlobalsTests.cs" />
     <None Include="UnitTests\Data\Entities\ItemTests.cs" />
     <None Include="UnitTests\Data\ModuleDbContextTests.cs" />
@@ -234,14 +234,12 @@
     </Content>
     <None Include="module\Data\Entities\BaseEntity.cs" />
     <None Include="module\Data\Repositories\Repository.cs" />
-    <None Include="module\DTO\CreateItemDTO.cs" />
+    <None Include="module\Services\Items\CreateItemDTO.cs" />
     <None Include="IntegrationTests\Controllers\ItemControllerTests.cs" />
     <None Include="IntegrationTests\Controllers\ServiceRouteMapperTests.cs" />
     <None Include="IntegrationTests\FakeDataContext.cs" />
-    <None Include="module\DTO\UpdateItemDTO.cs" />
-    <None Include="module\Controllers\ModuleExceptionFilterAttribute.cs" />
-    <None Include="module\Controllers\ValidateModelAttribute.cs" />
-    <None Include="module\DTO\GetItemsPageDTO.cs" />
+    <None Include="module\Services\Items\UpdateItemDTO.cs" />
+    <None Include="module\Services\Items\GetItemsPageDTO.cs" />
     <None Include="module\Controllers\LocalizationController.cs" />
     <None Include="module\Common\Extensions\IQueryableExtensions.cs" />
     <None Include="module\Data\Repositories\PagedList{T}.cs" />
@@ -266,7 +264,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EntityFramework">
-      <Version>6.4.0</Version>
+      <Version>6.5.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

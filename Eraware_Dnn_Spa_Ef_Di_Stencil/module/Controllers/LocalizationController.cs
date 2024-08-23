@@ -1,8 +1,7 @@
 ﻿// MIT License
 // Copyright $ext_companyname$
 
-using $ext_rootnamespace$.Services;
-using $ext_rootnamespace$.ViewModels;
+using $ext_rootnamespace$.Services.Localization;
 using NSwag.Annotations;
 using System.Net;
 using System.Web.Http;

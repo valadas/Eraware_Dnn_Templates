@@ -22,7 +22,7 @@
       </Folder>
       <Folder Name=".github" TargetFolderName=".github">
         <ProjectItem TargetFileName="dependabot.yml">dependabot.yml</ProjectItem>
-        <ProjectItem TargetFileName="mergeable.yml">mergeable.yml</ProjectItem>s
+        <ProjectItem TargetFileName="mergeable.yml">mergeable.yml</ProjectItem>
       </Folder>
       <Folder Name="Common" TargetFolderName="Common">
         <ProjectItem ReplaceParameters="true">Globals.cs</ProjectItem>
@@ -35,7 +35,6 @@
         <ProjectItem ReplaceParameters="true">LocalizationController.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ModuleApiController.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ServiceRouteMapper.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">ValidateModelAttribute.cs</ProjectItem>
       </Folder>
       <Folder Name="Data" TargetFolderName="Data">
         <Folder Name="Entities" TargetFolderName="Entities">
@@ -49,11 +48,6 @@
           <ProjectItem ReplaceParameters="true">Repository.cs</ProjectItem>
         </Folder>
         <ProjectItem ReplaceParameters="true">ModuleDbContext.cs</ProjectItem>
-      </Folder>
-      <Folder Name="DTO" TargetFolderName="DTO">
-        <ProjectItem ReplaceParameters="true">CreateItemDTO.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">GetItemsPageDTO.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">UpdateItemDTO.cs</ProjectItem>
       </Folder>
       <Folder Name="docfx_project" TargetFolderName="docfx_project">
         <Folder Name="articles" TargetFolderName="articles">
@@ -120,24 +114,29 @@
           <ProjectItem ReplaceParameters="true">view.html</ProjectItem>
         </Folder>        
       </Folder>
-      <Folder Name="ViewModels">
-        <ProjectItem ReplaceParameters="true">ItemsPageViewModel.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">ItemViewModel.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">LocalizationViewModel.cs</ProjectItem>
-      </Folder>
       <Folder Name="Controllers">
         <ProjectItem ReplaceParameters="true">ItemController.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ModuleApiController.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">ModuleExceptionFilterAttribute.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true">ServiceRouteMapper.cs</ProjectItem>
       </Folder>
       <Folder Name="Services">
-        <ProjectItem ReplaceParameters="true">ILoggingService.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">LoggingService.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">IItemService.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">ILocalizationService.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">ItemService.cs</ProjectItem>
-        <ProjectItem ReplaceParameters="true">LocalizationService.cs</ProjectItem>
+		<Folder Name="Items" TargetFolderName="Items">
+	      <ProjectItem ReplaceParameters="true">CreateItemDtoValidator.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">UpdateItemDtoValidator.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">CreateItemDTO.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">GetItemsPageDTO.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true">ItemsPageViewModel.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true">ItemViewModel.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">IItemService.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">ItemService.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">UpdateItemDTO.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">UpdateItemDtoValidator.cs</ProjectItem>
+		</Folder>
+		<Folder Name="Localization" TargetFolderName="Localization">
+          <ProjectItem ReplaceParameters="true">ILocalizationService.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true">LocalizationService.cs</ProjectItem>  
+          <ProjectItem ReplaceParameters="true">LocalizationViewModel.cs</ProjectItem>
+		</Folder>
       </Folder>
       <ProjectItem>.gitignore</ProjectItem>
       <ProjectItem>.editorconfig</ProjectItem>

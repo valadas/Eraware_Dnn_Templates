@@ -19,3 +19,16 @@ updates:
       - dependency-name: "Microsoft.Extensions.DependencyInjection"
       - dependency-name: "Microsoft.Extensions.DependencyInjection.Abstractions"
       - dependency-name: "Newtonsoft.Json"
+    groups:
+      xunit:
+        patterns:
+          - "xunit*"
+      dnn:
+        patterns:
+          - "DotNetNuke*"
+      nswag:
+        patterns:
+          - "NSwag*"
+      coverlet:
+        patterns:
+          - "coverlet*"

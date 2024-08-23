@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace $ext_rootnamespace$.ViewModels
+namespace $ext_rootnamespace$.Services.Localization
 {
     using System.Diagnostics.CodeAnalysis;
 

@@ -6,10 +6,8 @@ namespace $ext_rootnamespace$.Controllers
     using DotNetNuke.Security;
     using DotNetNuke.Web.Api;
     using NSwag.Annotations;
-    using $ext_rootnamespace$.DTO;
-    using $ext_rootnamespace$.Services;
-    using $ext_rootnamespace$.ViewModels;
-    using System;
+    using $ext_rootnamespace$.Services.Items;
+    using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
     using System.Web.Http;
@@ -40,11 +38,12 @@ namespace $ext_rootnamespace$.Controllers
         [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
         [SwaggerResponse(HttpStatusCode.OK, typeof(ItemViewModel), Description = "OK")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(string), Description = "Bad Request")]
-        [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
         public async Task<IHttpActionResult> CreateItem(CreateItemDTO item)
         {
             var result = await this.itemService.CreateItemAsync(item, this.UserInfo.UserID);
-            return this.Ok(result);
+            return result.Match<IHttpActionResult>(
+                success => this.Ok(success.Value),
+                error => this.BadRequest(string.Join(System.Environment.NewLine, error.Value.Select(e => e.ErrorMessage))));
         }
 
         /// <summary>
@@ -58,7 +57,6 @@ namespace $ext_rootnamespace$.Controllers
             HttpStatusCode.OK,
             typeof(ItemsPageViewModel),
             Description = "OK")]
-        [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
         public async Task<IHttpActionResult> GetItemsPage([FromUri] GetItemsPageDTO dto)
         {
             var page = await this.itemService.GetItemsPageAsync(dto.Query, dto.Page, dto.PageSize, dto.Descending);
@@ -74,7 +72,6 @@ namespace $ext_rootnamespace$.Controllers
         [ValidateAntiForgeryToken]
         [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
         [SwaggerResponse(HttpStatusCode.OK, typeof(void), Description = "OK")]
-        [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
         public async Task<IHttpActionResult> DeleteItem(int itemId)
         {
             await this.itemService.DeleteItemAsync(itemId);
@@ -88,7 +85,6 @@ namespace $ext_rootnamespace$.Controllers
         [HttpGet]
         [AllowAnonymous]
         [SwaggerResponse(HttpStatusCode.OK, typeof(bool), Description = "OK")]
-        [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
         public IHttpActionResult UserCanEdit()
         {
             return this.Ok(this.CanEdit);
@@ -103,12 +99,12 @@ namespace $ext_rootnamespace$.Controllers
         [ValidateAntiForgeryToken]
         [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
         [SwaggerResponse(HttpStatusCode.OK, null, Description = "OK")]
-        [SwaggerResponse(HttpStatusCode.BadRequest, typeof(ArgumentException), Description = "Malformed request")]
-        [SwaggerResponse(HttpStatusCode.InternalServerError, typeof(Exception), Description = "Error")]
         public async Task<IHttpActionResult> UpdateItem(UpdateItemDTO item)
         {
-            await this.itemService.UpdateItemAsync(item, this.UserInfo.UserID);
-            return this.Ok();
-        }
+            var result = await this.itemService.UpdateItemAsync(item, this.UserInfo.UserID);
+            return result.Match<IHttpActionResult>(
+                success => this.Ok(),
+                error => this.BadRequest(string.Join(System.Environment.NewLine, error.Value.Select(e => e.ErrorMessage))));
+    }
     }
 }

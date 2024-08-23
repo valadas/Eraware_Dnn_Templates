@@ -11,11 +11,9 @@ namespace $ext_rootnamespace$.Services
 {
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Localization;
-    using $ext_rootnamespace$.ViewModels;
     using System.Diagnostics.CodeAnalysis;
-    using System.Web.Hosting;
     using System.Threading;
-    using static $ext_rootnamespace$.ViewModels.LocalizationViewModel;
+    using static $ext_rootnamespace$.Services.Localization.LocalizationViewModel;
 
     /// <summary>
     /// Provides strongly typed localization services for this module.
@@ -35,7 +33,7 @@ namespace $ext_rootnamespace$.Services
                 if (string.IsNullOrWhiteSpace(this.resourceFileRoot))
                 {
                     this.resourceFileRoot = HostingEnvironment.MapPath(
-                        "~/DesktopModules/MyModule21/resources/App_LocalResources/");
+                        "~/DesktopModules/$ext_modulename$/resources/App_LocalResources/");
                 }
 
                 return this.resourceFileRoot;

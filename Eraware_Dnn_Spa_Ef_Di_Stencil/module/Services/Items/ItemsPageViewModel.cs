@@ -4,7 +4,7 @@
 using $ext_rootnamespace$.Data.Entities;
 using System.Collections.Generic;
 
-namespace $ext_rootnamespace$.ViewModels
+namespace $ext_rootnamespace$.Services.Items
 {
     /// <summary>
     /// Represents a page of items, <see cref="Item"/>.

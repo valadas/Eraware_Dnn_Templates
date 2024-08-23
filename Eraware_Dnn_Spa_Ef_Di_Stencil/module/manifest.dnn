@@ -27,17 +27,17 @@
             <assembly>
               <name>EntityFramework.dll</name>
               <path>bin</path>
-              <version>6.4.4</version>
+              <version>6.5.1</version>
             </assembly>
             <assembly>
               <name>EntityFramework.SqlServer.dll</name>
               <path>bin</path>
-              <version>6.4.4</version>
+              <version>6.5.1</version>
             </assembly>
             <assembly>
               <name>NSwag.Annotations.dll</name>
               <path>bin</path>
-              <version>13.19.0</version>
+              <version>14.1.0</version>
             </assembly>
           </assemblies>
         </component>
