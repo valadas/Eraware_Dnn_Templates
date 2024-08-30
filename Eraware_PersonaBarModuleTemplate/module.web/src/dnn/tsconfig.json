@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+      "outDir": "../../dist/dnn",
+      "rootDir": "./",
+      "sourceMap": true,
+      "module": "amd",
+      "moduleResolution": "node",
+      "target": "ES2017",
+      "inlineSources": true,
+      "strict": true
+    },
+    "include": [ "$ext_safeprojectname$.ts" ]
+  }

@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>Eraware_Dnn_PersonaBar</Name>
+    <Description>Eraware DNN Persona Bar Module</Description>
+    <Icon>module-icon.ico</Icon>
+    <ProjectType>CSharp</ProjectType>
+    <LanguageTag>csharp</LanguageTag>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <SortOrder>1000</SortOrder>
+    <TemplateID>4af75c04-13e5-4455-97cd-e03dcdcd2618</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>Eraware_Dnn_PB_Module</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <Hidden>true</Hidden>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="ProjectTemplate.csproj" TargetFileName="ProjectTemplate.csproj" ReplaceParameters="true">
+      <Folder Name=".nuke" TargetFolderName=".nuke">
+        <ProjectItem TargetFileName="build.schema.json">build.schema.json</ProjectItem>
+        <ProjectItem TargetFileName="parameters.json" ReplaceParameters="true">parameters.json</ProjectItem>
+      </Folder>
+      <Folder Name=".github" TargetFolderName=".github">
+        <ProjectItem TargetFileName="dependabot.yml">dependabot.yml</ProjectItem>
+        <ProjectItem TargetFileName="mergeable.yml">mergeable.yml</ProjectItem>
+      </Folder>
+      <Folder Name="Common" TargetFolderName="Common">
+        <ProjectItem ReplaceParameters="true">Globals.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Controllers">
+        <ProjectItem ReplaceParameters="true">EchoController.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">LocalizationController.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ServiceRouteMapper.cs</ProjectItem>
+      </Folder>
+	  <Folder Name="MenuControllers">
+		  <ProjectItem ReplaceParameters="true" TargetFileName="$ext_safeprojectname$MenuController.cs">MyPersonaBarModuleMenuController.cs</ProjectItem>
+	  </Folder>
+      <Folder Name="Properties" TargetFolderName="Properties">
+        <ProjectItem TargetFileName="AssemblyInfo.cs" ReplaceParameters="true">AssemblyInfo.cs</ProjectItem>
+      </Folder>
+	  <Folder Name="Providers" TargetFolderName="Providers">
+		  <ProjectItem ReplaceParameters="true">DateTimeProvider.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">IDateTimeProvider.cs</ProjectItem>
+	  </Folder>
+      <Folder Name="resources">
+        <Folder Name="App_LocalResources" TargetFolderName="App_LocalResources">
+          <ProjectItem TargetFileName="$ext_safeprojectname$.resx" ReplaceParameters="true">MyPersonaBarModule.resx</ProjectItem>
+        </Folder>
+        <Folder Name="images">
+          <ProjectItem>module-icon.png</ProjectItem>
+        </Folder>
+		<Folder Name="css">
+		  <ProjectItem TargetFileName="$ext_safeprojectname$.css">MyPersonaBarModule.css</ProjectItem>  
+		</Folder>
+		<ProjectItem TargetFileName="$ext_safeprojectname$.html" ReplaceParameters="true">MyPersonaBarModule.html</ProjectItem>
+      </Folder>
+      <Folder Name="Services">
+		<Folder Name="EchoService" TargetFolderName="EchoService">
+		  <ProjectItem ReplaceParameters="true">EchoDto.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">EchoService.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">EchoViewModel.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">IEchoService.cs</ProjectItem>
+		</Folder>
+		<Folder Name="Localization" TargetFolderName="Localization">
+          <ProjectItem ReplaceParameters="true">ILocalizationService.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true">LocalizationService.cs</ProjectItem>  
+          <ProjectItem ReplaceParameters="true">LocalizationViewModel.cs</ProjectItem>
+		</Folder>
+      </Folder>
+      <ProjectItem>.editorconfig</ProjectItem>
+      <ProjectItem>.gitignore</ProjectItem>
+      <ProjectItem ReplaceParameters="true">app.Config</ProjectItem>
+      <ProjectItem>build.cmd</ProjectItem>
+      <ProjectItem>build.ps1</ProjectItem>
+      <ProjectItem>build.sh</ProjectItem>
+      <ProjectItem>global.json</ProjectItem>
+      <ProjectItem ReplaceParameters="true">LICENSE</ProjectItem>
+      <ProjectItem ReplaceParameters="true">manifest.dnn</ProjectItem>
+      <ProjectItem ReplaceParameters="true">README.md</ProjectItem>
+      <ProjectItem ReplaceParameters="true">ReleaseNotes.html</ProjectItem>
+      <ProjectItem ReplaceParameters="true">Startup.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true">stylecop.json</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

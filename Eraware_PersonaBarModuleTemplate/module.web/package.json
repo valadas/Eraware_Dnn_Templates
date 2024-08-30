@@ -1,0 +1,38 @@
+{
+  "name": "$ext_scopeprefixkebab$",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Stencil Component Starter",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/$ext_scopeprefixkebab$/$ext_scopeprefixkebab$.js",
+  "files": [
+    "dist/",
+    "loader/"
+  ],
+  "scripts": {
+    "lint": "eslint src/**/*{.ts,.tsx}",
+    "build": "npm run lint && stencil build --docs",
+    "postbuild": "tsc --project ./src/dnn/tsconfig.json",
+    "start": "stencil build --dev --watch --serve --no-open",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "generate": "stencil generate"
+  },
+  "devDependencies": {
+    "@dnncommunity/dnn-elements": "^0.23.3",
+    "@stencil-community/eslint-plugin": "^0.8.0",
+    "@stencil/core": "^4.20.0",
+    "@stencil/sass": "^3.0.2",
+    "@types/jquery": "^3.5.30",
+    "dayjs": "^1.11.13",
+    "eslint-plugin-tsdoc": "^0.3.0",
+    "jquery": "^3.7.1"
+  },
+  "license": "MIT"
+}

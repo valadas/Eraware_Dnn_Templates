@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="ProjectGroup" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>Eraware Dnn Persona Bar Module Template</Name>
+    <Description>Creates a Persona Bar module that uses sencil.js</Description>
+    <Icon>Eraware.ico</Icon>
+    <ProjectType>CSharp</ProjectType>
+    <LanguageTag>csharp</LanguageTag>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <SortOrder>2000</SortOrder>
+    <TemplateID>d3bedb30-a049-48c0-acbd-7374c2ab740a</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>MyPersonaBarModule</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+	<Hidden>false</Hidden>
+  </TemplateData>
+  <TemplateContent>
+	<ProjectCollection>
+		<ProjectTemplateLink ProjectName="_build" CopyParameters="true">_build\build.vstemplate</ProjectTemplateLink>
+		<ProjectTemplateLink ProjectName="Module" CopyParameters="true">module\Module.vstemplate</ProjectTemplateLink>
+		<ProjectTemplateLink ProjectName="module.web" CopyParameters="true">module.web\module.web.vstemplate</ProjectTemplateLink>
+		<ProjectTemplateLink ProjectName="UnitTests" CopyParameters="true">UnitTests\UnitTests.vstemplate</ProjectTemplateLink>
+	</ProjectCollection>
+  </TemplateContent>
+	<WizardExtension>
+		<Assembly>Eraware_Dnn_Templates, Version=1.0.0.0, Culture=Neutral, PublicKeyToken=7161ac084cb3bf62</Assembly>
+		<FullClassName>Eraware_Dnn_Templates.WizardImplementation</FullClassName>
+	</WizardExtension>
+</VSTemplate>
