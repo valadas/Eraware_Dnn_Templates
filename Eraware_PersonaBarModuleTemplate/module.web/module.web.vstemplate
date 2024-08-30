@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>module web</Name>
+    <Description>module web</Description>
+    <Icon>module-icon.ico</Icon>
+    <ProjectType>CSharp</ProjectType>
+    <LanguageTag>csharp</LanguageTag>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <SortOrder>1000</SortOrder>
+    <TemplateID>e12ff3e8-9c9c-438c-86c7-763d54d6398c</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>module.web</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <Hidden>true</Hidden>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="ProjectTemplate.njsproj" TargetFileName="module.web.njsproj" ReplaceParameters="true">
+      <Folder Name="src">
+        <Folder Name="components">
+          <Folder Name="my-app-root">
+            <ProjectItem>my-app-root.scss</ProjectItem>
+            <ProjectItem ReplaceParameters="true">my-app-root.tsx</ProjectItem>
+            <ProjectItem>readme.md</ProjectItem>
+          </Folder>
+        </Folder>
+        <Folder Name="dnn">
+          <Folder Name ="types">
+            <ProjectItem>IDnnPersonaBarCustomValidator.ts</ProjectItem>
+            <ProjectItem>IDnnPersonaBarMenuItem.ts</ProjectItem>
+            <ProjectItem>IDnnPersonaBarMenuStructure.ts</ProjectItem>
+            <ProjectItem>IDnnPersonaBarMenuStructureItem.ts</ProjectItem>
+            <ProjectItem>IDnnPersonaBarNotificationOptions.ts</ProjectItem>
+            <ProjectItem>IDnnPersonaBarPersistant.ts</ProjectItem>
+            <ProjectItem>IDnnPersonaBarPersistantData.ts</ProjectItem>
+            <ProjectItem>IDnnPersonaBarUtilities.ts</ProjectItem>
+            <ProjectItem>IDnnPersonaBarValidator.ts</ProjectItem>
+            <ProjectItem>IDnnPersonaBarServicesFramework.ts</ProjectItem>
+          </Folder>
+          <ProjectItem TargetFileName="$ext_safeprojectname$.ts">MyPersonaBarModule.ts</ProjectItem>
+          <ProjectItem ReplaceParameters="true">types.d.ts</ProjectItem>
+          <ProjectItem ReplaceParameters="true">tsconfig.json</ProjectItem>
+        </Folder>
+        <Folder Name="services">
+          <ProjectItem>alert-error.ts</ProjectItem>
+          <ProjectItem ReplaceParameters="true">client-base.ts</ProjectItem>
+          <ProjectItem ReplaceParameters="true">services.ts</ProjectItem>
+        </Folder>
+        <ProjectItem ReplaceParameters="true">index.html</ProjectItem>
+        <ProjectItem>index.ts</ProjectItem>
+      </Folder>
+      <ProjectItem>.editorconfig</ProjectItem>
+      <ProjectItem>.eslintignore</ProjectItem>
+      <ProjectItem>.eslintrc.json</ProjectItem>
+      <ProjectItem>.gitignore</ProjectItem>
+      <ProjectItem>api-extractor.json</ProjectItem>
+      <ProjectItem>LICENSE</ProjectItem>
+      <ProjectItem ReplaceParameters="true">package.json</ProjectItem>
+      <ProjectItem>readme.md</ProjectItem>
+      <ProjectItem ReplaceParameters="true">stencil.config.ts</ProjectItem>
+      <ProjectItem>tsconfig.json</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

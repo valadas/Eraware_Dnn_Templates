@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextensions/2010">
+  <TemplateData>
+    <Name>UnitTests</Name>
+    <Description>UnitTests</Description>
+    <ProjectType>CSharp</ProjectType>
+    <LanguageTag>csharp</LanguageTag>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <SortOrder>1000</SortOrder>
+    <TemplateID>e5ad67d7-9b3b-44ce-9baa-e172e87bca15</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>UnitTests</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <Hidden>true</Hidden>
+	<CreateInPlace>true</CreateInPlace>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="ProjectTemplate.csproj" TargetFileName="UnitTests.csproj">
+      <Folder Name="Common">
+        <ProjectItem ReplaceParameters="true">GlobalsTests.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Controllers" TargetFolderName="Controllers">
+        <ProjectItem ReplaceParameters="true">EchoControllerTests.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">LocalizationControllerTests.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true">ServiceRouteMapperTests.cs</ProjectItem>
+      </Folder>
+	  <Folder Name="MenuControllers" TargetFolderName="MenuControllers">
+		<ProjectItem ReplaceParameters="true" TargetFileName="$ext_safeprojectname$MenuControllerTests">MyPersonaBarModuleMenuControllerTests.cs</ProjectItem>
+	  </Folder>
+      <Folder Name="Providers">
+		<ProjectItem ReplaceParameters="true">DateTimeProviderTests.cs</ProjectItem>
+	  </Folder>
+      <Folder Name="Services">
+          <ProjectItem ReplaceParameters="true">EchoServiceTests.cs</ProjectItem>
+      </Folder>
+	  <ProjectItem ReplaceParameters="true">StartupTests.cs</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>
