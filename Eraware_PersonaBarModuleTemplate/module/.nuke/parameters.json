@@ -1,0 +1,4 @@
+{
+  "$schema": "./build.schema.json",
+  "Solution": "$ext_safeprojectname$.sln"
+}

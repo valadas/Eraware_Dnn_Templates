@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>module\module-icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{AC17427B-56DF-49BB-B9D1-D59A3C5F0C69}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Eraware_PersonaBarModuleTemplate</RootNamespace>
+    <AssemblyName>Eraware_PersonaBarModuleTemplate</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <GeneratePkgDefFile>false</GeneratePkgDefFile>
+    <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
+    <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>true</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <CreateVsixContainer>false</CreateVsixContainer>
+    <DeployExtension>false</DeployExtension>
+    <DeployVSTemplates>false</DeployVSTemplates>
+    <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
+    <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
+    <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CopyVsixExtensionFiles>False</CopyVsixExtensionFiles>
+    <CopyVsixExtensionLocation>
+    </CopyVsixExtensionLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.CoreUtility">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="module\.editorconfig" />
+    <None Include="module\.github\dependabot.yml" />
+    <None Include="module\.github\mergeable.yml" />
+    <None Include="module\.nuke\build.schema.json" />
+    <None Include="module\.nuke\parameters.json" />
+    <None Include="module\app.config" />
+    <None Include="module\build.cmd" />
+    <None Include="module\global.json" />
+    <None Include="module\LICENSE" />
+    <None Include="module\manifest.dnn" />
+    <None Include="module\MenuControllers\MyPersonaBarModuleMenuController.cs" />
+    <None Include="module\Startup.cs" />
+    <None Include="Properties\AssemblyInfo.cs" />
+    <None Include="module\Providers\DateTimeProvider.cs" />
+    <None Include="module\Providers\IDateTimeProvider.cs" />
+    <None Include="module\Services\EchoService\EchoDto.cs" />
+    <None Include="module\Services\EchoService\EchoService.cs" />
+    <None Include="module\Services\EchoService\EchoViewModel.cs" />
+    <None Include="module\Services\EchoService\IEchoService.cs" />
+    <None Include="module\Services\Localization\ILocalizationService.cs" />
+    <None Include="module\Services\Localization\LocalizationService.cs" />
+    <None Include="module\Services\Localization\LocalizationViewModel.cs" />
+    <None Include="UnitTests\Common\GlobalsTests.cs" />
+    <None Include="UnitTests\Controllers\EchoControllerTests.cs" />
+    <None Include="UnitTests\Controllers\LocalizationControllerTests.cs" />
+    <None Include="UnitTests\Controllers\ServiceRouteMapperTests.cs" />
+    <None Include="UnitTests\MenuControllers\MyPersonaBarModuleMenuControllerTests.cs" />
+    <None Include="UnitTests\Providers\DateTimeProviderTests.cs" />
+    <None Include="UnitTests\Services\EchoServiceTests.cs" />
+    <None Include="UnitTests\StartupTests.cs" />
+    <None Include="_build\.editorconfig" />
+    <None Include="_build\ProjectTemplate.csproj" />
+    <None Include="_build\Properties\launchSettings.json" />
+    <None Include="_build\_build.csproj.DotSettings" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AssemblyInfo.cs" />
+    <None Include="module.web\.editorconfig" />
+    <None Include="module.web\.eslintignore" />
+    <None Include="module.web\.eslintrc.json" />
+    <None Include="module.web\api-extractor.json" />
+    <None Include="module.web\LICENSE" />
+    <None Include="module.web\ProjectTemplate.njsproj" />
+    <None Include="module.web\package.json" />
+    <None Include="module.web\readme.md" />
+    <None Include="module.web\src\components\my-app-root\my-app-root.scss" />
+    <None Include="module.web\src\components\my-app-root\readme.md" />
+    <None Include="module.web\src\dnn\tsconfig.json" />
+    <None Include="module.web\tsconfig.json" />
+    <None Include="module\ProjectTemplate.csproj" />
+    <None Include="module\README.md" />
+    <None Include="module\stylecop.json" />
+    <None Include="ProjectTemplate.csproj" />
+    <None Include="UnitTests\ProjectTemplate.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Eraware.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="module.web\.gitignore" />
+    <Content Include="module.web\module-icon.ico" />
+    <Content Include="UnitTests\UnitTests.vstemplate" />
+    <VSTemplate Include="module.web\module.web.vstemplate" />
+    <Content Include="module.web\src\index.html" />
+    <Content Include="module\.gitignore" />
+    <Content Include="module\build.ps1" />
+    <Content Include="module\build.sh" />
+    <VSTemplate Include="module\Module.vstemplate" />
+    <Content Include="module\ReleaseNotes.html" />
+    <Content Include="module\resources\css\MyPersonaBarModule.css" />
+    <Content Include="module\resources\images\module-icon.png" />
+    <Content Include="module\resources\MyPersonaBarModule.html" />
+    <VSTemplate Include="_build\build.vstemplate" />
+    <VSTemplate Include="root.vstemplate" />
+    <Content Include="module\module-icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="module\resources\App_LocalResources\MyPersonaBarModule.resx" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="module.web\src\components\my-app-root\my-app-root.tsx" />
+    <None Include="module.web\src\dnn\MyPersonaBarModule.ts" />
+    <None Include="module.web\src\dnn\types.d.ts" />
+    <None Include="module.web\src\dnn\types\IDnnPersonaBarCustomValidator.ts" />
+    <None Include="module.web\src\dnn\types\IDnnPersonaBarMenuItem.ts" />
+    <None Include="module.web\src\dnn\types\IDnnPersonaBarMenuStructure.ts" />
+    <None Include="module.web\src\dnn\types\IDnnPersonaBarMenuStructureItem.ts" />
+    <None Include="module.web\src\dnn\types\IDnnPersonaBarNotificationOptions.ts" />
+    <None Include="module.web\src\dnn\types\IDnnPersonaBarPersistant.ts" />
+    <None Include="module.web\src\dnn\types\IDnnPersonaBarPersistantData.ts" />
+    <None Include="module.web\src\dnn\types\IDnnPersonaBarUtilities.ts" />
+    <None Include="module.web\src\dnn\types\IDnnPersonaBarValidator.ts" />
+    <None Include="module.web\src\dnn\types\IDnnPersonaBarServicesFramework.ts" />
+    <None Include="module.web\src\index.ts" />
+    <None Include="module.web\src\services\alert-error.ts" />
+    <None Include="module.web\src\services\client-base.ts" />
+    <None Include="module.web\src\services\services.ts" />
+    <TypeScriptNone Include="module.web\stencil.config.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="module\Common\Globals.cs" />
+    <None Include="module\Controllers\EchoController.cs" />
+    <None Include="module\Controllers\LocalizationController.cs" />
+    <None Include="module\Controllers\ServiceRouteMapper.cs" />
+    <None Include="module\Properties\AssemblyInfo.cs" />
+    <None Include="_build\Build.cs" />
+    <None Include="_build\Configuration.cs" />
+    <None Include="_build\Helpers.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

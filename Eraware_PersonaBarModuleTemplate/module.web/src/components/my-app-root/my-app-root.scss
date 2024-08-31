@@ -1,0 +1,55 @@
+:host {
+  display: block;
+}
+
+header {
+  top: 0;
+  background-color: white;
+  min-height: 103px;
+  padding: 28px 30px 10px 30px;
+  box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  .title{
+    margin-right: auto;
+  }
+  button.close{
+    position: relative;
+    top: -2.5em;
+    right: 0.5em;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    font-weight: bold;
+    opacity: 0.7;
+    cursor: pointer;
+  }
+}
+
+.container{
+  padding: 25px 30px;
+  position: absolute;
+  width: 100%;
+  box-sizing: border-box;
+  .content{
+    background-color: white;
+    border: 2px solid #e9e9ec;
+    padding: 1em;
+  }
+}
+
+fieldset{
+  margin-top: 1em;
+  padding-top: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+label{
+  display: flex;
+  align-items: center;
+}
