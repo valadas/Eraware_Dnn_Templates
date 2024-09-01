@@ -64,6 +64,7 @@ class Build : NukeBuild
         });
 
     Target Restore => _ => _
+        .DependsOn(Clean)
         .Executes(() =>
         {
             var projects = Solution.GetAllProjects("*");
@@ -100,6 +101,9 @@ class Build : NukeBuild
                 .SetAssemblyVersion(GitVersion.AssemblySemVer)
                 .SetFileVersion(GitVersion.MajorMinorPatch)
                 .SetPackageVersion(GitVersion.MajorMinorPatch));
+
+            var vsix = TemplateProjectDirectory / "bin" / Configuration / "Eraware_Dnn_Templates.vsix";
+            CopyFileToDirectory(vsix, ArtifactsDirectory, FileExistsPolicy.Overwrite);
         });
 
     Target CI => _ => _
@@ -109,8 +113,6 @@ class Build : NukeBuild
         .Triggers(Release)
         .Executes(() =>
         {
-            var vsix = TemplateProjectDirectory / "bin" / Configuration / "Eraware_Dnn_Templates.vsix";
-            CopyFileToDirectory(vsix, ArtifactsDirectory, FileExistsPolicy.Overwrite);
         });
 
     Target Release => _ => _
@@ -124,11 +126,11 @@ class Build : NukeBuild
                 Credentials = credentials,
             };
             var (owner, name) = (GitRepository.GetGitHubOwner(), GitRepository.GetGitHubName());
-
+            var version = GitRepository.IsOnMainOrMasterBranch() ? GitVersion.MajorMinorPatch : GitVersion.FullSemVer;
             var newRelease = new NewRelease(GitVersion.FullSemVer)
             {
                 Draft = true,
-                Name = $"v{GitVersion.FullSemVer}",
+                Name = $"v{version}",
                 GenerateReleaseNotes = true,
                 TargetCommitish = GitVersion.Sha,
                 Prerelease = GitRepository.IsOnReleaseBranch(),
