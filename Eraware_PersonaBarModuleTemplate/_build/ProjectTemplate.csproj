@@ -22,7 +22,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NSwag.MSBuild" Version="14.1.0" />
+    <PackageReference Include="NSwag.MSBuild" Version="14.2.0" />
     <PackageDownload Include="GitVersion.Tool" Version="[5.10.1]" />
     <PackageDownload Include="coverlet.console" Version="[1.7.2]" />
   </ItemGroup>
