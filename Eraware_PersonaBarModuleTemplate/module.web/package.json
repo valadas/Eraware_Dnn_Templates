@@ -31,7 +31,7 @@
     "@stencil/sass": "^3.0.2",
     "@types/jquery": "^3.5.30",
     "dayjs": "^1.11.13",
-    "eslint-plugin-tsdoc": "^0.3.0",
+    "eslint-plugin-tsdoc": "^0.4.0",
     "jquery": "^3.7.1"
   },
   "license": "MIT"
