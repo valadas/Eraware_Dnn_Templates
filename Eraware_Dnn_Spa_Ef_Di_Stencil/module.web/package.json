@@ -28,7 +28,7 @@
     "@dnncommunity/dnn-elements": "^0.23.3",
     "@microsoft/api-documenter": "^7.13.49",
     "@microsoft/api-extractor": "^7.18.9",
-    "@stencil-community/eslint-plugin": "^0.8.0",
+    "@stencil-community/eslint-plugin": "^0.9.0",
     "@stencil/core": "^4.20.0",
     "@stencil/sass": "^3.0.2",
     "@stencil/store": "^2.0.0",
