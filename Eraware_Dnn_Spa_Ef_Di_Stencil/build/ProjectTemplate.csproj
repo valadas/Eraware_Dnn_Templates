@@ -18,7 +18,7 @@
     </PackageReference>
     <PackageReference Include="Nuke.Common" Version="8.0.0" />
     <PackageReference Include="ReportGenerator" Version="5.3.8" />
-    <PackageReference Include="xunit.runner.console" Version="2.9.0">
+    <PackageReference Include="xunit.runner.console" Version="2.9.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
