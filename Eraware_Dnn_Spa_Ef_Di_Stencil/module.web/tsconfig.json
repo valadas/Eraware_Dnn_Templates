@@ -1,6 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "strict": true,
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
     "declaration": false,
@@ -9,11 +10,14 @@
       "dom",
       "es2017"
     ],
-    "moduleResolution": "NodeNext",
-    "module": "esnext",
+    "module": "ES2015",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
     "target": "es2017",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "strictPropertyInitialization": false,
     "jsx": "react",
     "jsxFactory": "h"
   },

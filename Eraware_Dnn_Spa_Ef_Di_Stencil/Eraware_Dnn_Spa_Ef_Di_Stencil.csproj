@@ -92,7 +92,6 @@
     <None Include="module.web\api-extractor.json" />
     <None Include="module.web\src\components\my-component\usage\javascript.md" />
     <None Include="module.web\src\components\my-component\usage\dnn.md" />
-    <None Include="module.web\src\components\my-create\my-create.scss" />
     <None Include="module.web\src\components\my-edit\my-edit.scss" />
     <None Include="module.web\src\components\my-item-details\my-item-details.scss" />
     <None Include="module.web\src\components\my-items-list\my-items-list.scss" />
@@ -248,7 +247,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="module.web\src\components.d.ts" />
     <TypeScriptCompile Include="module.web\src\components\my-component\my-component.tsx" />
-    <TypeScriptCompile Include="module.web\src\components\my-create\my-create.tsx" />
     <TypeScriptCompile Include="module.web\src\components\my-edit\my-edit.tsx" />
     <TypeScriptCompile Include="module.web\src\components\my-item-details\my-item-details.tsx" />
     <TypeScriptCompile Include="module.web\src\components\my-items-list\my-items-list.tsx" />
