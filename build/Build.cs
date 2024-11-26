@@ -103,7 +103,7 @@ class Build : NukeBuild
                 .SetPackageVersion(GitVersion.MajorMinorPatch));
 
             var vsix = TemplateProjectDirectory / "bin" / Configuration / "Eraware_Dnn_Templates.vsix";
-            CopyFileToDirectory(vsix, ArtifactsDirectory, FileExistsPolicy.Overwrite);
+            vsix.CopyToDirectory(ArtifactsDirectory, ExistsPolicy.FileOverwrite);
         });
 
     Target CI => _ => _

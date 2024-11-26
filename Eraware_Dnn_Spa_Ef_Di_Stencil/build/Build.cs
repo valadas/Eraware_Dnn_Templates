@@ -189,14 +189,12 @@ class Build : NukeBuild
                 .SetReportTypes(ReportTypes.Badges, ReportTypes.HtmlInline, ReportTypes.HtmlChart)
                 .SetTargetDirectory(UnitTestsResultsDirectory)
                 .SetHistoryDirectory(RootDirectory / "UnitTests" / "history")
-                .SetProcessArgumentConfigurator(a => a
-                    .Add("-title:UnitTests"))
-                .SetFramework("net5.0"));
+                .AddProcessAdditionalArguments("-title:UnitTests"));
 
             Helpers.CleanCodeCoverageHistoryFiles(RootDirectory / "UnitTests" / "history");
 
             var testBadges = UnitTestsResultsDirectory.GlobFiles("badge_branchcoverage.svg", "badge_linecoverage.svg");
-            testBadges.ForEach(f => CopyFileToDirectory(f, UnitTestBadgesDirectory, FileExistsPolicy.Overwrite, true));
+            testBadges.ForEach(f => f.CopyToDirectory(UnitTestBadgesDirectory, ExistsPolicy.FileOverwrite, createDirectories: true));
 
             if (IsWin && (InvokedTargets.Contains(UnitTests) || InvokedTargets.Contains(Test)))
             {
@@ -232,14 +230,12 @@ class Build : NukeBuild
                 .SetHistoryDirectory(RootDirectory / "IntegrationTests" / "history")
                 .SetTargetDirectory(IntegrationTestsResultsDirectory)
                 .AddClassFilters("-*Data.ModuleDbContext")
-                .SetProcessArgumentConfigurator(a => a
-                    .Add("-title:IntegrationTests"))
-                .SetFramework("net5.0"));
+                .AddProcessAdditionalArguments("-title:IntegrationTests"));
 
             Helpers.CleanCodeCoverageHistoryFiles(RootDirectory / "IntegrationTests" / "history");
 
             var testBadges = IntegrationTestsResultsDirectory.GlobFiles("badge_branchcoverage.svg", "badge_linecoverage.svg");
-            testBadges.ForEach(f => CopyFileToDirectory(f, IntegrationTestsBadgesDirectory, FileExistsPolicy.Overwrite, true));
+            testBadges.ForEach(f => f.CopyToDirectory(IntegrationTestsBadgesDirectory, ExistsPolicy.FileOverwrite, createDirectories: true));
 
             if (IsWin && (InvokedTargets.Contains(IntegrationTests) || InvokedTargets.Contains(Test)))
             {
@@ -381,32 +377,14 @@ class Build : NukeBuild
         .DependsOn(BuildFrontEnd)
         .Executes(() =>
         {
-            var scriptsDestination = RootDirectory / "resources" / "scripts" / "$ext_scopeprefixkebab$";
+            var scriptsDestination = RootDirectory / "resources" / "scripts";
             scriptsDestination.CreateOrCleanDirectory();
-            CopyDirectoryRecursively(RootDirectory / "module.web" / "dist" / "$ext_scopeprefixkebab$", scriptsDestination, DirectoryExistsPolicy.Merge);
+            (RootDirectory / "module.web" / "dist" / "$ext_scopeprefixkebab$").CopyToDirectory(scriptsDestination, ExistsPolicy.MergeAndOverwrite);
         });
 
     Target InstallNpmPackages => _ => _
         .Executes(() =>
         {
-            NpmLogger = (type, output) =>
-            {
-                if (type == OutputType.Std)
-                {
-                    Serilog.Log.Information(output);
-                }
-                if (type == OutputType.Err)
-                {
-                    if (output.StartsWith("npm WARN", StringComparison.OrdinalIgnoreCase))
-                    {
-                        Serilog.Log.Warning(output);
-                    }
-                    else
-                    {
-                        Serilog.Log.Error(output);
-                    }
-                }
-            };
             NpmInstall(s =>
                 s.SetProcessWorkingDirectory(WebProjectDirectory));
         });
@@ -532,7 +510,6 @@ class Build : NukeBuild
         {
             Git($"remote set-url origin https://{GitRepository.GetGitHubOwner()}:{GitHubToken}@github.com/{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git");
             var version = GitRepository.IsOnMainOrMasterBranch() ? GitVersion.MajorMinorPatch : GitVersion.SemVer;
-            GitLogger = (type, output) => Serilog.Log.Information(output);
             Git($"tag v{version}");
             Git($"push --tags");
         });
@@ -651,7 +628,7 @@ class Build : NukeBuild
 
             // Install files
             var installFiles = RootDirectory.GlobFiles("LICENSE", "manifest.dnn", "ReleaseNotes.html");
-            installFiles.ForEach(i => CopyFileToDirectory(i, stagingDirectory));
+            installFiles.ForEach(i => i.CopyToDirectory(stagingDirectory, ExistsPolicy.MergeAndOverwrite));
 
             // Libraries
             var manifest = RootDirectory.GlobFiles("*.dnn").FirstOrDefault();
@@ -665,7 +642,7 @@ class Build : NukeBuild
 
                 if (assemblyIncludedInManifest)
                 {
-                    CopyFileToDirectory(assembly, stagingDirectory / "bin", FileExistsPolicy.Overwrite);
+                    assembly.CopyToDirectory(stagingDirectory / "bin", ExistsPolicy.MergeAndOverwrite);
                 }
             });
 
@@ -700,7 +677,7 @@ class Build : NukeBuild
             // Open folder
             if (IsWin)
             {
-                CopyFileToDirectory(ArtifactsDirectory / fileName, InstallDirectory, FileExistsPolicy.Overwrite);
+                (ArtifactsDirectory / fileName).CopyToDirectory(InstallDirectory, ExistsPolicy.FileOverwrite);
 
                 // Uncomment next line if you would like a package task to auto-open the package in explorer.
                 // Process.Start("explorer.exe", ArtifactsDirectory);
@@ -733,17 +710,16 @@ class Build : NukeBuild
             NSwagTasks.NSwagOpenApiToTypeScriptClient(c => c
                 .SetInput(swaggerFile)
                 .SetOutput(ClientServicesDirectory / "services.ts")
-                .SetNSwagRuntime("Net80")
-                .SetProcessArgumentConfigurator(c => c
-                    .Add("/Template:Fetch")
-                    .Add("/GenerateClientClasses:True")
-                    .Add("/ClientBaseClass:ClientBase")
-                    .Add("/ConfigurationClass:ConfigureRequest")
-                    .Add("/UseTransformOptionsMethod:True")
-                    .Add("/MarkOptionalProperties:True")
-                    .Add($"/ExtensionCode:{ClientServicesDirectory / "client-base.ts"}")
-                    .Add("/UseGetBaseUrlMethod:True")
-                    .Add("/UseAbortSignal:True")));
+                .AddProcessAdditionalArguments(
+                    "/Template:Fetch",
+                    "/GenerateClientClasses:True",
+                    "/ClientBaseClass:ClientBase",
+                    "/ConfigurationClass:ConfigureRequest",
+                    "/UseTransformOptionsMethod:True",
+                    "/MarkOptionalProperties:True",
+                    $"/ExtensionCode:{ClientServicesDirectory / "client-base.ts"}",
+                    "/UseGetBaseUrlMethod:True",
+                    "/UseAbortSignal:True"));
         });
 
     Target CleanDocsFolder => _ => _
@@ -840,19 +816,15 @@ class Build : NukeBuild
         .Executes(() => {
             var integrationTestsDocsDirectory = DocsDirectory / "integrationTests";
             integrationTestsDocsDirectory.CreateOrCleanDirectory();
-            CopyDirectoryRecursively(
-                IntegrationTestsResultsDirectory,
+            IntegrationTestsResultsDirectory.CopyToDirectory(
                 integrationTestsDocsDirectory,
-                DirectoryExistsPolicy.Merge,
-                FileExistsPolicy.Overwrite);
+                ExistsPolicy.MergeAndOverwrite);
 
             var unitTestsDocsDirectory = DocsDirectory / "unitTests";
             unitTestsDocsDirectory.CreateOrCleanDirectory();
-            CopyDirectoryRecursively(
-                UnitTestsResultsDirectory,
-                unitTestsDocsDirectory,
-                DirectoryExistsPolicy.Merge,
-                FileExistsPolicy.Overwrite);
+            UnitTestsResultsDirectory.CopyToDirectory(
+               unitTestsDocsDirectory,
+               ExistsPolicy.MergeAndOverwrite);
         });
 
     Target TsDoc => _ => _
@@ -870,11 +842,9 @@ class Build : NukeBuild
                 .SetProcessWorkingDirectory(WebProjectDirectory)
                 .SetArguments("tsdoc"));
 
-            CopyDirectoryRecursively(
-                tempMdDirectory,
+            tempMdDirectory.CopyToDirectory(
                 clientDocDirectory,
-                DirectoryExistsPolicy.Merge,
-                FileExistsPolicy.Overwrite);
+                ExistsPolicy.MergeAndOverwrite);
 
             // Create a table of content
             var toc = new StringBuilder();
@@ -920,15 +890,15 @@ class Build : NukeBuild
                     return;
                 }
                 var newFileName = fileInfo.Directory.Name + ".md";
-                CopyFile(f, componentsDocsDirectory / newFileName, FileExistsPolicy.Overwrite, true);
+                f.CopyToDirectory(componentsDocsDirectory / newFileName, ExistsPolicy.MergeAndOverwrite, createDirectories: true);
                 toc.AppendLine($"# [{fileInfo.Directory.Name}]({newFileName})");
             });
             toc.AppendLine();
             (componentsDocsDirectory / "toc.md").WriteAllText(toc.ToString());
 
             var index = WebProjectDirectory.GlobFiles("readme.md").FirstOrDefault();
-            CopyFileToDirectory(index, componentsDocsDirectory, FileExistsPolicy.Overwrite, true);
-            RenameFile(componentsDocsDirectory / "readme.md", "index.md", FileExistsPolicy.Overwrite);
+            index.CopyToDirectory(componentsDocsDirectory, ExistsPolicy.MergeAndOverwrite, createDirectories: true);
+            (componentsDocsDirectory / "readme.md").Rename("index.md", ExistsPolicy.FileOverwrite);
         });
 
     Target EnsureBootstrapingScriptsAreExecutable => _ => _
