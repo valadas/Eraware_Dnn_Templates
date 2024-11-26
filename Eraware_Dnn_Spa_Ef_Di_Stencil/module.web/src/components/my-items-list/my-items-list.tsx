@@ -155,7 +155,7 @@ export class MyItemsList {
         <div class="footer">
           <p>{this.resx?.shownItems?.replace("{0}", state.items.length.toString()).replace("{1}", state.availableItems.toString())}</p>
           {!this.loading && state.items.length < state.availableItems &&
-            <dnn-button type="primary" reversed
+            <dnn-button appearance="primary" reversed
               onClick={() => this.loadMore()}
             >
               {this.resx?.loadMore || "Load More"}
