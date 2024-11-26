@@ -18,14 +18,27 @@ export class ClientBase {
     return baseUrl || "";
   }
 
-  protected transformOptions(options: RequestInit): Promise<RequestInit> {
+  protected async transformOptions(options: RequestInit): Promise<RequestInit> {
     const dnnHeaders = this.sf.getModuleHeaders();
 
+    let headers: Headers;
+    if (!options.headers) {
+      headers = new Headers();
+    } else if (options.headers instanceof Headers) {
+      headers = options.headers;
+    } else if (Array.isArray(options.headers)) {
+      headers = new Headers(options.headers);
+    } else {
+      headers = new Headers(Object.entries(options.headers));
+    }
+
     dnnHeaders.forEach((value, key) => {
-      options.headers[key] = value;
+      headers.append(key, value);
     });
 
-    return Promise.resolve(options);
+    options.headers = headers;
+
+    return options;
   }
 }
 

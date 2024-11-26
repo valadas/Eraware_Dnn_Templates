@@ -15,6 +15,12 @@
     border: 1px solid #333;
     margin-top: 1em;
     padding: 0.5em;
+
+    .title {
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
   }
 
   .footer {
