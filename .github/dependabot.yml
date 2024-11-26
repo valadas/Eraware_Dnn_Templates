@@ -6,10 +6,15 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directories:
-      - "Eraware_Dnn_Templates/Eraware_Dnn_Spa_Ef_Di_Stencil/module.web"
-      - "Eraware_Dnn_Templates/Eraware_PersonaBarModuleTemplate/module.web"
-      - "Eraware_Dnn_Templates/Eraware_Dnn_Spa_Ef_Di_Stencil/module/docfx_project"
+    directory: "Eraware_Dnn_Templates/Eraware_Dnn_Spa_Ef_Di_Stencil/module.web"
+    schedule:
+      interval: "monthly"
+  - package-ecosystem: "npm"
+    directory: "Eraware_Dnn_Templates/Eraware_PersonaBarModuleTemplate/module.web"
+    schedule:
+      interval: "monthly"
+  - package-ecosystem: "npm"
+    directory: "Eraware_Dnn_Templates/Eraware_Dnn_Spa_Ef_Di_Stencil/module/docfx_project"
     schedule:
       interval: "monthly"
   - package-ecosystem: "nuget"
