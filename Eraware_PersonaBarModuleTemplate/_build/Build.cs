@@ -190,14 +190,12 @@ class Build : NukeBuild
                 .SetReportTypes(ReportTypes.Badges, ReportTypes.HtmlInline, ReportTypes.HtmlChart)
                 .SetTargetDirectory(UnitTestsResultsDirectory)
                 .SetHistoryDirectory(RootDirectory / "UnitTests" / "history")
-                .SetProcessArgumentConfigurator(a => a
-                    .Add("-title:UnitTests"))
-                .SetFramework("net5.0"));
+                .AddProcessAdditionalArguments("-title:UnitTests"));
 
             Helpers.CleanCodeCoverageHistoryFiles(RootDirectory / "UnitTests" / "history");
 
             var testBadges = UnitTestsResultsDirectory.GlobFiles("badge_branchcoverage.svg", "badge_linecoverage.svg");
-            testBadges.ForEach(f => CopyFileToDirectory(f, UnitTestBadgesDirectory, FileExistsPolicy.Overwrite, true));
+            testBadges.ForEach(f => f.CopyToDirectory(UnitTestBadgesDirectory, ExistsPolicy.FileOverwrite, createDirectories: true));
 
             if (IsWin && (InvokedTargets.Contains(UnitTests) || InvokedTargets.Contains(Test)))
             {
@@ -334,7 +332,7 @@ class Build : NukeBuild
         {
             var resourcesDirectory = RootDirectory / "resources";
             DeployDirectory.CreateOrCleanDirectory();
-            CopyDirectoryRecursively(resourcesDirectory, DeployDirectory, DirectoryExistsPolicy.Merge);
+            resourcesDirectory.CopyToDirectory(DeployDirectory, ExistsPolicy.MergeAndOverwrite);
         });
 
     Target CopyScripts => _ => _
@@ -342,34 +340,16 @@ class Build : NukeBuild
         .Executes(() =>
         {
             ScriptsModulesDirectory.CreateOrCleanDirectory();
-            CopyDirectoryRecursively(RootDirectory / "module.web" / "dist" / "nvi-davidmodule", ScriptsModulesDirectory, DirectoryExistsPolicy.Merge);
+            (RootDirectory / "module.web" / "dist" / "nvi-davidmodule").CopyToDirectory(ScriptsModulesDirectory, ExistsPolicy.MergeAndOverwrite);
             var collectionDirectory = RootDirectory / "module.web" / "dist" / "dnn";
             collectionDirectory
                 .GlobFiles("*.*")
-                .ForEach(f => CopyFileToDirectory(f, ScriptsDirectory, FileExistsPolicy.Overwrite));
+                .ForEach(f.CopyToDirectory(ScriptsDirectory, ExistsPolicy.FileOverwrite, createDirectories: true));
         });
 
     Target InstallNpmPackages => _ => _
         .Executes(() =>
         {
-            NpmLogger = (type, output) =>
-            {
-                if (type == OutputType.Std)
-                {
-                    Serilog.Log.Information(output);
-                }
-                if (type == OutputType.Err)
-                {
-                    if (output.StartsWith("npm WARN", StringComparison.OrdinalIgnoreCase))
-                    {
-                        Serilog.Log.Warning(output);
-                    }
-                    else
-                    {
-                        Serilog.Log.Error(output);
-                    }
-                }
-            };
             NpmInstall(s =>
                 s.SetProcessWorkingDirectory(WebProjectDirectory));
         });
@@ -495,7 +475,6 @@ class Build : NukeBuild
         {
             Git($"remote set-url origin https://{GitRepository.GetGitHubOwner()}:{GitHubToken}@github.com/{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git");
             var version = GitRepository.IsOnMainOrMasterBranch() ? GitVersion.MajorMinorPatch : GitVersion.SemVer;
-            GitLogger = (type, output) => Serilog.Log.Information(output);
             Git($"tag v{version}");
             Git($"push --tags");
         });
@@ -620,7 +599,7 @@ class Build : NukeBuild
 
             // Install files
             var installFiles = RootDirectory.GlobFiles("LICENSE", "manifest.dnn", "ReleaseNotes.html");
-            installFiles.ForEach(i => CopyFileToDirectory(i, stagingDirectory));
+            installFiles.ForEach(i => i.CopyToDirectory(stagingDirectory, ExistsPolicy.FileOverwrite));
 
             // Libraries
             var manifest = RootDirectory.GlobFiles("*.dnn").FirstOrDefault();
@@ -634,7 +613,7 @@ class Build : NukeBuild
 
                 if (assemblyIncludedInManifest)
                 {
-                    CopyFileToDirectory(assembly, stagingDirectory / "bin", FileExistsPolicy.Overwrite);
+                    assembly.CopyToDirectory(stagingDirectory / "bin", ExistsPolicy.FileOverwrite, createDirectories: true);
                 }
             });
 
@@ -669,7 +648,7 @@ class Build : NukeBuild
             // Open folder
             if (IsWin)
             {
-                CopyFileToDirectory(ArtifactsDirectory / fileName, InstallDirectory, FileExistsPolicy.Overwrite);
+                (ArtifactsDirectory / fileName).CopyToDirectory(InstallDirectory, ExistsPolicy.FileOverwrite);
 
                 // Uncomment next line if you would like a package task to auto-open the package in explorer.
                 // Process.Start("explorer.exe", ArtifactsDirectory);
@@ -701,17 +680,16 @@ class Build : NukeBuild
             NSwagTasks.NSwagOpenApiToTypeScriptClient(c => c
                 .SetInput(swaggerFile)
                 .SetOutput(ClientServicesDirectory / "services.ts")
-                .SetNSwagRuntime("Net80")
-                .SetProcessArgumentConfigurator(c => c
-                    .Add("/Template:Fetch")
-                    .Add("/GenerateClientClasses:True")
-                    .Add("/ClientBaseClass:ClientBase")
-                    .Add("/ConfigurationClass:ConfigureRequest")
-                    .Add("/UseTransformOptionsMethod:True")
-                    .Add("/MarkOptionalProperties:True")
-                    .Add($"/ExtensionCode:{ClientServicesDirectory / "client-base.ts"}")
-                    .Add("/UseGetBaseUrlMethod:True")
-                    .Add("/UseAbortSignal:True")));
+                .AddProcessAdditionalArguments(
+                    "/Template:Fetch",
+                    "/GenerateClientClasses:True",
+                    "/ClientBaseClass:ClientBase",
+                    "/ConfigurationClass:ConfigureRequest",
+                    "/UseTransformOptionsMethod:True",
+                    "/MarkOptionalProperties:True",
+                    $"/ExtensionCode:{ClientServicesDirectory / "client-base.ts"}",
+                    "/UseGetBaseUrlMethod:True",
+                    "/UseAbortSignal:True"));
         });
 
     Target DeployGeneratedFiles => _ => _
