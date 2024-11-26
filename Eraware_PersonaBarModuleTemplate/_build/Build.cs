@@ -344,7 +344,7 @@ class Build : NukeBuild
             var collectionDirectory = RootDirectory / "module.web" / "dist" / "dnn";
             collectionDirectory
                 .GlobFiles("*.*")
-                .ForEach(f.CopyToDirectory(ScriptsDirectory, ExistsPolicy.FileOverwrite, createDirectories: true));
+                .ForEach(f => f.CopyToDirectory(ScriptsDirectory, ExistsPolicy.FileOverwrite, createDirectories: true));
         });
 
     Target InstallNpmPackages => _ => _
