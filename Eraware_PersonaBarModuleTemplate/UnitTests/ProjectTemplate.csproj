@@ -44,7 +44,7 @@
 		<PackageReference Include="DotNetNuke.Web" Version="9.13.4" />
 		<PackageReference Include="DotNetNuke.WebApi" Version="9.13.4" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-		<PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.11.0" />
+		<PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.12.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="NSubstitute" Version="5.1.0" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
