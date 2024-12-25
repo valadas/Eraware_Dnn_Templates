@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="Eraware_Dnn_Templates.e12cae32-028f-413c-85f0-b294a18224bf" Version="1.6.0" Language="en-US" Publisher="Daniel Valadas" />
+        <Identity Id="Eraware_Dnn_Templates.e12cae32-028f-413c-85f0-b294a18224bf" Version="1.8.0" Language="en-US" Publisher="Daniel Valadas" />
         <DisplayName>Eraware_Dnn_Templates</DisplayName>
         <Description xml:space="preserve">A WebAPI/WebComponents module template for DNN extensions.</Description>
         <License>LICENSE</License>
