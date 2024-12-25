@@ -61,6 +61,12 @@ class Build : NukeBuild
         .Executes(() =>
         {
             ArtifactsDirectory.CreateOrCleanDirectory();
+            var projects = Solution.GetAllProjects("*");
+            foreach (var project in projects.Where(p => p.Name != "_build"))
+            {
+                (project.Path / "bin").DeleteDirectory();
+                (project.Path / "obj").DeleteDirectory();
+            }
         });
 
     Target Restore => _ => _

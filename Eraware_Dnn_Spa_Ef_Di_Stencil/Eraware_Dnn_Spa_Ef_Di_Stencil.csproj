@@ -85,10 +85,10 @@
     <Content Include="build\docs\images\Package.gif" />
     <Content Include="IntegrationTests\IntegrationTests.vstemplate" />
     <Content Include="IntegrationTests\ProjectTemplate.csproj" />
+    <Content Include="module.web\eslint.config.mjs" />
     <Content Include="module\docfx_project\.gitignore" />
     <Content Include="module\docfx_project\adjust-toc-namespaces.js" />
     <None Include="IntegrationTests\app.Config" />
-    <None Include="module.web\.eslintignore" />
     <None Include="module.web\api-extractor.json" />
     <None Include="module.web\src\components\my-component\usage\javascript.md" />
     <None Include="module.web\src\components\my-component\usage\dnn.md" />
@@ -126,7 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="module.web\.gitignore" />
-    <None Include="module.web\.eslintrc.json" />
     <None Include="module\.editorconfig" />
     <None Include="module\.github\dependabot.yml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

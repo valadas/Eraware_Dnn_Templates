@@ -50,10 +50,9 @@
     <Content Include="src\services\client-base.ts" />
     <Content Include="src\services\services.ts" />
     <Content Include="src\store\state.ts" />
-    <Content Include=".eslintrc.json" />
     <Content Include=".editorconfig" />
     <Content Include=".gitignore" />
-    <Content Include=".eslintignore" />
+    <Content Include="eslint.config.mjs" />
     <Content Include="api-extractor.json" />
     <Content Include="LICENSE" />
     <Content Include="package.json" />
