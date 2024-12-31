@@ -4,6 +4,7 @@
   .header {
     display: flex;
     justify-content: space-between;
+    gap: 1rem;
 
     dnn-searchbox {
       flex-grow: 1;
