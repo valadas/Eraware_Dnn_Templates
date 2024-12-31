@@ -53,10 +53,9 @@
     <None Include="src\services\alert-error.ts" />
     <None Include="src\services\client-base.ts" />
     <None Include="src\services\services.ts" />
-    <None Include=".eslintrc.json" />
+    <None Include="eslint.config.mjs" />
     <None Include=".editorconfig" />
     <None Include=".gitignore" />
-    <None Include=".eslintignore" />
     <None Include="api-extractor.json" />
     <None Include="LICENSE" />
     <None Include="package.json" />
