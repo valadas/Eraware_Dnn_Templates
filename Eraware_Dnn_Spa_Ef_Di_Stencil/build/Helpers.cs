@@ -1,22 +1,15 @@
 ﻿using Newtonsoft.Json;
-using Nuke.Common;
 using System;
-using System.CodeDom;
-using System.CodeDom.Compiler;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using static Nuke.Common.IO.FileSystemTasks;
-using static Nuke.Common.IO.PathConstruction;
-using static Nuke.Common.IO.XmlTasks;
-using static Nuke.Common.IO.TextTasks;
+using Nuke.Common;
 using Nuke.Common.IO;
+using static Nuke.Common.IO.XmlTasks;
 
 namespace BuildHelpers
 {
