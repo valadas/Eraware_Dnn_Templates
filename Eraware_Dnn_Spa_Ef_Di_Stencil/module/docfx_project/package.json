@@ -24,6 +24,6 @@
   "license": "ISC",
   "devDependencies": {
     "js-yaml": "^4.0.0",
-    "npm-watch": "^0.7.0"
+    "npm-watch": "^0.13.0"
   }
 }

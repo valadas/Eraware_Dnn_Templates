@@ -102,8 +102,6 @@
   <ItemGroup>
     <None Include="AssemblyInfo.cs" />
     <None Include="module.web\.editorconfig" />
-    <None Include="module.web\.eslintignore" />
-    <None Include="module.web\.eslintrc.json" />
     <None Include="module.web\api-extractor.json" />
     <None Include="module.web\LICENSE" />
     <None Include="module.web\ProjectTemplate.njsproj" />
@@ -124,6 +122,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="module.web\.gitignore" />
+    <Content Include="module.web\eslint.config.mjs" />
     <Content Include="module.web\module-icon.ico" />
     <Content Include="UnitTests\UnitTests.vstemplate" />
     <VSTemplate Include="module.web\module.web.vstemplate" />

@@ -27,10 +27,6 @@
             <ProjectItem>my-component.tsx</ProjectItem>
             <ProjectItem>readme.md</ProjectItem>
           </Folder>
-          <Folder Name="my-create">
-            <ProjectItem>my-create.scss</ProjectItem>
-            <ProjectItem>my-create.tsx</ProjectItem>
-          </Folder>
           <Folder Name="my-edit">
             <ProjectItem>my-edit.scss</ProjectItem>
             <ProjectItem>my-edit.tsx</ProjectItem>
@@ -57,8 +53,7 @@
         <ProjectItem>index.ts</ProjectItem>
       </Folder>
       <ProjectItem>.editorconfig</ProjectItem>
-      <ProjectItem>.eslintignore</ProjectItem>
-      <ProjectItem>.eslintrc.json</ProjectItem>
+      <ProjectItem>eslint.config.mjs</ProjectItem>
       <ProjectItem>.gitignore</ProjectItem>
       <ProjectItem>api-extractor.json</ProjectItem>
       <ProjectItem>LICENSE</ProjectItem>

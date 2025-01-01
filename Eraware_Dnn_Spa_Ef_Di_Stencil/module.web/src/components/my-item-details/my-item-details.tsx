@@ -14,7 +14,7 @@ export class MyItemDetails {
   private modal!: HTMLDnnModalElement;
   private editForm!: HTMLMyEditElement;
   private itemClient!: ItemClient;
-  private resx: UIInfo;
+  private resx: UIInfo | undefined;
 
   constructor() {
     this.itemClient = new ItemClient({ moduleId: state.moduleId });
@@ -22,7 +22,7 @@ export class MyItemDetails {
   }
 
   private deleteItem(): void {
-    this.itemClient.deleteItem(this.item.id)
+    this.itemClient.deleteItem(this.item.id ?? -1)
       .then(() => {
         const oldCanEdit = state.userCanEdit;
         store.reset();
@@ -39,25 +39,24 @@ export class MyItemDetails {
         {state.userCanEdit &&
           <div class="controls">
             <dnn-button
-              type="primary"
               onClick={() => this.modal.show().then(() => this.editForm.setFocus())}
             >
-              {this.resx.edit || "Edit"}
+              {this.resx?.edit}
             </dnn-button>
             <dnn-button
-              type="secondary"
+              appearance="danger"
               confirm
-              confirmMessage={this.resx.deleteItemConfirm || "Are you sure you want to delete this item?"}
-              confirmNoText={this.resx.no || "No"}
-              confirmYesText={this.resx.yes || "Yes"}
+              confirmMessage={this.resx?.deleteItemConfirm || "Are you sure you want to delete this item?"}
+              confirmNoText={this.resx?.no || "No"}
+              confirmYesText={this.resx?.yes || "Yes"}
               onConfirmed={() => this.deleteItem()}
-            >{this.resx.delete || "Delete"}</dnn-button>
+            >{this.resx?.delete || "Delete"}</dnn-button>
             <dnn-modal
-              ref={e => this.modal = e}
+              ref={e => this.modal = e!}
               showCloseButton={false}
               backdropDismiss={false}
             >
-              <my-edit ref={e => this.editForm = e} item={this.item} />
+              <my-edit ref={e => this.editForm = e!} item={this.item} />
             </dnn-modal>
           </div>
         }

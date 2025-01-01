@@ -17,9 +17,9 @@ export class MyEdit {
 
   @Element() el!: HTMLMyEditElement;
 
-  private nameInput!: HTMLInputElement;
+  private nameInput!: HTMLDnnInputElement;
   private itemClient!: ItemClient;
-  private resx: UIInfo;
+  private resx: UIInfo | undefined;
 
   constructor() {
     this.itemClient = new ItemClient({
@@ -56,11 +56,11 @@ export class MyEdit {
   }
 
   private hideModal(): void {
-    this.el.closest("dnn-modal").hide();
+    this.el.closest("dnn-modal")?.hide();
   }
 
   private saveItem(): void {
-    if (this.item.id < 1) {
+    if (this.item.id! < 1) {
       const createItemDTO = new CreateItemDTO({
         name: this.item.name,
         description: this.item.description,
@@ -82,6 +82,7 @@ export class MyEdit {
       this.itemClient.updateItem(updateItemDTO)
         .then(() => {
           this.hideModal();
+          state.items = state.items.map(i => i.id == this.item.id ? this.item : i);
         }, reason => alert(reason))
         .catch(reason => alert(reason));
     }
@@ -93,50 +94,40 @@ export class MyEdit {
   render() {
     return (
       <Host>
-        <div class="grid">
-          <label htmlFor="name">{this.resx.name || "Name"}</label>
-          <input
-            id="name"
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            this.saveItem();
+          }}
+        >
+          <dnn-input
+            label={this.resx?.name}
             type="text"
             value={this.item.name}
             required
-            ref={e => this.nameInput = e}
-            onInput={e => this.item = { ...this.item, name: (e.target as HTMLInputElement).value }}
+            ref={e => this.nameInput = e!}
+            onValueInput={e => this.item = { ...this.item, name: e.detail as string }}
+          />
+          <dnn-textarea
+            label={this.resx?.description}
+            value={this.item.description}
+            onValueInput={e => this.item = { ...this.item, description: e.detail as string }}
           />
 
-          <label htmlFor="description">{this.resx.description || "Description"}</label>
-          <textarea
-            id="description"
-            value={this.item.description}
-            onInput={e => this.item = { ...this.item, description: (e.target as HTMLTextAreaElement).value }} />
-        </div>
-        <div class="controls">
-          <dnn-button
-            type="secondary"
-            reversed
-            onClick={() => this.hideModal()}
-          >
-            {this.resx.cancel || "Cancel"}
-          </dnn-button>
-          {this.item.id < 1 &&
+          <div class="controls">
             <dnn-button
-              type="primary"
-              disabled={this.item.name.trim().length === 0}
-              onClick={() => this.saveItem()}
+              reversed
+              onClick={() => this.hideModal()}
             >
-              {this.resx.create || "Create"}
+              {this.resx?.cancel}
             </dnn-button>
-          }
-          {this.item.id > 0 &&
             <dnn-button
-              type="primary"
-              disabled={this.item.name.trim().length === 0}
-              onClick={() => this.saveItem()}
+              formButtonType="submit"
             >
-              {this.resx.save || "Save"}
+              {this.item.id! < 1 ? this.resx?.create : this.resx?.save}
             </dnn-button>
-          }
-        </div>
+          </div>
+        </form>
       </Host>
     );
   }

@@ -11,18 +11,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageDownload Include="WebApiToOpenApiReflector" Version="[1.1.0]" />
-	<PackageReference Include="NuGet.CommandLine" Version="6.11.0">
+	<PackageDownload Include="WebApiToOpenApiReflector" Version="[1.2.0]" />
+	<PackageReference Include="NuGet.CommandLine" Version="6.12.1">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Nuke.Common" Version="8.0.0" />
-    <PackageReference Include="ReportGenerator" Version="5.3.8" />
-    <PackageReference Include="xunit.runner.console" Version="2.9.0">
+    <PackageReference Include="Nuke.Common" Version="9.0.3" />
+    <PackageReference Include="ReportGenerator" Version="5.4.2" />
+    <PackageReference Include="xunit.runner.console" Version="2.9.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NSwag.MSBuild" Version="14.1.0" />
+    <PackageReference Include="NSwag.MSBuild" Version="14.2.0" />
     <PackageDownload Include="GitVersion.Tool" Version="[5.10.1]" />
     <PackageDownload Include="coverlet.console" Version="[1.7.2]" />
   </ItemGroup>

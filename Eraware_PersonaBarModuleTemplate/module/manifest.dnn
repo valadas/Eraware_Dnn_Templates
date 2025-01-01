@@ -28,8 +28,28 @@
             <assembly>
               <name>NSwag.Annotations.dll</name>
               <path>bin</path>
-              <version>14.1.0</version>
+              <version>14.2.0</version>
             </assembly>
+			<assembly>
+			  <name>FluentValidation.dll</name>
+			  <path>bin</path>
+			  <version>11.9.2</version>
+			</assembly>
+			<assembly>
+			  <name>System.Threading.Tasks.Extensions.dll</name>
+			  <path>bin</path>
+			  <version>4.5.4</version>
+			</assembly>
+			<assembly>
+			  <name>System.Runtime.CompilerServices.Unsafe.dll</name>
+			  <path>bin</path>
+			  <version>6.0.0</version>
+			</assembly>
+			<assembly>
+			  <name>OneOf.dll</name>
+			  <path>bin</path>
+			  <version>3.0.271</version>
+			</assembly>
           </assemblies>
         </component>
         <component type="Cleanup" version="00.01.00" glob="DesktopModules/Admin/Dnn.PersonaBar/Modules/$ext_safeprojectname$/**/*" />

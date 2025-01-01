@@ -1,5 +1,5 @@
 import { Debounce } from '@dnncommunity/dnn-elements';
-import { Component, Host, h, State, Prop, Element } from '@stencil/core';
+import { Component, Host, h, State, Prop, Element, Listen } from '@stencil/core';
 import { ItemClient, UIInfo } from '../../services/services';
 import state, { localizationState } from '../../store/state';
 
@@ -19,9 +19,14 @@ export class MyItemsList {
 
   @Element() el: HTMLMyItemsListElement;
 
+  @Listen("itemCreated")
+  handleItemCreated() {
+    this.preload();
+  }
+
   private itemClient!: ItemClient;
   private abortController: AbortController;
-  private resx: UIInfo;
+  private resx: UIInfo | undefined;
 
   constructor() {
     this.itemClient = new ItemClient({
@@ -39,8 +44,7 @@ export class MyItemsList {
   }
 
   componentDidLoad() {
-    requestAnimationFrame(() =>
-    {
+    requestAnimationFrame(() => {
       this.preload();
     })
   }
@@ -88,10 +92,14 @@ export class MyItemsList {
             false,
             this.abortController.signal)
             .then(results => {
-              state.items = [...state.items, ...results.items];
-              state.availableItems = results.resultCount;
-              state.lastFetchedPage = results.page;
-              state.totalPages = results.pageCount;
+              if (!results) {
+                reject();
+                return;
+              }
+              state.items = [...state.items, ...results.items ?? []];
+              state.availableItems = results.resultCount ?? 0;
+              state.lastFetchedPage = results.page ?? 0;
+              state.totalPages = results.pageCount ?? 0;
               this.loading = false;
               if (state.items.length === results.resultCount) {
                 state.allLoaded = true;
@@ -125,7 +133,7 @@ export class MyItemsList {
                 if (state.expandedItemId === item.id) {
                   state.expandedItemId = -1;
                 } else {
-                  state.expandedItemId = item.id;
+                  state.expandedItemId = item.id ?? -1;
                 }
               }}
             >
@@ -145,12 +153,12 @@ export class MyItemsList {
           <div class="loading"></div>
         }
         <div class="footer">
-          <p>{this.resx.shownItems.replace("{0}", state.items.length.toString()).replace("{1}", state.availableItems.toString())}</p>
+          <p>{this.resx?.shownItems?.replace("{0}", state.items.length.toString()).replace("{1}", state.availableItems.toString())}</p>
           {!this.loading && state.items.length < state.availableItems &&
-            <dnn-button type="primary" reversed
+            <dnn-button appearance="primary" reversed
               onClick={() => this.loadMore()}
             >
-              {this.resx.loadMore || "Load More"}
+              {this.resx?.loadMore || "Load More"}
             </dnn-button>
           }
         </div>

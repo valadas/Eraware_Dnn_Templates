@@ -4,14 +4,10 @@
   .header {
     display: flex;
     justify-content: space-between;
+    gap: 1rem;
 
     dnn-searchbox {
-      width: 100%;
-    }
-
-    my-create {
-      white-space: nowrap;
-      margin-left: 1em;
+      flex-grow: 1;
     }
   }
 }

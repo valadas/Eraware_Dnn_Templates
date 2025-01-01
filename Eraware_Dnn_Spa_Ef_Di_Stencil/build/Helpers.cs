@@ -1,28 +1,21 @@
 ﻿using Newtonsoft.Json;
-using Nuke.Common;
 using System;
-using System.CodeDom;
-using System.CodeDom.Compiler;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using static Nuke.Common.IO.FileSystemTasks;
-using static Nuke.Common.IO.PathConstruction;
-using static Nuke.Common.IO.XmlTasks;
-using static Nuke.Common.IO.TextTasks;
+using Nuke.Common;
 using Nuke.Common.IO;
+using static Nuke.Common.IO.XmlTasks;
 
 namespace BuildHelpers
 {
     public class Helpers : NukeBuild
     {
-        public static void CopyFileToDirectoryIfChanged(string source, string target)
+        public static void CopyFileToDirectoryIfChanged(AbsolutePath source, AbsolutePath target)
         {
             var sourceFile = new FileInfo(source);
             var destinationFile = new FileInfo(Path.Combine(target, sourceFile.Name));
@@ -44,7 +37,7 @@ namespace BuildHelpers
 
             if (!destinationExists || !sameSize || !sameContent)
             {
-                CopyFileToDirectory(source, target, Nuke.Common.IO.FileExistsPolicy.OverwriteIfNewer);
+                source.CopyToDirectory(target, ExistsPolicy.FileOverwriteIfNewer);
                 Serilog.Log.Information("Copied {0} to {1}", sourceFile.FullName, destinationFile.FullName);
             }
             else
@@ -53,7 +46,7 @@ namespace BuildHelpers
             }
         }
 
-        // Fast but accurate way to check if two files are difference (safer than write time for when rebuilding without changes).
+        // Fast but accurate way to check if two files are different (safer than write time for when rebuilding without changes).
         private static bool FilesAreEqual(FileInfo first, FileInfo second)
         {
             const int BYTES_TO_READ = sizeof(Int64);

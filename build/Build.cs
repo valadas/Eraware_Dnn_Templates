@@ -48,7 +48,7 @@ class Build : NukeBuild
     
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
-    [GitVersion(UpdateAssemblyInfo = false)] readonly GitVersion GitVersion;
+    [GitVersion(UpdateAssemblyInfo = true)] readonly GitVersion GitVersion;
 
     static GitHubActions GitHubActions => GitHubActions.Instance;
     static readonly string PackageContentType = "application/octet-stream";
@@ -61,9 +61,16 @@ class Build : NukeBuild
         .Executes(() =>
         {
             ArtifactsDirectory.CreateOrCleanDirectory();
+            var projects = Solution.GetAllProjects("*");
+            foreach (var project in projects.Where(p => p.Name != "_build"))
+            {
+                (project.Path / "bin").DeleteDirectory();
+                (project.Path / "obj").DeleteDirectory();
+            }
         });
 
     Target Restore => _ => _
+        .DependsOn(Clean)
         .Executes(() =>
         {
             var projects = Solution.GetAllProjects("*");
@@ -75,7 +82,7 @@ class Build : NukeBuild
             }
         });
 
-    Target SetVsixVersion => _ => _
+    Target SetVersion => _ => _
         .DependsOn(Restore)
         .Executes(() =>
         {
@@ -91,7 +98,7 @@ class Build : NukeBuild
 
     Target Compile => _ => _
         .DependsOn(Restore)
-        .DependsOn(SetVsixVersion)
+        .DependsOn(SetVersion)
         .Executes(() =>
         {
             MSBuild(s => s
@@ -100,6 +107,9 @@ class Build : NukeBuild
                 .SetAssemblyVersion(GitVersion.AssemblySemVer)
                 .SetFileVersion(GitVersion.MajorMinorPatch)
                 .SetPackageVersion(GitVersion.MajorMinorPatch));
+
+            var vsix = TemplateProjectDirectory / "bin" / Configuration / "Eraware_Dnn_Templates.vsix";
+            vsix.CopyToDirectory(ArtifactsDirectory, ExistsPolicy.FileOverwrite);
         });
 
     Target CI => _ => _
@@ -109,8 +119,6 @@ class Build : NukeBuild
         .Triggers(Release)
         .Executes(() =>
         {
-            var vsix = TemplateProjectDirectory / "bin" / Configuration / "Eraware_Dnn_Templates.vsix";
-            CopyFileToDirectory(vsix, ArtifactsDirectory, FileExistsPolicy.Overwrite);
         });
 
     Target Release => _ => _
@@ -124,11 +132,11 @@ class Build : NukeBuild
                 Credentials = credentials,
             };
             var (owner, name) = (GitRepository.GetGitHubOwner(), GitRepository.GetGitHubName());
-
+            var version = GitRepository.IsOnMainOrMasterBranch() ? GitVersion.MajorMinorPatch : GitVersion.FullSemVer;
             var newRelease = new NewRelease(GitVersion.FullSemVer)
             {
                 Draft = true,
-                Name = $"v{GitVersion.FullSemVer}",
+                Name = $"v{version}",
                 GenerateReleaseNotes = true,
                 TargetCommitish = GitVersion.Sha,
                 Prerelease = GitRepository.IsOnReleaseBranch(),

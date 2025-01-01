@@ -85,14 +85,13 @@
     <Content Include="build\docs\images\Package.gif" />
     <Content Include="IntegrationTests\IntegrationTests.vstemplate" />
     <Content Include="IntegrationTests\ProjectTemplate.csproj" />
+    <Content Include="module.web\eslint.config.mjs" />
     <Content Include="module\docfx_project\.gitignore" />
     <Content Include="module\docfx_project\adjust-toc-namespaces.js" />
     <None Include="IntegrationTests\app.Config" />
-    <None Include="module.web\.eslintignore" />
     <None Include="module.web\api-extractor.json" />
     <None Include="module.web\src\components\my-component\usage\javascript.md" />
     <None Include="module.web\src\components\my-component\usage\dnn.md" />
-    <None Include="module.web\src\components\my-create\my-create.scss" />
     <None Include="module.web\src\components\my-edit\my-edit.scss" />
     <None Include="module.web\src\components\my-item-details\my-item-details.scss" />
     <None Include="module.web\src\components\my-items-list\my-items-list.scss" />
@@ -127,7 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="module.web\.gitignore" />
-    <None Include="module.web\.eslintrc.json" />
     <None Include="module\.editorconfig" />
     <None Include="module\.github\dependabot.yml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -248,7 +246,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="module.web\src\components.d.ts" />
     <TypeScriptCompile Include="module.web\src\components\my-component\my-component.tsx" />
-    <TypeScriptCompile Include="module.web\src\components\my-create\my-create.tsx" />
     <TypeScriptCompile Include="module.web\src\components\my-edit\my-edit.tsx" />
     <TypeScriptCompile Include="module.web\src\components\my-item-details\my-item-details.tsx" />
     <TypeScriptCompile Include="module.web\src\components\my-items-list\my-items-list.tsx" />
