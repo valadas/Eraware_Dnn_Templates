@@ -48,7 +48,7 @@ class Build : NukeBuild
     
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
-    [GitVersion(UpdateAssemblyInfo = false)] readonly GitVersion GitVersion;
+    [GitVersion(UpdateAssemblyInfo = true)] readonly GitVersion GitVersion;
 
     static GitHubActions GitHubActions => GitHubActions.Instance;
     static readonly string PackageContentType = "application/octet-stream";
@@ -61,6 +61,12 @@ class Build : NukeBuild
         .Executes(() =>
         {
             ArtifactsDirectory.CreateOrCleanDirectory();
+            var projects = Solution.GetAllProjects("*");
+            foreach (var project in projects.Where(p => p.Name != "_build"))
+            {
+                (project.Path / "bin").DeleteDirectory();
+                (project.Path / "obj").DeleteDirectory();
+            }
         });
 
     Target Restore => _ => _
@@ -76,7 +82,7 @@ class Build : NukeBuild
             }
         });
 
-    Target SetVsixVersion => _ => _
+    Target SetVersion => _ => _
         .DependsOn(Restore)
         .Executes(() =>
         {
@@ -92,7 +98,7 @@ class Build : NukeBuild
 
     Target Compile => _ => _
         .DependsOn(Restore)
-        .DependsOn(SetVsixVersion)
+        .DependsOn(SetVersion)
         .Executes(() =>
         {
             MSBuild(s => s

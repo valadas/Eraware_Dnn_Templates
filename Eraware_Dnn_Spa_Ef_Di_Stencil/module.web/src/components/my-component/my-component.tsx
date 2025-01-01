@@ -28,7 +28,7 @@ export class MyComponent {
     return new Promise<void>((resolve, reject) => {
       this.localizationService.getLocalization()
         .then(vm => {
-          localizationState.viewModel = vm;
+          localizationState.viewModel = vm!;
           this.resx = localizationState.viewModel;
           resolve();
         })

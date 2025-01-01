@@ -97,25 +97,25 @@
     <Resource Include=".github\mergeable.yml" />
 	</ItemGroup>
   <ItemGroup>
-    <None Include=".editorconfig" />
-    <None Include="app.config" />
+    <Content Include=".editorconfig" />
+    <Content Include="app.config" />
     <AdditionalFiles Include="stylecop.json" />
-    <None Include="docfx_project\adjust-toc-namespaces.js" />
-    <None Include="docfx_project\articles\git.md" />
-    <None Include="docfx_project\articles\intro.md" />
-    <None Include="docfx_project\articles\project-architecture.md" />
-    <None Include="docfx_project\articles\toc.yml" />
-    <None Include="docfx_project\docfx.json" />
-    <None Include="docfx_project\index.md" />
-    <None Include="docfx_project\rest\rest-api.md" />
-    <None Include="docfx_project\rest\toc.yml" />
-    <None Include="docfx_project\templates\mytemplate\common.js" />
-    <None Include="docfx_project\templates\mytemplate\layout\_master.tmpl" />
-    <None Include="docfx_project\templates\mytemplate\partials\footer.tmpl.partial" />
-    <None Include="docfx_project\templates\mytemplate\partials\scripts.tmpl.partial" />
-    <None Include="docfx_project\toc.yml" />
-    <None Include="docfx_project\package.json" />
-    <None Include="README.md" />
+    <Content Include="docfx_project\adjust-toc-namespaces.js" />
+    <Content Include="docfx_project\articles\git.md" />
+    <Content Include="docfx_project\articles\intro.md" />
+    <Content Include="docfx_project\articles\project-architecture.md" />
+    <Content Include="docfx_project\articles\toc.yml" />
+    <Content Include="docfx_project\docfx.json" />
+    <Content Include="docfx_project\index.md" />
+    <Content Include="docfx_project\rest\rest-api.md" />
+    <Content Include="docfx_project\rest\toc.yml" />
+    <Content Include="docfx_project\templates\mytemplate\common.js" />
+    <Content Include="docfx_project\templates\mytemplate\layout\_master.tmpl" />
+    <Content Include="docfx_project\templates\mytemplate\partials\footer.tmpl.partial" />
+    <Content Include="docfx_project\templates\mytemplate\partials\scripts.tmpl.partial" />
+    <Content Include="docfx_project\toc.yml" />
+    <Content Include="docfx_project\package.json" />
+    <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
 	<PackageReference Include="DotNetNuke.Abstractions">
