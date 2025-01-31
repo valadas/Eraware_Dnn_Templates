@@ -103,10 +103,7 @@ class Build : NukeBuild
         {
             MSBuild(s => s
                 .SetTargetPath(Solution)
-                .SetConfiguration(Configuration)
-                .SetAssemblyVersion(GitVersion.AssemblySemVer)
-                .SetFileVersion(GitVersion.MajorMinorPatch)
-                .SetPackageVersion(GitVersion.MajorMinorPatch));
+                .SetConfiguration(Configuration));
 
             var vsix = TemplateProjectDirectory / "bin" / Configuration / "Eraware_Dnn_Templates.vsix";
             vsix.CopyToDirectory(ArtifactsDirectory, ExistsPolicy.FileOverwrite);
