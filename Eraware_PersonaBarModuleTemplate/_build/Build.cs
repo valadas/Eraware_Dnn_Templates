@@ -31,8 +31,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using static Nuke.Common.EnvironmentInfo;
-using static Nuke.Common.IO.CompressionTasks;
-using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.IO.TextTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
