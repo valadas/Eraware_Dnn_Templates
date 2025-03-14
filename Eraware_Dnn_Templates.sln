@@ -16,6 +16,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.cspr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eraware_PersonaBarModuleTemplate", "Eraware_PersonaBarModuleTemplate\Eraware_PersonaBarModuleTemplate.csproj", "{AC17427B-56DF-49BB-B9D1-D59A3C5F0C69}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{96BAE101-6C2F-4538-8342-83EBC502DD29}"
+	ProjectSection(SolutionItems) = preProject
+		.github\dependabot.yml = .github\dependabot.yml
+		.github\FUNDING.yml = .github\FUNDING.yml
+		.github\mergeable.yml = .github\mergeable.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +82,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{96BAE101-6C2F-4538-8342-83EBC502DD29} = {DC7C1D42-A25F-4B34-8DCB-B4869079B15A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E470FFA0-1FBA-4A74-BF72-3C795EF90BB8}
