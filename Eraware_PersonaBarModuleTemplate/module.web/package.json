@@ -33,7 +33,7 @@
     "dayjs": "^1.11.13",
     "@typescript-eslint/eslint-plugin": "^8.0.1",
     "@typescript-eslint/parser": "^8.0.1",
-    "eslint": "^8.57.0",
+    "eslint": "^9.22.0",
     "jquery": "^3.7.1"
   },
   "license": "MIT"
