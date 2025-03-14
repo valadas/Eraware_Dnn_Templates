@@ -43,7 +43,7 @@ using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
 
 [GitHubActions(
     "Build",
-    GitHubActionsImage.UbuntuLatest,
+    GitHubActionsImage.Ubuntu2204,
     ImportSecrets = new[] { nameof(GitHubToken) },
     OnPullRequestBranches = new[] { "develop", "main", "master", "release/*" },
     OnPushBranches = new[] { "main", "master", "develop", "release/*" },
