@@ -88,7 +88,6 @@ class Build : NukeBuild
     AbsolutePath DocsDirectory => RootDirectory / "docs";
     AbsolutePath ResourcesDirectory => RootDirectory / "resources";
     AbsolutePath ScriptsDirectory => ResourcesDirectory / "scripts";
-    AbsolutePath ScriptsModulesDirectory => ScriptsDirectory / "$ext_scopeprefixkebab$";
     AbsolutePath DeployDirectory => RootDirectory.Parent / "Admin" / "Dnn.PersonaBar" / "Modules" / "$ext_modulefoldername$";
 
     private const string devViewsPath = "http://localhost:3333/build/";
@@ -337,8 +336,8 @@ class Build : NukeBuild
         .DependsOn(BuildFrontEnd)
         .Executes(() =>
         {
-            ScriptsModulesDirectory.CreateOrCleanDirectory();
-            (RootDirectory / "module.web" / "dist" / "$ext_scopeprefixkebab$").CopyToDirectory(ScriptsModulesDirectory, ExistsPolicy.MergeAndOverwrite);
+            (ScriptsDirectory / "$ext_scopeprefixkebab$").CreateOrCleanDirectory();
+            (RootDirectory / "module.web" / "dist" / "$ext_scopeprefixkebab$").CopyToDirectory(ScriptsDirectory, ExistsPolicy.MergeAndOverwrite);
             var collectionDirectory = RootDirectory / "module.web" / "dist" / "dnn";
             collectionDirectory
                 .GlobFiles("*.*")
