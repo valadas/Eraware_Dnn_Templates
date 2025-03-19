@@ -13,7 +13,6 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.IO.TextTasks;
 using static Nuke.Common.IO.XmlTasks;
@@ -78,8 +77,8 @@ namespace BuildHelpers
 
                     for (int i = 0; i < iterations; i++)
                     {
-                        fs1.Read(one, 0, BYTES_TO_READ);
-                        fs2.Read(two, 0, BYTES_TO_READ);
+                        fs1.ReadExactly(one, 0, BYTES_TO_READ);
+                        fs2.ReadExactly(two, 0, BYTES_TO_READ);
 
                         if (BitConverter.ToInt64(one, 0) != BitConverter.ToInt64(two, 0))
                         {

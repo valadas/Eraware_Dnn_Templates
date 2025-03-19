@@ -338,7 +338,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             ScriptsModulesDirectory.CreateOrCleanDirectory();
-            (RootDirectory / "module.web" / "dist" / "nvi-davidmodule").CopyToDirectory(ScriptsModulesDirectory, ExistsPolicy.MergeAndOverwrite);
+            (RootDirectory / "module.web" / "dist" / "$ext_scopeprefixkebab$").CopyToDirectory(ScriptsModulesDirectory, ExistsPolicy.MergeAndOverwrite);
             var collectionDirectory = RootDirectory / "module.web" / "dist" / "dnn";
             collectionDirectory
                 .GlobFiles("*.*")
