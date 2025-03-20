@@ -1,9 +1,7 @@
 ﻿// MIT License
 // Copyright $ext_companyname$
 
-using 
-using System.Threading;$
-ext_rootnamespace$.Data.Entities;
+using $ext_rootnamespace$.Data.Entities;
 using $ext_rootnamespace$.Providers;
 using System;
 using System.Collections.Generic;
