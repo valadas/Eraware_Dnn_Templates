@@ -241,6 +241,8 @@
     <None Include="module\Controllers\LocalizationController.cs" />
     <None Include="module\Common\Extensions\IQueryableExtensions.cs" />
     <None Include="module\Data\Repositories\PagedList{T}.cs" />
+    <None Include="module\Data\Repositories\IItemRepository.cs" />
+    <None Include="module\Data\Repositories\ItemRepository.cs" />
     <Compile Include="module\Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

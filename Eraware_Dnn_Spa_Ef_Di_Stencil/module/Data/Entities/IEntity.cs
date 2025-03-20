@@ -2,6 +2,7 @@
 // Copyright $ext_companyname$
 
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace $ext_rootnamespace$.Data.Entities
 {
@@ -13,6 +14,7 @@ namespace $ext_rootnamespace$.Data.Entities
         /// <summary>
         /// Gets or sets the entity id.
         /// </summary>
+        [Key]
         int Id { get; set; }
 
         /// <summary>

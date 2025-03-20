@@ -21,7 +21,7 @@ namespace $ext_rootnamespace$.Services.Items
     /// </summary>
     public class ItemService : IItemService
     {
-        private readonly IRepository<Item> itemRepository;
+        private readonly IItemRepository itemRepository;
         private readonly IValidator<CreateItemDTO> createItemDtoValidator;
         private readonly IValidator<UpdateItemDTO> updateItemDtoValidator;
 
@@ -32,7 +32,7 @@ namespace $ext_rootnamespace$.Services.Items
         /// <param name="createItemDtoValidator">The validator for the <see cref="CreateItemDTO"/> entity.</param>
         /// <param name="updateItemDtoValidator">The validator for the <see cref="UpdateItemDTO"/> entity.</param>
         public ItemService(
-            IRepository<Item> itemRepository,
+            IItemRepository itemRepository,
             IValidator<CreateItemDTO> createItemDtoValidator,
             IValidator<UpdateItemDTO> updateItemDtoValidator)
         {
@@ -64,11 +64,11 @@ namespace $ext_rootnamespace$.Services.Items
             var items = await this.itemRepository.GetPageAsync(
                 page,
                 pageSize,
-                entities => entities
-                    .Where(item => string.IsNullOrEmpty(query) || item.Name.ToUpper().Contains(query.ToUpper()))
-                    .Order(item => item.Name, descending));
+                filter: item => string.IsNullOrEmpty(query) || item.Name.ToUpper().Contains(query.ToUpper()),
+                orderBy: item => item.Name,
+                orderByDescending: descending);
 
-            var itemsPageViewModel = new ItemsPageViewModel()
+        var itemsPageViewModel = new ItemsPageViewModel()
             {
                 Items = items.Items.Select(item => new ItemViewModel
                 {

@@ -1,4 +1,5 @@
-﻿using $ext_rootnamespace$.Data.Entities;
+﻿using $ext_rootnamespace$.Data;
+using $ext_rootnamespace$.Data.Entities;
 using $ext_rootnamespace$.Data.Repositories;
 using $ext_rootnamespace$.Providers;
 using Newtonsoft.Json;
@@ -23,7 +24,7 @@ namespace UnitTests.Data.Repositories
         [Fact]
         public void GenericRepositoryConstructs()
         {
-            var repository = new Repository<Item>(dataContext, this.dateTimeProvider);
+            var repository = new TestRepository(dataContext, this.dateTimeProvider);
 
             Assert.NotNull(dataContext);
             Assert.NotNull(repository);
@@ -32,7 +33,7 @@ namespace UnitTests.Data.Repositories
         [Fact]
         public async Task GenericRepositoryCreatesAndGetsById()
         {
-            var repository = new Repository<Item>(dataContext, this.dateTimeProvider);
+            var repository = new TestRepository(dataContext, this.dateTimeProvider);
             var expectedItem = new Item() { Id = 1, Name = "Name", Description = "Description" };
             await repository.CreateAsync(expectedItem);
 
@@ -44,7 +45,7 @@ namespace UnitTests.Data.Repositories
         [Fact]
         public async Task GenericRepositoryDeletes()
         {
-            var repository = new Repository<Item>(dataContext, this.dateTimeProvider);
+            var repository = new TestRepository(dataContext, this.dateTimeProvider);
             var item = new Item() { Id = 1, Name = "Name", Description = "Description" };
             await repository.CreateAsync(item);
 
@@ -58,7 +59,7 @@ namespace UnitTests.Data.Repositories
         {
             this.dataContext.Items.Add(new Item() { Id = 1, Name = "Name", Description = "Description" });
             this.dataContext.SaveChanges();
-            var repository = new Repository<Item>(this.dataContext, this.dateTimeProvider);
+            var repository = new TestRepository(this.dataContext, this.dateTimeProvider);
 
             var items = repository.Get();
 
@@ -72,7 +73,7 @@ namespace UnitTests.Data.Repositories
         [InlineData(3)]
         public async Task GenericRepositoryGetsAll(int iterations)
         {
-            var repository = new Repository<Item>(dataContext, this.dateTimeProvider);
+            var repository = new TestRepository(dataContext, this.dateTimeProvider);
             for (int i = 1; i <= iterations; i++)
             {
                 var item = new Item() { Id = i, Name = $"Name {i}", Description = $"Description {i}" };
@@ -90,7 +91,7 @@ namespace UnitTests.Data.Repositories
         {
             var createdTime = new DateTime(2022, 1, 1);
             this.dateTimeProvider.GetUtcNow().Returns(createdTime);
-            var repository = new Repository<Item>(dataContext, this.dateTimeProvider);
+            var repository = new TestRepository(dataContext, this.dateTimeProvider);
             await repository.CreateAsync(new Item() { Id = 1, Name = "Original Name", Description = "Original Description" });
             var entity = await repository.GetByIdAsync(1);
             entity.Name = "New Name";
@@ -108,7 +109,7 @@ namespace UnitTests.Data.Repositories
         [Fact]
         public async Task GenericRepositoryCreate_ThrowsWithNullEntity()
         {
-            var repository = new Repository<Item>(dataContext, this.dateTimeProvider);
+            var repository = new TestRepository(dataContext, this.dateTimeProvider);
 
             Task create() => repository.CreateAsync(null);
 
@@ -119,7 +120,7 @@ namespace UnitTests.Data.Repositories
         [Fact]
         public async Task GenericRepositoryUpdate_ThrowsWithNullEntity()
         {
-            var repository = new Repository<Item>(dataContext, this.dateTimeProvider);
+            var repository = new TestRepository(dataContext, this.dateTimeProvider);
 
             Task update() => repository.UpdateAsync(null);
 
@@ -130,7 +131,7 @@ namespace UnitTests.Data.Repositories
         [Fact]
         public async Task Repository_Create_DefaultAudit()
         {
-            var repository = new Repository<Item>(dataContext, this.dateTimeProvider);
+            var repository = new TestRepository(dataContext, this.dateTimeProvider);
             var item = new Item() { Name = "Name", Description = "Description" };
 
             await repository.CreateAsync(item);
@@ -145,7 +146,7 @@ namespace UnitTests.Data.Repositories
         [Fact]
         public async Task Repository_Create_UsesUserId()
         {
-            var repository = new Repository<Item>(dataContext, this.dateTimeProvider);
+            var repository = new TestRepository(dataContext, this.dateTimeProvider);
             var item = new Item() { Name = "Name", Description = "Description" };
 
             await repository.CreateAsync(item, 123);
@@ -158,7 +159,7 @@ namespace UnitTests.Data.Repositories
         public async Task Repository_Update_DefaultAudit()
         {
             var currentTime = this.dateTimeProvider.GetUtcNow();
-            var repository = new Repository<Item>(dataContext, this.dateTimeProvider);
+            var repository = new TestRepository(dataContext, this.dateTimeProvider);
             var item = new Item() { Name = "Name", Description = "Description" };
             var id = await repository.CreateAsync(item);
             this.dateTimeProvider.GetUtcNow().Returns(currentTime.AddDays(1));
@@ -177,7 +178,7 @@ namespace UnitTests.Data.Repositories
         public async Task Repository_Update_UsesUserId()
         {
             var now = this.dateTimeProvider.GetUtcNow();
-            var repository = new Repository<Item>(dataContext, this.dateTimeProvider);
+            var repository = new TestRepository(dataContext, this.dateTimeProvider);
             var item = new Item() { Name = "Name", Description = "Description" };
             await repository.CreateAsync(item);
             item.Name = "New Name";
@@ -197,7 +198,7 @@ namespace UnitTests.Data.Repositories
         [Fact]
         public async Task Repository_DeleteMissing_DoesNotThrow()
         {
-            var repository = new Repository<Item>(this.dataContext, this.dateTimeProvider);
+            var repository = new TestRepository(this.dataContext, this.dateTimeProvider);
 
             await repository.DeleteAsync(1);
         }
@@ -213,14 +214,14 @@ namespace UnitTests.Data.Repositories
             int expectedPages)
         {
             this.CreateItems(100);
-            var repository = new Repository<Item>(this.dataContext, this.dateTimeProvider);
+            var repository = new TestRepository(this.dataContext, this.dateTimeProvider);
 
             var result = await repository.GetPageAsync(
                 page,
                 pageSize,
                 items => items
-                .Where(item => item.Name.ToUpper().Contains("test".ToUpper()))
-                .OrderBy(i => i.Name));
+                filter: item => item.Name.ToUpper().Contains("test".ToUpper()),
+                orderBy: item => item.Name);
 
             Assert.Equal(expectedItems, result.Items.Count());
             Assert.Equal(page == 0 ? 1 : page, result.Page);
@@ -256,8 +257,16 @@ namespace UnitTests.Data.Repositories
                 var result = await repository.GetPageAsync(
                     1,
                     10,
-                    products => products.OrderBy(product => product.Name),
-                    product => product.Category);
+                    orderBy: product => product.Name,
+                    include: product => product.Category);
+            }
+        }
+
+        public class TestRepository : Repository<Item>
+        {
+            public TestRepository(ModuleDbContext context, IDateTimeProvider dateTimeProvider)
+                : base(context, dateTimeProvider)
+            {
             }
         }
 

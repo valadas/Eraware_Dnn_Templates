@@ -29,7 +29,7 @@ namespace $ext_rootnamespace$
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ModuleDbContext, ModuleDbContext>();
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<IItemService, ItemService>();
             services.TryAddScoped(x => LoggerSource.Instance);
             services.AddScoped<ILocalizationService, LocalizationService>();
