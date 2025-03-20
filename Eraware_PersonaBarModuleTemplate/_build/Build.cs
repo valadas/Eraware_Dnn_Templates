@@ -31,8 +31,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using static Nuke.Common.EnvironmentInfo;
-using static Nuke.Common.IO.CompressionTasks;
-using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.IO.TextTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -43,7 +41,7 @@ using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
 
 [GitHubActions(
     "Build",
-    GitHubActionsImage.UbuntuLatest,
+    GitHubActionsImage.Ubuntu2204,
     ImportSecrets = new[] { nameof(GitHubToken) },
     OnPullRequestBranches = new[] { "develop", "main", "master", "release/*" },
     OnPushBranches = new[] { "main", "master", "develop", "release/*" },
@@ -90,7 +88,6 @@ class Build : NukeBuild
     AbsolutePath DocsDirectory => RootDirectory / "docs";
     AbsolutePath ResourcesDirectory => RootDirectory / "resources";
     AbsolutePath ScriptsDirectory => ResourcesDirectory / "scripts";
-    AbsolutePath ScriptsModulesDirectory => ScriptsDirectory / "$ext_scopeprefixkebab$";
     AbsolutePath DeployDirectory => RootDirectory.Parent / "Admin" / "Dnn.PersonaBar" / "Modules" / "$ext_modulefoldername$";
 
     private const string devViewsPath = "http://localhost:3333/build/";
@@ -339,8 +336,8 @@ class Build : NukeBuild
         .DependsOn(BuildFrontEnd)
         .Executes(() =>
         {
-            ScriptsModulesDirectory.CreateOrCleanDirectory();
-            (RootDirectory / "module.web" / "dist" / "nvi-davidmodule").CopyToDirectory(ScriptsModulesDirectory, ExistsPolicy.MergeAndOverwrite);
+            (ScriptsDirectory / "$ext_scopeprefixkebab$").CreateOrCleanDirectory();
+            (RootDirectory / "module.web" / "dist" / "$ext_scopeprefixkebab$").CopyToDirectory(ScriptsDirectory, ExistsPolicy.MergeAndOverwrite);
             var collectionDirectory = RootDirectory / "module.web" / "dist" / "dnn";
             collectionDirectory
                 .GlobFiles("*.*")

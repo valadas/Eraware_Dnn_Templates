@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace $ext_rootnamespace$.Data.Repositories
@@ -16,7 +17,7 @@ namespace $ext_rootnamespace$.Data.Repositories
     /// Provides common generic data access methods for entities.
     /// </summary>
     /// <typeparam name="T">The type of the entities.</typeparam>
-    public class Repository<T> : IRepository<T>
+    public abstract class Repository<T> : IRepository<T>
         where T : BaseEntity
     {
         private readonly ModuleDbContext context;
@@ -37,10 +38,10 @@ namespace $ext_rootnamespace$.Data.Repositories
             this.dateTimeProvider = dateTimeProvider;
         }
 
-        /// <inheritdoc/>
-        public async Task<IEnumerable<T>> GetAllAsync()
+    /// <inheritdoc/>
+        public virtual async Task<IEnumerable<T>> GetAllAsync(CancellationToken token = default)
         {
-            return await this.entities.ToListAsync();
+            return await this.entities.ToListAsync(token);
         }
 
         /// <inheritdoc/>
@@ -50,16 +51,19 @@ namespace $ext_rootnamespace$.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(int id, CancellationToken token = default)
         {
-            return await this.entities.SingleOrDefaultAsync(e => e.Id == id);
+            return await this.entities.FindAsync(token, id);
         }
 
         /// <inheritdoc/>
-        public async Task<PagedList<T>> GetPageAsync(
+        public virtual async Task<PagedList<T>> GetPageAsync(
             int page,
             int pageSize,
-            Func<IQueryable<T>, IOrderedQueryable<T>> predicate,
+            Expression<Func<T, bool>> filter = null,
+            Expression<Func<T, object>> orderBy = null,
+            bool orderByDescending = false,
+            CancellationToken token = default,
             params Expression<Func<T, object>>[] include)
         {
             if (page < 1)
@@ -72,27 +76,41 @@ namespace $ext_rootnamespace$.Data.Repositories
                 pageSize = 1;
             }
 
-            var items = this.entities.AsQueryable();
+            IQueryable<T> query = this.entities;
 
-            if (include.Any())
+            // Includes
+            if (include?.Any() == true)
             {
-                items = include.Aggregate(items, (current, inc) => current.Include(inc));
+                query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
-            items = items.OrderBy(i => i.Id);
-            items = predicate(items);
+            // Filter
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
 
-            var resultCount = await items.CountAsync();
-            var pageCount = (resultCount + pageSize - 1) / pageSize;
+            // Sorting
+            if (orderBy == null)
+            {
+                orderBy = i => i.Id;
+            }
+
+            query = orderByDescending
+                ? query.OrderByDescending(orderBy)
+                : query.OrderBy(orderBy);
+
+            // Paging
+            var resultCount = await query.CountAsync();
             int skip = pageSize * (page - 1);
-            var pageItems = await items
+            var items = await query
                 .Skip(skip)
                 .Take(pageSize)
-                .AsQueryable()
                 .ToListAsync();
+            var pageCount = (resultCount + pageSize - 1) / pageSize;
 
             return new PagedList<T>(
-                pageItems,
+                items,
                 page,
                 pageSize,
                 resultCount,
@@ -100,11 +118,11 @@ namespace $ext_rootnamespace$.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public async Task<int> CreateAsync(T entity, int userId = -1)
+        public virtual async Task<int> CreateAsync(T entity, int userId = -1, CancellationToken token = default)
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("entity");
+                throw new ArgumentNullException(nameof(entity));
             }
 
             entity.CreatedAt = this.dateTimeProvider.GetUtcNow();
@@ -112,34 +130,37 @@ namespace $ext_rootnamespace$.Data.Repositories
             entity.UpdatedAt = this.dateTimeProvider.GetUtcNow();
             entity.UpdatedByUserId = userId;
             this.entities.Add(entity);
-            await this.context.SaveChangesAsync();
+            await this.context.SaveChangesAsync(token);
             return entity.Id;
         }
 
         /// <inheritdoc/>
-        public async Task UpdateAsync(T entity, int userId = -1)
+        public virtual async Task UpdateAsync(T entity, int userId = -1, CancellationToken token = default)
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("entity");
+                throw new ArgumentNullException(nameof(entity));
             }
 
             entity.UpdatedAt = this.dateTimeProvider.GetUtcNow();
             entity.UpdatedByUserId = userId;
-            await this.context.SaveChangesAsync();
+
+            this.entities.Attach(entity);
+            this.entities.Entry(entity).State = EntityState.Modified;
+            await this.context.SaveChangesAsync(token);
         }
 
         /// <inheritdoc/>
-        public async Task DeleteAsync(int id)
+        public virtual async Task DeleteAsync(int id, CancellationToken token = default)
         {
-            T entity = this.entities.SingleOrDefault(e => e.Id == id);
+            T entity = await this.entities.FindAsync(token, id);
             if (entity is null)
             {
                 return;
             }
 
             this.entities.Remove(entity);
-            await this.context.SaveChangesAsync();
+            await this.context.SaveChangesAsync(token);
         }
     }
 }

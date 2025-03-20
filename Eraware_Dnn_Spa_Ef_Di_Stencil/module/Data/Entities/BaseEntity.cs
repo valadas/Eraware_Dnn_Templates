@@ -2,6 +2,7 @@
 // Copyright $ext_companyname$
 
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace $ext_rootnamespace$.Data.Entities
 {
@@ -11,6 +12,7 @@ namespace $ext_rootnamespace$.Data.Entities
     public class BaseEntity : IEntity
     {
         /// <inheritdoc/>
+        [Key]
         public int Id { get; set; }
 
         /// <inheritdoc/>

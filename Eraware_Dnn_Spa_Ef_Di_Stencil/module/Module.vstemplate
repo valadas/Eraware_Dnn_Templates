@@ -46,6 +46,8 @@
           <ProjectItem ReplaceParameters="true">IRepository.cs</ProjectItem>
 		  <ProjectItem ReplaceParameters="true">PagedList{T}.cs</ProjectItem>
           <ProjectItem ReplaceParameters="true">Repository.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">IItemRepository.cs</ProjectItem>
+		  <ProjectItem ReplaceParameters="true">ItemRepository.cs</ProjectItem>
         </Folder>
         <ProjectItem ReplaceParameters="true">ModuleDbContext.cs</ProjectItem>
       </Folder>
