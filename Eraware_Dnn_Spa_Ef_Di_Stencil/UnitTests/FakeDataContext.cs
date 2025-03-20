@@ -1,6 +1,8 @@
 ﻿using Effort.Provider;
 using $ext_rootnamespace$.Data;
 using $ext_rootnamespace$.Data.Entities;
+using $ext_rootnamespace$.Data.Repositories;
+using $ext_rootnamespace$Providers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -79,5 +81,13 @@ namespace UnitTests
         public string Name { get; set; }
 
         public virtual Category Category { get; set; }
+    }
+
+    public class ProductRepository : Repository<Product>
+    {
+        public ProductRepository(ModuleDbContext context, IDateTimeProvider dateTimeProvider)
+            : base(context, dateTimeProvider)
+        {
+        }
     }
 }

@@ -7,6 +7,7 @@ using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -16,7 +17,7 @@ namespace UnitTests.Services.Items
     public class ItemServiceTests
     {
         private CancellationToken token;
-        private IRepository<Item> itemRepository;
+        private IItemRepository itemRepository;
         private IItemService itemService;
         private IValidator<CreateItemDTO> createItemDtoValidator;
         private IValidator<UpdateItemDTO> updateItemDtoValidator;
@@ -24,7 +25,7 @@ namespace UnitTests.Services.Items
         public ItemServiceTests()
         {
             this.token = new CancellationToken();
-            this.itemRepository = Substitute.For<IRepository<Item>>();
+            this.itemRepository = Substitute.For<IItemRepository>();
             this.createItemDtoValidator = Substitute.For<IValidator<CreateItemDTO>>();
             this.updateItemDtoValidator = Substitute.For<IValidator<UpdateItemDTO>>();
             this.itemService = new ItemService(
@@ -98,12 +99,14 @@ namespace UnitTests.Services.Items
             }
             var returnedPage = new PagedList<Item>(
                 returnedItems, 1, 10, 30, 3);
-            this.itemRepository.GetPageAsync(
-                Arg.Any<int>(),
-                Arg.Any<int>(),
-                Arg.Any<Func<IQueryable<Item>, IOrderedQueryable<Item>>>())
+            this.itemRepository
+                .GetPageAsync(
+                    Arg.Any<int>(),
+                    Arg.Any<int>(),
+                    Arg.Any<Expression<Func<Item, bool>>>(),
+                    Arg.Any<Expression<Func<Item, object>>>())
                 .Returns(Task.FromResult(returnedPage));
-            
+
             var finalReturn = await this.itemService.GetItemsPageAsync("test", 1, 10, descending);
 
             Assert.IsType<ItemsPageViewModel>(finalReturn);

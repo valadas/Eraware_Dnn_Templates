@@ -18,7 +18,7 @@ namespace IntegrationTests.Controllers
     public class ItemControllerTests : FakeDataContext
     {
         private readonly IDateTimeProvider dateTimeProvider;
-        private readonly IRepository<Item> itemRepository;
+        private readonly IItemRepository itemRepository;
         private readonly IItemService itemService;
         private readonly IValidator<CreateItemDTO> createItemDtoValidator;
         private readonly IValidator<UpdateItemDTO> updateItemDtoValidator;
@@ -30,7 +30,7 @@ namespace IntegrationTests.Controllers
         {
             this.dateTimeProvider = Substitute.For<IDateTimeProvider>();
             this.dateTimeProvider.GetUtcNow().Returns(new DateTime(2022, 1, 1));
-            this.itemRepository = new Repository<Item>(this.dataContext, this.dateTimeProvider);
+            this.itemRepository = new ItemRepository(this.dataContext, this.dateTimeProvider);
             this.localizationService = Substitute.For<ILocalizationService>();
             var resx = new LocalizationViewModel
             {

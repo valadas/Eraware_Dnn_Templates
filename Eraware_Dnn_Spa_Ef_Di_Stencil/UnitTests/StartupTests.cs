@@ -24,7 +24,7 @@ namespace UnitTests
             var types = new List<Type>()
             {
                 typeof(ModuleDbContext),
-                typeof(IRepository<>),
+                typeof(IItemRepository),
                 typeof(IItemService),
                 typeof(ILoggerSource),
                 typeof(ILocalizationService),
