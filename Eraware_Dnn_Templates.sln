@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{DC7C1D42-A25F-4B34-8DCB-B4869079B15A}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{DEC1FDF7-0D64-4992-BB69-0E15EA6E8088}"
