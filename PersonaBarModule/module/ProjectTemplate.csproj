@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+	<None Include=".github\dependabot.yml"/>
+	<None Include=".github\mergeable.yml"/>
     <Compile Include="Common\Globals.cs" />
     <Compile Include="Controllers\EchoController.cs" />
     <Compile Include="Controllers\LocalizationController.cs" />
