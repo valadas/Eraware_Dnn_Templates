@@ -121,19 +121,19 @@
   </ItemGroup>
   <ItemGroup>
 	<PackageReference Include="DotNetNuke.Abstractions">
-	  <Version>9.13.4</Version>
+	  <Version>10.1.1</Version>
 	</PackageReference>
     <PackageReference Include="DotNetNuke.Core">
-      <Version>9.13.4</Version>
+      <Version>10.1.1</Version>
     </PackageReference>
     <PackageReference Include="DotNetNuke.Instrumentation">
-      <Version>9.13.4</Version>
+      <Version>10.1.1</Version>
     </PackageReference>
     <PackageReference Include="DotNetNuke.Web">
-      <Version>9.13.4</Version>
+      <Version>10.1.1</Version>
     </PackageReference>
     <PackageReference Include="DotNetNuke.WebApi">
-      <Version>9.13.4</Version>
+      <Version>10.1.1</Version>
     </PackageReference>
     <PackageReference Include="EntityFramework">
       <Version>6.5.1</Version>
