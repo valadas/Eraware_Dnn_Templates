@@ -18,8 +18,8 @@
     <ProjectGuid>{AC17427B-56DF-49BB-B9D1-D59A3C5F0C69}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Eraware_PersonaBarModuleTemplate</RootNamespace>
-    <AssemblyName>Eraware_PersonaBarModuleTemplate</AssemblyName>
+    <RootNamespace>PersonaBarModule</RootNamespace>
+    <AssemblyName>PersonaBarModule</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>

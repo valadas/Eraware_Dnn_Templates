@@ -117,10 +117,10 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
-    <ProjectReference Include="..\Eraware_PersonaBarModuleTemplate\Eraware_PersonaBarModuleTemplate.csproj">
+    <ProjectReference Include="..\PersonaBarModule\PersonaBarModule.csproj">
       <Project>{AC17427B-56DF-49BB-B9D1-D59A3C5F0C69}</Project>
-      <Name>Eraware_PersonaBarModuleTemplate</Name>
-      <VSIXSubPath>ProjectTemplates\Eraware_PersonaBarModuleTemplate</VSIXSubPath>
+      <Name>PersonaBarModule</Name>
+      <VSIXSubPath>ProjectTemplates\PersonaBarModule</VSIXSubPath>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
