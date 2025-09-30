@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{DEC1FDF7-0D64-4992-BB69-0E15EA6E8088}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eraware_PersonaBarModuleTemplate", "Eraware_PersonaBarModuleTemplate\Eraware_PersonaBarModuleTemplate.csproj", "{AC17427B-56DF-49BB-B9D1-D59A3C5F0C69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonaBarModule", "PersonaBarModule\PersonaBarModule.csproj", "{AC17427B-56DF-49BB-B9D1-D59A3C5F0C69}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{96BAE101-6C2F-4538-8342-83EBC502DD29}"
 	ProjectSection(SolutionItems) = preProject

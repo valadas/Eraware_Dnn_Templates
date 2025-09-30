@@ -35,7 +35,7 @@
   <Assets>
     <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" AssemblyName="|%CurrentProject%;AssemblyName|" />
     <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="Eraware_Dnn_Spa_Ef_Di_Stencil" d:TargetPath="|Eraware_Dnn_Spa_Ef_Di_Stencil;TemplateProjectOutputGroup|" Path="ProjectTemplates\Eraware_Dnn_Spa_Ef_Di_Stencil" d:VsixSubPath="ProjectTemplates\Eraware_Dnn_Spa_Ef_Di_Stencil" />
-    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="Eraware_PersonaBarModuleTemplate" d:TargetPath="|Eraware_PersonaBarModuleTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates\Eraware_PersonaBarModuleTemplate" d:VsixSubPath="ProjectTemplates\Eraware_PersonaBarModuleTemplate" />
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="PersonaBarModule" d:TargetPath="|PersonaBarModule;TemplateProjectOutputGroup|" Path="ProjectTemplates\PersonaBarModule" d:VsixSubPath="ProjectTemplates\PersonaBarModule" />
   </Assets>
   <Prerequisites>
     <Prerequisite Id="Microsoft.Net.ComponentGroup.DevelopmentPrerequisites" Version="[17.0.31804.368,19.0)" DisplayName=".NET Framework 4.7.2 development tools" />

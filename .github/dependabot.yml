@@ -8,7 +8,7 @@ updates:
   - package-ecosystem: "npm"
     directories:
       - "Eraware_Dnn_Spa_Ef_Di_Stencil/module.web"
-      - "Eraware_PersonaBarModuleTemplate/module.web"
+      - "PersonaBarModule/module.web"
       - "Eraware_Dnn_Spa_Ef_Di_Stencil/module/docfx_project"
     schedule:
       interval: "monthly"
