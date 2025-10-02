@@ -159,8 +159,13 @@ class Build : NukeBuild
                     @"AssemblyFileVersion\(""[^""]*""\)",
                     $@"AssemblyFileVersion(""{version}"")"
                 );
+                content = Regex.Replace(
+                    content,
+                    @"AssemblyInformationalVersion\(""[^""]*""\)",
+                    $@"AssemblyInformationalVersion(""{GitVersion.InformationalVersion}"")"
+                );
                 assemblyInfoFile.WriteAllText(content);
-                Serilog.Log.Information($"Updated AssemblyInfo.cs version to {version}");
+                Serilog.Log.Information($"Updated AssemblyInfo.cs version to {version} and informational version to {GitVersion.InformationalVersion}");
             }
         });
 
