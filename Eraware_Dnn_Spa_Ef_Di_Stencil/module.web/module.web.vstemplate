@@ -4,9 +4,8 @@
     <Name>module web</Name>
     <Description>module web</Description>
     <Icon>module-icon.ico</Icon>
-    <ProjectType>CSharp</ProjectType>
-    <LanguageTag>csharp</LanguageTag>
-    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <ProjectType>JavaScript</ProjectType>
+    <LanguageTag>javascript</LanguageTag>
     <SortOrder>1000</SortOrder>
     <TemplateID>CDDF75C9-EFAB-4818-BBBC-210BE3EBD95D</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>

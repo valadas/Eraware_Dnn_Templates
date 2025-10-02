@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml;
 using Nuke.Common;
 using Nuke.Common.CI;
@@ -30,7 +31,8 @@ using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
     OnPushBranches = new[] { "master", "develop", "release/*" },
     InvokedTargets = new[] { nameof(CI) },
     FetchDepth = 0,
-    CacheKeyFiles = new string[0]
+    CacheKeyFiles = new string[0],
+    PublishArtifacts = true
     )]
 class Build : NukeBuild
 {
@@ -47,10 +49,9 @@ class Build : NukeBuild
     
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
-    [GitVersion(UpdateAssemblyInfo = true)] readonly GitVersion GitVersion;
+    [GitVersion(UpdateAssemblyInfo = false)] readonly GitVersion GitVersion;
 
     static GitHubActions GitHubActions => GitHubActions.Instance;
-    static readonly string PackageContentType = "application/octet-stream";
 
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath TemplateProjectDirectory => RootDirectory / "Eraware_Dnn_Templates";
@@ -85,6 +86,10 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
+            var version = $"{GitVersion.MajorMinorPatch}.0";
+            Serilog.Log.Information($"Setting version to: {version}");
+
+            // Update VSIX manifest version
             var manifestFile = TemplateProjectDirectory / "source.extension.vsixmanifest";
             var manifest = new XmlDocument();
             manifest.Load(manifestFile);
@@ -93,6 +98,56 @@ class Build : NukeBuild
             var versionAttribute = identityNode.Attributes["Version"];
             versionAttribute.Value = GitVersion.MajorMinorPatch;
             manifest.Save(manifestFile);
+            Serilog.Log.Information($"Updated VSIX manifest to version: {GitVersion.MajorMinorPatch}");
+
+            // Update assembly version references in .vstemplate files
+            var templateFiles = RootDirectory.GlobFiles("**/*.vstemplate")
+                .Where(f => f.ReadAllText().Contains("WizardExtension"));
+
+            foreach (var templateFile in templateFiles)
+            {
+                var templateDoc = new XmlDocument();
+                templateDoc.Load(templateFile);
+                
+                var wizardExtensionNode = templateDoc.SelectSingleNode("//WizardExtension");
+                if (wizardExtensionNode != null)
+                {
+                    var assemblyNode = wizardExtensionNode.SelectSingleNode("Assembly");
+                    if (assemblyNode != null)
+                    {
+                        var assemblyText = assemblyNode.InnerText;
+                        // Update the version in the assembly reference
+                        // Format: "Eraware_Dnn_Templates, Version=X.X.X.X, Culture=Neutral, PublicKeyToken=..."
+                        var updatedAssembly = Regex.Replace(
+                            assemblyText,
+                            @"Version=\d+\.\d+\.\d+\.\d+",
+                            $"Version={version}"
+                        );
+                        assemblyNode.InnerText = updatedAssembly;
+                        templateDoc.Save(templateFile);
+                        Serilog.Log.Information($"Updated assembly version in {templateFile}: {assemblyText} -> {updatedAssembly}");
+                    }
+                }
+            }
+
+            // Update AssemblyInfo.cs version
+            var assemblyInfoFile = TemplateProjectDirectory / "Properties" / "AssemblyInfo.cs";
+            if (assemblyInfoFile.FileExists())
+            {
+                var content = assemblyInfoFile.ReadAllText();
+                content = Regex.Replace(
+                    content,
+                    @"AssemblyVersion\(""[^""]*""\)",
+                    $@"AssemblyVersion(""{version}"")"
+                );
+                content = Regex.Replace(
+                    content,
+                    @"AssemblyFileVersion\(""[^""]*""\)",
+                    $@"AssemblyFileVersion(""{version}"")"
+                );
+                assemblyInfoFile.WriteAllText(content);
+                Serilog.Log.Information($"Updated AssemblyInfo.cs version to {version}");
+            }
         });
 
     Target Compile => _ => _

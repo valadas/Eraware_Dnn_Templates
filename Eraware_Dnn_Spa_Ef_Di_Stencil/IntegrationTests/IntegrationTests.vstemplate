@@ -5,7 +5,7 @@
     <Description>IntegrationTests</Description>
     <ProjectType>CSharp</ProjectType>
     <LanguageTag>csharp</LanguageTag>
-    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <RequiredFrameworkVersion>4.8</RequiredFrameworkVersion>
     <SortOrder>1000</SortOrder>
     <TemplateID>03F8C761-4AC0-47F2-BB17-961796F914CC</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>
