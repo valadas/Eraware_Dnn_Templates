@@ -6,7 +6,7 @@
     <Icon>Eraware.ico</Icon>
     <ProjectType>CSharp</ProjectType>
     <LanguageTag>csharp</LanguageTag>
-    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <RequiredFrameworkVersion>4.8</RequiredFrameworkVersion>
     <SortOrder>1000</SortOrder>
     <TemplateID>81245841-4dd2-42d2-9c0b-adb41c58ac29</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>
@@ -24,7 +24,7 @@
     </ProjectCollection>
   </TemplateContent>
   <WizardExtension>
-    <Assembly>Eraware_Dnn_Templates, Version=1.0.0.0, Culture=Neutral, PublicKeyToken=7161ac084cb3bf62</Assembly>
+    <Assembly>Eraware_Dnn_Templates, Version=1.12.0.0, Culture=Neutral, PublicKeyToken=7161ac084cb3bf62</Assembly>
     <FullClassName>Eraware_Dnn_Templates.WizardImplementation</FullClassName>
   </WizardExtension>
 </VSTemplate>

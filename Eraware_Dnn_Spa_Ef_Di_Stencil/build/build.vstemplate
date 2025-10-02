@@ -5,7 +5,6 @@
     <Description>build</Description>
     <ProjectType>CSharp</ProjectType>
     <LanguageTag>csharp</LanguageTag>
-    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
     <SortOrder>1000</SortOrder>
     <TemplateID>d8de2bc5-5d03-4c21-ba29-74cbb620cfe7</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>
