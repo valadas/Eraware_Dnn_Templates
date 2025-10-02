@@ -109,10 +109,16 @@ class Build : NukeBuild
                 var templateDoc = new XmlDocument();
                 templateDoc.Load(templateFile);
                 
-                var wizardExtensionNode = templateDoc.SelectSingleNode("//WizardExtension");
+                // Create namespace manager for the VSTemplate namespace
+                var nsManager = new XmlNamespaceManager(templateDoc.NameTable);
+                nsManager.AddNamespace("vst", "http://schemas.microsoft.com/developer/vstemplate/2005");
+                
+                // Use namespace-aware XPath to find WizardExtension
+                var wizardExtensionNode = templateDoc.SelectSingleNode("//vst:WizardExtension", nsManager);
                 if (wizardExtensionNode != null)
                 {
-                    var assemblyNode = wizardExtensionNode.SelectSingleNode("Assembly");
+                    // Find Assembly child node using namespace-aware XPath
+                    var assemblyNode = wizardExtensionNode.SelectSingleNode("vst:Assembly", nsManager);
                     if (assemblyNode != null)
                     {
                         var assemblyText = assemblyNode.InnerText;
@@ -127,6 +133,14 @@ class Build : NukeBuild
                         templateDoc.Save(templateFile);
                         Serilog.Log.Information($"Updated assembly version in {templateFile}: {assemblyText} -> {updatedAssembly}");
                     }
+                    else
+                    {
+                        Serilog.Log.Warning($"Assembly node not found in WizardExtension for {templateFile}");
+                    }
+                }
+                else
+                {
+                    Serilog.Log.Warning($"WizardExtension node not found in {templateFile}");
                 }
             }
 
