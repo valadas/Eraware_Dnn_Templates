@@ -32,11 +32,15 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="src\index.html" />
+    <None Include="src\index.ts" />
+    <None Include="src\components.d.ts" />
     <None Include="src\components\my-app-root\my-app-root.tsx" />
     <None Include="src\components\my-app-root\my-app-root.scss" />
-    <None Include="src\components\my-app-root\readme.md" />
     <None Include="src\dnn\types\IDnnPersonaBarCustomValidator.ts" />
+    <None Include="src\dnn\types\IDnnPersonaBarLoadPanelParams.ts" />
     <None Include="src\dnn\types\IDnnPersonaBarMenuItem.ts" />
+    <None Include="src\dnn\types\IDnnPersonaBarMenuSettings.ts" />
     <None Include="src\dnn\types\IDnnPersonaBarMenuStructure.ts" />
     <None Include="src\dnn\types\IDnnPersonaBarMenuStructureItem.ts" />
     <None Include="src\dnn\types\IDnnPersonaBarNotificationOptions.ts" />
@@ -48,13 +52,12 @@
     <None Include="src\dnn\$ext_safeprojectname$.ts" />
     <None Include="src\dnn\tsconfig.json" />
     <None Include="src\dnn\types.d.ts" />
-    <None Include="src\index.html" />
-    <None Include="src\index.ts" />
     <None Include="src\services\alert-error.ts" />
     <None Include="src\services\client-base.ts" />
     <None Include="src\services\services.ts" />
-    <None Include="eslint.config.mjs" />
+    <None Include="eslint.config.ts" />
     <None Include=".editorconfig" />
+    <None Include=".hintrc" />
     <None Include=".gitignore" />
     <None Include="api-extractor.json" />
     <None Include="LICENSE" />

@@ -20,13 +20,14 @@
           <Folder Name="my-app-root">
             <ProjectItem>my-app-root.scss</ProjectItem>
             <ProjectItem ReplaceParameters="true">my-app-root.tsx</ProjectItem>
-            <ProjectItem>readme.md</ProjectItem>
           </Folder>
         </Folder>
         <Folder Name="dnn">
           <Folder Name ="types">
             <ProjectItem>IDnnPersonaBarCustomValidator.ts</ProjectItem>
+            <ProjectItem>IDnnPersonaBarLoadPanelParams.ts</ProjectItem>
             <ProjectItem>IDnnPersonaBarMenuItem.ts</ProjectItem>
+            <ProjectItem>IDnnPersonaBarMenuSettings.ts</ProjectItem>
             <ProjectItem>IDnnPersonaBarMenuStructure.ts</ProjectItem>
             <ProjectItem>IDnnPersonaBarMenuStructureItem.ts</ProjectItem>
             <ProjectItem>IDnnPersonaBarNotificationOptions.ts</ProjectItem>
@@ -45,13 +46,15 @@
           <ProjectItem ReplaceParameters="true">client-base.ts</ProjectItem>
           <ProjectItem ReplaceParameters="true">services.ts</ProjectItem>
         </Folder>
+        <ProjectItem>components.d.ts</ProjectItem>
         <ProjectItem ReplaceParameters="true">index.html</ProjectItem>
         <ProjectItem>index.ts</ProjectItem>
       </Folder>
       <ProjectItem>.editorconfig</ProjectItem>
-      <ProjectItem>eslint.config.mjs</ProjectItem>
+      <ProjectItem>.hintrc</ProjectItem>
       <ProjectItem>.gitignore</ProjectItem>
       <ProjectItem>api-extractor.json</ProjectItem>
+      <ProjectItem>eslint.config.ts</ProjectItem>
       <ProjectItem>LICENSE</ProjectItem>
       <ProjectItem ReplaceParameters="true">package.json</ProjectItem>
       <ProjectItem>readme.md</ProjectItem>

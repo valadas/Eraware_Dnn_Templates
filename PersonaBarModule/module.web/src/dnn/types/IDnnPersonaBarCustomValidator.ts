@@ -6,7 +6,7 @@ export type IDnnPersonaBarCustomValidator = {
     /** Validates an input element. */
     validate(
         /** The value of the input element. */
-        value: any,
+        value: unknown,
         /** The input element to validate. */
         input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
     ): boolean;

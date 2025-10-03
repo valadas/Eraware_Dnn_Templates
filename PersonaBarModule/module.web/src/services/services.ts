@@ -31,8 +31,16 @@ export class ClientBase {
   protected transformOptions(options: RequestInit): Promise<RequestInit> {
     const dnnHeaders = this.sf.getModuleHeaders();
 
-    dnnHeaders.forEach((value, key) => {
-      options.headers[key] = value;
+    // Ensure headers object exists
+    if (!options.headers) {
+      options.headers = {};
+    }
+
+    // Convert headers to a mutable object if it's a Headers instance
+    const headersObj = options.headers as Record<string, string>;
+
+    dnnHeaders.forEach((value: string, key: string) => {
+      headersObj[key] = value;
     });
 
     return Promise.resolve(options);

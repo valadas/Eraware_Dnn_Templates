@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="module.web\.hintrc" />
     <None Include="module\.editorconfig" />
     <None Include="module\.github\dependabot.yml" />
     <None Include="module\.github\mergeable.yml" />
@@ -108,7 +109,6 @@
     <None Include="module.web\package.json" />
     <None Include="module.web\readme.md" />
     <None Include="module.web\src\components\my-app-root\my-app-root.scss" />
-    <None Include="module.web\src\components\my-app-root\readme.md" />
     <None Include="module.web\src\dnn\tsconfig.json" />
     <None Include="module.web\tsconfig.json" />
     <None Include="module\ProjectTemplate.csproj" />
@@ -122,7 +122,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="module.web\.gitignore" />
-    <Content Include="module.web\eslint.config.mjs" />
+    <TypeScriptCompile Include="module.web\eslint.config.ts" />
     <Content Include="module.web\module-icon.ico" />
     <Content Include="UnitTests\UnitTests.vstemplate" />
     <VSTemplate Include="module.web\module.web.vstemplate" />
@@ -142,7 +142,11 @@
   <ItemGroup>
     <None Include="module\resources\App_LocalResources\MyPersonaBarModule.resx" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <TypeScriptCompile Include="module.web\src\components.d.ts" />
+    <TypeScriptCompile Include="module.web\src\dnn\types\IDnnPersonaBarLoadPanelParams.ts" />
+    <TypeScriptCompile Include="module.web\src\dnn\types\IDnnPersonaBarMenuSettings.ts" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="module.web\src\components\my-app-root\my-app-root.tsx" />
     <None Include="module.web\src\dnn\MyPersonaBarModule.ts" />

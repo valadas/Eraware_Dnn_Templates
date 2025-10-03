@@ -5,6 +5,8 @@ import type { IDnnPersonaBarMenuItem } from "./IDnnPersonaBarMenuItem";
 import type { IDnnPersonaBarNotificationOptions } from "./IDnnPersonaBarNotificationOptions";
 import type { IDnnPersonaBarValidator } from "./IDnnPersonaBarValidator";
 import type { IDnnPersonaBarMenuStructure } from "./IDnnPersonaBarMenuStructure";
+import type { IDnnPersonaBarLoadPanelParams } from "./IDnnPersonaBarLoadPanelParams";
+import type { IDnnPersonaBarMenuSettings } from "./IDnnPersonaBarMenuSettings";
 
 /** Utilities available in the persona bar. */
 export type IDnnPersonaBarUtilities =
@@ -42,8 +44,8 @@ export type IDnnPersonaBarUtilities =
     /** Closes the persona bar. */
     closePersonaBar: (
         /** Gets called once the persona bar is finished closing. */
-        callback?: (() => void) | any,
-        /** If trure, the selection will be kept in focus. */
+        callback?: (() => void),
+        /** If true, the selection will be kept in focus. */
         keepSelection?: boolean
     ) => void;
 
@@ -51,14 +53,19 @@ export type IDnnPersonaBarUtilities =
     loadPanel: (
         /** The unique identifier of the page such as Dnn.Themes . */
         identifier: string,
-        /** Paramaters to pass to the persona bar module on that page. */
-        params: any,
+        /** Parameters to pass to the persona bar module on that page. */
+        params: IDnnPersonaBarLoadPanelParams,
     ) => void;
 
-    /** Internel method. */
+    /**
+     * Internal method called after a panel has finished loading.
+     * Handles extension loading, custom modules, and tab view management.
+     */
     panelLoaded: (
-        params: any,
-        loaded: boolean,
+      /** The same parameters object that was passed to loadPanel */
+      params: IDnnPersonaBarLoadPanelParams,
+      /** Whether the template was already loaded (true) or newly loaded (false) */
+      loaded: boolean,
     ) => void;
 
     /** Internel method. */
@@ -70,20 +77,20 @@ export type IDnnPersonaBarUtilities =
     /** Internal method. */
     leaveCustomModules: () => void;
 
-    /** Finds the settings for a given menu identifier pased into an object (as opposed to just a json string). */
+    /** Finds the settings for a given menu identifier parsed into an object (as opposed to just a json string). */
     findMenuSettings: (
         /** The unique identifier of the page such as Dnn.Themes . */
         identifier: string,
         /** The list of menu items. */
         menuItems?: IDnnPersonaBarMenuItem[],
-    ) => any;
+    ) => IDnnPersonaBarMenuSettings | null;
 
     /** Saves the settings for a given menu item. */
     updateMenuSettings: (
         /** The unique identifier of the page such as Dnn.Themes . */
         identifier: string,
         /** The settings to save. */
-        settings: any,
+        settings: IDnnPersonaBarMenuSettings,
         /** The list of menu items. */
         menuItems?: IDnnPersonaBarMenuItem[],
     ) => void;
@@ -96,11 +103,11 @@ export type IDnnPersonaBarUtilities =
 
     /** Saves cache data in the browser local storage. Can also read if no viewData is passed. */
     panelViewData: (
-        /** The ID of the panel this data should be scoped to. */
-        panelId: string,
+        /** The ID of the panel this data should be scoped to, or null to get all panel data. */
+        panelId: string | null,
         /** The data to save, can be undefined to only read the current data. */
-        viewData: any
-    ) => any;
+      viewData?: Record<string, unknown>,
+    ) => Record<string, unknown> | undefined;
 
     /** Saves which tab was selected to persist that selection.
      * Assumes that dnn-react-common is used.
@@ -139,19 +146,29 @@ export type IDnnPersonaBarUtilities =
     ) => string;
 
     /** Gets the module name if it exists in params.moduleName. */
-    getModuleNameByParams: (params: any) => string;
+    getModuleNameByParams: (params: IDnnPersonaBarLoadPanelParams) => string;
 
     /** Gets the identifier if it exists in params.identifier. */
-    getIdentifierByParams: (params: any) => string;
+    getIdentifierByParams: (params: IDnnPersonaBarLoadPanelParams) => string;
 
     /** Gets the folder name if it exists in params.folderName */
-    getFolderNameByParams: (params: any) => string;
+    getFolderNameByParams: (params: IDnnPersonaBarLoadPanelParams) => string;
 
     /** Executes functions in parallel. */
-    asyncParallel: (deferreds: (() => any)[], callback: () => any) => void;
+    asyncParallel: (
+      /** Array of functions that execute asynchronously and call their callback when done */
+      deferreds: ((callback: () => void) => void)[],
+      /** Callback executed when all parallel functions complete */
+      callback: () => void
+    ) => void;
 
-    /** Executes functions in series. */
-    asyncWaterfall: (deferreds: (() => any)[], callback: () => any) => void;
+    /** Executes functions in series (waterfall pattern). */
+    asyncWaterfall: (
+      /** Array of functions that execute in sequence, each calling its callback when done */
+      deferreds: ((callback: () => void) => void)[],
+      /** Callback executed when all sequential functions complete */
+      callback: () => void
+    ) => void;
 
     /** Shows a confirmation dialog. */
     confirm: (
@@ -207,7 +224,7 @@ export type IDnnPersonaBarUtilities =
     /** Throttles the execution of a function to the next available cycle.
      * Same as setTimeout(callback, 0);
     */
-    throttleExecution: (callback: ()=>any) => void;
+    throttleExecution: (callback: () => void) => void;
 
     /** Just in case a developer forgets what numbers are. */
     ONE_THOUSAND: 1000,
