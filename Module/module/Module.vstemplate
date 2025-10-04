@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
   <TemplateData>
-    <Name>Eraware_Dnn_Spa_Ef_Di_Stencil</Name>
-    <Description>Eraware_Dnn_Spa_Ef_Di_Stencil</Description>
+    <Name>Module</Name>
+    <Description>Module</Description>
     <Icon>module-icon.ico</Icon>
     <ProjectType>CSharp</ProjectType>
     <LanguageTag>csharp</LanguageTag>
@@ -10,7 +10,7 @@
     <SortOrder>1000</SortOrder>
     <TemplateID>cd947cbe-339c-41f7-a789-061d1c59222c</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>
-    <DefaultName>Eraware_Dnn_Spa_Ef_Di_Stencil</DefaultName>
+    <DefaultName>Module</DefaultName>
     <ProvideDefaultName>true</ProvideDefaultName>
     <Hidden>true</Hidden>
   </TemplateData>
