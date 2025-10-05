@@ -31,17 +31,25 @@ export class ClientBase {
   protected transformOptions(options: RequestInit): Promise<RequestInit> {
     const dnnHeaders = this.sf.getModuleHeaders();
 
-    // Ensure headers object exists
+    // Handle different types of headers
     if (!options.headers) {
+      // Create a plain object since most fetch consumers expect this
       options.headers = {};
     }
 
-    // Convert headers to a mutable object if it's a Headers instance
-    const headersObj = options.headers as Record<string, string>;
-
-    dnnHeaders.forEach((value: string, key: string) => {
-      headersObj[key] = value;
-    });
+    // Check if headers is a Headers instance
+    if (options.headers instanceof Headers) {
+      // Work with Headers instance using its methods
+      dnnHeaders.forEach((value: string, key: string) => {
+        (options.headers as Headers).set(key, value);
+      });
+    } else {
+      // Handle as plain object
+      const headersObj = options.headers as Record<string, string>;
+      dnnHeaders.forEach((value: string, key: string) => {
+        headersObj[key] = value;
+      });
+    }
 
     return Promise.resolve(options);
   }
@@ -230,12 +238,6 @@ export class EchoDto implements IEchoDto {
         data["Message"] = this.message;
         return data;
     }
-}
-
-/** A data transfer object for the echo service. */
-export interface IEchoDto {
-    /** Gets or sets the message to echo back. */
-    message?: string | undefined;
 }
 
 /** A viewmodel that exposes all resource keys in strong types. */
