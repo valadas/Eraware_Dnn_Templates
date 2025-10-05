@@ -3,18 +3,21 @@ export type IPersonaBarServicesFramework = {
     /** The anti-forgery token to use for secure API calls. */
     antiForgeryToken: string;
 
-    /** Performs an API call. */
+    /**
+    * Performs an API call to a PersonaBar controller method.
+    * Based on DNN Platform sf.js implementation.
+    */
     call(
         /** The HTTP method to use. */
         httpMethod: "GET" | "POST",
         /** The controller action to call (method of the controller class). */
         method: string,
         /** The data to append to the GET query or to send in a POST. */
-        params?: JQuery.PlainObject | string | object | any[],
+        params?: Record<string, unknown> | string | FormData | unknown[],
         /** Fires when the call succeeded. */
         success?: (
             /** The data returned by the API call. */
-            data: any
+            data: unknown
         ) => void,
         /** Fires when the API call fails. */
         failure?: (
@@ -33,7 +36,7 @@ export type IPersonaBarServicesFramework = {
         silence?: boolean,
         /** Set to true if the data (params) represents a file to be uploaded. */
         postFile?: boolean
-    ): JQuery.jqXHR<any>;
+    ): JQuery.jqXHR<unknown>;
 
     call<T>(
         /** The HTTP method to use. */
@@ -41,7 +44,7 @@ export type IPersonaBarServicesFramework = {
         /** The controller action to call (method of the controller class). */
         method: string,
         /** The data to append to the GET query or to send in a POST. */
-        params?: JQuery.PlainObject | string | object | any[],
+        params?: Record<string, unknown> | string | FormData | unknown[],
         /** Fires when the call succeeded. */
         success?: (
             /** The data returned by the API call. */
@@ -81,18 +84,21 @@ export type IPersonaBarServicesFramework = {
     /** Gets the root path of the website. */
     getSiteRoot(): string;
 
-    /** Allows making a raw call (to any url) */
+    /**
+    * Allows making a raw call to any URL.
+    * Based on DNN Platform sf.js rawCall implementation.
+    */
     rawCall(
         /** The HTTP method to use. */
         httpMethod: "GET" | "POST",
         /** The URL to call. */
         url: string,
         /** The data to append to the GET query or to send in a POST. */
-        params?: JQuery.PlainObject | string | object | any[],
+        params?: Record<string, unknown> | string | FormData | unknown[],
         /** Fires when the call succeeded. */
         success?: (
             /** The data returned by the API call. */
-            data: any
+            data: unknown
         ) => void,
         /** Fires when the API call fails. */
         failure?: (
@@ -111,7 +117,7 @@ export type IPersonaBarServicesFramework = {
         silence?: boolean,
         /** Set to true if the data (params) represents a file to be uploaded. */
         postFile?: boolean
-    ): JQuery.jqXHR<any>;
+    ): JQuery.jqXHR<unknown>;
 
     /** Allows making a raw call (to any url) */
     rawCall<T>(
@@ -120,7 +126,7 @@ export type IPersonaBarServicesFramework = {
         /** The URL to call. */
         url: string,
         /** The data to append to the GET query or to send in a POST. */
-        params?: JQuery.PlainObject | string | object | any[],
+        params?: JQuery.PlainObject | string | object | unknown[],
         /** Fires when the call succeeded. */
         success?: (
             /** The data returned by the API call. */
@@ -150,11 +156,11 @@ export type IPersonaBarServicesFramework = {
         /** The controller action to call (method of the controller class). */
         method: string,
         /** The data to append to the GET query or to send in a POST. */
-        params?: JQuery.PlainObject | string | object | any[],
+        params?: JQuery.PlainObject | string | object | unknown[],
         /** Fires when the call succeeded. */
         success?: (
             /** The data returned by the API call. */
-            data: any
+            data: unknown
         ) => void,
         /** Fires when the API call fails. */
         failure?: (
@@ -173,14 +179,14 @@ export type IPersonaBarServicesFramework = {
         silence?: boolean,
         /** Set to true if the data (params) represents a file to be uploaded. */
         postFile?: boolean
-    ): JQuery.jqXHR<any>;
+    ): JQuery.jqXHR<unknown>;
 
     /** Performs a POST to a known API method. */
     post<T>(
         /** The controller action to call (method of the controller class). */
         method: string,
         /** The data to append to the GET query or to send in a POST. */
-        params?: JQuery.PlainObject | string | object | any[],
+        params?: JQuery.PlainObject | string | object | unknown[],
         /** Fires when the call succeeded. */
         success?: (
             /** The data returned by the API call. */
@@ -210,11 +216,11 @@ export type IPersonaBarServicesFramework = {
         /** The controller action to call (method of the controller class). */
         method: string,
         /** The data of the fiel to POST. */
-        params?: JQuery.PlainObject | string | object | any[],
+        params?: JQuery.PlainObject | string | object | unknown[],
         /** Fires when the call succeeded. */
         success?: (
             /** The data returned by the API call. */
-            data: any
+            data: unknown
         ) => void,
         /** Fires when the API call fails. */
         failure?: (
@@ -233,18 +239,18 @@ export type IPersonaBarServicesFramework = {
         silence?: boolean,
         /** Set to true if the data (params) represents a file to be uploaded. */
         postFile?: boolean
-    ): JQuery.jqXHR<any>;
+    ): JQuery.jqXHR<unknown>;
 
     /** Performs a POST API call without displaying the loading bar. */
     postsilence(
         /** The controller action to call (method of the controller class). */
         method: string,
         /** The data of the fiel to POST. */
-        params?: JQuery.PlainObject | string | object | any[],
+        params?: JQuery.PlainObject | string | object | unknown[],
         /** Fires when the call succeeded. */
         success?: (
             /** The data returned by the API call. */
-            data: any
+            data: unknown
         ) => void,
         /** Fires when the API call fails. */
         failure?: (
@@ -257,14 +263,14 @@ export type IPersonaBarServicesFramework = {
         loading?: (loading: boolean) => void,
         /** A callback that can be used to customize the request before it is sent.*/
         beforeSend?: (xhr: JQueryXHR) => void
-    ): JQuery.jqXHR<any>;
+    ): JQuery.jqXHR<unknown>;
 
     /** Performs a POST API call without displaying the loading bar. */
     postsilence<T>(
         /** The controller action to call (method of the controller class). */
         method: string,
         /** The data of the fiel to POST. */
-        params?: JQuery.PlainObject | string | object | any[],
+        params?: JQuery.PlainObject | string | object | unknown[],
         /** Fires when the call succeeded. */
         success?: (
             /** The data returned by the API call. */
@@ -288,11 +294,11 @@ export type IPersonaBarServicesFramework = {
         /** The controller action to call (method of the controller class). */
         method: string,
         /** The data of the fiel to POST. */
-        params?: JQuery.PlainObject | string | object | any[],
+        params?: JQuery.PlainObject | string | object | unknown[],
         /** Fires when the call succeeded. */
         success?: (
             /** The data returned by the API call. */
-            data: any
+            data: unknown
         ) => void,
         /** Fires when the API call fails. */
         failure?: (
@@ -305,14 +311,14 @@ export type IPersonaBarServicesFramework = {
         loading?: (loading: boolean) => void,
         /** A callback that can be used to customize the request before it is sent.*/
         beforeSend?: (xhr: JQueryXHR) => void
-    ): JQuery.jqXHR<any>;
+    ): JQuery.jqXHR<unknown>;
 
     /** Performs a GET API call. */
     get<T>(
         /** The controller action to call (method of the controller class). */
         method: string,
         /** The data of the fiel to POST. */
-        params?: JQuery.PlainObject | string | object | any[],
+        params?: JQuery.PlainObject | string | object | unknown[],
         /** Fires when the call succeeded. */
         success?: (
             /** The data returned by the API call. */
@@ -336,11 +342,11 @@ export type IPersonaBarServicesFramework = {
         /** The controller action to call (method of the controller class). */
         method: string,
         /** The data of the fiel to POST. */
-        params?: JQuery.PlainObject | string | object | any[],
+        params?: JQuery.PlainObject | string | object | unknown[],
         /** Fires when the call succeeded. */
         success?: (
             /** The data returned by the API call. */
-            data: any
+            data: unknown
         ) => void,
         /** Fires when the API call fails. */
         failure?: (
@@ -353,18 +359,18 @@ export type IPersonaBarServicesFramework = {
         loading?: (loading: boolean) => void,
         /** A callback that can be used to customize the request before it is sent.*/
         beforeSend?: (xhr: JQueryXHR) => void
-    ): JQuery.jqXHR<any>;
+    ): JQuery.jqXHR<unknown>;
 
     /** Performs a GET API call without displaying the loading bar. */
     getsilence<T>(
         /** The controller action to call (method of the controller class). */
         method: string,
         /** The data of the fiel to POST. */
-        params?: JQuery.PlainObject | string | object | any[],
+        params?: JQuery.PlainObject | string | object | unknown[],
         /** Fires when the call succeeded. */
         success?: (
             /** The data returned by the API call. */
-            data: any
+            data: unknown
         ) => void,
         /** Fires when the API call fails. */
         failure?: (

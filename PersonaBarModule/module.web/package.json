@@ -25,16 +25,21 @@
     "generate": "stencil generate"
   },
   "devDependencies": {
-    "@dnncommunity/dnn-elements": "^0.26.0",
-    "@stencil-community/eslint-plugin": "^0.10.0",
+    "@dnncommunity/dnn-elements": "^0.27.4",
+    "@eslint/js": "^9.36.0",
     "@stencil/core": "^4.20.0",
+    "@stencil/eslint-plugin": "^1.1.0",
     "@stencil/sass": "^3.0.2",
     "@types/jquery": "^3.5.30",
-    "dayjs": "^1.11.13",
+    "@types/node": "^24.6.2",
     "@typescript-eslint/eslint-plugin": "^8.0.1",
     "@typescript-eslint/parser": "^8.0.1",
+    "dayjs": "^1.11.13",
     "eslint": "^9.36.0",
-    "jquery": "^3.7.1"
+    "jiti": "^2.4.2",
+    "jquery": "^3.7.1",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.32.0"
   },
   "license": "MIT"
 }

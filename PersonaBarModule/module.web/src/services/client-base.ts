@@ -1,4 +1,5 @@
 import { DnnServicesFramework } from '@dnncommunity/dnn-elements';
+
 export class ClientBase {
 
   private sf: DnnServicesFramework;
@@ -21,9 +22,25 @@ export class ClientBase {
   protected transformOptions(options: RequestInit): Promise<RequestInit> {
     const dnnHeaders = this.sf.getModuleHeaders();
 
-    dnnHeaders.forEach((value, key) => {
-      options.headers[key] = value;
-    });
+    // Handle different types of headers
+    if (!options.headers) {
+      // Create a plain object since most fetch consumers expect this
+      options.headers = {};
+    }
+
+    // Check if headers is a Headers instance
+    if (options.headers instanceof Headers) {
+      // Work with Headers instance using its methods
+      dnnHeaders.forEach((value: string, key: string) => {
+        (options.headers as Headers).set(key, value);
+      });
+    } else {
+      // Handle as plain object
+      const headersObj = options.headers as Record<string, string>;
+      dnnHeaders.forEach((value: string, key: string) => {
+        headersObj[key] = value;
+      });
+    }
 
     return Promise.resolve(options);
   }
