@@ -9,9 +9,10 @@
       "dom",
       "es2017"
     ],
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "node",
     "module": "esnext",
     "target": "es2017",
+    "esModuleInterop": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "jsx": "react",

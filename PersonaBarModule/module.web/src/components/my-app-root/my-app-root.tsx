@@ -45,7 +45,7 @@ export class MyAppRoot {
           "Echo",
           dto,
           data => {
-            var dto = new EchoDto();
+            const dto = new EchoDto();
             dto.init(data);
             this.util.notify(`${dto.message} was saved`, { type: "notify" });
           },
