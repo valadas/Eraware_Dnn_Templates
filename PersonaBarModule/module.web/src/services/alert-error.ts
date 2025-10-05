@@ -75,6 +75,12 @@ export default function alertError(reason: ErrorReason): void {
     return;
   }
 
+  // Handle native Error objects or objects with string message property
+  if (reason instanceof Error || (typeof reason === "object" && "message" in reason && typeof reason.message === "string")) {
+    alert((reason as Error).message);
+    return;
+  }
+
   // Fallback: stringify the error object
   try {
     alert(JSON.stringify(reason, null, 2));
