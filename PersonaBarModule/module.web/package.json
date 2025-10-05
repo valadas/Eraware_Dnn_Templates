@@ -27,7 +27,7 @@
   "devDependencies": {
     "@dnncommunity/dnn-elements": "^0.27.4",
     "@eslint/js": "^9.36.0",
-    "@stencil/core": "^4.20.0",
+    "@stencil/core": "^4.38.0",
     "@stencil/eslint-plugin": "^1.1.0",
     "@stencil/sass": "^3.0.2",
     "@types/jquery": "^3.5.30",
