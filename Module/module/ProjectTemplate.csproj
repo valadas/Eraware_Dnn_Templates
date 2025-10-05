@@ -102,7 +102,6 @@
     <Content Include=".editorconfig" />
     <Content Include="app.config" />
     <AdditionalFiles Include="stylecop.json" />
-    <Content Include="docfx_project\adjust-toc-namespaces.js" />
     <Content Include="docfx_project\articles\git.md" />
     <Content Include="docfx_project\articles\intro.md" />
     <Content Include="docfx_project\articles\project-architecture.md" />
