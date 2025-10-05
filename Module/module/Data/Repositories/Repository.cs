@@ -146,7 +146,7 @@ namespace $ext_rootnamespace$.Data.Repositories
             entity.UpdatedByUserId = userId;
 
             this.entities.Attach(entity);
-            this.entities.Entry(entity).State = EntityState.Modified;
+            this.context.Entry(entity).State = EntityState.Modified;
             await this.context.SaveChangesAsync(token);
         }
 
