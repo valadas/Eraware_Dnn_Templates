@@ -110,10 +110,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Eraware_Dnn_Spa_Ef_Di_Stencil\Eraware_Dnn_Spa_Ef_Di_Stencil.csproj">
+    <ProjectReference Include="..\Module\Module.csproj">
       <Project>{6C652B7C-F011-419E-B90D-F75AB49A8F4B}</Project>
-      <Name>Eraware_Dnn_Spa_Ef_Di_Stencil</Name>
-      <VSIXSubPath>ProjectTemplates\Eraware_Dnn_Spa_Ef_Di_Stencil</VSIXSubPath>
+      <Name>Module</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
