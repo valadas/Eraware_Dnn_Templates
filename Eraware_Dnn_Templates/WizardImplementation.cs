@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Eraware_Dnn_Templates
@@ -39,49 +40,132 @@ namespace Eraware_Dnn_Templates
             var projects = dte.Solution.Projects;
             foreach (Project project in projects)
             {
-                if (project.FullName.Contains("build"))
+                try
                 {
-                    foreach (ProjectItem item in project.ProjectItems)
+                    if (project.FullName.Contains("build"))
                     {
-                        if (item.Name.Contains("docs"))
+                        var itemsToRemove = new List<ProjectItem>();
+                        foreach (ProjectItem item in project.ProjectItems)
                         {
-                            item.Remove();
+                            if (item.Name.Contains("docs"))
+                            {
+                                itemsToRemove.Add(item);
+                            }
                         }
-                    }
-                }
-
-                if (project.FullName.Contains("module.web"))
-                {
-                    var configurations = (Array)project.ConfigurationManager.ConfigurationRowNames;
-                    foreach(var configuration in configurations)
-                    {
-                        project.ConfigurationManager.DeleteConfigurationRow(configuration.ToString());
-                    }
-                }
-
-                if (project.FullName.Contains("Module\\Module"))
-                {
-                    foreach (ProjectItem item in project.ProjectItems)
-                    {
-                        string[] ignoredFiles = { ".nuke", "build.ps1", "build.sh", ".github" };
-                        if (ignoredFiles.Any(i =>
+                        
+                        foreach (var item in itemsToRemove)
                         {
-                            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
-                            return i == item.Name;
-                        })){
-                            item.Remove();
+                            try
+                            {
+                                item.Remove();
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.WriteLine($"Could not remove item {item.Name}: {ex.Message}");
+                            }
                         }
                     }
 
-                    string moduleProjectFilePath = project.FullName;
-                    dte.Solution.Remove(project);
-                    var moduleProjectFile = new FileInfo(moduleProjectFilePath);
-                    var originalDirectory = moduleProjectFile.Directory;
+                    if (project.FullName.Contains("module.web"))
+                    {
+                        // Fix InvalidVariant exception by safely handling ConfigurationManager
+                        try
+                        {
+                            var configManager = project.ConfigurationManager;
+                            if (configManager != null)
+                            {
+                                // Get configuration names safely
+                                var configurationNames = new List<string>();
+                                
+                                try
+                                {
+                                    var configRowNames = configManager.ConfigurationRowNames;
+                                    if (configRowNames != null && configRowNames is Array configArray)
+                                    {
+                                        foreach (var configName in configArray)
+                                        {
+                                            if (configName != null)
+                                            {
+                                                configurationNames.Add(configName.ToString());
+                                            }
+                                        }
+                                    }
+                                }
+                                catch (COMException comEx)
+                                {
+                                    Debug.WriteLine($"COM exception when accessing configuration names: {comEx.Message}");
+                                    // Skip configuration deletion for this project - just return from this block
+                                }
 
-                    this.CopyAll(originalDirectory, originalDirectory.Parent);
+                                // Delete configurations safely (only if no COM exception occurred)
+                                if (configurationNames.Count > 0)
+                                {
+                                    foreach (var configName in configurationNames)
+                                    {
+                                        try
+                                        {
+                                            configManager.DeleteConfigurationRow(configName);
+                                        }
+                                        catch (COMException comEx)
+                                        {
+                                            Debug.WriteLine($"Could not delete configuration {configName}: {comEx.Message}");
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Debug.WriteLine($"Could not delete configuration {configName}: {ex.Message}");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine($"Could not handle configurations for project {project.Name}: {ex.Message}");
+                        }
+                    }
 
-                    dte.Solution.AddFromFile(Path.Combine(originalDirectory.Parent.FullName, moduleProjectFile.Name));
-                    originalDirectory.Delete(true);
+                    if (project.FullName.Contains("Module\\Module"))
+                    {
+                        var itemsToRemove = new List<ProjectItem>();
+                        foreach (ProjectItem item in project.ProjectItems)
+                        {
+                            string[] ignoredFiles = { ".nuke", "build.ps1", "build.sh", ".github" };
+                            if (ignoredFiles.Any(i =>
+                            {
+                                Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+                                return i == item.Name;
+                            }))
+                            {
+                                itemsToRemove.Add(item);
+                            }
+                        }
+
+                        foreach (var item in itemsToRemove)
+                        {
+                            try
+                            {
+                                item.Remove();
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.WriteLine($"Could not remove item {item.Name}: {ex.Message}");
+                            }
+                        }
+
+                        string moduleProjectFilePath = project.FullName;
+                        dte.Solution.Remove(project);
+                        var moduleProjectFile = new FileInfo(moduleProjectFilePath);
+                        var originalDirectory = moduleProjectFile.Directory;
+
+                        this.CopyAll(originalDirectory, originalDirectory.Parent);
+
+                        dte.Solution.AddFromFile(Path.Combine(originalDirectory.Parent.FullName, moduleProjectFile.Name));
+                        originalDirectory.Delete(true);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Error processing project {project?.Name ?? "unknown"}: {ex.Message}");
                 }
             }
         }
