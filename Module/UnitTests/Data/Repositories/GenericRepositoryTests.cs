@@ -219,7 +219,6 @@ namespace UnitTests.Data.Repositories
             var result = await repository.GetPageAsync(
                 page,
                 pageSize,
-                items => items
                 filter: item => item.Name.ToUpper().Contains("test".ToUpper()),
                 orderBy: item => item.Name);
 
@@ -252,7 +251,7 @@ namespace UnitTests.Data.Repositories
                     }
                     await context.SaveChangesAsync();
                 }
-                var repository = new Repository<Product>(context, this.dateTimeProvider);
+                var repository = new ProductRepository(context, this.dateTimeProvider);
 
                 var result = await repository.GetPageAsync(
                     1,
@@ -281,6 +280,14 @@ namespace UnitTests.Data.Repositories
                 });
             }
             this.dataContext.SaveChanges();
+        }
+
+        public class ProductRepository : Repository<Product>
+        {
+            public ProductRepository(ModuleDbContext context, IDateTimeProvider dateTimeProvider)
+                : base(context, dateTimeProvider)
+            {
+            }
         }
     }
 }
