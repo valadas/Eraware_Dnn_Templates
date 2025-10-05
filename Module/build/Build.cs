@@ -73,6 +73,9 @@ class Build : NukeBuild
     [NuGetPackage("WebApiToOpenApiReflector", "WebApiToOpenApiReflector.dll")]
     readonly Tool WebApiToOpenApiReflector;
 
+    [NuGetPackage("docfx", "docfx.dll")]
+    readonly Tool DocFxTool;
+
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath InstallDirectory => RootDirectory.Parent.Parent / "Install" / "Module";
     AbsolutePath WebProjectDirectory => RootDirectory / "module.web";
@@ -735,8 +738,7 @@ class Build : NukeBuild
         .DependsOn(Swagger)
         .Executes(() =>
         {
-            DocFXTasks.DocFXMetadata(s => s
-                .SetProcessWorkingDirectory(DocFxProjectDirectory));
+            DocFxTool("metadata", workingDirectory: DocFxProjectDirectory);
 
             var sb = new StringBuilder();
             sb.AppendLine("# Backend API documentation")
@@ -749,13 +751,7 @@ class Build : NukeBuild
             NpmTasks.NpmInstall(s => s
                 .SetProcessWorkingDirectory(DocFxProjectDirectory));
 
-            NpmTasks.NpmRun(s => s
-                .SetProcessWorkingDirectory(DocFxProjectDirectory)
-                .SetArguments("adjust_toc"));
-
-            DocFXTasks.DocFXBuild(s => s
-                .SetOutputFolder(RootDirectory)
-                .SetProcessWorkingDirectory(DocFxProjectDirectory));
+            DocFxTool($"build --output={RootDirectory}", workingDirectory: DocFxProjectDirectory);
         });
 
     Target Docs => _ => _

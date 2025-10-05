@@ -23,7 +23,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="NSwag.MSBuild" Version="14.6.1" />
-    <PackageDownload Include="docfx.console" Version="[2.59.4]" />
+	<PackageDownload Include="docfx" Version="[2.78.3]" />
     <PackageDownload Include="GitVersion.Tool" Version="[5.10.1]" />
     <PackageDownload Include="coverlet.console" Version="[1.7.2]" />
   </ItemGroup>

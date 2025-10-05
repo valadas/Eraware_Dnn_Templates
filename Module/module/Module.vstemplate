@@ -91,7 +91,6 @@
           </Folder>
         </Folder>
         <ProjectItem ReplaceParameters="true">.gitignore</ProjectItem>
-        <ProjectItem>adjust-toc-namespaces.js</ProjectItem>
         <ProjectItem ReplaceParameters="true">docfx.json</ProjectItem>
         <ProjectItem ReplaceParameters="true">index.md</ProjectItem>
         <ProjectItem ReplaceParameters="true">toc.yml</ProjectItem>

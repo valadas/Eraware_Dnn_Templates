@@ -10,7 +10,10 @@
         }
       ],
       "dest": "api",
-      "force": true
+      "force": true,
+      "namespaceLayout": "nested",
+      "memberLayout": "separatePages",
+      "allowCompilationErrors": true
     }
   ],
   "build": {

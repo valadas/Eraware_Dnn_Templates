@@ -87,7 +87,6 @@
     <Content Include="IntegrationTests\ProjectTemplate.csproj" />
     <Content Include="module.web\eslint.config.mjs" />
     <Content Include="module\docfx_project\.gitignore" />
-    <Content Include="module\docfx_project\adjust-toc-namespaces.js" />
     <None Include="IntegrationTests\app.Config" />
     <None Include="module.web\api-extractor.json" />
     <None Include="module.web\src\components\my-component\usage\javascript.md" />
