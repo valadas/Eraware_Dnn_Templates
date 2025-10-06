@@ -6,7 +6,7 @@
     <Icon>module-icon.ico</Icon>
     <ProjectType>CSharp</ProjectType>
     <LanguageTag>csharp</LanguageTag>
-    <RequiredFrameworkVersion>4.8</RequiredFrameworkVersion>
+    <RequiredFrameworkVersion>4.7.2</RequiredFrameworkVersion>
     <SortOrder>1000</SortOrder>
     <TemplateID>4af75c04-13e5-4455-97cd-e03dcdcd2618</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>
