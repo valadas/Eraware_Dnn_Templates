@@ -202,11 +202,18 @@ class Build : NukeBuild
                 Credentials = credentials,
             };
             var (owner, name) = (GitRepository.GetGitHubOwner(), GitRepository.GetGitHubName());
-            var version = GitRepository.IsOnMainOrMasterBranch() ? GitVersion.MajorMinorPatch : GitVersion.FullSemVer;
-            var newRelease = new NewRelease(GitVersion.FullSemVer)
+            
+            // Use clean version for main/master, prerelease version for release branches
+            var version = GitRepository.IsOnMainOrMasterBranch() 
+                ? GitVersion.MajorMinorPatch 
+                : GitVersion.SemVer; // This will include prerelease identifiers like -beta.1
+                
+            var releaseTag = $"v{version}";
+            
+            var newRelease = new NewRelease(releaseTag)
             {
                 Draft = true,
-                Name = $"v{version}",
+                Name = releaseTag,
                 GenerateReleaseNotes = true,
                 TargetCommitish = GitVersion.Sha,
                 Prerelease = GitRepository.IsOnReleaseBranch(),
@@ -218,17 +225,28 @@ class Build : NukeBuild
                 .Release
                 .Create(owner, name, newRelease);
 
-            ArtifactsDirectory.GlobFiles("*")
-                .ForEach(async file =>
+            // Upload assets
+            var artifactFiles = ArtifactsDirectory.GlobFiles("*");
+            foreach (var file in artifactFiles)
+            {
+                await using var artifactStream = File.OpenRead(file);
+                var fileName = Path.GetFileName(file);
+                var assetUpload = new ReleaseAssetUpload
                 {
-                    await using var artifactStream = File.OpenRead(file);
-                    var fileName = Path.GetFileName(file);
-                    var assetUpload = new ReleaseAssetUpload
-                    {
-                        FileName = fileName,
-                    };
-                });
+                    FileName = fileName,
+                    ContentType = "application/octet-stream",
+                    RawData = artifactStream
+                };
+                
+                await GitHubTasks
+                    .GitHubClient
+                    .Repository
+                    .Release
+                    .UploadAsset(createdRelease, assetUpload);
+                    
+                Serilog.Log.Information($"Uploaded asset: {fileName}");
+            }
             
+            Serilog.Log.Information($"Created release: {releaseTag}");
         });
-        
 }
