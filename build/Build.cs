@@ -1,25 +1,19 @@
-using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Nuke.Common;
-using Nuke.Common.CI;
 using Nuke.Common.CI.GitHubActions;
-using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
-using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitHub;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.MSBuild;
-using Nuke.Common.Utilities.Collections;
 using Octokit;
-using static Nuke.Common.EnvironmentInfo;
-using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using static Nuke.Common.Tools.Git.GitTasks;
 using static Nuke.Common.Tools.GitHub.GitHubTasks;
 using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 
@@ -196,12 +190,14 @@ class Build : NukeBuild
         .Requires(() => Configuration.Equals(Configuration.Release))
         .Executes(async () =>
         {
-            var credentials = new Credentials(GitHubActions.Token);
-            GitHubTasks.GitHubClient = new GitHubClient(new ProductHeaderValue("Eraware.Dnn.Templates"))
-            {
-                Credentials = credentials,
-            };
-            var (owner, name) = (GitRepository.GetGitHubOwner(), GitRepository.GetGitHubName());
+            // Add debugging information
+            Serilog.Log.Information($"Release target starting...");
+            Serilog.Log.Information($"Current branch: {GitRepository.Branch}");
+            Serilog.Log.Information($"IsOnReleaseBranch: {GitRepository.IsOnReleaseBranch()}");
+            Serilog.Log.Information($"IsOnMainOrMasterBranch: {GitRepository.IsOnMainOrMasterBranch()}");
+            Serilog.Log.Information($"Configuration: {Configuration}");
+            Serilog.Log.Information($"GitVersion.MajorMinorPatch: {GitVersion.MajorMinorPatch}");
+            Serilog.Log.Information($"GitVersion.SemVer: {GitVersion.SemVer}");
             
             // Use clean version for main/master, prerelease version for release branches
             var version = GitRepository.IsOnMainOrMasterBranch() 
@@ -209,6 +205,25 @@ class Build : NukeBuild
                 : GitVersion.SemVer; // This will include prerelease identifiers like -beta.1
                 
             var releaseTag = $"v{version}";
+            
+            Serilog.Log.Information($"Creating Git tag: {releaseTag}");
+            
+            // Create the Git tag first using GitTasks
+            Git($"tag -a {releaseTag} -m \"Release {releaseTag}\"", RootDirectory);
+            
+            // Push the tag to origin using GitTasks
+            Git($"push origin {releaseTag}", RootDirectory);
+            
+            Serilog.Log.Information($"Git tag {releaseTag} created and pushed");
+            
+            var credentials = new Credentials(GitHubActions.Token);
+            GitHubTasks.GitHubClient = new GitHubClient(new ProductHeaderValue("Eraware.Dnn.Templates"))
+            {
+                Credentials = credentials,
+            };
+            var (owner, name) = (GitRepository.GetGitHubOwner(), GitRepository.GetGitHubName());
+            
+            Serilog.Log.Information($"Creating GitHub release with tag: {releaseTag}");
             
             var newRelease = new NewRelease(releaseTag)
             {
@@ -225,8 +240,12 @@ class Build : NukeBuild
                 .Release
                 .Create(owner, name, newRelease);
 
+            Serilog.Log.Information($"GitHub release created successfully: {createdRelease.HtmlUrl}");
+
             // Upload assets
             var artifactFiles = ArtifactsDirectory.GlobFiles("*");
+            Serilog.Log.Information($"Found {artifactFiles.Count} artifact files to upload");
+            
             foreach (var file in artifactFiles)
             {
                 await using var artifactStream = File.OpenRead(file);
@@ -247,6 +266,6 @@ class Build : NukeBuild
                 Serilog.Log.Information($"Uploaded asset: {fileName}");
             }
             
-            Serilog.Log.Information($"Created release: {releaseTag}");
+            Serilog.Log.Information($"Release process completed: {releaseTag}");
         });
 }
