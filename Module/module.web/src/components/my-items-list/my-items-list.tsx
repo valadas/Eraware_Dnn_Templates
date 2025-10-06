@@ -74,7 +74,7 @@ export class MyItemsList {
   @Debounce()
   private handleScroll() {
     if (this.el.getBoundingClientRect().bottom - window.innerHeight < this.preloadPixels) {
-      this.loadMore();
+      void this.loadMore();
     }
   }
 
@@ -93,7 +93,7 @@ export class MyItemsList {
             this.abortController.signal)
             .then(results => {
               if (!results) {
-                reject();
+                reject(new Error('No results returned'));
                 return;
               }
               state.items = [...state.items, ...results.items ?? []];
@@ -107,15 +107,15 @@ export class MyItemsList {
               resolve();
             }, rejectReason => {
               if (rejectReason instanceof DOMException && rejectReason.code === rejectReason.ABORT_ERR) {
-                reject(() => { });
+                reject(new Error('Request was aborted'));
                 return;
               }
               alert(rejectReason);
-              reject(rejectReason);
+              reject(rejectReason instanceof Error ? rejectReason : new Error(String(rejectReason)));
             })
             .catch(rejectReason => {
               alert(rejectReason);
-              reject(rejectReason);
+              reject(rejectReason instanceof Error ? rejectReason : new Error(String(rejectReason)));
             });
         });
       }
@@ -156,7 +156,7 @@ export class MyItemsList {
           <p>{this.resx?.shownItems?.replace("{0}", state.items.length.toString()).replace("{1}", state.availableItems.toString())}</p>
           {!this.loading && state.items.length < state.availableItems &&
             <dnn-button appearance="primary" reversed
-              onClick={() => this.loadMore()}
+              onClick={() => void this.loadMore()}
             >
               {this.resx?.loadMore || "Load More"}
             </dnn-button>

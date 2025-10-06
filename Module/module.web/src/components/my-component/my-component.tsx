@@ -1,7 +1,6 @@
 import { Component, h, Prop, Host, Listen } from "@stencil/core";
 import { ItemClient, LocalizationClient, LocalizationViewModel } from "../../services/services";
 import state, { localizationState } from "../../store/state";
-import alertError from "../../services/alert-error";
 
 @Component({
   tag: 'my-component',
@@ -24,28 +23,25 @@ export class MyComponent {
   /** The Dnn module id, required in order to access web services. */
   @Prop() moduleId!: number;
 
-  componentWillLoad() {
-    return new Promise<void>((resolve, reject) => {
-      this.localizationService.getLocalization()
-        .then(vm => {
-          localizationState.viewModel = vm!;
-          this.resx = localizationState.viewModel;
-          resolve();
-        })
-        .catch(reason => {
-          alertError(reason);
-          reject();
-        });
-    })
+  async componentWillLoad() {
+
+    const vm = await this.localizationService.getLocalization();
+    localizationState.viewModel = vm!;
+    this.resx = localizationState.viewModel;
   }
 
-  componentDidLoad(): void {
-    this.service.userCanEdit().then(canEdit => state.userCanEdit = canEdit);
+  async componentDidLoad() {
+    state.userCanEdit = await this.service.userCanEdit();
   }
 
   @Listen("itemCreated")
   handleItemCreated() {
     state.searchQuery = "";
+  }
+
+  private async handleAdd() {
+    await this.modal.show();
+    await this.editForm.setFocus();
   }
 
   render() {
@@ -55,7 +51,7 @@ export class MyComponent {
         {state.userCanEdit &&
           <dnn-button
             class="add"
-            onClick={() => this.modal.show().then(() => this.editForm.setFocus())}
+            onClick={() => void this.handleAdd()}
           >
             {this.resx?.uI?.addItem}
           </dnn-button>

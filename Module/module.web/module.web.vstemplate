@@ -52,7 +52,8 @@
         <ProjectItem>index.ts</ProjectItem>
       </Folder>
       <ProjectItem>.editorconfig</ProjectItem>
-      <ProjectItem>eslint.config.mjs</ProjectItem>
+      <ProjectItem>.hintrc</ProjectItem>
+      <ProjectItem>eslint.config.ts</ProjectItem>
       <ProjectItem>.gitignore</ProjectItem>
       <ProjectItem>api-extractor.json</ProjectItem>
       <ProjectItem>LICENSE</ProjectItem>

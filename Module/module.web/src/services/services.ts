@@ -27,7 +27,7 @@ export class ClientBase {
     return baseUrl || "";
   }
 
-  protected async transformOptions(options: RequestInit): Promise<RequestInit> {
+  protected transformOptions(options: RequestInit): Promise<RequestInit> {
     const dnnHeaders = this.sf.getModuleHeaders();
 
     let headers: Headers;
@@ -47,7 +47,7 @@ export class ClientBase {
 
     options.headers = headers;
 
-    return options;
+    return Promise.resolve(options);
   }
 }
 

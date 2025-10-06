@@ -21,13 +21,16 @@ export class MyItemDetails {
     this.resx = localizationState.viewModel.uI;
   }
 
-  private deleteItem(): void {
-    this.itemClient.deleteItem(this.item.id ?? -1)
-      .then(() => {
-        const oldCanEdit = state.userCanEdit;
-        store.reset();
-        state.userCanEdit = oldCanEdit;
-      })
+  private async deleteItem() {
+    await this.itemClient.deleteItem(this.item.id ?? -1);
+    const oldCanEdit = state.userCanEdit;
+    store.reset();
+    state.userCanEdit = oldCanEdit;
+  }
+
+  private async openEdit() {
+    await this.modal.show();
+    await this.editForm.setFocus();
   }
 
   render() {
@@ -39,7 +42,7 @@ export class MyItemDetails {
         {state.userCanEdit &&
           <div class="controls">
             <dnn-button
-              onClick={() => this.modal.show().then(() => this.editForm.setFocus())}
+              onClick={void this.openEdit()}
             >
               {this.resx?.edit}
             </dnn-button>
@@ -49,7 +52,7 @@ export class MyItemDetails {
               confirmMessage={this.resx?.deleteItemConfirm || "Are you sure you want to delete this item?"}
               confirmNoText={this.resx?.no || "No"}
               confirmYesText={this.resx?.yes || "Yes"}
-              onConfirmed={() => this.deleteItem()}
+              onConfirmed={() => void this.deleteItem()}
             >{this.resx?.delete || "Delete"}</dnn-button>
             <dnn-modal
               ref={e => this.modal = e!}

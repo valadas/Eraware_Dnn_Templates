@@ -5,6 +5,7 @@
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
     "declaration": false,
+    "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "lib": [
       "dom",
@@ -15,6 +16,7 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "target": "es2017",
+    "esModuleInterop": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strictPropertyInitialization": false,
