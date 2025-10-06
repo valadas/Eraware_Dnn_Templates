@@ -4,7 +4,6 @@ import {
 } from '@stencil/core';
 import { CreateItemDTO, IItemViewModel, ItemClient, UIInfo, UpdateItemDTO } from '../../services/services';
 import state, { store, localizationState } from "../../store/state";
-import alertError from "../../services/alert-error";
 
 @Component({
   tag: 'my-edit',
@@ -34,6 +33,7 @@ export class MyEdit {
     setTimeout(() => {
       this.nameInput.focus();
     }, 500);
+    return Promise.resolve();
   }
 
   /** Resets the form to insert a new item. */
@@ -44,6 +44,7 @@ export class MyEdit {
       name: "",
       description: "",
     }
+    return Promise.resolve();
   }
 
   /** Fires up when an item got created. */
@@ -51,27 +52,23 @@ export class MyEdit {
 
   componentWillLoad() {
     if (this.item == undefined) {
-      this.resetForm();
+      void this.resetForm();
     }
   }
 
-  private hideModal(): void {
-    this.el.closest("dnn-modal")?.hide();
+  private async hideModal() {
+    await this.el.closest("dnn-modal")?.hide();
   }
 
-  private saveItem(): void {
+  private async saveItem() {
     if (this.item.id! < 1) {
       const createItemDTO = new CreateItemDTO({
         name: this.item.name,
         description: this.item.description,
       });
-      this.itemClient.createItem(createItemDTO)
-        .then(() => {
-          this.itemCreated.emit();
-          this.hideModal();
-        },
-          reason => alertError(reason))
-        .catch(reason => alertError(reason));
+      await this.itemClient.createItem(createItemDTO);
+      this.itemCreated.emit();
+      await this.hideModal();
     }
     else {
       const updateItemDTO = new UpdateItemDTO({
@@ -79,12 +76,10 @@ export class MyEdit {
         name: this.item.name,
         description: this.item.description,
       });
-      this.itemClient.updateItem(updateItemDTO)
-        .then(() => {
-          this.hideModal();
-          state.items = state.items.map(i => i.id == this.item.id ? this.item : i);
-        }, reason => alert(reason))
-        .catch(reason => alert(reason));
+
+      await this.itemClient.updateItem(updateItemDTO);
+      await this.hideModal();
+      state.items = state.items.map(i => i.id == this.item.id ? this.item : i);
     }
     const oldCanEdit = state.userCanEdit;
     store.reset();
@@ -97,7 +92,7 @@ export class MyEdit {
         <form
           onSubmit={e => {
             e.preventDefault();
-            this.saveItem();
+            void this.saveItem();
           }}
         >
           <dnn-input
@@ -111,18 +106,18 @@ export class MyEdit {
           <dnn-textarea
             label={this.resx?.description}
             value={this.item.description}
-            onValueInput={e => this.item = { ...this.item, description: e.detail as string }}
+            onValueInput={e => this.item = { ...this.item, description: e.detail }}
           />
 
           <div class="controls">
             <dnn-button
               reversed
-              onClick={() => this.hideModal()}
+              onClick={() => void this.hideModal()}
             >
               {this.resx?.cancel}
             </dnn-button>
             <dnn-button
-              formButtonType="submit"
+              type="submit"
             >
               {this.item.id! < 1 ? this.resx?.create : this.resx?.save}
             </dnn-button>
@@ -132,3 +127,4 @@ export class MyEdit {
     );
   }
 }
+

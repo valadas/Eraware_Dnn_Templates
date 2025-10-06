@@ -85,9 +85,10 @@
     <Content Include="build\docs\images\Package.gif" />
     <Content Include="IntegrationTests\IntegrationTests.vstemplate" />
     <Content Include="IntegrationTests\ProjectTemplate.csproj" />
-    <Content Include="module.web\eslint.config.mjs" />
+    <TypeScriptCompile Include="module.web\eslint.config.ts" />
     <Content Include="module\docfx_project\.gitignore" />
     <None Include="IntegrationTests\app.Config" />
+    <None Include="module.web\.hintrc" />
     <None Include="module.web\api-extractor.json" />
     <None Include="module.web\src\components\my-component\usage\javascript.md" />
     <None Include="module.web\src\components\my-component\usage\dnn.md" />

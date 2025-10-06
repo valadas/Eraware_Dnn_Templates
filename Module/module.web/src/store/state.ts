@@ -45,6 +45,7 @@ export const store = createStore<IStore>({
   userCanEdit: false,
 });
 
+// eslint-disable-next-line stencil/ban-side-effects
 store.onChange("searchQuery", () => {
   store.state.allLoaded = false;
   store.state.availableItems = 0;

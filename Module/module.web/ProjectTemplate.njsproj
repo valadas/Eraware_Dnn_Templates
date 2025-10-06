@@ -51,8 +51,9 @@
     <Content Include="src\services\services.ts" />
     <Content Include="src\store\state.ts" />
     <Content Include=".editorconfig" />
+    <Content Include=".hintrc" />
     <Content Include=".gitignore" />
-    <Content Include="eslint.config.mjs" />
+    <Content Include="eslint.config.ts" />
     <Content Include="api-extractor.json" />
     <Content Include="LICENSE" />
     <Content Include="package.json" />
