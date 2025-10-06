@@ -1,32 +1,27 @@
+using Nuke.Common;
+using Nuke.Common.CI.GitHubActions;
+using Nuke.Common.Git;
+using Nuke.Common.IO;
+using Nuke.Common.ProjectModel;
+using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.GitHub;
+using Nuke.Common.Tools.GitVersion;
+using Nuke.Common.Tools.MSBuild;
+using Octokit;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
-using Nuke.Common;
-using Nuke.Common.CI;
-using Nuke.Common.CI.GitHubActions;
-using Nuke.Common.Execution;
-using Nuke.Common.Git;
-using Nuke.Common.IO;
-using Nuke.Common.ProjectModel;
-using Nuke.Common.Tooling;
-using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.GitHub;
-using Nuke.Common.Tools.GitVersion;
-using Nuke.Common.Tools.MSBuild;
-using Nuke.Common.Utilities.Collections;
-using Octokit;
-using static Nuke.Common.EnvironmentInfo;
-using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using static Nuke.Common.Tools.Git.GitTasks;
 using static Nuke.Common.Tools.GitHub.GitHubTasks;
 using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 
 [GitHubActions(
     "Build",
     GitHubActionsImage.WindowsLatest,
-    EnableGitHubToken = true,
+    ImportSecrets = new[] { nameof(GithubToken) },
     OnPullRequestBranches = new[] { "master", "main", "develop", "development", "release/*" },
     OnPushBranches = new[] { "master", "develop", "release/*" },
     InvokedTargets = new[] { nameof(CI) },
@@ -46,12 +41,14 @@ class Build : NukeBuild
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
-    
+
+    [Parameter("Github Token")]
+    [Secret]
+    readonly string GithubToken;
+
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
     [GitVersion(UpdateAssemblyInfo = false)] readonly GitVersion GitVersion;
-
-    static GitHubActions GitHubActions => GitHubActions.Instance;
 
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath TemplateProjectDirectory => RootDirectory / "Eraware_Dnn_Templates";
@@ -192,21 +189,53 @@ class Build : NukeBuild
         });
 
     Target Release => _ => _
-        .OnlyWhenStatic(() => GitRepository.IsOnReleaseBranch() || GitRepository.IsOnMainOrMasterBranch())
-        .Requires(() => Configuration.Equals(Configuration.Release))
+        .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch())
+        .OnlyWhenDynamic(() => !string.IsNullOrEmpty(GithubToken))
         .Executes(async () =>
         {
-            var credentials = new Credentials(GitHubActions.Token);
+            Serilog.Log.Information($"Running release for branch {GitRepository.Branch}");
+            Serilog.Log.Information($"IsDevelopBranch: {GitRepository.IsOnDevelopBranch()}");
+            Serilog.Log.Information($"IsMainOrMasterBranch: {GitRepository.IsOnMainOrMasterBranch()}");
+            Serilog.Log.Information($"IsReleaseBranch: {GitRepository.IsOnReleaseBranch()}");
+            if (GitRepository.IsOnDevelopBranch())
+            {
+                Serilog.Log.Information("Skipping release on develop branch");
+                return;
+            }
+            var version = GitRepository.IsOnMainOrMasterBranch() 
+                ? GitVersion.MajorMinorPatch 
+                : GitVersion.SemVer;
+            var releaseTag = $"v{version}";
+
+            var actor = Environment.GetEnvironmentVariable("GITHUB_ACTOR");
+            Git($"config --global user.name '{actor}'");
+            Git($"config --global user.email '{actor}@github.com'");
+            if (IsServerBuild)
+            {
+                Git($"remote set-url origin https://{actor}:{GithubToken}@github.com/{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git");
+            }
+
+            // Create the Git tag first using GitTasks
+            Git($"tag -a {releaseTag} -m \"Release {releaseTag}\"", RootDirectory);
+            
+            // Push the tag to origin using GitTasks
+            Git($"push origin {releaseTag}", RootDirectory);
+            
+            Serilog.Log.Information($"Git tag {releaseTag} created and pushed");
+            
+            var credentials = new Credentials(GithubToken);
             GitHubTasks.GitHubClient = new GitHubClient(new ProductHeaderValue("Eraware.Dnn.Templates"))
             {
                 Credentials = credentials,
             };
             var (owner, name) = (GitRepository.GetGitHubOwner(), GitRepository.GetGitHubName());
-            var version = GitRepository.IsOnMainOrMasterBranch() ? GitVersion.MajorMinorPatch : GitVersion.FullSemVer;
-            var newRelease = new NewRelease(GitVersion.FullSemVer)
+            
+            Serilog.Log.Information($"Creating GitHub release with tag: {releaseTag}");
+            
+            var newRelease = new NewRelease(releaseTag)
             {
                 Draft = true,
-                Name = $"v{version}",
+                Name = releaseTag,
                 GenerateReleaseNotes = true,
                 TargetCommitish = GitVersion.Sha,
                 Prerelease = GitRepository.IsOnReleaseBranch(),
@@ -218,17 +247,27 @@ class Build : NukeBuild
                 .Release
                 .Create(owner, name, newRelease);
 
-            ArtifactsDirectory.GlobFiles("*")
-                .ForEach(async file =>
-                {
-                    await using var artifactStream = File.OpenRead(file);
-                    var fileName = Path.GetFileName(file);
-                    var assetUpload = new ReleaseAssetUpload
-                    {
-                        FileName = fileName,
-                    };
-                });
+            // Upload assets
+            var artifactFiles = ArtifactsDirectory.GlobFiles("*");
             
+            foreach (var file in artifactFiles)
+            {
+                await using var artifactStream = File.OpenRead(file);
+                var fileName = Path.GetFileName(file);
+                var assetUpload = new ReleaseAssetUpload
+                {
+                    FileName = fileName,
+                    ContentType = "application/octet-stream",
+                    RawData = artifactStream
+                };
+                
+                await GitHubTasks
+                    .GitHubClient
+                    .Repository
+                    .Release
+                    .UploadAsset(createdRelease, assetUpload);
+            }
+            
+            Serilog.Log.Information($"Release process completed: {releaseTag}");
         });
-        
 }
