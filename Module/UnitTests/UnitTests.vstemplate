@@ -5,7 +5,7 @@
     <Description>UnitTests</Description>
     <ProjectType>CSharp</ProjectType>
     <LanguageTag>csharp</LanguageTag>
-    <RequiredFrameworkVersion>4.8</RequiredFrameworkVersion>
+    <RequiredFrameworkVersion>4.7.2</RequiredFrameworkVersion>
     <SortOrder>1000</SortOrder>
     <TemplateID>D3A47104-F56E-40F1-8FDC-C26E061AE87E</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>
