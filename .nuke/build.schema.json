@@ -111,6 +111,11 @@
             "Release"
           ]
         },
+        "GithubToken": {
+          "type": "string",
+          "description": "Github Token",
+          "default": "Secrets must be entered via 'nuke :secrets [profile]'"
+        },
         "Solution": {
           "type": "string",
           "description": "Path to a solution file that is automatically loaded"
