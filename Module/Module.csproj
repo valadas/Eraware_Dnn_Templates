@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>module\module-icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{6C652B7C-F011-419E-B90D-F75AB49A8F4B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Eraware_Dnn_Spa_Ef_Di_Stencil</RootNamespace>
+    <AssemblyName>Eraware_Dnn_Spa_Ef_Di_Stencil</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <GeneratePkgDefFile>false</GeneratePkgDefFile>
+    <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
+    <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>true</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <CreateVsixContainer>false</CreateVsixContainer>
+    <DeployExtension>false</DeployExtension>
+    <DeployVSTemplates>false</DeployVSTemplates>
+    <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
+    <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
+    <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CopyVsixExtensionFiles>False</CopyVsixExtensionFiles>
+    <CopyVsixExtensionLocation>
+    </CopyVsixExtensionLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.CoreUtility">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="build\Build.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="build\docs\articles\git.html" />
+    <Content Include="build\docs\articles\intro.html" />
+    <Content Include="build\docs\images\create-beta-release.gif" />
+    <Content Include="build\docs\images\create-develop-branch.gif" />
+    <Content Include="build\docs\images\create-pull-request.gif" />
+    <Content Include="build\docs\images\create-release.gif" />
+    <Content Include="build\docs\images\initial-commit.gif" />
+    <Content Include="build\docs\images\install-module.gif" />
+    <Content Include="build\docs\images\Package.gif" />
+    <Content Include="IntegrationTests\IntegrationTests.vstemplate" />
+    <Content Include="IntegrationTests\ProjectTemplate.csproj" />
+    <TypeScriptCompile Include="module.web\eslint.config.ts" />
+    <Content Include="module\docfx_project\.gitignore" />
+    <None Include="IntegrationTests\app.Config" />
+    <None Include="module.web\.hintrc" />
+    <None Include="module.web\api-extractor.json" />
+    <None Include="module.web\src\components\my-component\usage\javascript.md" />
+    <None Include="module.web\src\components\my-component\usage\dnn.md" />
+    <None Include="module.web\src\components\my-edit\my-edit.scss" />
+    <None Include="module.web\src\components\my-item-details\my-item-details.scss" />
+    <None Include="module.web\src\components\my-items-list\my-items-list.scss" />
+    <None Include="module\.nuke\build.schema.json" />
+    <None Include="module\.nuke\parameters.json" />
+    <None Include="module\build.cmd" />
+    <None Include="module\docfx_project\articles\project-architecture.md" />
+    <None Include="module\docfx_project\articles\toc.yml" />
+    <None Include="module\docfx_project\package.json" />
+    <None Include="module\docfx_project\rest\rest-api.md" />
+    <None Include="module\docfx_project\rest\toc.yml" />
+    <None Include="module\docfx_project\templates\mytemplate\partials\scripts.tmpl.partial" />
+    <None Include="module\docfx_project\templates\mytemplate\partials\footer.tmpl.partial" />
+    <None Include="module\docfx_project\templates\mytemplate\styles\main.js" />
+    <None Include="module\docfx_project\templates\mytemplate\styles\main.css" />
+    <None Include="module\docfx_project\templates\mytemplate\styles\mermaid.min.js.map" />
+    <None Include="module\docfx_project\toc.yml" />
+    <None Include="module\docfx_project\index.md" />
+    <None Include="module\docfx_project\articles\git.md" />
+    <Content Include="module\docfx_project\images\create-beta-release.gif" />
+    <Content Include="module\docfx_project\images\create-develop-branch.gif" />
+    <Content Include="module\docfx_project\images\create-pull-request.gif" />
+    <Content Include="module\docfx_project\images\create-release.gif" />
+    <Content Include="module\docfx_project\images\initial-commit.gif" />
+    <Content Include="module\docfx_project\images\install-module.gif" />
+    <Content Include="module\docfx_project\images\Package.gif" />
+    <None Include="module\docfx_project\templates\mytemplate\layout\_master.tmpl" />
+    <None Include="module\docfx_project\templates\mytemplate\styles\mermaid.min.js" />
+    <None Include="module\docfx_project\templates\mytemplate\styles\toggle-theme.js" />
+    <Content Include="module\docfx_project\templates\mytemplate\common.js" />
+    <Content Include="UnitTests\UnitTests.vstemplate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="module.web\.gitignore" />
+    <None Include="module\.editorconfig" />
+    <None Include="module\.github\dependabot.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="module\.github\mergeable.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="module\docfx_project\articles\intro.md" />
+    <None Include="module\docfx_project\docfx.json" />
+    <None Include="module\global.json" />
+    <None Include="module\README.md" />
+    <None Include="module\stylecop.json" />
+    <None Include="UnitTests\ProjectTemplate.csproj" />
+    <VSTemplate Include="module.web\module.web.vstemplate" />
+    <Content Include="module.web\module-icon.ico" />
+    <None Include="module.web\src\components\my-component\my-component.scss" />
+    <Content Include="module.web\src\index.html" />
+    <None Include="UnitTests\app.config" />
+    <None Include="module\.gitignore" />
+    <Content Include="module\manifest.dnn" />
+    <Content Include="build\.editorconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="build\Properties\launchSettings.json" />
+    <None Include="module.web\.editorconfig" />
+    <None Include="module.web\LICENSE" />
+    <None Include="module.web\package.json" />
+    <None Include="module.web\ProjectTemplate.njsproj" />
+    <None Include="module.web\readme.md" />
+    <None Include="module.web\src\components\my-component\readme.md" />
+    <None Include="module.web\tsconfig.json" />
+    <None Include="module\app.Config" />
+    <None Include="module\build.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="module\build.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="build\ProjectTemplate.csproj" />
+    <Content Include="module\ProjectTemplate.csproj" />
+    <Content Include="build\_build.csproj.DotSettings">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <VSTemplate Include="module\Module.vstemplate" />
+  </ItemGroup>
+  <ItemGroup>
+    <VSTemplate Include="root.vstemplate" />
+    <Resource Include="module\LICENSE" />
+    <VSTemplate Include="build\build.vstemplate" />
+    <Content Include="Eraware.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="module\module-icon.ico" />
+    <Resource Include="module\ReleaseNotes.html" />
+    <Resource Include="module\resources\images\module-icon.png" />
+    <Resource Include="module\resources\views\view.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UnitTests\Services\Items\UpdateItemDtoValidatorTests.cs" />
+    <None Include="UnitTests\Services\Items\CreateItemDtoValidatorTests.cs" />
+    <None Include="module\Services\Items\UpdateItemDtoValidator.cs" />
+    <None Include="module\Services\Items\CreateItemDtoValidator.cs" />
+    <None Include="UnitTests\StartupTests.cs" />
+    <None Include="UnitTests\Providers\DateTimeProviderTests.cs" />
+    <None Include="module\Providers\IDateTimeProvider.cs" />
+    <None Include="module\Providers\DateTimeProvider.cs" />
+    <None Include="IntegrationTests\Startup.cs" />
+    <None Include="UnitTests\Startup.cs" />
+    <None Include="UnitTests\Common\Extensions\IQueryableExtensionsTests.cs" />
+    <None Include="module\Services\Localization\LocalizationViewModel.cs" />
+    <None Include="UnitTests\Controllers\LocalizationControllerTests.cs" />
+    <None Include="module\Services\Localization\LocalizationService.cs" />
+    <None Include="module\Services\Localization\ILocalizationService.cs" />
+    <None Include="UnitTests\Controllers\ServiceRouteMapperTests.cs" />
+    <None Include="UnitTests\Controllers\ModuleApiControllerTests.cs" />
+    <None Include="UnitTests\Controllers\ItemControllerTests.cs" />
+    <None Include="module\Services\Items\ItemsPageViewModel.cs" />
+    <None Include="module\Services\Items\ItemViewModel.cs" />
+    <None Include="UnitTests\Services\Items\ItemServiceTests.cs" />
+    <None Include="module\Services\Items\ItemService.cs" />
+    <None Include="module\Services\Items\IItemService.cs" />
+    <None Include="UnitTests\Common\GlobalsTests.cs" />
+    <None Include="UnitTests\Data\Entities\ItemTests.cs" />
+    <None Include="UnitTests\Data\ModuleDbContextTests.cs" />
+    <None Include="UnitTests\Data\Repositories\GenericRepositoryTests.cs" />
+    <None Include="UnitTests\FakeDataContext.cs" />
+    <None Include="module\Controllers\ServiceRouteMapper.cs" />
+    <None Include="module\Controllers\ModuleApiController.cs" />
+    <None Include="module\Controllers\ItemController.cs" />
+    <None Include="module\Startup.cs" />
+    <Content Include="build\Helpers.cs" />
+    <None Include="module\Common\Globals.cs" />
+    <None Include="module\Data\Entities\Item.cs" />
+    <None Include="module\Data\ModuleDbContext.cs" />
+    <None Include="module\Data\Entities\IEntity.cs" />
+    <None Include="module\Data\Repositories\IRepository.cs" />
+    <Content Include="build\Configuration.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="module\Data\Entities\BaseEntity.cs" />
+    <None Include="module\Data\Repositories\Repository.cs" />
+    <None Include="module\Services\Items\CreateItemDTO.cs" />
+    <None Include="IntegrationTests\Controllers\ItemControllerTests.cs" />
+    <None Include="IntegrationTests\Controllers\ServiceRouteMapperTests.cs" />
+    <None Include="IntegrationTests\FakeDataContext.cs" />
+    <None Include="module\Services\Items\UpdateItemDTO.cs" />
+    <None Include="module\Services\Items\GetItemsPageDTO.cs" />
+    <None Include="module\Controllers\LocalizationController.cs" />
+    <None Include="module\Common\Extensions\IQueryableExtensions.cs" />
+    <None Include="module\Data\Repositories\PagedList{T}.cs" />
+    <None Include="module\Data\Repositories\IItemRepository.cs" />
+    <None Include="module\Data\Repositories\ItemRepository.cs" />
+    <Compile Include="module\Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="module.web\src\components.d.ts" />
+    <TypeScriptCompile Include="module.web\src\components\my-component\my-component.tsx" />
+    <TypeScriptCompile Include="module.web\src\components\my-edit\my-edit.tsx" />
+    <TypeScriptCompile Include="module.web\src\components\my-item-details\my-item-details.tsx" />
+    <TypeScriptCompile Include="module.web\src\components\my-items-list\my-items-list.tsx" />
+    <TypeScriptCompile Include="module.web\src\index.ts" />
+    <TypeScriptCompile Include="module.web\src\services\alert-error.ts" />
+    <TypeScriptCompile Include="module.web\src\services\client-base.ts" />
+    <TypeScriptCompile Include="module.web\src\services\services.ts" />
+    <TypeScriptCompile Include="module.web\src\store\state.ts" />
+    <TypeScriptCompile Include="module.web\stencil.config.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EntityFramework">
+      <Version>6.5.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="module\resources\App_LocalResources\ModelValidation.resx" />
+    <EmbeddedResource Include="module\resources\App_LocalResources\UI.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,43 @@
+{
+  "name": "$ext_scopeprefixkebab$",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Stencil Component Starter",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/$ext_scopeprefixkebab$/$ext_scopeprefixkebab$.js",
+  "files": [
+    "dist/",
+    "loader/"
+  ],
+  "scripts": {
+    "lint": "eslint",
+    "build": "stencil build --docs && npm run lint",
+    "start": "stencil build --dev --watch --serve --no-open",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "generate": "stencil generate",
+    "tsdoc": "tsc src/services/services.ts --declaration --emitDeclarationOnly --target es2017 --moduleResolution nodenext --module nodenext && api-extractor run --local && api-documenter markdown -i temp -o tempmd"
+  },
+  "devDependencies": {
+    "@dnncommunity/dnn-elements": "^0.27.4",
+    "@eslint/js": "^9.36.0",
+    "@microsoft/api-documenter": "^7.13.49",
+    "@microsoft/api-extractor": "^7.18.9",
+    "@stencil/eslint-plugin": "^1.1.0",
+    "@stencil/core": "^4.38.0",
+    "@stencil/sass": "^3.0.2",
+    "@stencil/store": "^2.0.0",
+    "@types/node": "^24.6.2",
+    "eslint-plugin-tsdoc": "^0.4.0",
+    "jiti": "^2.4.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.32.0"
+  },
+  "license": "MIT"
+}
