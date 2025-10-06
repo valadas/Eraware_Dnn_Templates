@@ -6,7 +6,7 @@
     <Icon>Eraware.ico</Icon>
     <ProjectType>CSharp</ProjectType>
     <LanguageTag>csharp</LanguageTag>
-    <RequiredFrameworkVersion>4.8</RequiredFrameworkVersion>
+    <RequiredFrameworkVersion>4.7.2</RequiredFrameworkVersion>
     <SortOrder>2000</SortOrder>
     <TemplateID>d3bedb30-a049-48c0-acbd-7374c2ab740a</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>
