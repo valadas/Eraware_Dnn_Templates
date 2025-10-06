@@ -208,6 +208,10 @@ class Build : NukeBuild
             
             Serilog.Log.Information($"Creating Git tag: {releaseTag}");
             
+            // Configure Git user for CI environment (required for creating tags)
+            Git("config user.name \"GitHub Actions\"", RootDirectory);
+            Git("config user.email \"actions@github.com\"", RootDirectory);
+            
             // Create the Git tag first using GitTasks
             Git($"tag -a {releaseTag} -m \"Release {releaseTag}\"", RootDirectory);
             
