@@ -50,8 +50,6 @@ class Build : NukeBuild
     [GitRepository] readonly GitRepository GitRepository;
     [GitVersion(UpdateAssemblyInfo = false)] readonly GitVersion GitVersion;
 
-    static GitHubActions GitHubActions => GitHubActions.Instance;
-
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath TemplateProjectDirectory => RootDirectory / "Eraware_Dnn_Templates";
 
@@ -191,10 +189,19 @@ class Build : NukeBuild
         });
 
     Target Release => _ => _
-        .OnlyWhenDynamic(() => GitRepository.IsOnReleaseBranch() || GitRepository.IsOnMainOrMasterBranch())
+        .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch() || GitRepository.IsOnReleaseBranch())
         .OnlyWhenDynamic(() => !string.IsNullOrEmpty(GithubToken))
         .Executes(async () =>
         {
+            Serilog.Log.Information($"Running release for branch {GitRepository.Branch}");
+            Serilog.Log.Information($"IsDevelopBranch: {GitRepository.IsOnDevelopBranch()}");
+            Serilog.Log.Information($"IsMainOrMasterBranch: {GitRepository.IsOnMainOrMasterBranch()}");
+            Serilog.Log.Information($"IsReleaseBranch: {GitRepository.IsOnReleaseBranch()}");
+            if (GitRepository.IsOnDevelopBranch())
+            {
+                Serilog.Log.Information("Skipping release on develop branch");
+                return;
+            }
             var version = GitRepository.IsOnMainOrMasterBranch() 
                 ? GitVersion.MajorMinorPatch 
                 : GitVersion.SemVer;
@@ -216,7 +223,7 @@ class Build : NukeBuild
             
             Serilog.Log.Information($"Git tag {releaseTag} created and pushed");
             
-            var credentials = new Credentials(GitHubActions.Token);
+            var credentials = new Credentials(GithubToken);
             GitHubTasks.GitHubClient = new GitHubClient(new ProductHeaderValue("Eraware.Dnn.Templates"))
             {
                 Credentials = credentials,
