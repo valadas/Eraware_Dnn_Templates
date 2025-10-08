@@ -282,20 +282,12 @@ class Build : NukeBuild
         .DependsOn(Compile)
         .Executes(() =>
         {
-            var manifest = RootDirectory.GlobFiles("*.dnn").FirstOrDefault();
-            var assemblyFiles = Helpers.GetAssembliesFromManifest(manifest);
-            var files = RootDirectory.GlobFiles("bin/Debug/*.dll", "bin/Debug/*.pdb", "bin/Debug/*.xml");
-            foreach (var file in files)
-            {
-                var fileInfo = new FileInfo(file);
-                if (assemblyFiles.Contains(fileInfo.Name))
-                {
-                    Helpers.CopyFileToDirectoryIfChanged(file, RootDirectory.Parent.Parent / "bin");
-                }
-            }
+            var moduleAssembly = RootDirectory / "bin" / Configuration / $"{moduleName}.dll";
+            moduleAssembly.CopyToDirectory(RootDirectory.Parent.Parent / "bin", ExistsPolicy.FileOverwriteIfNewer);
         });
 
     Target SetRelativeScripts => _ => _
+        .Before(DeployFrontEnd)
         .Executes(() =>
         {
             var views = RootDirectory.GlobFiles("resources/**/*.html");
@@ -309,7 +301,8 @@ class Build : NukeBuild
         });
 
     Target SetLiveServer => _ => _
-        .After(Deploy)
+        .After(DeployBinaries)
+        .Before(DeployFrontEnd)
         .Executes(() =>
         {
             var views = RootDirectory.GlobFiles("resources/*.html");
@@ -329,7 +322,7 @@ class Build : NukeBuild
         {
             var resourcesDirectory = RootDirectory / "resources";
             DeployDirectory.CreateOrCleanDirectory();
-            resourcesDirectory.CopyToDirectory(DeployDirectory, ExistsPolicy.MergeAndOverwrite);
+            resourcesDirectory.Copy(DeployDirectory, ExistsPolicy.MergeAndOverwrite);
         });
 
     Target CopyScripts => _ => _
@@ -531,7 +524,8 @@ class Build : NukeBuild
     /// </summary>
     Target Watch => _ => _
     .DependsOn(SetLiveServer)
-    .DependsOn(Deploy)
+    .DependsOn(DeployBinaries)
+    .DependsOn(DeployFrontEnd)
     .Executes(() =>
     {
         ResetDocs();

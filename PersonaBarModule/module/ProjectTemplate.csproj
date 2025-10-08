@@ -80,6 +80,7 @@
     <Resource Include="ReleaseNotes.html" />
     <Resource Include="build.cmd" />
     <Resource Include="build.sh" />
+	<Resource Include="build.ps1" />
     <Resource Include="global.json" />
   </ItemGroup>
   <ItemGroup>
