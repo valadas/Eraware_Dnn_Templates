@@ -27,12 +27,12 @@
             <assembly>
               <name>EntityFramework.dll</name>
               <path>bin</path>
-              <version>6.5.1</version>
+              <version>6.500.124</version>
             </assembly>
             <assembly>
               <name>EntityFramework.SqlServer.dll</name>
               <path>bin</path>
-              <version>6.5.1</version>
+              <version>6.500.124</version>
             </assembly>
             <assembly>
               <name>NSwag.Annotations.dll</name>
@@ -42,22 +42,22 @@
 			<assembly>
 			  <name>FluentValidation.dll</name>
 			  <path>bin</path>
-			  <version>11.9.2</version>
+			  <version>11.11.0</version>
 			</assembly>
 			<assembly>
 			  <name>System.Threading.Tasks.Extensions.dll</name>
 			  <path>bin</path>
-			  <version>4.5.4</version>
+			  <version>4.6.28619</version>
 			</assembly>
 			<assembly>
 			  <name>System.Runtime.CompilerServices.Unsafe.dll</name>
 			  <path>bin</path>
-			  <version>6.0.0</version>
+			  <version>4.6.28619</version>
 			</assembly>
 			<assembly>
 			  <name>OneOf.dll</name>
 			  <path>bin</path>
-			  <version>3.0.271</version>
+			  <version>1.0.0</version>
 			</assembly>
           </assemblies>
         </component>
