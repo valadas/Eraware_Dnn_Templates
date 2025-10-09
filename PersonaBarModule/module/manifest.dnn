@@ -33,22 +33,22 @@
 			<assembly>
 			  <name>FluentValidation.dll</name>
 			  <path>bin</path>
-			  <version>11.11.0.0</version>
+			  <version>11.11.0</version>
 			</assembly>
 			<assembly>
 			  <name>System.Threading.Tasks.Extensions.dll</name>
 			  <path>bin</path>
-			  <version>4.6.28619.01</version>
+			  <version>4.6.28619</version>
 			</assembly>
 			<assembly>
 			  <name>System.Runtime.CompilerServices.Unsafe.dll</name>
 			  <path>bin</path>
-			  <version>4.6.28619.01</version>
+			  <version>4.6.28619</version>
 			</assembly>
 			<assembly>
 			  <name>OneOf.dll</name>
 			  <path>bin</path>
-			  <version>1.0.0.0</version>
+			  <version>1.0.0</version>
 			</assembly>
           </assemblies>
         </component>
