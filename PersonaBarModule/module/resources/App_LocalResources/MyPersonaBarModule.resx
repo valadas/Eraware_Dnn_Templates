@@ -160,6 +160,6 @@
     <value>Yes</value>
   </data>
   <data name="nav_$ext_safeprojectname$.Text" xml:space="preserve">
-    <value>My Admin Module</value>
+    <value>$ext_modulefriendlyname$</value>
   </data>
 </root>

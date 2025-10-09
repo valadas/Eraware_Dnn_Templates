@@ -12,13 +12,19 @@ header {
   display: flex;
   gap: 1em;
   align-items: center;
-  .title{
+
+  .title {
     margin-right: auto;
+    font-size: 28px;
+    letter-spacing: 1px;
+    line-height: 1.24em;
+    font-weight: bold;
   }
-  button.close{
+
+  button.close {
     position: relative;
-    top: -2.5em;
-    right: 0.5em;
+    top: -3.5em;
+    right: -1.5em;
     border: 0;
     margin: 0;
     padding: 0;
