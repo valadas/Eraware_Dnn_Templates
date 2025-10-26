@@ -578,28 +578,6 @@ class Build : NukeBuild
             );
     });
 
-
-    Target GenerateAppConfig => _ => _
-    .OnlyWhenDynamic(() => RootDirectory.Parent.ToString().EndsWith("DesktopModules", StringComparison.OrdinalIgnoreCase))
-    .Executes(() =>
-    {
-        var webConfigPath = RootDirectory.Parent.Parent / "web.config";
-        var webConfigDoc = new XmlDocument();
-        webConfigDoc.Load(webConfigPath);
-        var connectionString = webConfigDoc.SelectSingleNode("/configuration/connectionStrings/add[@name='SiteSqlServer']");
-
-        var appConfigPath = RootDirectory / "_build" / "App.config";
-        var appConfig = new XmlDocument();
-        var configurationNode = appConfig.AppendChild(appConfig.CreateElement("configuration"));
-        var connectionStringsNode = configurationNode.AppendChild(appConfig.CreateElement("connectionStrings"));
-        var importedNode = connectionStringsNode.OwnerDocument.ImportNode(connectionString, true);
-        connectionStringsNode.AppendChild(importedNode);
-        appConfig.Save(appConfigPath);
-
-        Serilog.Log.Information("Generated {0} from {1}", appConfigPath, webConfigPath);
-        Serilog.Log.Information("This file is local as it could contain credentials, it should not be committed to the repository.");
-    });
-
     Target SetDependencyVersions => _ => _
     .After(Compile)
     .Executes(() =>
@@ -642,7 +620,6 @@ class Build : NukeBuild
         .DependsOn(SetManifestVersions)
         .DependsOn(Compile)
         .DependsOn(SetRelativeScripts)
-        .DependsOn(GenerateAppConfig)
         .DependsOn(Test)
         .DependsOn(UpdateTokens)
         .DependsOn(Docs)
