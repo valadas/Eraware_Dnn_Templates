@@ -20,7 +20,7 @@ export class ClientBase {
   }
 
   protected getBaseUrl(_defaultUrl: string, baseUrl?: string): string {
-    baseUrl = this.sf.getServiceRoot("Eraware_MyPersonaBarModule");
+    baseUrl = this.sf.getServiceRoot("$ext_packagename$");
 
     // Strips the last / if present for future concatenations
     baseUrl = baseUrl.replace(/\/$/, "");
