@@ -600,6 +600,40 @@ class Build : NukeBuild
         Serilog.Log.Information("This file is local as it could contain credentials, it should not be committed to the repository.");
     });
 
+    Target SetDependencyVersions => _ => _
+    .After(Compile)
+    .Executes(() =>
+    {
+        var assemblies = (RootDirectory / "bin" / Configuration).GlobFiles("*.dll");
+        var manifestFile = RootDirectory.GlobFiles("*.dnn").SingleOrDefault();
+        var manifest = manifestFile.ReadXml();
+
+        // Get all the assembly node in <component type="Assembly">
+        var assemblyNodes = manifest
+            .Descendants("component")
+            .Where(c => c.Attribute("type").Value == "Assembly")
+            .SelectMany(x => x.Descendants("assembly"));
+        foreach (var assemblyNode in assemblyNodes)
+        {
+            // Check if we have a version node
+            var versionNode = assemblyNode.Element("version");
+            if (versionNode != null)
+            {
+                var name = assemblyNode.Element("name").Value;
+                // Check the fileVersion in the assembly that matches
+                var assembly = assemblies.FirstOrDefault(x => x.Name == name);
+                Serilog.Log.Information($"Setting version for {name} from {assembly}");
+                var versionInfo = FileVersionInfo.GetVersionInfo(assembly);
+                var version = new Version(versionInfo.FileVersion);
+                var versionString = $"{version.Major}.{version.Minor}.{version.Build}";
+                versionNode.Value = versionString;
+                Serilog.Log.Information($"Set manifest assembly version for {name} to {versionString}");
+            }
+        }
+
+        manifest.Save(manifestFile);
+    });
+
     /// <summary>
     /// Package the module
     /// </summary>
@@ -612,6 +646,7 @@ class Build : NukeBuild
         .DependsOn(Test)
         .DependsOn(UpdateTokens)
         .DependsOn(Docs)
+        .DependsOn(SetDependencyVersions)
         .Produces(ArtifactsDirectory / "*.zip")
         .Executes(() =>
         {
