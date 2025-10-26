@@ -1,7 +1,6 @@
 import { Component, Host, h, Prop, State } from "@stencil/core";
 import type { IDnnPersonaBarUtilities } from "../../dnn/types";
-import { IPersonaBarServicesFramework } from "../../dnn/types/IDnnPersonaBarServicesFramework";
-import { IEchoViewModel, IEchoDto, EchoDto } from "../../services/services";
+import { EchoDto, EchoClient } from "../../services/services";
 
 @Component({
   tag: "my-app-root",
@@ -22,12 +21,10 @@ export class MyAppRoot {
   @State() timeout: number = 2000;
   @State() notificationType: "notify" | "error" = "notify";
   
-  private sf: IPersonaBarServicesFramework;
+  private readonly echoClient: EchoClient;
 
-  componentDidLoad() {
-    this.sf = Object.assign({},  this.util.sf);
-    this.sf.moduleRoot = "$ext_packagename$";
-    this.sf.controller = "Echo";
+  constructor() {
+    this.echoClient = new EchoClient({ sf: this.util.sf });
   }
   
   private moduleName = "MyPersonaBarModule";
@@ -38,19 +35,21 @@ export class MyAppRoot {
       "Yes",
       "No",
       () => {
-        const dto: IEchoDto = {
-          message: "Hello, World!",
-        }
-        this.sf.post<IEchoViewModel>(
-          "Echo",
-          dto,
-          data => {
-            const dto = new EchoDto();
-            dto.init(data);
-            this.util.notify(`${dto.message} was saved`, { type: "notify" });
-          },
-          (_xhx, error) => this.util.notify(error, { type: "error" })
-          );
+        void(async () => {
+          try {
+            const dto = new EchoDto({
+              message: "Hello, World!",
+            });
+
+            const result = await this.echoClient.echo(dto);
+
+            if (result?.message != null) {
+              this.util.notify(`${result.message} was saved`, { type: "notify" });
+            }
+          } catch (error) {
+            this.util.notify(`Error: ${error}`, { type: "error" });
+          }
+        })();
       },
       () => {
         this.util.notify("Not saved!", { type: "error" });
