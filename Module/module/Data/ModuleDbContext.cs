@@ -17,6 +17,11 @@ namespace $ext_rootnamespace$.Data
 public class ModuleDbContext : DbContext
     {
         /// <summary>
+        /// Cached connection string, computed lazily and thread-safe.
+        /// </summary>
+        private static readonly Lazy<string> _cachedConnectionString = new Lazy<string>(ComputeConnectionString);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ModuleDbContext"/> class.
         /// </summary>
         public ModuleDbContext()
@@ -38,12 +43,25 @@ public class ModuleDbContext : DbContext
         /// </summary>
         public DbSet<Item> Items { get; set; }
 
+        /// <summary>
+        /// Gets the connection string, using cached value after first call.
+        /// </summary>
+        /// <returns>The connection string.</returns>
         private static string GetConnectionString()
+        {
+            return _cachedConnectionString.Value;
+        }
+
+        /// <summary>
+        /// Computes the connection string by checking runtime context and configuration files.
+        /// This method is called only once per application lifetime.
+        /// </summary>
+        /// <returns>The connection string.</returns>
+        private static string ComputeConnectionString()
         {
             // For runtime
             if (HttpContext.Current != null)
             {
-                Console.WriteLine("HttpContext was not null");
                 return "name=SiteSqlServer";
             }
 
