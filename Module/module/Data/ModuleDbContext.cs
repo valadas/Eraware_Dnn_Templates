@@ -8,11 +8,13 @@ namespace $ext_rootnamespace$.Data
     using System.Data.Common;
     using System.Data.Entity;
     using System.IO;
+    using System.Configuration;
+    using System.Web;
 
-    /// <summary>
-    /// The data context for this module.
-    /// </summary>
-    public class ModuleDbContext : DbContext
+/// <summary>
+/// The data context for this module.
+/// </summary>
+public class ModuleDbContext : DbContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleDbContext"/> class.
