@@ -19,7 +19,7 @@ public class ModuleDbContext : DbContext
         /// <summary>
         /// Cached connection string, computed lazily and thread-safe.
         /// </summary>
-        private static readonly Lazy<string> CachedConnectionString  = new Lazy<string>(ComputeConnectionString);
+        private static readonly Lazy<string> CachedConnectionString = new Lazy<string>(ComputeConnectionString);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleDbContext"/> class.
@@ -49,7 +49,7 @@ public class ModuleDbContext : DbContext
         /// <returns>The connection string.</returns>
         private static string GetConnectionString()
         {
-            return CachedConnectionString .Value;
+            return CachedConnectionString.Value;
         }
 
         /// <summary>
