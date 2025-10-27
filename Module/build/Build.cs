@@ -578,26 +578,38 @@ class Build : NukeBuild
             );
     });
 
-
-    Target GenerateAppConfig => _ => _
-    .OnlyWhenDynamic(() => RootDirectory.Parent.ToString().EndsWith("DesktopModules", StringComparison.OrdinalIgnoreCase))
+    Target SetDependencyVersions => _ => _
+    .After(Compile)
     .Executes(() =>
     {
-        var webConfigPath = RootDirectory.Parent.Parent / "web.config";
-        var webConfigDoc = new XmlDocument();
-        webConfigDoc.Load(webConfigPath);
-        var connectionString = webConfigDoc.SelectSingleNode("/configuration/connectionStrings/add[@name='SiteSqlServer']");
+        var assemblies = (RootDirectory / "bin" / Configuration).GlobFiles("*.dll");
+        var manifestFile = RootDirectory.GlobFiles("*.dnn").SingleOrDefault();
+        var manifest = manifestFile.ReadXml();
 
-        var appConfigPath = RootDirectory / "_build" / "App.config";
-        var appConfig = new XmlDocument();
-        var configurationNode = appConfig.AppendChild(appConfig.CreateElement("configuration"));
-        var connectionStringsNode = configurationNode.AppendChild(appConfig.CreateElement("connectionStrings"));
-        var importedNode = connectionStringsNode.OwnerDocument.ImportNode(connectionString, true);
-        connectionStringsNode.AppendChild(importedNode);
-        appConfig.Save(appConfigPath);
+        // Get all the assembly node in <component type="Assembly">
+        var assemblyNodes = manifest
+            .Descendants("component")
+            .Where(c => c.Attribute("type").Value == "Assembly")
+            .SelectMany(x => x.Descendants("assembly"));
+        foreach (var assemblyNode in assemblyNodes)
+        {
+            // Check if we have a version node
+            var versionNode = assemblyNode.Element("version");
+            if (versionNode != null)
+            {
+                var name = assemblyNode.Element("name").Value;
+                // Check the fileVersion in the assembly that matches
+                var assembly = assemblies.FirstOrDefault(x => x.Name == name);
+                Serilog.Log.Information($"Setting version for {name} from {assembly}");
+                var versionInfo = FileVersionInfo.GetVersionInfo(assembly);
+                var version = new Version(versionInfo.FileVersion);
+                var versionString = $"{version.Major}.{version.Minor}.{version.Build}";
+                versionNode.Value = versionString;
+                Serilog.Log.Information($"Set manifest assembly version for {name} to {versionString}");
+            }
+        }
 
-        Serilog.Log.Information("Generated {0} from {1}", appConfigPath, webConfigPath);
-        Serilog.Log.Information("This file is local as it could contain credentials, it should not be committed to the repository.");
+        manifest.Save(manifestFile);
     });
 
     /// <summary>
@@ -608,10 +620,10 @@ class Build : NukeBuild
         .DependsOn(SetManifestVersions)
         .DependsOn(Compile)
         .DependsOn(SetRelativeScripts)
-        .DependsOn(GenerateAppConfig)
         .DependsOn(Test)
         .DependsOn(UpdateTokens)
         .DependsOn(Docs)
+        .DependsOn(SetDependencyVersions)
         .Produces(ArtifactsDirectory / "*.zip")
         .Executes(() =>
         {

@@ -19,6 +19,7 @@ export default defineConfig(
       'eslint.config.ts',
       'stencil.config.ts',
       'src/components.d.ts',
+      'src/services/client-base.ts',
     ],
   },
   {
