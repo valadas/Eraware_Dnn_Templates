@@ -47,7 +47,7 @@ export class ClientBase {
   }
 
   protected getBaseUrl(_defaultUrl: string, baseUrl?: string): string {
-    this.sf.moduleRoot = "TestCompany_MyModuleTest";
+    this.sf.moduleRoot = "$ext_packagename$";
     baseUrl = this.sf
       .getServiceRoot()
       .replace(/\/$/, "");
