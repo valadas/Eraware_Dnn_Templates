@@ -214,7 +214,6 @@
     <None Include="module\Services\Items\IItemService.cs" />
     <None Include="UnitTests\Common\GlobalsTests.cs" />
     <None Include="UnitTests\Data\Entities\ItemTests.cs" />
-    <None Include="UnitTests\Data\ModuleDbContextTests.cs" />
     <None Include="UnitTests\Data\Repositories\GenericRepositoryTests.cs" />
     <None Include="UnitTests\FakeDataContext.cs" />
     <None Include="module\Controllers\ServiceRouteMapper.cs" />
