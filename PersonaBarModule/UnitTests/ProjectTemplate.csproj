@@ -38,13 +38,13 @@
 		<PackageReference Include="coverlet.msbuild" Version="6.0.4">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="DotNetNuke.Abstractions" Version="10.1.1" />
-		<PackageReference Include="DotNetNuke.Core" Version="10.1.1" />
-		<PackageReference Include="DotNetNuke.Instrumentation" Version="10.1.1" />
-		<PackageReference Include="DotNetNuke.Web" Version="10.1.1" />
-		<PackageReference Include="DotNetNuke.WebApi" Version="10.1.1" />
+		<PackageReference Include="DotNetNuke.Abstractions" Version="10.1.2" />
+		<PackageReference Include="DotNetNuke.Core" Version="10.1.2" />
+		<PackageReference Include="DotNetNuke.Instrumentation" Version="10.1.2" />
+		<PackageReference Include="DotNetNuke.Web" Version="10.1.2" />
+		<PackageReference Include="DotNetNuke.WebApi" Version="10.1.2" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-		<PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="18.0.0" />
+		<PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="18.0.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="NSubstitute" Version="5.3.0" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
