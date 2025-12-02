@@ -33,7 +33,7 @@
 			<assembly>
 			  <name>FluentValidation.dll</name>
 			  <path>bin</path>
-			  <version>11.11.0</version>
+			  <version>11.12.0</version>
 			</assembly>
 			<assembly>
 			  <name>System.Threading.Tasks.Extensions.dll</name>
