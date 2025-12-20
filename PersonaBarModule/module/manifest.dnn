@@ -7,7 +7,7 @@
       <owner>
         <name>$ext_ownername$</name>
         <organization>$ext_companyname$</organization>
-        <url>$ext_owneremail$</url>
+        <url>$ext_ownerwebsite$</url>
         <email>$ext_owneremail$</email>
       </owner>
       <license src="LICENSE">

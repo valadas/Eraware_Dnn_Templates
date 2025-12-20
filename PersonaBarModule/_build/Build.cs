@@ -88,10 +88,10 @@ class Build : NukeBuild
     AbsolutePath DocsDirectory => RootDirectory / "docs";
     AbsolutePath ResourcesDirectory => RootDirectory / "resources";
     AbsolutePath ScriptsDirectory => ResourcesDirectory / "scripts";
-    AbsolutePath DeployDirectory => RootDirectory.Parent / "Admin" / "Dnn.PersonaBar" / "Modules" / "$ext_modulefoldername$";
+    AbsolutePath DeployDirectory => RootDirectory.Parent / "Admin" / "Dnn.PersonaBar" / "Modules" / "$ext_safeprojectname$";
 
     private const string devViewsPath = "http://localhost:3333/build/";
-    private const string prodViewsPath = "/DesktopModules/Admin/Dnn.PersonaBar/Modules/$ext_modulefoldername$/scripts/$ext_scopeprefixkebab$/";
+    private const string prodViewsPath = "/DesktopModules/Admin/Dnn.PersonaBar/Modules/$ext_safeprojectname$/scripts/$ext_scopeprefixkebab$/";
     private const string moduleName = "$ext_rootnamespace$";
     private bool FirstBuild = false;
 
