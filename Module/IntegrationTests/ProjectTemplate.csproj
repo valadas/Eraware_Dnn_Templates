@@ -30,11 +30,11 @@
 		<PackageReference Include="coverlet.msbuild" Version="6.0.4">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="DotNetNuke.Abstractions" Version="10.1.2" />
-		<PackageReference Include="DotNetNuke.Core" Version="10.1.2" />
-		<PackageReference Include="DotNetNuke.Instrumentation" Version="10.1.2" />
-		<PackageReference Include="DotNetNuke.Web" Version="10.1.2" />
-		<PackageReference Include="DotNetNuke.WebApi" Version="10.1.2" />
+		<PackageReference Include="DotNetNuke.Abstractions" Version="10.2.0" />
+		<PackageReference Include="DotNetNuke.Core" Version="10.2.0" />
+		<PackageReference Include="DotNetNuke.Instrumentation" Version="10.2.0" />
+		<PackageReference Include="DotNetNuke.Web" Version="10.2.0" />
+		<PackageReference Include="DotNetNuke.WebApi" Version="10.2.0" />
 		<PackageReference Include="Effort.EF6" Version="2.2.17" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 		<PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="18.0.1" />

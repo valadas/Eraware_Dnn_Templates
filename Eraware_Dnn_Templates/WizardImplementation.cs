@@ -203,7 +203,7 @@ namespace Eraware_Dnn_Templates
                 replacementsDictionary.Add("$companyname$", inputForm.settings.CompanyName);
                 replacementsDictionary.Add("$ownername$", inputForm.settings.OwnerName);
                 replacementsDictionary.Add("$owneremail$", inputForm.settings.OwnerEmail);
-                replacementsDictionary.Add("$ownerwebsite$", inputForm.settings.OwnerEmail);
+                replacementsDictionary.Add("$ownerwebsite$", inputForm.settings.OwnerWebsite);
                 replacementsDictionary.Add("$modulename$", inputForm.settings.ModuleName);
                 replacementsDictionary.Add("$modulefriendlyname$", inputForm.settings.ModuleFriendlyName);
                 replacementsDictionary.Add("$rootnamespace$", inputForm.settings.RootNamespace);

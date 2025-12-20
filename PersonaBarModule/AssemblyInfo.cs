@@ -1,16 +1,23 @@
-﻿using System.Reflection;
+﻿// MIT License
+// Copyright $ext_companyname$
+
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
+// Allow unit tests to access internals
+[assembly: InternalsVisibleTo("UnitTests")]
+[assembly: InternalsVisibleTo("IntegrationTests")]
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PersonaBarModule")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("$ext_modulename$")]
+[assembly: AssemblyDescription("$ext_modulefriendlyname$")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Daniel Valadas")]
-[assembly: AssemblyProduct("PersonaBarModule")]
-[assembly: AssemblyCopyright("Copyright © Daniel Valadas 2024")]
+[assembly: AssemblyCompany("$ext_companyname$")]
+[assembly: AssemblyProduct("$ext_modulefriendlyname$")]
+[assembly: AssemblyCopyright("Copyright © $ext_ownername$ $year$")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
