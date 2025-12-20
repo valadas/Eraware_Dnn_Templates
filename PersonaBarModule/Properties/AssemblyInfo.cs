@@ -12,12 +12,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MyPersonaBarModule")]
-[assembly: AssemblyDescription("My Persona Bar Module")]
+[assembly: AssemblyTitle("$ext_modulename$")]
+[assembly: AssemblyDescription("$ext_modulefriendlyname$")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Eraware")]
-[assembly: AssemblyProduct("My Persona Bar Module")]
-[assembly: AssemblyCopyright("Copyright © Daniel Valadas 2024")]
+[assembly: AssemblyCompany("$ext_companyname$")]
+[assembly: AssemblyProduct("$ext_modulefriendlyname$")]
+[assembly: AssemblyCopyright("Copyright © $ext_ownername$ $year$")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

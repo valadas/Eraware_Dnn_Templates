@@ -11,8 +11,8 @@ using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
-// associated with an assembly"$ext_modulename$
-[assembly: AssemblyTitle("MyPersonaBarModule")]
+// associated with an assembly.
+[assembly: AssemblyTitle("$ext_modulename$")]
 [assembly: AssemblyDescription("$ext_modulefriendlyname$")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("$ext_companyname$")]
