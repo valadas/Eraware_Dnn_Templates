@@ -3,11 +3,11 @@
     <package name="$ext_packagename$" type="PersonaBar" version="00.01.00">
       <friendlyName>$ext_modulefriendlyname$</friendlyName>
       <description>$ext_modulefriendlyname$</description>
-      <iconFile>~/DesktopModules/Admin/Dnn.PersonaBar/Modules/$ext_safeprojectname$/images/module-icon.png</iconFile>
+      <iconFile>~/DesktopModules/Admin/Dnn.PersonaBar/Modules/$ext_modulefoldername$/images/module-icon.png</iconFile>
       <owner>
         <name>$ext_ownername$</name>
         <organization>$ext_companyname$</organization>
-        <url>$ext_owneremail$</url>
+        <url>$ext_ownerwebsite$</url>
         <email>$ext_owneremail$</email>
       </owner>
       <license src="LICENSE">
@@ -52,10 +52,10 @@
 			</assembly>
           </assemblies>
         </component>
-        <component type="Cleanup" version="00.01.00" glob="DesktopModules/Admin/Dnn.PersonaBar/Modules/$ext_safeprojectname$/**/*" />
+        <component type="Cleanup" version="00.01.00" glob="DesktopModules/Admin/Dnn.PersonaBar/Modules/$ext_modulefoldername$/**/*" />
         <component type="ResourceFile">
           <resourceFiles>
-            <basePath>DesktopModules/Admin/Dnn.PersonaBar/Modules/$ext_safeprojectname$</basePath>
+            <basePath>DesktopModules/Admin/Dnn.PersonaBar/Modules/$ext_modulefoldername$</basePath>
             <resourceFile>
               <name>resources.zip</name>
             </resourceFile>

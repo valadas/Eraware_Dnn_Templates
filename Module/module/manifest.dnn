@@ -3,7 +3,7 @@
     <package name="$ext_packagename$" type="Module" version="00.01.00">
       <friendlyName>$ext_modulefriendlyname$</friendlyName>
       <description>$ext_modulefriendlyname$</description>
-      <iconFile>~/DesktopModules/$ext_safeprojectname$/resources/images/module-icon.png</iconFile>
+      <iconFile>~/DesktopModules/$ext_modulefoldername$/resources/images/module-icon.png</iconFile>
       <owner>
         <name>$ext_ownername$</name>
         <organization>$ext_companyname$</organization>
@@ -64,7 +64,7 @@
         <component type="Module">
           <desktopModule>
             <moduleName>$ext_modulefriendlyname$</moduleName>
-            <foldername>$ext_packagename$</foldername>
+            <foldername>$ext_modulefoldername$</foldername>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>$ext_modulefriendlyname$</friendlyName>
@@ -72,7 +72,7 @@
                 <moduleControls>
                   <moduleControl>
                     <controlKey />
-                    <controlSrc>DesktopModules/$ext_safeprojectname$/resources/views/view.html</controlSrc>
+                    <controlSrc>DesktopModules/$ext_modulefoldername$/resources/views/view.html</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>
@@ -85,10 +85,10 @@
             </moduleDefinitions>
           </desktopModule>
         </component>
-        <component type="Cleanup" version="00.01.00" glob="DesktopModules/$ext_safeprojectname$/resources/**/*" />
+        <component type="Cleanup" version="00.01.00" glob="DesktopModules/$ext_modulefoldername$/resources/**/*" />
         <component type="ResourceFile">
           <resourceFiles>
-            <basePath>DesktopModules/$ext_safeprojectname$/resources</basePath>
+            <basePath>DesktopModules/$ext_modulefoldername$/resources</basePath>
             <resourceFile>
               <name>resources.zip</name>
             </resourceFile>
