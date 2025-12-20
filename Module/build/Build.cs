@@ -91,7 +91,7 @@ class Build : NukeBuild
     AbsolutePath DocsDirectory => RootDirectory / "docs";
 
     private const string devViewsPath = "http://localhost:3333/build/";
-    private const string prodViewsPath = "/DesktopModules/$ext_safeprojectname$/resources/scripts/$ext_scopeprefixkebab$/";
+    private const string prodViewsPath = "/DesktopModules/$ext_modulefoldername$/resources/scripts/$ext_scopeprefixkebab$/";
     private const string moduleName = "$ext_rootnamespace$";
     private bool FirstBuild = false;
 

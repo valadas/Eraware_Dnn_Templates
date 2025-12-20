@@ -64,7 +64,7 @@
         <component type="Module">
           <desktopModule>
             <moduleName>$ext_modulefriendlyname$</moduleName>
-            <foldername>$ext_safeprojectname$</foldername>
+            <foldername>$ext_packagename$</foldername>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>$ext_modulefriendlyname$</friendlyName>
