@@ -18,7 +18,7 @@ using static Nuke.Common.Tools.Git.GitTasks;
 using static Nuke.Common.Tools.GitHub.GitHubTasks;
 using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 
-[GitHubActions(
+[CustomGitHubActions(
     "Build",
     GitHubActionsImage.WindowsLatest,
     ImportSecrets = new[] { nameof(GithubToken) },

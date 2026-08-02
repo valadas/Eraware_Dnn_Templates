@@ -20,6 +20,6 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 
-[assembly: AssemblyVersion("1.13.0.0")]
-[assembly: AssemblyFileVersion("1.13.0.0")]
-[assembly: AssemblyInformationalVersion("1.13.0-nuke-10-1-0.1+6.Branch.nuke-10-1-0.Sha.147ab5a6ab216bdbd3e38fcce74ba75e79a82e1c")]
+[assembly: AssemblyVersion("1.14.0.0")]
+[assembly: AssemblyFileVersion("1.14.0.0")]
+[assembly: AssemblyInformationalVersion("1.14.0-vs2026-fix.1+2.Branch.vs2026-fix.Sha.9f9bd52a85a85412475a2349cb568d01f11ae4e9")]
