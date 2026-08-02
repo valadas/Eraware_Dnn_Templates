@@ -3,6 +3,7 @@ using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitHub;
 using Nuke.Common.Tools.GitVersion;
@@ -18,7 +19,7 @@ using static Nuke.Common.Tools.Git.GitTasks;
 using static Nuke.Common.Tools.GitHub.GitHubTasks;
 using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 
-[GitHubActions(
+[CustomGitHubActions(
     "Build",
     GitHubActionsImage.WindowsLatest,
     ImportSecrets = new[] { nameof(GithubToken) },
@@ -52,6 +53,14 @@ class Build : NukeBuild
 
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath TemplateProjectDirectory => RootDirectory / "Eraware_Dnn_Templates";
+
+    // NUKE's built-in MSBuild resolver cannot locate MSBuild for VS 2026 (v18).
+    // The "microsoft/setup-msbuild" CI step adds MSBuild.exe to PATH, so we resolve it from there.
+    string MSBuildToolPath => System.Environment
+        .GetEnvironmentVariable("PATH")
+        .Split(Path.PathSeparator)
+        .Select(dir => Path.Combine(dir, "MSBuild.exe"))
+        .FirstOrDefault(File.Exists);
 
     Target Clean => _ => _
         .Before(Restore)
@@ -171,7 +180,9 @@ class Build : NukeBuild
         .DependsOn(SetVersion)
         .Executes(() =>
         {
+            var msBuildToolPath = MSBuildToolPath;
             MSBuild(s => s
+                .SetProcessToolPath(msBuildToolPath)
                 .SetTargetPath(Solution)
                 .SetConfiguration(Configuration));
 

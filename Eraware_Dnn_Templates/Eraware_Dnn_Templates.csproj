@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
@@ -110,19 +110,29 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+	<Content Include="..\Module\bin\$(Configuration)\ProjectTemplates\CSharp\1033\root.zip">
+	  <IncludeInVSIX>true</IncludeInVSIX>
+	  <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+	  <Link>ProjectTemplates\Module.zip</Link>
+	</Content>
+	<Content Include="..\PersonaBarModule\bin\$(Configuration)\ProjectTemplates\CSharp\1033\root.zip">
+	  <IncludeInVSIX>true</IncludeInVSIX>
+	  <VSIXSubPath>ProjectTemplates\PersonaBarModule</VSIXSubPath>
+	  <Link>ProjectTemplates\PersonaBarModule\PersonaBarModule.zip</Link>
+	</Content>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Module\Module.csproj">
       <Project>{6C652B7C-F011-419E-B90D-F75AB49A8F4B}</Project>
       <Name>Module</Name>
       <VSIXSubPath>ProjectTemplates</VSIXSubPath>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
     <ProjectReference Include="..\PersonaBarModule\PersonaBarModule.csproj">
       <Project>{AC17427B-56DF-49BB-B9D1-D59A3C5F0C69}</Project>
       <Name>PersonaBarModule</Name>
       <VSIXSubPath>ProjectTemplates\PersonaBarModule</VSIXSubPath>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -135,3 +145,7 @@
   </Target>
   -->
 </Project>
+
+
+
+
