@@ -53,6 +53,14 @@ class Build : NukeBuild
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath TemplateProjectDirectory => RootDirectory / "Eraware_Dnn_Templates";
 
+    // NUKE's built-in MSBuild resolver cannot locate MSBuild for VS 2026 (v18).
+    // The "microsoft/setup-msbuild" CI step adds MSBuild.exe to PATH, so we resolve it from there.
+    string MSBuildToolPath => System.Environment
+        .GetEnvironmentVariable("PATH")
+        .Split(Path.PathSeparator)
+        .Select(dir => Path.Combine(dir, "MSBuild.exe"))
+        .FirstOrDefault(File.Exists);
+
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
@@ -171,7 +179,9 @@ class Build : NukeBuild
         .DependsOn(SetVersion)
         .Executes(() =>
         {
+            var msBuildToolPath = MSBuildToolPath;
             MSBuild(s => s
+                .SetProcessToolPath(msBuildToolPath)
                 .SetTargetPath(Solution)
                 .SetConfiguration(Configuration));
 
