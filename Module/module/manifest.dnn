@@ -37,7 +37,7 @@
             <assembly>
               <name>NSwag.Annotations.dll</name>
               <path>bin</path>
-              <version>14.6.3</version>
+              <version>14.7.1</version>
             </assembly>
             <assembly>
               <name>FluentValidation.dll</name>
