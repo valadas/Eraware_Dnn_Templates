@@ -27,12 +27,12 @@
             <assembly>
               <name>EntityFramework.dll</name>
               <path>bin</path>
-              <version>6.500.124</version>
+              <version>6.500.226</version>
             </assembly>
             <assembly>
               <name>EntityFramework.SqlServer.dll</name>
               <path>bin</path>
-              <version>6.500.124</version>
+              <version>6.500.226</version>
             </assembly>
             <assembly>
               <name>NSwag.Annotations.dll</name>
