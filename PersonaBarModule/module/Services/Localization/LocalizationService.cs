@@ -43,9 +43,9 @@ namespace $ext_rootnamespace$.Services.Localization
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalizationService"/> class.
         /// </summary>
-        public LocalizationService()
+        public LocalizationService(ILocalizationProvider localizationProvider)
         {
-            this.localizationProvider = new LocalizationProvider();
+            this.localizationProvider = localizationProvider;
             this.cacheKey = "$ext_rootnamespace$" + "_Localization_" + Thread.CurrentThread.CurrentCulture;
             this.viewModel = new LocalizationViewModel();
             var viewModel = DataCache.GetCache<LocalizationViewModel>(this.cacheKey);
