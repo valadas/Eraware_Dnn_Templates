@@ -56,8 +56,8 @@ export class MyItemDetails {
             >{this.resx?.delete || "Delete"}</dnn-button>
             <dnn-modal
               ref={e => this.modal = e!}
-              showCloseButton={false}
-              backdropDismiss={false}
+              hideCloseButton
+              preventBackdropDismiss
             >
               <my-edit ref={e => this.editForm = e!} item={this.item} />
             </dnn-modal>
