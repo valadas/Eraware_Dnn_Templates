@@ -7,11 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace $ext_rootnamespace$.Services
+namespace $ext_rootnamespace$.Services.Localization
 {
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Localization;
     using System.Diagnostics.CodeAnalysis;
+    using System.Web.Hosting;
     using System.Threading;
     using static $ext_rootnamespace$.Services.Localization.LocalizationViewModel;
 
@@ -32,8 +33,7 @@ namespace $ext_rootnamespace$.Services
             {
                 if (string.IsNullOrWhiteSpace(this.resourceFileRoot))
                 {
-                    this.resourceFileRoot = HostingEnvironment.MapPath(
-                        "~/DesktopModules/$ext_modulename$/resources/App_LocalResources/");
+                    this.resourceFileRoot = "~/DesktopModules/$ext_modulename$/resources/App_LocalResources/";
                 }
 
                 return this.resourceFileRoot;
@@ -43,9 +43,9 @@ namespace $ext_rootnamespace$.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalizationService"/> class.
         /// </summary>
-        public LocalizationService()
+        public LocalizationService(ILocalizationProvider localizationProvider)
         {
-            this.localizationProvider = new LocalizationProvider();
+            this.localizationProvider = localizationProvider;
             this.cacheKey = "$ext_rootnamespace$" + "_Localization_" + Thread.CurrentThread.CurrentCulture;
             this.viewModel = new LocalizationViewModel();
             var viewModel = DataCache.GetCache<LocalizationViewModel>(this.cacheKey);

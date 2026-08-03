@@ -39,26 +39,26 @@
               <path>bin</path>
               <version>14.6.3</version>
             </assembly>
-			<assembly>
-			  <name>FluentValidation.dll</name>
-			  <path>bin</path>
-			  <version>11.12.0</version>
-			</assembly>
-			<assembly>
-			  <name>System.Threading.Tasks.Extensions.dll</name>
-			  <path>bin</path>
-			  <version>4.6.28619</version>
-			</assembly>
-			<assembly>
-			  <name>System.Runtime.CompilerServices.Unsafe.dll</name>
-			  <path>bin</path>
-			  <version>4.6.28619</version>
-			</assembly>
-			<assembly>
-			  <name>OneOf.dll</name>
-			  <path>bin</path>
-			  <version>1.0.0</version>
-			</assembly>
+            <assembly>
+              <name>FluentValidation.dll</name>
+              <path>bin</path>
+              <version>11.12.0</version>
+            </assembly>
+            <assembly>
+              <name>System.Threading.Tasks.Extensions.dll</name>
+              <path>bin</path>
+              <version>4.6.28619</version>
+            </assembly>
+            <assembly>
+              <name>System.Runtime.CompilerServices.Unsafe.dll</name>
+              <path>bin</path>
+              <version>4.6.28619</version>
+            </assembly>
+            <assembly>
+              <name>OneOf.dll</name>
+              <path>bin</path>
+              <version>1.0.0</version>
+            </assembly>
           </assemblies>
         </component>
         <component type="Module">
