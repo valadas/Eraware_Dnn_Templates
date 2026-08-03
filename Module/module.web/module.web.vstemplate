@@ -14,7 +14,7 @@
     <Hidden>true</Hidden>
   </TemplateData>
   <TemplateContent>
-    <Project File="ProjectTemplate.njsproj" TargetFileName="ProjectTemplate.njsproj" ReplaceParameters="true">
+    <Project File="ProjectTemplate.esproj" TargetFileName="ProjectTemplate.njsproj" ReplaceParameters="true">
       <Folder Name="src">
         <Folder Name="components">
           <Folder Name="my-component">

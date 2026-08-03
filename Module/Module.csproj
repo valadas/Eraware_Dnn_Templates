@@ -153,7 +153,7 @@
     <None Include="module.web\.editorconfig" />
     <None Include="module.web\LICENSE" />
     <None Include="module.web\package.json" />
-    <None Include="module.web\ProjectTemplate.njsproj" />
+    <None Include="module.web\ProjectTemplate.esproj" />
     <None Include="module.web\readme.md" />
     <None Include="module.web\src\components\my-component\readme.md" />
     <None Include="module.web\tsconfig.json" />
