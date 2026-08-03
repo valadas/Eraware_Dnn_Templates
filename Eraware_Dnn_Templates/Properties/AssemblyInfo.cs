@@ -22,4 +22,4 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("1.14.0.0")]
 [assembly: AssemblyFileVersion("1.14.0.0")]
-[assembly: AssemblyInformationalVersion("1.14.0-vs2026-fix.1+2.Branch.vs2026-fix.Sha.9f9bd52a85a85412475a2349cb568d01f11ae4e9")]
+[assembly: AssemblyInformationalVersion("1.14.0-module-sdk.1+9.Branch.module-sdk.Sha.3d10b01904fe82288e1f4fa80de22647396a4700")]
