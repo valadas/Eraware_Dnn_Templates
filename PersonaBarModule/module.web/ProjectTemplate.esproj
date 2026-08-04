@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.VisualStudio.JavaScript.SDK/1.0.6237341">
+  <PropertyGroup>
+    <!-- Command used when starting the project (e.g. F5). Runs the Stencil dev server. -->
+    <StartupCommand>npm run start</StartupCommand>
+    <!-- Stencil emits its bundle here. -->
+    <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
+    <!--
+      The web bundle is compiled by the Nuke 'BuildFrontEnd' target (npm run build) as part of
+      the module's own build pipeline. Disable the JavaScript SDK's build/install integration so
+      Visual Studio does not build (or npm install) the front-end a second time.
+    -->
+    <ShouldRunBuildScript>false</ShouldRunBuildScript>
+    <ShouldRunNpmInstall>false</ShouldRunNpmInstall>
+  </PropertyGroup>
+</Project>

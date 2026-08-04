@@ -60,8 +60,8 @@ export class MyComponent {
       <my-items-list />
       <dnn-modal
         ref={e => this.modal = e!}
-        showCloseButton={false}
-        backdropDismiss={false}
+        hideCloseButton
+        preventBackdropDismiss
       >
         <my-edit ref={e => this.editForm = e!} item={
           {

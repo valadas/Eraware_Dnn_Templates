@@ -20,6 +20,11 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 
-[assembly: AssemblyVersion("1.13.0.0")]
-[assembly: AssemblyFileVersion("1.13.0.0")]
-[assembly: AssemblyInformationalVersion("1.13.0-nuke-10-1-0.1+6.Branch.nuke-10-1-0.Sha.147ab5a6ab216bdbd3e38fcce74ba75e79a82e1c")]
+// AssemblyVersion is intentionally kept FIXED (1.0.0.0). This assembly is strong-named
+// and the .vstemplate files reference it by its full display name pinned to this exact
+// version. Keeping AssemblyVersion constant means that reference never drifts from the
+// built assembly, avoiding the exact-version fusion load failures we used to hit. Only
+// the file and informational versions are bumped per release (by build/Build.cs).
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.14.0.0")]
+[assembly: AssemblyInformationalVersion("1.14.0-module-sdk.1+9.Branch.module-sdk.Sha.3d10b01904fe82288e1f4fa80de22647396a4700")]

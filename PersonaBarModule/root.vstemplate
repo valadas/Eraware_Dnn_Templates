@@ -23,7 +23,7 @@
     </ProjectCollection>
   </TemplateContent>
   <WizardExtension>
-    <Assembly>Eraware_Dnn_Templates, Version=1.13.0.0, Culture=Neutral, PublicKeyToken=7161ac084cb3bf62</Assembly>
+    <Assembly>Eraware_Dnn_Templates, Version=1.0.0.0, Culture=Neutral, PublicKeyToken=7161ac084cb3bf62</Assembly>
     <FullClassName>Eraware_Dnn_Templates.WizardImplementation</FullClassName>
   </WizardExtension>
 </VSTemplate>

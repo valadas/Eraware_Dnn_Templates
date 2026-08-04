@@ -210,7 +210,7 @@ namespace BuildHelpers
             var sb = new StringBuilder();
             sb
                 .AppendLine($"namespace {rootNamespace}.Services.Localization")
-                 .AppendLine("{")
+                .AppendLine("{")
                  .AppendLine("    using DotNetNuke.Common.Utilities;")
                 .AppendLine($"    using DotNetNuke.Services.Localization;")
                 .AppendLine($"    using System.Diagnostics.CodeAnalysis;")
@@ -245,9 +245,9 @@ namespace BuildHelpers
                 .AppendLine($"        /// <summary>")
                 .AppendLine($"        /// Initializes a new instance of the <see cref=\"LocalizationService\"/> class.")
                 .AppendLine($"        /// </summary>")
-                .AppendLine($"        public LocalizationService()")
+                .AppendLine($"        public LocalizationService(ILocalizationProvider localizationProvider)")
                  .AppendLine("        {")
-                .AppendLine($"            this.localizationProvider = new LocalizationProvider();")
+                .AppendLine($"            this.localizationProvider = localizationProvider;")
                 .AppendLine($"            this.cacheKey = \"{rootNamespace}\" + \"_Localization_\" + Thread.CurrentThread.CurrentCulture;")
                 .AppendLine($"            this.viewModel = new LocalizationViewModel();")
                 .AppendLine($"            var viewModel = DataCache.GetCache<LocalizationViewModel>(this.cacheKey);")
