@@ -3,9 +3,9 @@
 
 namespace $ext_rootnamespace$.Data.Entities
 {
+    using $ext_rootnamespace$.Common;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using $ext_rootnamespace$.Common;
 
     /// <summary>
     /// Represents an item entity.

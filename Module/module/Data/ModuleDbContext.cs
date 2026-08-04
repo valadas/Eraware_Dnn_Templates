@@ -5,10 +5,10 @@ namespace $ext_rootnamespace$.Data
 {
     using $ext_rootnamespace$.Data.Entities;
     using System;
+    using System.Configuration;
     using System.Data.Common;
     using System.Data.Entity;
     using System.IO;
-    using System.Configuration;
     using System.Web;
 
 /// <summary>
