@@ -61,7 +61,7 @@ export class MyComponent {
       <dnn-modal
         ref={e => this.modal = e!}
         hideCloseButton
-        perventBackdropDismiss
+        preventBackdropDismiss
       >
         <my-edit ref={e => this.editForm = e!} item={
           {

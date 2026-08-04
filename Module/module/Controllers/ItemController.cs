@@ -5,8 +5,9 @@ namespace $ext_rootnamespace$.Controllers
 {
     using DotNetNuke.Security;
     using DotNetNuke.Web.Api;
-    using NSwag.Annotations;
     using $ext_rootnamespace$.Services.Items;
+    using NSwag.Annotations;
+
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;

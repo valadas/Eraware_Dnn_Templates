@@ -76,6 +76,7 @@
     <None Include="module\LICENSE" />
     <None Include="module\manifest.dnn" />
     <None Include="module\MenuControllers\MyPersonaBarModuleMenuController.cs" />
+    <None Include="module\ProjectTemplate.csproj" />
     <None Include="module\Startup.cs" />
     <None Include="Properties\AssemblyInfo.cs" />
     <None Include="module\Providers\DateTimeProvider.cs" />
@@ -111,7 +112,6 @@
     <None Include="module.web\src\components\my-app-root\my-app-root.scss" />
     <None Include="module.web\src\dnn\tsconfig.json" />
     <None Include="module.web\tsconfig.json" />
-    <None Include="module\ProjectTemplate.csproj" />
     <None Include="module\README.md" />
     <None Include="module\stylecop.json" />
     <None Include="ProjectTemplate.csproj" />

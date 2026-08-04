@@ -3,13 +3,13 @@
 
 namespace $ext_rootnamespace$.Data.Repositories
 {
-    using System.Collections.Generic;
+    using $ext_rootnamespace$.Data.Entities;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading;
     using System.Threading.Tasks;
-    using $ext_rootnamespace$.Data.Entities;
 
     /// <summary>
     /// Provides generic data access features for entities.

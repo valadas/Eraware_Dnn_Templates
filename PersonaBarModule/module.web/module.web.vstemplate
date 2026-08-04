@@ -14,7 +14,7 @@
     <Hidden>true</Hidden>
   </TemplateData>
   <TemplateContent>
-    <Project File="ProjectTemplate.esproj" TargetFileName="module.web.njsproj" ReplaceParameters="true">
+    <Project File="ProjectTemplate.esproj" TargetFileName="module.web.esproj" ReplaceParameters="true">
       <Folder Name="src">
         <Folder Name="components">
           <Folder Name="my-app-root">

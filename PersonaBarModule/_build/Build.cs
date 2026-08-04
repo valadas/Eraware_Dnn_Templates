@@ -164,11 +164,9 @@ class Build : NukeBuild
         .DependsOn(AdjustCasing)
         .Executes(() =>
         {
-            MSBuild(_ => _
+            DotNetBuild(_ => _
                 .SetConfiguration(Configuration)
-                .SetProjectFile(Solution.GetProject("UnitTests"))
-                .SetTargets("Build")
-                .ResetVerbosity());
+                .SetProjectFile(Solution.GetProject("UnitTests")));
 
             DotNetTest(_ => _
                 .SetConfiguration(Configuration)
@@ -224,13 +222,13 @@ class Build : NukeBuild
                 fileVersion = GitVersion.InformationalVersion;
             }
 
-            MSBuildTasks.MSBuild(s => s
+            DotNetBuild(s => s
                 .SetProjectFile(Solution.GetProject("Module"))
                 .SetConfiguration(Configuration)
                 .SetAssemblyVersion(assemblyVersion)
                 .SetFileVersion(fileVersion));
 
-            MSBuildTasks.MSBuild(s => s
+            DotNetBuild(s => s
                 .SetProjectFile(Solution.GetProject("UnitTests"))
                 .SetConfiguration(Configuration)
                 .SetAssemblyVersion(assemblyVersion)
